@@ -1,0 +1,203 @@
+@import "rsuite/dist/rsuite.min.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-size: 110%;
+  }
+
+  .dark {
+    --tw-bg-opacity: 1;
+    color-scheme: dark;
+  }
+
+  .dark .dark\:bg-gray-900 {
+    background-color: #0a0a0a !important;
+  }
+
+  .dark .dark\:bg-gray-800 {
+    background-color: #1a1a1a !important;
+  }
+
+  .dark .dark\:bg-gray-700 {
+    background-color: #252525 !important;
+  }
+
+  .dark .dark\:border-gray-700 {
+    border-color: #2a2a2a !important;
+  }
+
+  .dark .dark\:border-gray-600 {
+    border-color: #2a2a2a !important;
+  }
+
+  .dark .dark\:text-gray-400 {
+    color: #808080 !important;
+  }
+
+  .dark .dark\:text-gray-300 {
+    color: #d0d0d0 !important;
+  }
+
+  .dark .dark\:hover\:bg-gray-700:hover {
+    background-color: #252525 !important;
+  }
+
+  .dark .dark\:hover\:bg-gray-600:hover {
+    background-color: #303030 !important;
+  }
+}
+
+@layer components {
+  .input {
+    @apply w-full px-3 py-2 border border-gray-300 dark:border-next-border rounded-lg bg-white dark:bg-next-panel text-gray-900 dark:text-next-text focus:ring-2 focus:border-transparent transition-colors;
+  }
+
+  .input::placeholder {
+    @apply text-gray-400 dark:text-gray-600;
+  }
+
+  .checkbox {
+    @apply w-5 h-5 bg-white dark:bg-next-panel border-gray-300 dark:border-next-border rounded focus:ring-2 transition-colors cursor-pointer;
+  }
+
+  /* Keep Dark Mode overrides */
+  .dark .rs-btn-default {
+    background-color: transparent !important;
+    color: #d0d0d0 !important;
+    border-color: #2a2a2a !important;
+  }
+
+  .dark .rs-btn-default:hover {
+    background-color: #252525 !important;
+    color: #fff !important;
+  }
+  
+  .dark .rs-picker-toggle {
+    background-color: #1a1a1a !important;
+    border-color: #2a2a2a !important;
+    color: #d0d0d0 !important;
+  }
+
+  /* Placeholder styles for RSuite Input */
+  .rs-input::placeholder {
+    color: #a0a0a0 !important;
+  }
+
+  .dark .rs-input::placeholder {
+    color: #606060 !important;
+  }
+
+  /* Placeholder styles for input elements */
+  input::placeholder {
+    color: #a0a0a0;
+  }
+
+  .dark input::placeholder {
+    color: #606060;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+@layer utilities {
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes scale-in {
+    0% {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.2s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 1rem);
+  }
+
+  /* Centered modals */
+  .rs-modal-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 100vh !important;
+    padding: 1rem !important;
+  }
+
+  div.rs-modal div.rs-modal-dialog,
+  .rs-modal .rs-modal-dialog,
+  .rs-modal-dialog {
+    margin: 0 auto !important;
+    position: relative !important;
+    top: auto !important;
+    transform: none !important;
+  }
+
+  div.rs-modal div.rs-modal-content,
+  .rs-modal .rs-modal-content,
+  .rs-modal-content {
+    margin: 0 !important;
+    border-radius: 1rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  
+  div.rs-modal div.rs-modal-header,
+  .rs-modal .rs-modal-header,
+  .rs-modal-header {
+    border-top-left-radius: 1rem !important;
+    border-top-right-radius: 1rem !important;
+    flex-shrink: 0 !important;
+  }
+  
+  div.rs-modal div.rs-modal-body,
+  .rs-modal .rs-modal-body,
+  .rs-modal-body {
+    overflow-y: auto !important;
+    flex: 1 1 auto !important;
+  }
+  
+  div.rs-modal div.rs-modal-footer,
+  .rs-modal .rs-modal-footer,
+  .rs-modal-footer {
+    border-bottom-left-radius: 1rem !important;
+    border-bottom-right-radius: 1rem !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Alert and message styling */
+  .rs-alert,
+  .rs-message {
+    position: fixed !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 20px !important;
+    z-index: 9999 !important;
+  }
+}

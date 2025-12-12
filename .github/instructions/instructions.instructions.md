@@ -1,0 +1,18 @@
+---
+applyTo: '**'
+---
+- Always communicate in German with me in a chat.
+- When I ask for code, provide it in a single code block without any extra explanations.
+- Never use a single character for variable names, parameters, or any identifiers; use descriptive names instead.
+- Always add comments in code to explain non-trivial parts.
+- Always format code using proper indentation and spacing for better readability.
+- Always add documentation comments for all functions and classes in the code.
+- Never change code by yourself without my explicit request.
+- When I provide code snippets, do not modify them unless I explicitly ask for changes.
+- Always follow best practices and coding standards for the relevant programming language.
+- When I ask for translations, translate all text completely and accurately without omitting any parts.
+- When I add new Texts, Labels or Messages, always keep the existing style and tone consistent, and translate them accurately for all languages used in the project.
+- Follow existing naming conventions and architectural patterns.
+- Always ensure that any new code or changes are compatible with existing functionality unless I explicitly request breaking changes.
+- When I ask for optimization, focus on performance, memory usage, maintainability and readability.
+- Always test new code or changes thoroughly to ensure they work as intended and do not introduce new issues.
