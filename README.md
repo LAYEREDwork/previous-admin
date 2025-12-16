@@ -30,11 +30,11 @@ On first launch, you'll be prompted to create an admin account. This admin user 
 
 ### 🌍 **Multi-Language Support**
 Full internationalization support for:
-- English
 - Deutsch (German)
-- Italiano (Italian)
+- English
 - Español (Spanish)
 - Français (French)
+- Italiano (Italian)
 
 ### 🎨 **Modern UI/UX**
 - Clean, responsive design optimized for desktop and mobile
