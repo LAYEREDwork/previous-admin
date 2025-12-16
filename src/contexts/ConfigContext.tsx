@@ -15,6 +15,50 @@ interface ConfigContextType {
 
 const ConfigContext = createContext<ConfigContextType | undefined>(undefined);
 
+/**
+ * Merge loaded config with default config to ensure all required fields exist
+ */
+function mergeWithDefaults(loadedConfig: Partial<PreviousConfig> | null): PreviousConfig {
+  if (!loadedConfig) {
+    return DEFAULT_CONFIG;
+  }
+
+  return {
+    system: {
+      ...DEFAULT_CONFIG.system,
+      ...loadedConfig.system,
+    },
+    display: {
+      ...DEFAULT_CONFIG.display,
+      ...loadedConfig.display,
+    },
+    scsi: {
+      ...DEFAULT_CONFIG.scsi,
+      ...loadedConfig.scsi,
+    },
+    ethernet: {
+      ...DEFAULT_CONFIG.ethernet,
+      ...loadedConfig.ethernet,
+    },
+    sound: {
+      ...DEFAULT_CONFIG.sound,
+      ...loadedConfig.sound,
+    },
+    printer: {
+      ...DEFAULT_CONFIG.printer,
+      ...loadedConfig.printer,
+    },
+    boot: {
+      ...DEFAULT_CONFIG.boot,
+      ...loadedConfig.boot,
+    },
+    keyboard: {
+      ...DEFAULT_CONFIG.keyboard,
+      ...loadedConfig.keyboard,
+    },
+  };
+}
+
 export function ConfigProvider({ children }: { children: ReactNode }) {
   const [config, setConfig] = useState<PreviousConfig | null>(null);
   const [loading, setLoading] = useState(true);
@@ -30,7 +74,9 @@ export function ConfigProvider({ children }: { children: ReactNode }) {
 
       const activeConfig = await database.getActiveConfiguration();
       if (activeConfig && activeConfig.config_data) {
-        setConfig(activeConfig.config_data);
+        // Merge with defaults to ensure all required fields exist
+        const mergedConfig = mergeWithDefaults(activeConfig.config_data);
+        setConfig(mergedConfig);
       } else {
         setConfig(DEFAULT_CONFIG);
       }

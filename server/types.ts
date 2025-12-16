@@ -1,215 +1,139 @@
 /**
- * Central type definitions and interfaces for the backend
- * Ensures type safety across all modules
+ * Previous system configuration object
  */
-
-import { Request, Response } from 'express';
-import { WebSocket } from 'ws';
-
-// ============================================================================
-// USER TYPES
-// ============================================================================
-
-export interface User {
-  id: number;
-  username: string;
-  passwordHash: string;
-  createdAt: string;
+export interface PreviousConfig {
+  system: {
+    cpu_type: string;
+    cpu_frequency: number;
+    memory_size: number;
+    turbo: boolean;
+    fpu: boolean;
+  };
+  display: {
+    type: string;
+    width: number;
+    height: number;
+    color_depth: number;
+    frameskip: number;
+  };
+  scsi: {
+    hd0: string;
+    hd1: string;
+    hd2: string;
+    hd3: string;
+    hd4: string;
+    hd5: string;
+    hd6: string;
+    cd: string;
+  };
+  network: {
+    enabled: boolean;
+    type: string;
+  };
+  sound: {
+    enabled: boolean;
+    output: string;
+  };
+  boot: {
+    rom_file: string;
+    scsi_id: number;
+  };
+  keyboard: {
+    type: string;
+  };
+  mouse: {
+    enabled: boolean;
+  };
 }
 
+/**
+ * Stored configuration metadata
+ */
+export interface Configuration {
+  id: string;
+  name: string;
+  description: string;
+  config_data: PreviousConfig;
+  is_active: boolean;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+  created_by: string | null;
+}
+
+/**
+ * User database record
+ */
+export interface User {
+  id: string;
+  username: string;
+  password_hash: string;
+  email: string | null;
+  created_at: string;
+  last_login: string | null;
+}
+
+/**
+ * Request to create a new user
+ */
 export interface CreateUserRequest {
   username: string;
   password: string;
+  email?: string;
 }
 
+/**
+ * User session data stored in session store
+ */
 export interface UserSessionData {
-  userId: number;
+  userId: string;
   username: string;
-  loginTime: number;
 }
 
-// ============================================================================
-// CONFIGURATION TYPES
-// ============================================================================
-
-export interface Configuration {
-  id?: number;
-  userId: number;
-  name: string;
-  description: string;
-  configContent: string;
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
+/**
+ * Request to create a new configuration
+ */
 export interface CreateConfigurationRequest {
   name: string;
   description: string;
-  configContent: string;
+  config_data: any;
+  is_active?: boolean;
+  created_by?: string | null;
 }
 
+/**
+ * Request to update an existing configuration
+ */
 export interface UpdateConfigurationRequest {
   name?: string;
   description?: string;
-  configContent?: string;
-  isActive?: boolean;
+  config_data?: any;
+  is_active?: boolean;
 }
 
-// ============================================================================
-// SYSTEM TYPES
-// ============================================================================
-
-export interface SystemInfo {
-  os: string;
-  platform: string;
-  hostname: string;
-  arch: string;
-  kernel: string;
-  hostModel: { name: string };
-  release: string;
-}
-
-export interface MetricsSnapshot {
-  timestamp: number;
-  cpu: CPUMetrics;
-  memory: MemoryMetrics;
-  disk: DiskMetrics;
-  network: NetworkMetrics;
-}
-
-export interface CPUMetrics {
-  usage: number; // 0-100
-  cores: number;
-  temperature?: number;
-}
-
-export interface MemoryMetrics {
-  used: number;
-  total: number;
-  percentage: number;
-}
-
-export interface DiskMetrics {
-  read: number; // bytes/sec
-  write: number; // bytes/sec
-  usagePercentage: number;
-}
-
-export interface NetworkMetrics {
-  received: number; // bytes
-  transmitted: number; // bytes
-}
-
-export interface VersionInfo {
-  current: string;
-  latest: string;
-  updateAvailable: boolean;
-  downloadUrl?: string;
-}
-
-// ============================================================================
-// FILE OPERATIONS
-// ============================================================================
-
-export interface FileWatcherConfig {
-  stabilityThreshold: number;
-  pollInterval: number;
-  debounceDelay: number;
-}
-
-export interface ConfigFileContent {
-  [key: string]: unknown;
-}
-
-// ============================================================================
-// API RESPONSE TYPES
-// ============================================================================
-
-export interface ApiResponse<TData = unknown> {
-  success: boolean;
-  data?: TData;
-  error?: string;
-  timestamp: number;
-}
-
-export interface ApiErrorResponse {
-  success: false;
-  error: string;
-  errorCode: string;
-  timestamp: number;
-}
-
-export interface PaginatedResponse<TData> {
-  items: TData[];
-  total: number;
-  page: number;
-  pageSize: number;
-  hasMore: boolean;
-}
-
-// ============================================================================
-// MIDDLEWARE / REQUEST CONTEXT
-// ============================================================================
-
-export interface AuthenticatedRequest extends Request {
-  session?: {
-    userId?: number;
+/**
+ * Express request with authenticated user session
+ */
+export interface AuthenticatedRequest extends Express.Request {
+  session: Express.SessionData & {
+    userId?: string;
     username?: string;
   };
 }
 
+/**
+ * WebSocket message structure
+ */
 export interface WebSocketMessage {
-  type: 'subscribe' | 'unsubscribe' | 'update' | 'error' | 'ping' | 'pong';
-  data?: unknown;
-  error?: string;
-  timestamp?: number;
+  type: string;
+  data?: any;
 }
 
+/**
+ * WebSocket client connection
+ */
 export interface WebSocketClient {
-  socket: WebSocket;
-  userId: number;
-  subscriptions: Set<string>;
-}
-
-// ============================================================================
-// DATABASE TYPES
-// ============================================================================
-
-export interface DatabaseConfig {
-  filename: string;
-  timeout: number;
-  integrityCheck: boolean;
-}
-
-export interface DatabaseQueryResult<TRow = unknown> {
-  rows: TRow[];
-  rowsAffected: number;
-}
-
-// ============================================================================
-// EXPORT UTILITY FUNCTIONS
-// ============================================================================
-
-/**
- * Type guard to check if response is successful
- */
-export function isSuccessResponse<T>(
-  response: ApiResponse<T> | ApiErrorResponse
-): response is ApiResponse<T> {
-  return response.success === true;
-}
-
-/**
- * Type guard to check if response is an error
- */
-export function isErrorResponse(
-  response: unknown
-): response is ApiErrorResponse {
-  return (
-    typeof response === 'object' &&
-    response !== null &&
-    'success' in response &&
-    response.success === false
-  );
+  id: string;
+  ws: any;
+  userId?: string;
 }

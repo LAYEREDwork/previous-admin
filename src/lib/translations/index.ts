@@ -151,7 +151,6 @@ export interface Translations {
     errorImport: string;
     errorExport: string;
     syncTitle: string;
-    syncPath: string;
     syncToEmulator: string;
     syncing: string;
     importFromEmulator: string;

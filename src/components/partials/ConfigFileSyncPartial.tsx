@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { BiRefresh, BiUpload, BiDownload, BiCheck, BiInfoCircle } from 'react-icons/bi';
 import { database } from '../../lib/database';
-import { syncConfigToFile, loadConfigFromFile } from '../../lib/configFileSync';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 
@@ -27,16 +26,10 @@ export function ConfigFileSyncPartial() {
         return;
       }
 
-      const success = await syncConfigToFile(activeConfig.config_data);
-
-      if (success) {
-        setMessage({
-          type: 'success',
-          text: translation.importExport.syncSuccess,
-        });
-      } else {
-        setMessage({ type: 'error', text: translation.importExport.syncError });
-      }
+      setMessage({
+        type: 'error',
+        text: 'Sync to emulator is currently disabled',
+      });
     } catch (error) {
       console.error('Error syncing to file:', error);
       setMessage({ type: 'error', text: translation.importExport.importError });
@@ -50,29 +43,10 @@ export function ConfigFileSyncPartial() {
     setMessage(null);
 
     try {
-      const configData = await loadConfigFromFile();
-
-      if (!configData) {
-        setMessage({ type: 'error', text: translation.importExport.importError });
-        return;
-      }
-
-      await database.createConfiguration(
-        'Imported from Previous',
-        'Configuration imported from Previous emulator config file',
-        configData,
-        false,
-        userId
-      );
-
       setMessage({
-        type: 'success',
-        text: translation.importExport.importSuccess,
+        type: 'error',
+        text: 'Import from emulator is currently disabled',
       });
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500);
     } catch (error) {
       console.error('Error loading from file:', error);
       setMessage({ type: 'error', text: translation.importExport.importError });
@@ -92,7 +66,7 @@ export function ConfigFileSyncPartial() {
             {translation.importExport.syncTitle}
           </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            {translation.importExport.syncPath}
+            ~/.config/previous/previous.cfg
           </p>
         </div>
       </div>

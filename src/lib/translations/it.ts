@@ -127,7 +127,6 @@ export const it: Translations = {
     errorImport: "Errore nell'importazione delle configurazioni",
     errorExport: "Errore nell'esportazione delle configurazioni",
     syncTitle: 'Sincronizza con Previous Emulator',
-    syncPath: '/home/next/.config/previous/previous.cfg',
     syncToEmulator: "Applica configurazione attiva all'emulatore",
     syncing: 'Sincronizzazione...',
     importFromEmulator: "Importa dalla configurazione dell'emulatore",

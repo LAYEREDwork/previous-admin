@@ -29,8 +29,8 @@ export function getConfigurations(userId?: number): Configuration[] {
   const database = getDatabase();
   
   let query = `
-    SELECT id, name, description, config_data as configContent, is_active as isActive, 
-           created_at as createdAt, updated_at as updatedAt, created_by as userId
+    SELECT id, name, description, config_data, is_active, 
+           created_at, updated_at, created_by, sort_order
     FROM configurations
   `;
 
@@ -38,17 +38,24 @@ export function getConfigurations(userId?: number): Configuration[] {
   
   if (userId !== undefined) {
     configurations = database
-      .prepare(query + ' WHERE created_by = ? ORDER BY sort_order ASC, created_at DESC')
+      .prepare(query + ' WHERE created_by = ? ORDER BY sort_order ASC')
       .all(userId);
   } else {
     configurations = database
-      .prepare(query + ' ORDER BY sort_order ASC, created_at DESC')
+      .prepare(query + ' ORDER BY sort_order ASC')
       .all();
   }
 
-  return configurations.map((config) => ({
-    ...config,
-    configContent: JSON.parse(config.configContent),
+  return configurations.map((config: any) => ({
+    id: config.id,
+    name: config.name,
+    description: config.description,
+    config_data: JSON.parse(config.config_data),
+    is_active: !!config.is_active,
+    created_at: config.created_at,
+    updated_at: config.updated_at,
+    created_by: config.created_by,
+    sort_order: config.sort_order,
   })) as Configuration[];
 }
 
@@ -63,8 +70,8 @@ export function getConfiguration(configurationId: string): Configuration | undef
   
   const config = database
     .prepare(`
-      SELECT id, name, description, config_data as configContent, is_active as isActive, 
-             created_at as createdAt, updated_at as updatedAt, created_by as userId
+      SELECT id, name, description, config_data, is_active, 
+             created_at, updated_at, created_by, sort_order
       FROM configurations
       WHERE id = ?
     `)
@@ -74,9 +81,18 @@ export function getConfiguration(configurationId: string): Configuration | undef
     return undefined;
   }
 
+  const c = config as any;
+
   return {
-    ...config,
-    configContent: JSON.parse((config as any).configContent),
+    id: c.id,
+    name: c.name,
+    description: c.description,
+    config_data: JSON.parse(c.config_data),
+    is_active: !!c.is_active,
+    created_at: c.created_at,
+    updated_at: c.updated_at,
+    created_by: c.created_by,
+    sort_order: c.sort_order,
   } as Configuration;
 }
 
@@ -90,8 +106,8 @@ export function getActiveConfiguration(userId?: number): Configuration | undefin
   const database = getDatabase();
   
   let query = `
-    SELECT id, name, description, config_data as configContent, is_active as isActive, 
-           created_at as createdAt, updated_at as updatedAt, created_by as userId
+    SELECT id, name, description, config_data, is_active, 
+           created_at, updated_at, created_by, sort_order
     FROM configurations 
     WHERE is_active = 1
   `;
@@ -113,8 +129,15 @@ export function getActiveConfiguration(userId?: number): Configuration | undefin
   }
 
   return {
-    ...activeConfig,
-    configContent: JSON.parse(activeConfig.configContent),
+    id: activeConfig.id,
+    name: activeConfig.name,
+    description: activeConfig.description,
+    config_data: JSON.parse(activeConfig.config_data),
+    is_active: !!activeConfig.is_active,
+    created_at: activeConfig.created_at,
+    updated_at: activeConfig.updated_at,
+    created_by: activeConfig.created_by,
+    sort_order: activeConfig.sort_order,
   } as Configuration;
 }
 
@@ -147,7 +170,7 @@ export function createConfiguration(
       configurationId,
       request.name,
       request.description || '',
-      JSON.stringify(request.configContent),
+      JSON.stringify(request.config_data),
       0,
       now,
       now,
@@ -189,14 +212,14 @@ export function updateConfiguration(
     values.push(updates.description);
   }
 
-  if (updates.configContent !== undefined) {
+  if (updates.config_data !== undefined) {
     fields.push('config_data = ?');
-    values.push(JSON.stringify(updates.configContent));
+    values.push(JSON.stringify(updates.config_data));
   }
 
-  if (updates.isActive !== undefined) {
+  if (updates.is_active !== undefined) {
     fields.push('is_active = ?');
-    values.push(updates.isActive ? 1 : 0);
+    values.push(updates.is_active ? 1 : 0);
   }
 
   if (fields.length === 0) {

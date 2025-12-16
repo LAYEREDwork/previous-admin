@@ -127,7 +127,7 @@ export const en: Translations = {
     errorImport: 'Error importing configurations',
     errorExport: 'Error exporting configurations',
     syncTitle: 'Sync with Previous Emulator',
-    syncPath: '/home/next/.config/previous/previous.cfg',
+
     syncToEmulator: 'Apply Active Config to Emulator',
     syncing: 'Syncing...',
     importFromEmulator: 'Import from Emulator Config',

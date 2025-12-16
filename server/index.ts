@@ -166,7 +166,7 @@ async function startServer(): Promise<void> {
     setupGracefulShutdown(HTTP_SERVER);
 
     // Get server configuration from environment
-    const serverPort = process.env.PORT || API_CONFIG.DEFAULT_PORT;
+    const serverPort = process.env.PORT || API_CONFIG.PORT;
     const serverHost = process.env.HOST || '0.0.0.0';
 
     // Start HTTP server
