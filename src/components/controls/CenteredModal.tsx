@@ -18,7 +18,7 @@ export function CenteredModal({ children, ...props }: CenteredModalProps) {
   return (
     <Modal
       centered
-      dialogStyle={{ borderRadius: '1rem', overflow: 'visible' }}
+      dialogStyle={{ borderRadius: '1rem', overflow: 'visible', marginTop: '-15vh' }}
       overflow={false}
       {...props}
     >

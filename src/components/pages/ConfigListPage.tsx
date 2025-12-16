@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { BiPlus, BiTrash, BiEdit, BiMenu, BiCheckCircle, BiCircle, BiUpload } from 'react-icons/bi';
-import { IoDocumentsOutline } from 'react-icons/io5';
+import { IoDocumentsOutline, IoDocumentText } from 'react-icons/io5';
 import { Button, Input, IconButton } from 'rsuite';
 import { CenteredModal } from '../controls/CenteredModal';
 import { database, Configuration } from '../../lib/database';
@@ -203,7 +203,10 @@ export function ConfigList({ onEdit }: ConfigListProps) {
         size="sm"
       >
         <CenteredModal.Header>
-          <CenteredModal.Title>{translation.configList.newConfig}</CenteredModal.Title>
+          <CenteredModal.Title>
+            <IoDocumentText size={32} className="inline-block mr-2 -mt-0.5" />
+            {translation.configList.newConfig}
+          </CenteredModal.Title>
         </CenteredModal.Header>
         <CenteredModal.Body>
           <div className="space-y-4">
@@ -342,7 +345,7 @@ export function ConfigList({ onEdit }: ConfigListProps) {
       </div>
 
       {configs.length === 0 && !showNewConfig && (
-        <div className="flex flex-col items-center justify-center py-16 px-4">
+        <div className="flex flex-col items-center justify-center min-h-[60vh] py-16 px-4">
           <div className="text-gray-300 dark:text-gray-600 mb-6">
             <IoDocumentsOutline size={80} />
           </div>
