@@ -1,4 +1,4 @@
-# Previois Admin Screenshots
+# Previous Admin Screenshots
 
 ## The Configuration Editor
 
