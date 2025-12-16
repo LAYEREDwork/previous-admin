@@ -1,5 +1,5 @@
 [![Mastodon: @phranck](https://img.shields.io/badge/Mastodon-@phranck-blue.svg?style=flat)](https://oldbytes.space/@phranck)
-![REUSE Compliance](https://img.shields.io/reuse/compliance/:remote?style=flat&logoColor=gray)
+[![Mastodon: @phranck](https://img.shields.io/badge/Mastodon-@LAYERED-blue.svg?style=flat)](https://oldbytes.space/@LAYERED)
 
 # Previous Admin
 
