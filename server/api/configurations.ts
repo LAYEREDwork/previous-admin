@@ -37,10 +37,12 @@ router.get('/', requireAuth, (req, res) => {
       id: config.id,
       name: config.name,
       description: config.description,
-      config_data: JSON.stringify(config.configContent),
-      is_active: Boolean(config.isActive),
-      created_at: config.createdAt,
-      updated_at: config.updatedAt
+      config_data: JSON.stringify(config.config_data),
+      is_active: Boolean(config.is_active),
+      created_at: config.created_at,
+      updated_at: config.updated_at,
+      created_by: config.created_by,
+      sort_order: config.sort_order
     }));
 
     res.json({ configurations: parsed });
@@ -70,10 +72,12 @@ router.get('/active', requireAuth, (req, res) => {
         id: config.id,
         name: config.name,
         description: config.description,
-        config_data: JSON.stringify(config.configContent),
-        is_active: Boolean(config.isActive),
-        created_at: config.createdAt,
-        updated_at: config.updatedAt
+        config_data: config.config_data,
+        is_active: Boolean(config.is_active),
+        created_at: config.created_at,
+        updated_at: config.updated_at,
+        created_by: config.created_by,
+        sort_order: config.sort_order
       }
     });
   } catch (error) {
@@ -103,10 +107,12 @@ router.get('/:id', requireAuth, (req, res) => {
         id: config.id,
         name: config.name,
         description: config.description,
-        config_data: JSON.stringify(config.configContent),
-        is_active: Boolean(config.isActive),
-        created_at: config.createdAt,
-        updated_at: config.updatedAt
+        config_data: config.config_data,
+        is_active: Boolean(config.is_active),
+        created_at: config.created_at,
+        updated_at: config.updated_at,
+        created_by: config.created_by,
+        sort_order: config.sort_order
       }
     });
   } catch (error) {
@@ -134,16 +140,12 @@ router.post('/', requireAuth, (req, res) => {
     const config = createConfiguration(req.session.userId, {
       name,
       description: description || '',
-      configContent: typeof config_data === 'string' ? JSON.parse(config_data) : config_data,
-      isActive: Boolean(is_active)
+      config_data: typeof config_data === 'string' ? JSON.parse(config_data) : config_data,
+      is_active: Boolean(is_active)
     });
 
     res.status(201).json({
-      configuration: {
-        ...config,
-        config_data: JSON.stringify(config.configContent),
-        is_active: config.isActive
-      }
+      configuration: config
     });
   } catch (error) {
     console.error('Error creating configuration:', error);
@@ -168,9 +170,9 @@ router.put('/:id', requireAuth, (req, res) => {
     if (req.body.name !== undefined) updates.name = req.body.name;
     if (req.body.description !== undefined) updates.description = req.body.description;
     if (req.body.config_data !== undefined) {
-      updates.configContent = typeof req.body.config_data === 'string' ? JSON.parse(req.body.config_data) : req.body.config_data;
+      updates.config_data = typeof req.body.config_data === 'string' ? JSON.parse(req.body.config_data) : req.body.config_data;
     }
-    if (req.body.is_active !== undefined) updates.isActive = req.body.is_active;
+    if (req.body.is_active !== undefined) updates.is_active = req.body.is_active;
 
     const config = updateConfiguration(id, updates);
 
@@ -178,20 +180,12 @@ router.put('/:id', requireAuth, (req, res) => {
       return res.status(404).json({ error: 'Configuration not found' });
     }
 
-    if (req.app.locals.broadcastConfigUpdate && updates.isActive) {
-      req.app.locals.broadcastConfigUpdate(req.session.username, config.configContent);
+    if (req.app.locals.broadcastConfigUpdate && updates.is_active) {
+      req.app.locals.broadcastConfigUpdate(req.session.username, config.config_data);
     }
 
     res.json({
-      configuration: {
-        id: config.id,
-        name: config.name,
-        description: config.description,
-        config_data: JSON.stringify(config.configContent),
-        is_active: Boolean(config.isActive),
-        created_at: config.createdAt,
-        updated_at: config.updatedAt
-      }
+      configuration: config
     });
   } catch (error) {
     console.error('Error updating configuration:', error);
@@ -239,15 +233,11 @@ router.post('/:id/activate', requireAuth, (req, res) => {
     }
 
     if (req.app.locals.broadcastConfigUpdate) {
-      req.app.locals.broadcastConfigUpdate(req.session.username, config.configContent);
+      req.app.locals.broadcastConfigUpdate(req.session.username, config.config_data);
     }
 
     res.json({
-      configuration: {
-        ...config,
-        config_data: JSON.stringify(config.configContent),
-        is_active: Boolean(config.isActive)
-      }
+      configuration: config
     });
   } catch (error) {
     console.error('Error activating configuration:', error);

@@ -271,11 +271,11 @@ export interface Translations {
 }
 
 export const translations: Record<Language, Translations> = {
-  en,
   de,
-  it,
+  en,
   es,
   fr,
+  it,
 };
 
 /**

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { BiUserPlus, BiUpload, BiLogInCircle, BiShow, BiHide, BiLock } from 'react-icons/bi';
+import { BiUserPlus, BiDownload, BiLogInCircle, BiShow, BiHide, BiLock } from 'react-icons/bi';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useNotification } from '../../contexts/NotificationContext';
@@ -247,7 +247,7 @@ export function Login() {
                     loading={importing}
                     className="flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    <BiUpload size={16} className="sm:w-[18px] sm:h-[18px]" />
+                    <BiDownload size={18} className="sm:w-[18px] sm:h-[18px]" />
                     {importing ? 'Importing Database...' : 'Import Existing Database'}
                   </Button>
                 </label>
