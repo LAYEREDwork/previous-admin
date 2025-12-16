@@ -35,9 +35,6 @@ Full internationalization support for:
 - Italiano (Italian)
 - Español (Spanish)
 - Français (French)
-- Nederlands (Dutch)
-- Türkçe (Turkish)
-- Português (Portuguese)
 
 ### 🎨 **Modern UI/UX**
 - Clean, responsive design optimized for desktop and mobile
