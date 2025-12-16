@@ -66,9 +66,14 @@ The setup script will:
 - Create the necessary user accounts
 - Build the application
 - Configure and start the systemd services
+- Set up Avahi/Bonjour for network discovery
 - Display access information
 
-After installation, access the admin interface at `http://your-ip:2342`
+After installation, access the admin interface at:
+- `http://next.local:2342` (via Bonjour/mDNS)
+- `http://<IP-Adresse>:2342`
+
+> **Note:** The `next.local` address works on devices that support Bonjour/mDNS (macOS, iOS, Windows with Bonjour, Linux with Avahi). Your device's hostname remains unchanged – `next.local` is published as an additional alias.
 
 ### Manual Installation
 
