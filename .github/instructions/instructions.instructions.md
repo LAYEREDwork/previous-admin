@@ -16,3 +16,4 @@ applyTo: '**'
 - Always ensure that any new code or changes are compatible with existing functionality unless I explicitly request breaking changes.
 - When I ask for optimization, focus on performance, memory usage, maintainability and readability.
 - Always test new code or changes thoroughly to ensure they work as intended and do not introduce new issues.
+- If I ask if a feature is possible, just answer the question with a descriptive yes or no, without implementing it.
