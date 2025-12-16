@@ -16,6 +16,10 @@ TARGET_USER="next"
 INSTALL_DIR="/home/$TARGET_USER/previous-admin"
 PROJECT_DIR=$(cd "$(dirname "$0")" && pwd)
 
+# Network configuration
+MDNS_HOSTNAME="next.local"
+FRONTEND_PORT="2342"
+
 echo "Checking if user '$TARGET_USER' exists..."
 if ! id "$TARGET_USER" &>/dev/null; then
     echo "User '$TARGET_USER' does not exist. Creating..."
@@ -70,31 +74,31 @@ cp "$INSTALL_DIR/systemd/previous-admin-backend.service" /etc/systemd/system/
 cp "$INSTALL_DIR/systemd/previous-admin-frontend.service" /etc/systemd/system/
 
 echo ""
-echo "Setting up Bonjour/mDNS alias (next.local)..."
+echo "Setting up Bonjour/mDNS alias ($MDNS_HOSTNAME)..."
 
 # Create Avahi service file for Previous Admin
-cat > /etc/avahi/services/previous-admin.service << 'EOF'
+cat > /etc/avahi/services/previous-admin.service << EOF
 <?xml version="1.0" standalone='no'?>
 <!DOCTYPE service-group SYSTEM "avahi-service.dtd">
 <service-group>
   <name>Previous Admin</name>
   <service>
     <type>_http._tcp</type>
-    <port>2342</port>
+    <port>$FRONTEND_PORT</port>
     <txt-record>path=/</txt-record>
   </service>
 </service-group>
 EOF
 
 # Create wrapper script for avahi-publish (needed for IP detection at runtime)
-cat > /usr/local/bin/avahi-alias-next.sh << 'EOF'
+cat > /usr/local/bin/avahi-alias-next.sh << EOF
 #!/bin/bash
 # Wait for network to be ready
 sleep 5
 # Get the primary IP address
-IP_ADDR=$(hostname -I | awk '{print $1}')
-if [ -n "$IP_ADDR" ]; then
-    exec /usr/bin/avahi-publish -a -R next.local "$IP_ADDR"
+IP_ADDR=\$(hostname -I | awk '{print \$1}')
+if [ -n "\$IP_ADDR" ]; then
+    exec /usr/bin/avahi-publish -a -R $MDNS_HOSTNAME "\$IP_ADDR"
 else
     echo "Could not determine IP address"
     exit 1
@@ -103,9 +107,9 @@ EOF
 chmod +x /usr/local/bin/avahi-alias-next.sh
 
 # Create systemd service for avahi-publish alias
-cat > /etc/systemd/system/avahi-alias-next.service << 'EOF'
+cat > /etc/systemd/system/avahi-alias-next.service << EOF
 [Unit]
-Description=Avahi alias next.local for Previous Admin
+Description=Avahi alias $MDNS_HOSTNAME for Previous Admin
 After=network-online.target avahi-daemon.service
 Wants=network-online.target
 Requires=avahi-daemon.service
@@ -150,8 +154,8 @@ echo ""
 systemctl status previous-admin-frontend.service --no-pager -l
 echo ""
 echo "Access the admin interface at:"
-echo "  http://next.local:2342"
-echo "  http://$(hostname -I | awk '{print $1}'):2342"
+echo "  http://$MDNS_HOSTNAME:$FRONTEND_PORT"
+echo "  http://$(hostname -I | awk '{print $1}'):$FRONTEND_PORT"
 echo ""
 echo "To view logs:"
 echo "  sudo journalctl -u previous-admin-backend.service -f"
