@@ -71,7 +71,6 @@ export function ConfigList({ onEdit }: ConfigListProps) {
       setShowNewConfig(false);
       setNewConfigName('');
       setNewConfigDesc('');
-      showSuccess('Configuration created successfully');
       await loadConfigs();
     } catch (error) {
       console.error('Error creating config:', error);
@@ -86,7 +85,6 @@ export function ConfigList({ onEdit }: ConfigListProps) {
         try {
           await database.deleteConfiguration(id);
           setConfigs(configs.filter((c) => c.id !== id));
-          showSuccess('Configuration deleted successfully');
         } catch (error) {
           console.error('Error deleting config:', error);
           showError('Error deleting configuration');
