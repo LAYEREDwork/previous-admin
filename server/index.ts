@@ -102,7 +102,7 @@ function configureRoutes(app: Express): void {
   app.use('/api/configurations', configurationsRoutes);
   app.use('/api/database', databaseRoutes);
   app.use('/api/system', systemRoutes);
-  app.use('/api', updateRoutes);
+  app.use('/api/update', updateRoutes);
 
   // Health check endpoint
   app.get('/api/health', (request: Request, response: Response) => {
