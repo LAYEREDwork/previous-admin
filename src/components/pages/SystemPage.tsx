@@ -381,15 +381,15 @@ export function System() {
                     <div>
                       <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
                         <BiDesktop size={16} className="text-indigo-600 dark:text-indigo-400" />
-                        Display
+                        {translation.system.display}
                       </h4>
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <span className="text-xs text-gray-500 dark:text-gray-400">Resolution</span>
+                          <span className="text-xs text-gray-500 dark:text-gray-400">{translation.system.resolution}</span>
                           <p className="text-sm font-medium text-gray-900 dark:text-white">{systemInfo.monitorResolution.width} x {systemInfo.monitorResolution.height}</p>
                         </div>
                         <div>
-                          <span className="text-xs text-gray-500 dark:text-gray-400">Source</span>
+                          <span className="text-xs text-gray-500 dark:text-gray-400">{translation.system.source}</span>
                           <p className="text-sm font-medium text-gray-900 dark:text-white">{systemInfo.monitorResolution.source}</p>
                         </div>
                       </div>
@@ -408,7 +408,7 @@ export function System() {
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                     <BiLineChart size={20} className="text-next-accent" />
-                    CPU Load Average
+                    {translation.system.cpuLoadAverage}
                   </h3>
                   <div className="text-right">
                     <p className="text-sm font-semibold flex items-center justify-end gap-2">
@@ -459,7 +459,7 @@ export function System() {
                   </ResponsiveContainer>
                   );
                 })() : (
-                  <div className="h-48 flex items-center justify-center text-gray-400">Collecting data...</div>
+                  <div className="h-48 flex items-center justify-center text-gray-400">{translation.system.collectingData}</div>
                 )}
               </div>
 
@@ -467,7 +467,7 @@ export function System() {
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <BiGlobe size={20} className="text-cyan-600 dark:text-cyan-400" />
-                  Network Traffic
+                  {translation.system.networkTraffic}
                 </h3>
                 {metrics && metrics.networkTraffic.history.length >= 1 ? (() => {
                   const paddedData = padDataToWindow(metrics.networkTraffic.history, 60, { received: null, sent: null });
@@ -496,7 +496,7 @@ export function System() {
                     </ResponsiveContainer>
                   );
                 })() : (
-                  <div className="h-48 flex items-center justify-center text-gray-400">Collecting data...</div>
+                  <div className="h-48 flex items-center justify-center text-gray-400">{translation.system.collectingData}</div>
                 )}
               </div>
             </div>
@@ -533,7 +533,7 @@ export function System() {
                     </ResponsiveContainer>
                   );
                 })() : (
-                  <div className="h-48 flex items-center justify-center text-gray-400">Collecting data...</div>
+                  <div className="h-48 flex items-center justify-center text-gray-400">{translation.system.collectingData}</div>
                 )}
               </div>
 
@@ -570,7 +570,7 @@ export function System() {
                     </ResponsiveContainer>
                   );
                 })() : (
-                  <div className="h-48 flex items-center justify-center text-gray-400">Collecting data...</div>
+                  <div className="h-48 flex items-center justify-center text-gray-400">{translation.system.collectingData}</div>
                 )}
               </div>
             </div>

@@ -141,6 +141,13 @@
     padding-top: env(safe-area-inset-top, 1rem);
   }
 
+  /* Modal backdrop with blur and darker background */
+  .rs-modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+  }
+
   /* Centered modals */
   .rs-modal-wrapper {
     display: flex !important;

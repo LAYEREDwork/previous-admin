@@ -225,6 +225,12 @@ export interface Translations {
     used: string;
     free: string;
     ipAddresses: string;
+    display: string;
+    resolution: string;
+    source: string;
+    networkTraffic: string;
+    cpuLoadAverage: string;
+    collectingData: string;
     disks: string;
     days: string;
     hours: string;
@@ -470,6 +476,12 @@ export const translations: Record<Language, Translations> = {
       used: 'Used',
       free: 'Free',
       ipAddresses: 'IP Addresses',
+      display: 'Display',
+      resolution: 'Resolution',
+      source: 'Source',
+      networkTraffic: 'Network Traffic',
+      cpuLoadAverage: 'CPU Load Average',
+      collectingData: 'Collecting data...',
       disks: 'Disks',
       days: 'd',
       hours: 'h',
@@ -734,6 +746,12 @@ export const translations: Record<Language, Translations> = {
       used: 'Verwendet',
       free: 'Frei',
       ipAddresses: 'IP-Adressen',
+      display: 'Bildschirm',
+      resolution: 'Auflösung',
+      source: 'Quelle',
+      networkTraffic: 'Netzwerkverkehr',
+      cpuLoadAverage: 'CPU-Auslastung',
+      collectingData: 'Daten werden gesammelt...',
       disks: 'Festplatten',
       days: 'T',
       hours: 'Std',
@@ -998,6 +1016,12 @@ export const translations: Record<Language, Translations> = {
       used: 'Usato',
       free: 'Libero',
       ipAddresses: 'Indirizzi IP',
+      display: 'Display',
+      resolution: 'Risoluzione',
+      source: 'Fonte',
+      networkTraffic: 'Traffico di rete',
+      cpuLoadAverage: 'Carico medio CPU',
+      collectingData: 'Raccolta dati...',
       disks: 'Dischi',
       days: 'g',
       hours: 'h',
@@ -1262,6 +1286,12 @@ export const translations: Record<Language, Translations> = {
       used: 'Usado',
       free: 'Libre',
       ipAddresses: 'Direcciones IP',
+      display: 'Pantalla',
+      resolution: 'Resolución',
+      source: 'Fuente',
+      networkTraffic: 'Tráfico de red',
+      cpuLoadAverage: 'Carga promedio de CPU',
+      collectingData: 'Recopilando datos...',
       disks: 'Discos',
       days: 'd',
       hours: 'h',
@@ -1525,6 +1555,12 @@ export const translations: Record<Language, Translations> = {
       used: 'Utilisé',
       free: 'Libre',
       ipAddresses: 'Adresses IP',
+      display: 'Affichage',
+      resolution: 'Résolution',
+      source: 'Source',
+      networkTraffic: 'Trafic réseau',
+      cpuLoadAverage: 'Charge moyenne CPU',
+      collectingData: 'Collecte des données...',
       disks: 'Disques',
       days: 'j',
       hours: 'h',
