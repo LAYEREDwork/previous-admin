@@ -70,7 +70,7 @@ The setup script will:
 - Display access information
 
 After installation, access the admin interface at:
-- `http://next.local:2342` (via Bonjour/mDNS)
+- [http://next.local:2342](`http://next.local:2342`) (via Bonjour/mDNS)
 - `http://<IP-Adresse>:2342`
 
 > **Note:** The `next.local` address works on devices that support Bonjour/mDNS (macOS, iOS, Windows with Bonjour, Linux with Avahi). Your device's hostname remains unchanged – `next.local` is published as an additional alias.
