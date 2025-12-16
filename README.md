@@ -5,6 +5,8 @@
 
 ![Previous Admin Banner](.github/assets/banner.png)
 
+You can watch more screenshots [here](SCREENSHOTS.md).
+
 ## About
 
 Previous Admin is a modern web-based configuration management tool designed specifically for the [Previous NeXT Computer Emulator](http://previous.alternative-system.com/). It provides an intuitive interface for managing emulator configurations with security and ease of use in mind.
