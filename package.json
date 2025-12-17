@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "backend": "tsx server/index.ts",
+    "backend": "tsx backend/index.ts",
     "start": "npm run preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json"
   },

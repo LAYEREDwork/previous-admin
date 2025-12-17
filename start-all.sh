@@ -9,7 +9,7 @@ echo "========================================"
 echo ""
 
 # Prüfen ob bereits läuft
-if pgrep -f "node server/index.js" > /dev/null; then
+if pgrep -f "node backend/index.js" > /dev/null; then
     echo "⚠️  Backend läuft bereits!"
 else
     # Backend im Hintergrund starten
