@@ -1,17 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BiRefresh, BiUpload, BiDownload, BiCheck, BiInfoCircle } from 'react-icons/bi';
 import { database } from '../../lib/database';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { Button } from 'rsuite';
+import { useControlSize } from '../../hooks/useControlSize';
 
 export function ConfigFileSyncPartial() {
   const { userId } = useAuth();
   const { translation } = useLanguage();
   const [syncing, setSyncing] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [configs, setConfigs] = useState([]);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(
     null
   );
+  const controlSize = useControlSize('lg');
+
+  useEffect(() => {
+    database.getConfigurations().then(setConfigs);
+  }, []);
 
   async function handleSyncToFile() {
     setSyncing(true);
@@ -72,23 +80,30 @@ export function ConfigFileSyncPartial() {
       </div>
 
       <div className="grid md:grid-cols-2 gap-4 mb-4">
-        <button
+        <Button
           onClick={handleSyncToFile}
-          disabled={syncing}
-          className="flex items-center justify-center gap-2 px-4 py-3 bg-cyan-600 hover:bg-cyan-700 disabled:bg-gray-400 text-white rounded-lg transition-colors"
+          disabled={syncing || !configs.find(c => c.is_active)}
+          loading={syncing}
+          appearance="primary"
+          color="cyan"
+          className="flex items-center justify-center gap-2"
+          size={controlSize}
         >
           <BiUpload size={18} />
           {syncing ? translation.importExport.syncing : translation.importExport.syncToEmulator}
-        </button>
+        </Button>
 
-        <button
+        <Button
           onClick={handleLoadFromFile}
           disabled={loading}
-          className="flex items-center justify-center gap-2 px-4 py-3 bg-gray-600 hover:bg-gray-700 disabled:bg-gray-400 text-white rounded-lg transition-colors"
+          loading={loading}
+          appearance="default"
+          className="flex items-center justify-center gap-2"
+          size={controlSize}
         >
           <BiDownload size={18} />
           {loading ? translation.importExport.loading : translation.importExport.importFromEmulator}
-        </button>
+        </Button>
       </div>
 
       {message && (

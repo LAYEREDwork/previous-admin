@@ -125,6 +125,7 @@ export const es: Translations = {
     signOut: 'Cerrar sesión',
   },
   importExport: {
+    title: 'Importar/Exportar',
     databaseDescription: 'Exporta o importa toda la base de datos, incluidas todas las configuraciones',
     databaseExportError: 'Error al exportar la base de datos',
     databaseExportSuccess: 'Base de datos exportada con éxito',

@@ -34,11 +34,11 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
     <div className="min-h-screen bg-gray-50 dark:bg-next-bg transition-colors flex flex-col">
       <div className="md:sticky md:top-0 z-50 bg-white/75 dark:bg-next-panel/75 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-next-panel/60 border-b border-gray-200 dark:border-next-border shadow-sm transition-colors duration-200">
         <header className="border-b border-gray-200/50 dark:border-gray-700/50">
-          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-3 sm:py-6 gap-3 sm:gap-0">
               <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
-                <div className="w-12 h-12 sm:w-[60px] sm:h-[60px] flex-shrink-0">
-                  <NeXTLogo size={60} className="w-full h-full" />
+                <div className="w-16 h-16 sm:w-[72px] sm:h-[72px] flex-shrink-0">
+                  <NeXTLogo size={72} className="w-full h-full" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
@@ -84,7 +84,7 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
         <MainMenuPartial currentTab={currentTab} onTabChange={onTabChange} />
       </div>
 
-      <main className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 flex-grow w-full">
+      <main className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 flex-grow w-full">
         {children}
       </main>
 

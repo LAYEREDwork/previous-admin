@@ -21,7 +21,7 @@ export function MainMenuPartial({ currentTab, onTabChange }: MainMenuProps) {
 
     return (
         <nav>
-            <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8">
                 <Nav appearance="subtle" justified activeKey={currentTab} onSelect={(key) => onTabChange(key as string)}>
                     {tabs.map((tab) => {
                         const Icon = tab.icon;

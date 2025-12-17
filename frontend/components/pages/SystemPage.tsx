@@ -628,13 +628,16 @@ export function System() {
               <p className="text-sm text-red-800 dark:text-red-200 mb-4">
                 {translation.system.resetDescription}
               </p>
-              <button
+              <Button
                 onClick={() => setShowResetModal(true)}
-                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                appearance="primary"
+                color="red"
                 disabled={isResetting}
+                loading={isResetting}
+                size="md"
               >
                 {translation.system.reset}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

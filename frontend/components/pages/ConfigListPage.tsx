@@ -289,17 +289,14 @@ export function ConfigList({ onEdit }: ConfigListProps) {
                       <BiMenu size={18} className="sm:w-5 sm:h-5" />
                     </div>
                   )}
-                  <button
+                  <IconButton
                     onClick={() => setActiveConfig(config.id)}
-                    className="text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex-shrink-0 mt-0.5 sm:mt-0"
+                    icon={config.is_active ? <BiCheckCircle size={18} className="text-green-500" /> : <BiCircle size={18} />}
+                    appearance="subtle"
+                    size="sm"
                     title={config.is_active ? 'Active configuration' : 'Set as active'}
-                  >
-                    {config.is_active ? (
-                      <BiCheckCircle size={18} className="sm:w-5 sm:h-5 text-green-500" />
-                    ) : (
-                      <BiCircle size={18} className="sm:w-5 sm:h-5" />
-                    )}
-                  </button>
+                    className="text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
+                  />
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-0.5 sm:mb-1">
                       <h3 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white truncate">

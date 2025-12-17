@@ -1,5 +1,5 @@
 import { BiLinkExternal, BiInfoCircle, BiRefresh, BiCheck, BiError, BiFile } from 'react-icons/bi';
-import { Link } from 'rsuite';
+import { Link, Button } from 'rsuite';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useState, useEffect } from 'react';
 import { checkForUpdates, updateApplication, type VersionInfo } from '../../lib/versionManager';
@@ -114,23 +114,18 @@ export function About() {
                                     </div>
                                  )}
 
-                                 <button
+                                 <Button
                                     onClick={handleUpdate}
                                     disabled={updating}
-                                    className="w-full px-4 py-2 bg-amber-600 hover:bg-amber-700 disabled:bg-amber-400 text-white rounded-lg transition-colors flex items-center justify-center gap-2"
+                                    loading={updating}
+                                    appearance="primary"
+                                    color="orange"
+                                    block
+                                    className="flex items-center justify-center gap-2"
                                  >
-                                    {updating ? (
-                                       <>
-                                          <BiRefresh size={16} className="animate-spin" />
-                                          {translation.system.updating}
-                                       </>
-                                    ) : (
-                                       <>
-                                          <BiRefresh size={16} />
-                                          {translation.system.updateNow}
-                                       </>
-                                    )}
-                                 </button>
+                                    <BiRefresh size={16} />
+                                    {updating ? translation.system.updating : translation.system.updateNow}
+                                 </Button>
                               </>
                            ) : (
                               <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
@@ -141,13 +136,15 @@ export function About() {
                         </div>
                      )}
 
-                     <button
+                     <Button
                         onClick={handleCheckForUpdates}
-                        className="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-colors flex items-center justify-center gap-2"
+                        appearance="default"
+                        block
+                        className="flex items-center justify-center gap-2"
                      >
                         <BiRefresh size={16} />
                         {translation.system.checkForUpdates}
-                     </button>
+                     </Button>
                   </>
                )}
             </div>

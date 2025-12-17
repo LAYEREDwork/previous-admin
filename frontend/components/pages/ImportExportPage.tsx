@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BiDownload, BiUpload, BiFile, BiData } from 'react-icons/bi';
 import { database } from '../../lib/database';
 import { ConfigFileSyncPartial } from '../partials/ConfigFileSyncPartial';
@@ -15,8 +15,13 @@ export function ImportExport() {
   const [exporting, setExporting] = useState(false);
   const [databaseExporting, setDatabaseExporting] = useState(false);
   const [databaseImporting, setDatabaseImporting] = useState(false);
+  const [configs, setConfigs] = useState([]);
 
   const controlSize = useControlSize('lg');
+
+  useEffect(() => {
+    database.getConfigurations().then(setConfigs);
+  }, []);
 
   async function exportConfig() {
     setExporting(true);
@@ -295,7 +300,7 @@ export function ImportExport() {
           <div className="space-y-3">
             <Button
               onClick={exportConfig}
-              disabled={exporting}
+              disabled={exporting || !configs.find(c => c.is_active)}
               loading={exporting}
               appearance="primary"
               color="green"
@@ -309,7 +314,7 @@ export function ImportExport() {
 
             <Button
               onClick={exportAllConfigs}
-              disabled={exporting}
+              disabled={exporting || configs.length === 0}
               loading={exporting}
               appearance="default"
               block
