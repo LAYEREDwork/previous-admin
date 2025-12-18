@@ -1,120 +1,36 @@
-import { useState, useEffect, useRef } from 'react';
 import { BiUserPlus, BiDownload, BiLogInCircle, BiShow, BiHide, BiLock } from 'react-icons/bi';
-import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { useNotification } from '../../contexts/NotificationContext';
 import { NeXTLogo } from '../controls/NeXTLogo';
 import { LanguageSwitcher } from '../controls/LanguageSwitcher';
 import { ThemeSwitcher } from '../controls/ThemeSwitcher';
-import { checkSetupRequired } from '../../lib/api';
-import { database } from '../../lib/database';
-import { Input, Button, Link, Divider, InputGroup } from 'rsuite';
+import { Input, Button, Divider, InputGroup } from 'rsuite';
 
 import { useControlSize } from '../../hooks/useControlSize';
+import { useLoginLogic } from '../../hooks/useLogin';
 
 export function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [importing, setImporting] = useState(false);
-  const [isSetup, setIsSetup] = useState(false);
-  const [visible, setVisible] = useState(false);
-
   const controlSize = useControlSize('lg');
 
-  const handleChange = () => {
-    setVisible(!visible);
-  };
-  const { login, setup } = useAuth();
+  const {
+    username,
+    setUsername,
+    password,
+    setPassword,
+    confirmPassword,
+    setConfirmPassword,
+    loading,
+    importing,
+    isSetup,
+    visible,
+    handlePasswordVisibilityChange,
+    handleSubmit,
+    handleDatabaseImport,
+    usernameRef,
+    passwordRef,
+    confirmPasswordRef,
+  } = useLoginLogic();
+
   const { translation } = useLanguage();
-  const { showError, showSuccess } = useNotification();
-
-  const usernameRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-  const confirmPasswordRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    checkSetupRequired().then(required => setIsSetup(required));
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!username) {
-        usernameRef.current?.focus();
-      } else if (!password) {
-        passwordRef.current?.focus();
-      } else if (isSetup && !confirmPassword) {
-        confirmPasswordRef.current?.focus();
-      }
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-
-    if (isSetup && password !== confirmPassword) {
-      showError(translation.login.passwordMismatch);
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      if (isSetup) {
-        await setup(username, password);
-      } else {
-        await login(username, password);
-      }
-    } catch (err) {
-      showError(err instanceof Error ? err.message : translation.login.loginFailed);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function handleDatabaseImport(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    setImporting(true);
-    try {
-      const text = await file.text();
-      let dump;
-
-      try {
-        dump = JSON.parse(text);
-      } catch (parseError) {
-        throw new Error('Invalid JSON file format');
-      }
-
-      if (!dump || typeof dump !== 'object') {
-        throw new Error('Invalid database dump structure');
-      }
-
-      const result = await database.setupImportDatabase(dump);
-
-      showSuccess(`Database imported successfully! ${result.stats.configurations.imported} configurations restored. Please login with an existing user.`);
-
-      event.target.value = '';
-
-      // Clear session cache and reload page to ensure fresh state from backend
-      setTimeout(() => {
-        localStorage.clear();
-        sessionStorage.clear();
-        window.location.reload();
-      }, 1500);
-    } catch (error) {
-      console.error('Error importing database:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      showError(`Database import failed: ${errorMessage}`);
-      event.target.value = '';
-    } finally {
-      setImporting(false);
-    }
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-next-bg dark:to-next-panel flex items-center justify-center p-3 sm:p-4">
@@ -171,7 +87,7 @@ export function Login() {
                   placeholder={translation.login.passwordPlaceholder}
                   autoComplete={isSetup ? "new-password" : "current-password"}
                 />
-                <InputGroup.Button onClick={handleChange}>
+                <InputGroup.Button onClick={handlePasswordVisibilityChange}>
                   {visible ? <BiShow /> : <BiHide />}
                 </InputGroup.Button>
               </InputGroup>
@@ -194,7 +110,7 @@ export function Login() {
                     placeholder={translation.login.confirmPasswordPlaceholder}
                     autoComplete="new-password"
                   />
-                  <InputGroup.Button onClick={handleChange}>
+                  <InputGroup.Button onClick={handlePasswordVisibilityChange}>
                     {visible ? <BiShow /> : <BiHide />}
                   </InputGroup.Button>
                 </InputGroup>

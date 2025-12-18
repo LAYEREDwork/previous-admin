@@ -118,7 +118,7 @@ export interface PreviousConfig {
  *   id: '123e4567-e89b-12d3-a456-426614174000',
  *   name: 'Gaming Setup',
  *   description: 'Optimized for gaming performance',
- *   config_data: { /* PreviousConfig */ },
+ *   config_data: PreviousConfig,
  *   is_active: true,
  *   sort_order: 1,
  *   created_at: '2024-01-15T10:30:00Z',

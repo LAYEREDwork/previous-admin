@@ -13,10 +13,8 @@
  * @module server/api/system
  */
 
-import express, { Router, Request, Response } from 'express';
-import { join } from 'path';
+import express, { Request, Response } from 'express';
 import { existsSync, unlinkSync } from 'fs';
-import os from 'os';
 
 import { getSystemInfo } from '../platform/system-info';
 import { getMetricsSnapshot } from '../metrics';

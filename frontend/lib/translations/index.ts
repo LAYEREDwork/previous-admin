@@ -48,6 +48,8 @@ export interface Translations {
     signingIn: string;
     createAccount: string;
     creatingAccount: string;
+    databaseImportFailed: string;
+    databaseImportSuccess: string;
     passwordMismatch: string;
     loginFailed: string;
     footer: string;
@@ -78,9 +80,18 @@ export interface Translations {
     loading: string;
     newConfig: string;
     active: string;
+    description: string;
+    errorLoadingConfigurations: string;
+    errorCreatingConfiguration: string;
+    errorDeletingConfiguration: string;
+    errorSettingActiveConfiguration: string;
+    configurationExportedSuccessfully: string;
+    errorExportingConfiguration: string;
+    errorUpdatingOrder: string;
   };
   configEditor: {
     title: string;
+    description: string;
     configName: string;
     configNamePlaceholder: string;
     configPath: string;
@@ -136,6 +147,7 @@ export interface Translations {
   };
   importExport: {
     title: string;
+    description: string;
     import: string;
     importDescription: string;
     selectConfigFile: string;

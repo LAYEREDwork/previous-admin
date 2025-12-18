@@ -13,9 +13,8 @@
  * @requires middleware - Authentication middleware
  */
 
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { getConfigManager, getDefaultConfig, PreviousConfig } from '../config/index';
-import { getConfigPath as getUserConfigPath } from '../database';
 import { requireAuth } from '../middleware';
 
 const router = express.Router();
@@ -44,9 +43,8 @@ const configManager = getConfigManager();
  * });
  * const { config } = await res.json();
  */
-router.get('/', requireAuth, async (req: any, res: any) => {
+router.get('/', requireAuth, async (req: Request, res: Response) => {
   try {
-    const configPath = getUserConfigPath(req.session.username);
     let config = await configManager.readConfig();
 
     if (!config) {
@@ -89,7 +87,7 @@ router.get('/', requireAuth, async (req: any, res: any) => {
  * });
  * const { success, config } = await res.json();
  */
-router.put('/', requireAuth, async (req: any, res: any) => {
+router.put('/', requireAuth, async (req: Request, res: Response) => {
   try {
     const { config }: { config: PreviousConfig } = req.body;
 

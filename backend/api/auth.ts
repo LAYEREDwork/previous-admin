@@ -134,8 +134,6 @@ router.post('/login', async (req, res) => {
  * const res = await fetch('/api/auth/logout', { method: 'POST' });
  */
 router.post('/logout', (req, res) => {
-  const username = req.session.username;
-
   req.session.destroy((err) => {
     if (err) {
       return res.status(500).json({ error: 'Logout failed' });

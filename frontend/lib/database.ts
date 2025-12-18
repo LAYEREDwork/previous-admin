@@ -78,8 +78,7 @@ export const database = {
     name: string,
     description: string,
     config_data: PreviousConfig,
-    is_active: boolean,
-    created_by: number | null = null
+    is_active: boolean
   ): Promise<Configuration> {
     const response = await fetch(`${API_BASE_URL}${ApiEndpoints.CONFIGURATIONS}`, {
       method: 'POST',
@@ -311,7 +310,7 @@ export const database = {
    * @param {string} password - Password (plaintext)
    * @returns {Promise<Object | null>} User object or null
    */
-  async authenticate(username: string, password: string): Promise<{ id: string; username: string } | null> {
+  async authenticate(_username: string, _password: string): Promise<{ id: string; username: string } | null> {
     console.warn('database.authenticate() is deprecated. Use AuthContext instead.');
     return null;
   },

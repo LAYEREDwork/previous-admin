@@ -28,22 +28,22 @@ function generateConfigurationId(): string {
 export function getConfigurations(userId?: number): Configuration[] {
   const database = getDatabase();
   
-  let query = `
+  const query = `
     SELECT id, name, description, config_data, is_active, 
            created_at, updated_at, created_by, sort_order
     FROM configurations
   `;
 
-  let configurations: any[];
+  let configurations: Configuration[];
   
   if (userId !== undefined) {
     configurations = database
       .prepare(query + ' WHERE created_by = ? ORDER BY sort_order ASC')
-      .all(userId);
+      .all(userId) as Configuration[];
   } else {
     configurations = database
       .prepare(query + ' ORDER BY sort_order ASC')
-      .all();
+      .all() as Configuration[];
   }
 
   return configurations.map((config: any) => ({
@@ -105,23 +105,23 @@ export function getConfiguration(configurationId: string): Configuration | undef
 export function getActiveConfiguration(userId?: number): Configuration | undefined {
   const database = getDatabase();
   
-  let query = `
+  const query = `
     SELECT id, name, description, config_data, is_active, 
            created_at, updated_at, created_by, sort_order
     FROM configurations 
     WHERE is_active = 1
   `;
 
-  let activeConfig: any;
+  let activeConfig: Configuration | undefined;
   
   if (userId !== undefined) {
     activeConfig = database
       .prepare(query + ' AND created_by = ? LIMIT 1')
-      .get(userId);
+      .get(userId) as Configuration | undefined;
   } else {
     activeConfig = database
       .prepare(query + ' LIMIT 1')
-      .get();
+      .get() as Configuration | undefined;
   }
 
   if (!activeConfig) {

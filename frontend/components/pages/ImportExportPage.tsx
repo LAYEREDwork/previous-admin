@@ -7,6 +7,7 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import { useNotification } from '../../contexts/NotificationContext';
 import { Button } from 'rsuite';
 import { useControlSize } from '../../hooks/useControlSize';
+import type { Configuration } from '../../lib/types';
 
 export function ImportExport() {
   const { translation } = useLanguage();
@@ -15,7 +16,7 @@ export function ImportExport() {
   const [exporting, setExporting] = useState(false);
   const [databaseExporting, setDatabaseExporting] = useState(false);
   const [databaseImporting, setDatabaseImporting] = useState(false);
-  const [configs, setConfigs] = useState([]);
+  const [configs, setConfigs] = useState<Configuration[]>([]);
 
   const controlSize = useControlSize('lg');
 
@@ -27,7 +28,7 @@ export function ImportExport() {
     setExporting(true);
     try {
       const configs = await database.getConfigurations();
-      const activeConfig = configs.find((c) => c.is_active);
+      const activeConfig = configs.find((config) => config.is_active);
 
       if (!activeConfig) { return; }
 
@@ -73,7 +74,7 @@ export function ImportExport() {
       showSuccess(translation.importExport.exportedCount.replace('{count}', data.length.toString()));
     } catch (error) {
       console.error('Error exporting configs:', error);
-      showError('Error exporting configurations');
+      showError(translation.importExport.errorExport);
     } finally {
       setExporting(false);
     }
@@ -96,7 +97,7 @@ export function ImportExport() {
 
           try {
             data = JSON.parse(text);
-          } catch (parseError) {
+          } catch (_parseError) {
             errors.push(`${file.name}: ${translation.importExport.invalidJson}`);
             continue;
           }
@@ -117,8 +118,7 @@ export function ImportExport() {
                 config.name,
                 config.description || '',
                 config.config,
-                false,
-                null
+                false
               );
               totalImported++;
             }
@@ -131,8 +131,7 @@ export function ImportExport() {
               data.name,
               data.description || '',
               data.config,
-              false,
-              null
+              false
             );
             totalImported++;
           } else {
@@ -199,7 +198,7 @@ export function ImportExport() {
 
       try {
         dump = JSON.parse(text);
-      } catch (parseError) {
+      } catch (_parseError) {
         throw new Error(translation.importExport.invalidJson);
       }
 
@@ -297,7 +296,7 @@ export function ImportExport() {
           <div className="space-y-3">
             <Button
               onClick={exportConfig}
-              disabled={exporting || !configs.find(c => c.is_active)}
+              disabled={exporting || !configs.find(config => config.is_active)}
               loading={exporting}
               appearance="primary"
               color="green"

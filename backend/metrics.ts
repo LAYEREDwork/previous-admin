@@ -36,7 +36,6 @@ export const metricsHistory = {
   diskIO: []
 };
 
-let lastCpuTimes = null;
 let lastDiskStats = null;
 let lastNetworkStats = null;
 const MAX_HISTORY = 60;

@@ -9,16 +9,13 @@
 
 import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { join } from 'path';
 import { existsSync, mkdirSync, chmodSync } from 'fs';
 import os from 'os';
 
 const require = createRequire(import.meta.url);
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Database = require('better-sqlite3');
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const DATA_DIRECTORY = join(os.homedir(), '.previous-admin');
 const DATABASE_PATH = join(DATA_DIRECTORY, 'previous-admin.db');

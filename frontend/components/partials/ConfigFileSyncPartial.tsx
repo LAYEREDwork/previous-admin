@@ -1,17 +1,15 @@
 import { useState, useEffect } from 'react';
 import { BiRefresh, BiUpload, BiDownload, BiCheck, BiInfoCircle } from 'react-icons/bi';
-import { database } from '../../lib/database';
-import { useAuth } from '../../contexts/AuthContext';
+import { database, Configuration } from '../../lib/database';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { Button } from 'rsuite';
 import { useControlSize } from '../../hooks/useControlSize';
 
 export function ConfigFileSyncPartial() {
-  const { userId } = useAuth();
   const { translation } = useLanguage();
   const [syncing, setSyncing] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [configs, setConfigs] = useState([]);
+  const [configs, setConfigs] = useState<Configuration[]>([]);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(
     null
   );
@@ -27,7 +25,7 @@ export function ConfigFileSyncPartial() {
 
     try {
       const configs = await database.getConfigurations();
-      const activeConfig = configs.find((c) => c.is_active);
+      const activeConfig = configs.find((config) => config.is_active);
 
       if (!activeConfig) {
         setMessage({ type: 'error', text: translation.importExport.noActiveConfig });
@@ -82,7 +80,7 @@ export function ConfigFileSyncPartial() {
       <div className="grid md:grid-cols-2 gap-4 mb-4">
         <Button
           onClick={handleSyncToFile}
-          disabled={syncing || !configs.find(c => c.is_active)}
+          disabled={syncing || !configs.find(config => config.is_active)}
           loading={syncing}
           appearance="primary"
           color="cyan"

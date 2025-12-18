@@ -226,38 +226,6 @@ export function System() {
     };
   }, [isSystemTabActive]);
 
-  const CircularDiagram = ({ used, total, color }: { used: number; total: number; color: string }) => {
-    const percentage = (used / total) * 100;
-    const radius = 45;
-    const circumference = 2 * Math.PI * radius;
-    const offset = circumference - (percentage / 100) * circumference;
-
-    return (
-      <svg viewBox="0 0 120 120" className="w-32 h-32">
-        <circle cx="60" cy="60" r={radius} fill="none" stroke="currentColor" strokeWidth="8" className="text-gray-200 dark:text-gray-700" />
-        <circle
-          cx="60"
-          cy="60"
-          r={radius}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="8"
-          strokeDasharray={circumference}
-          strokeDashoffset={offset}
-          strokeLinecap="round"
-          className={color}
-          style={{ transform: 'rotate(-90deg)', transformOrigin: '60px 60px', transition: 'stroke-dashoffset 0.3s ease' }}
-        />
-        <text x="60" y="55" textAnchor="middle" className="text-lg font-bold fill-gray-900 dark:fill-white">
-          {Math.round(percentage)}%
-        </text>
-        <text x="60" y="70" textAnchor="middle" className="text-xs fill-gray-600 dark:fill-gray-400">
-          {formatBytes(used)}
-        </text>
-      </svg>
-    );
-  };
-
   return (
     <div className="space-y-6">
       <div>
@@ -592,8 +560,6 @@ export function System() {
                       return uniqueDisks;
                     }, [])
                     .map((disk, idx) => {
-                      const diskUsedBytes = parseFloat(disk.used.split(' ')[0]) * Math.pow(1024, ['B', 'KB', 'MB', 'GB', 'TB'].indexOf(disk.used.split(' ')[1] || 'B'));
-                      const diskTotalBytes = parseFloat(disk.size.split(' ')[0]) * Math.pow(1024, ['B', 'KB', 'MB', 'GB', 'TB'].indexOf(disk.size.split(' ')[1] || 'B'));
                       return (
                         <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex flex-col gap-3">
                           <div className="flex justify-between items-start">

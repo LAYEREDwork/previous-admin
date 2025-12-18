@@ -160,7 +160,7 @@ async function startServer(): Promise<void> {
     configureRoutes(EXPRESS_APPLICATION);
 
     // Setup WebSocket
-    const websocketServer = setupWebSocket(HTTP_SERVER, EXPRESS_APPLICATION.locals.sessionMiddleware);
+    setupWebSocket(HTTP_SERVER, EXPRESS_APPLICATION.locals.sessionMiddleware);
 
     // Setup graceful shutdown
     setupGracefulShutdown(HTTP_SERVER);

@@ -36,7 +36,7 @@ function AppContent() {
     );
   }
 
-  function handleEditConfig(config: Configuration) {
+  function handleEditConfig(_config: Configuration) {
     setCurrentTab('editor');
   }
 
