@@ -1,11 +1,17 @@
 import { BiPlus, BiTrash, BiEdit, BiMenu, BiCheckCircle, BiCircle, BiUpload } from 'react-icons/bi';
 import { IoDocumentsOutline, IoDocumentText } from 'react-icons/io5';
 import { Button, Input, IconButton } from 'rsuite';
+
+// Components
 import { CenteredModal } from '../controls/CenteredModal';
-import { Configuration } from '../../lib/database';
+
+// Hooks
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useControlSize } from '../../hooks/useControlSize';
 import { useConfigListLogic } from '../../hooks/useConfigList';
+
+// Types/Utilities
+import { Configuration } from '../../lib/database';
 
 interface ConfigListProps {
   onEdit: (config: Configuration) => void;

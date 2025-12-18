@@ -1,225 +1,39 @@
-import { useState, useEffect } from 'react';
 import { BiDownload, BiUpload, BiFile, BiData } from 'react-icons/bi';
-import { database } from '../../lib/database';
-import { ConfigFileSyncPartial } from '../partials/ConfigFileSyncPartial';
-import { downloadFile, generateConfigFilename } from '../../lib/utils';
-import { useLanguage } from '../../contexts/LanguageContext';
-import { useNotification } from '../../contexts/NotificationContext';
-import { Button } from 'rsuite';
-import { useControlSize } from '../../hooks/useControlSize';
-import type { Configuration } from '../../lib/types';
 
+// Components
+import { ConfigFileSyncPartial } from '../partials/ConfigFileSyncPartial';
+
+// Hooks
+import { useLanguage } from '../../contexts/LanguageContext';
+import { useControlSize } from '../../hooks/useControlSize';
+import { useImportExport } from '../../hooks/useImportExport';
+
+// Utilities
+import { Button } from 'rsuite';
+
+/**
+ * Import/Export page component
+ * Provides UI for importing and exporting configurations and database dumps
+ *
+ * This component focuses solely on rendering the UI and delegates all business logic
+ * to the useImportExport hook for better separation of concerns and testability.
+ */
 export function ImportExport() {
   const { translation } = useLanguage();
-  const { showSuccess, showError, showWarning } = useNotification();
-  const [importing, setImporting] = useState(false);
-  const [exporting, setExporting] = useState(false);
-  const [databaseExporting, setDatabaseExporting] = useState(false);
-  const [databaseImporting, setDatabaseImporting] = useState(false);
-  const [configs, setConfigs] = useState<Configuration[]>([]);
+  const {
+    importing,
+    exporting,
+    databaseExporting,
+    databaseImporting,
+    configs,
+    exportConfig,
+    exportAllConfigs,
+    importConfig,
+    exportDatabaseDump,
+    importDatabaseDump,
+  } = useImportExport();
 
   const controlSize = useControlSize('lg');
-
-  useEffect(() => {
-    database.getConfigurations().then(setConfigs);
-  }, []);
-
-  async function exportConfig() {
-    setExporting(true);
-    try {
-      const configs = await database.getConfigurations();
-      const activeConfig = configs.find((config) => config.is_active);
-
-      if (!activeConfig) { return; }
-
-      const exportData = {
-        name: activeConfig.name,
-        description: activeConfig.description,
-        config: activeConfig.config_data,
-        exported_at: new Date().toISOString(),
-      };
-
-      downloadFile(exportData, generateConfigFilename(activeConfig.name));
-      showSuccess(translation.importExport.successExportActiveConfig);
-    } catch (error) {
-      console.error('Error exporting config:', error);
-      showError(translation.importExport.errorExport);
-    } finally {
-      setExporting(false);
-    }
-  }
-
-  async function exportAllConfigs() {
-    setExporting(true);
-    try {
-      const data = await database.getConfigurations();
-
-      if (!data || data.length === 0) {
-        showWarning(translation.importExport.noConfigsToExport);
-        return;
-      }
-
-      const exportData = {
-        configurations: data.map((config) => ({
-          name: config.name,
-          description: config.description,
-          config: config.config_data,
-          is_active: config.is_active,
-        })),
-        exported_at: new Date().toISOString(),
-        count: data.length,
-      };
-
-      downloadFile(exportData, `previous-configs-all-${Date.now()}.json`);
-      showSuccess(translation.importExport.exportedCount.replace('{count}', data.length.toString()));
-    } catch (error) {
-      console.error('Error exporting configs:', error);
-      showError(translation.importExport.errorExport);
-    } finally {
-      setExporting(false);
-    }
-  }
-
-  async function importConfig(event: React.ChangeEvent<HTMLInputElement>) {
-    const files = event.target.files;
-    if (!files || files.length === 0) return;
-
-    setImporting(true);
-    try {
-      let totalImported = 0;
-      const errors: string[] = [];
-
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        try {
-          const text = await file.text();
-          let data;
-
-          try {
-            data = JSON.parse(text);
-          } catch {
-            errors.push(`${file.name}: ${translation.importExport.invalidJson}`);
-            continue;
-          }
-
-          if (!data || typeof data !== 'object') {
-            errors.push(`${file.name}: ${translation.importExport.invalidFileStructure}`);
-            continue;
-          }
-
-          if (data.configurations && Array.isArray(data.configurations)) {
-            for (const config of data.configurations) {
-              if (!config.name || !config.config) {
-                console.warn('Skipping invalid configuration entry:', config);
-                continue;
-              }
-
-              await database.createConfiguration(
-                config.name,
-                config.description || '',
-                config.config,
-                false
-              );
-              totalImported++;
-            }
-          } else if (data.config && typeof data.config === 'object') {
-            if (!data.name) {
-              data.name = translation.importExport.importedConfigName;
-            }
-
-            await database.createConfiguration(
-              data.name,
-              data.description || '',
-              data.config,
-              false
-            );
-            totalImported++;
-          } else {
-            errors.push(`${file.name}: ${translation.importExport.invalidFormat}`);
-          }
-        } catch (fileError) {
-          errors.push(`${file.name}: ${fileError instanceof Error ? fileError.message : 'Unknown error'}`);
-        }
-      }
-
-      if (totalImported === 0) {
-        if (errors.length > 0) {
-          showError(errors.join(', '));
-        } else {
-          showError(translation.importExport.noValidConfigs);
-        }
-        return;
-      }
-
-      if (totalImported === 1) {
-        showSuccess(translation.importExport.importedConfiguration);
-      } else {
-        showSuccess(translation.importExport.importedCount.replace('{count}', totalImported.toString()));
-      }
-
-      if (errors.length > 0) {
-        showWarning(`${totalImported} imported, ${errors.length} errors: ${errors.join(', ')}`);
-      }
-
-      event.target.value = '';
-      window.location.reload();
-    } catch (error) {
-      console.error('Error importing configs:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      showError(translation.importExport.importFailed.replace('{error}', errorMessage));
-    } finally {
-      setImporting(false);
-    }
-  }
-
-  async function exportDatabaseDump() {
-    setDatabaseExporting(true);
-    try {
-      const dump = await database.exportDatabase();
-
-      downloadFile(dump, `previous-admin-database-${Date.now()}.json`);
-      showSuccess(translation.importExport.databaseExportSuccess);
-    } catch (error) {
-      console.error('Error exporting database:', error);
-      showError(translation.importExport.databaseExportError);
-    } finally {
-      setDatabaseExporting(false);
-    }
-  }
-
-  async function importDatabaseDump(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    setDatabaseImporting(true);
-    try {
-      const text = await file.text();
-      let dump;
-
-      try {
-        dump = JSON.parse(text);
-      } catch {
-        throw new Error(translation.importExport.invalidJson);
-      }
-
-      if (!dump || typeof dump !== 'object') {
-        throw new Error(translation.importExport.invalidDatabaseStructure);
-      }
-
-      const result = await database.importDatabase(dump, false);
-
-      showSuccess(translation.importExport.databaseImportSuccess.replace('{count}', result.stats.configurations.imported.toString()));
-
-      event.target.value = '';
-      window.location.reload();
-    } catch (error) {
-      console.error('Error importing database:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      showError(translation.importExport.databaseImportError.replace('{error}', errorMessage));
-    } finally {
-      setDatabaseImporting(false);
-    }
-  }
 
   return (
     <div className="space-y-6">

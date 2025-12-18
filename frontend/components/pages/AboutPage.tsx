@@ -1,5 +1,8 @@
+// Hooks
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAboutLogic } from '../../hooks/useAbout';
+
+// Components
 import { VersionInfoPartial } from '../partials/about/VersionInfoPartial';
 import { PreviousResourcesPartial } from '../partials/about/PreviousResourcesPartial';
 import { LayeredResourcesPartial } from '../partials/about/LayeredResourcesPartial';

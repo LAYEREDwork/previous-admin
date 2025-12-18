@@ -1,8 +1,11 @@
 import { BiMoon, BiSun } from 'react-icons/bi';
 import { HiComputerDesktop } from 'react-icons/hi2';
-import { useTheme } from '../../contexts/ThemeContext';
+
+// Components
 import { AnimatedSegmentedControl } from './AnimatedSegmentedControl';
 
+// Hooks
+import { useTheme } from '../../contexts/ThemeContext';
 import { useControlSize } from '../../hooks/useControlSize';
 
 export function ThemeSwitcher() {

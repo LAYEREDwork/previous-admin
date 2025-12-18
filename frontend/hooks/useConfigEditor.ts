@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
-import type { PreviousConfig } from '../lib/types';
+
+// Hooks
 import { useConfig } from '../contexts/ConfigContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useNotification } from '../contexts/NotificationContext';
+
+// Types
+import type { PreviousConfig } from '../lib/types';
 
 // This function is now defined locally as it's not exported from configFileSync.ts anymore
 function convertToConfigFile(config: PreviousConfig): string {

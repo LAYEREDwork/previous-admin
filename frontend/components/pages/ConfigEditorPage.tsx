@@ -1,6 +1,10 @@
 import { BiSave, BiCopy, BiRefresh } from 'react-icons/bi';
 import { Button, Input, SelectPicker, Toggle } from 'rsuite';
+
+// Components
 import { AnimatedSegmentedControl } from '../controls/AnimatedSegmentedControl';
+
+// Hooks
 import { useControlSize } from '../../hooks/useControlSize';
 import { useConfigEditor } from '../../hooks/useConfigEditor';
 

@@ -1,8 +1,12 @@
-import { useLanguage } from '../../contexts/LanguageContext';
-import { Language } from '../../lib/translations';
-import { Dropdown, Button } from 'rsuite';
 import { FaCheck } from 'react-icons/fa';
+import { Dropdown, Button } from 'rsuite';
+
+// Hooks
+import { useLanguage } from '../../contexts/LanguageContext';
 import { useControlSize } from '../../hooks/useControlSize';
+
+// Types/Utilities
+import { Language } from '../../lib/translations';
 
 const languageNames: Record<Language, string> = {
   en: 'English',

@@ -1,8 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import { database, Configuration } from '../lib/database';
-import { DEFAULT_CONFIG } from '../lib/constants';
+
+// Hooks
 import { useNotification } from '../contexts/NotificationContext';
 import { useLanguage } from '../contexts/LanguageContext';
+
+// Utilities
+import { database, Configuration } from '../lib/database';
+import { DEFAULT_CONFIG } from '../lib/constants';
 import { downloadFile, generateConfigFilename } from '../lib/utils';
 
 /**

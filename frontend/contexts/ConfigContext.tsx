@@ -1,9 +1,15 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react';
-import { api } from '../lib/api';
-import type { PreviousConfig } from '../lib/types';
-import { DEFAULT_CONFIG } from '../lib/constants';
+
+// Hooks
 import { useAuth } from './AuthContext';
+
+// Utilities
+import { api } from '../lib/api';
 import { database } from '../lib/database';
+import { DEFAULT_CONFIG } from '../lib/constants';
+
+// Types
+import type { PreviousConfig } from '../lib/types';
 
 interface ConfigContextType {
   config: PreviousConfig | null;

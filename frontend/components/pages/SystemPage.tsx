@@ -1,14 +1,19 @@
+import { useState, useEffect, useMemo } from 'react';
 import { BiRefresh, BiError, BiLineChart, BiHdd, BiGlobe, BiDesktop } from 'react-icons/bi';
+import { Button } from 'rsuite';
+import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+
+// Components
+import { CenteredModal } from '../controls/CenteredModal';
+
+// Hooks
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNotification } from '../../contexts/NotificationContext';
-import { useState, useEffect, useMemo } from 'react';
-import { Button } from 'rsuite';
-import { CenteredModal } from '../controls/CenteredModal';
 import { useControlSize } from '../../hooks/useControlSize';
 
+// Utilities
 import { API_BASE_URL } from '../../lib/constants';
-import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { getOptimalUnit, formatBytes, formatUptime } from '../../lib/utils';
 
 interface SystemInfo {

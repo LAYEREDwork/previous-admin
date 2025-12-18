@@ -1,7 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
+
+// Hooks
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useNotification } from '../contexts/NotificationContext';
+
+// Utilities
 import { checkSetupRequired } from '../lib/api';
 import { database } from '../lib/database';
 

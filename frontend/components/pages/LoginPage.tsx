@@ -1,10 +1,13 @@
 import { BiUserPlus, BiDownload, BiLogInCircle, BiShow, BiHide, BiLock } from 'react-icons/bi';
-import { useLanguage } from '../../contexts/LanguageContext';
+import { Input, Button, Divider, InputGroup } from 'rsuite';
+
+// Components
 import { NeXTLogo } from '../controls/NeXTLogo';
 import { LanguageSwitcher } from '../controls/LanguageSwitcher';
 import { ThemeSwitcher } from '../controls/ThemeSwitcher';
-import { Input, Button, Divider, InputGroup } from 'rsuite';
 
+// Hooks
+import { useLanguage } from '../../contexts/LanguageContext';
 import { useControlSize } from '../../hooks/useControlSize';
 import { useLoginLogic } from '../../hooks/useLogin';
 
