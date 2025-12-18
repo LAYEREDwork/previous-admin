@@ -4,7 +4,7 @@
  * Handles WebSocket connections for streaming metrics, configuration updates,
  * and real-time notifications. Authenticates connections via session middleware.
  *
- * @module server/websocket
+ * @module backend/websocket
  */
 
 import { WebSocketServer, WebSocket } from 'ws';

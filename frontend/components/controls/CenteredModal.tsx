@@ -28,7 +28,7 @@ export function CenteredModal({ children, ...props }: CenteredModalProps) {
 }
 
 // Exportiere die Unterkomponenten mit deaktiviertem Close-Button
-CenteredModal.Header = ({ children, ...props }: any) => (
+CenteredModal.Header = ({ children, ...props }: React.ComponentProps<typeof Modal.Header>) => (
   <Modal.Header closeButton={false} {...props}>
     {children}
   </Modal.Header>

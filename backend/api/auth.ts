@@ -24,7 +24,7 @@ const router = express.Router();
  * const res = await fetch('/api/auth/setup-required');
  * const { setupRequired } = await res.json();
  */
-router.get('/setup-required', (req, res) => {
+router.get('/setup-required', (req: any, res: any) => {
   res.json({ setupRequired: !hasAnyUsers() });
 });
 
@@ -52,7 +52,7 @@ router.get('/setup-required', (req, res) => {
  *   body: JSON.stringify({ username: 'admin', password: 'secure123' })
  * });
  */
-router.post('/setup', async (req, res) => {
+router.post('/setup', async (req: any, res: any) => {
   try {
     if (hasAnyUsers()) {
       return res.status(400).json({ error: 'Setup already completed' });
@@ -71,7 +71,7 @@ router.post('/setup', async (req, res) => {
     });
   } catch (error) {
     console.error('Setup error:', error);
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: (error as Error).message });
   }
 });
 
@@ -97,7 +97,7 @@ router.post('/setup', async (req, res) => {
  *   body: JSON.stringify({ username: 'admin', password: 'password' })
  * });
  */
-router.post('/login', async (req, res) => {
+router.post('/login', async (req: any, res: any) => {
   const { username, password } = req.body;
 
   try {
@@ -133,8 +133,8 @@ router.post('/login', async (req, res) => {
  * @example
  * const res = await fetch('/api/auth/logout', { method: 'POST' });
  */
-router.post('/logout', (req, res) => {
-  req.session.destroy((err) => {
+router.post('/logout', (req: any, res: any) => {
+  req.session.destroy((err: any) => {
     if (err) {
       return res.status(500).json({ error: 'Logout failed' });
     }
@@ -159,7 +159,7 @@ router.post('/logout', (req, res) => {
  * const res = await fetch('/api/auth/session');
  * const { authenticated, username, setupRequired } = await res.json();
  */
-router.get('/session', (req, res) => {
+router.get('/session', (req: any, res: any) => {
   if (req.session.username) {
     res.json({
       authenticated: true,

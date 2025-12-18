@@ -3,7 +3,7 @@
  *
  * Detects the current platform and loads the appropriate module.
  *
- * @module server/platform/platform-detector
+ * @module backend/platform/platform-detector
  */
 
 import os from 'os';

@@ -65,7 +65,7 @@ interface Metrics {
 }
 
 // Helper function to pad data to fixed window size
-function padDataToWindow<T extends Record<string, any>>(data: T[], windowSize: number, emptyValue: Partial<T>): T[] {
+function padDataToWindow<T extends Record<string, unknown>>(data: T[], windowSize: number, emptyValue: Partial<T>): T[] {
   if (data.length >= windowSize) {
     return data.slice(-windowSize);
   }
@@ -177,7 +177,7 @@ export function System() {
           const message = JSON.parse(event.data);
           if (message.type === 'metrics_update') {
             const maxDataPoints = 60;
-            const trimHistory = (history: any[]) => {
+            const trimHistory = (history: unknown[]) => {
               if (history.length > maxDataPoints) {
                 return history.slice(-maxDataPoints);
               }
@@ -224,7 +224,7 @@ export function System() {
         socket.close();
       }
     };
-  }, [isSystemTabActive]);
+  }, [isSystemTabActive, updateFrequency]);
 
   return (
     <div className="space-y-6">

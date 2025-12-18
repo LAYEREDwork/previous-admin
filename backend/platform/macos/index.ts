@@ -6,7 +6,7 @@
  * - diskutil: Disk information
  * - sysctl: System properties
  *
- * @module server/platform/macos
+ * @module backend/platform/macos
  */
 
 import { execAsync } from '../../api/helpers';
@@ -135,7 +135,7 @@ const macosModule: PlatformModule = {
           });
 
           // Determine total and used bytes
-          let totalBytes = disk.containerTotalBytes || disk.diskSizeBytes;
+          const totalBytes = disk.containerTotalBytes || disk.diskSizeBytes;
           let usedBytes: number;
 
           if (disk.containerFreeBytes !== undefined && disk.containerTotalBytes) {

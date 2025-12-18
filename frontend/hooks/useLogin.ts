@@ -82,7 +82,7 @@ export function useLoginLogic() {
 
       try {
         dump = JSON.parse(text);
-      } catch (_parseError) {
+      } catch {
         throw new Error('Invalid JSON file format');
       }
 

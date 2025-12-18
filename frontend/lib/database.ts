@@ -241,7 +241,7 @@ export const database = {
    * @returns {Promise<Object>} Import statistics
    * @throws {Error} If API request fails
    */
-  async importDatabase(dump: any, merge: boolean = false) {
+  async importDatabase(dump: unknown, merge: boolean = false) {
     const response = await fetch(`${API_BASE_URL}/api/database/import`, {
       method: 'POST',
       headers: {
@@ -284,7 +284,7 @@ export const database = {
    * @returns {Promise<Object>} Import statistics
    * @throws {Error} If API request fails or setup already completed
    */
-  async setupImportDatabase(dump: any) {
+  async setupImportDatabase(dump: unknown) {
     const response = await fetch(`${API_BASE_URL}/api/database/setup-import`, {
       method: 'POST',
       headers: {
@@ -310,7 +310,7 @@ export const database = {
    * @param {string} password - Password (plaintext)
    * @returns {Promise<Object | null>} User object or null
    */
-  async authenticate(_username: string, _password: string): Promise<{ id: string; username: string } | null> {
+  async authenticate(/* username: string, password: string */): Promise<{ id: string; username: string } | null> {
     console.warn('database.authenticate() is deprecated. Use AuthContext instead.');
     return null;
   },

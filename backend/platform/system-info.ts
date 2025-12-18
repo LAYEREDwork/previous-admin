@@ -4,7 +4,7 @@
  * Uses platform-specific modules to gather system information
  * in a consistent format across all platforms.
  *
- * @module server/platform/system-info
+ * @module backend/platform/system-info
  */
 
 import os from 'os';

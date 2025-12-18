@@ -4,7 +4,7 @@
  * High-level API for configuration management.
  * Handles reading, writing, and watching config files across macOS and Linux.
  *
- * @module server/config/config-manager
+ * @module backend/config/config-manager
  */
 
 import fs from 'fs/promises';

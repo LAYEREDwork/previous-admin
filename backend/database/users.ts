@@ -4,7 +4,7 @@
  * Handles user authentication, creation, and retrieval from database.
  * All passwords are hashed with bcrypt before storage.
  *
- * @module server/database/users
+ * @module backend/database/users
  */
 
 import bcrypt from 'bcrypt';

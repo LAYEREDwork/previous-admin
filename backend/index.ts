@@ -10,7 +10,7 @@
  *   - SESSION_SECRET {string} (required in production): Session encryption secret
  *   - NODE_ENV {string} (default: development): Environment mode
  *
- * @module server
+ * @module backend
  */
 
 import crypto from 'crypto';

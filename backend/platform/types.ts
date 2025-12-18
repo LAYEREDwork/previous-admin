@@ -3,7 +3,7 @@
  *
  * Defines interfaces for platform-specific functionality.
  *
- * @module server/platform/types
+ * @module backend/platform/types
  */
 
 /**

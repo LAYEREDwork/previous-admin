@@ -29,7 +29,7 @@ const router = express.Router();
  * @authentication required
  * @returns {Array} Array of configuration objects
  */
-router.get('/', requireAuth, (req, res) => {
+router.get('/', requireAuth, (req: any, res: any) => {
   try {
     const configurations = getConfigurations();
 
@@ -59,7 +59,7 @@ router.get('/', requireAuth, (req, res) => {
  * @authentication required
  * @returns {Object|null} Active configuration or null
  */
-router.get('/active', requireAuth, (req, res) => {
+router.get('/active', requireAuth, (req: any, res: any) => {
   try {
     const config = getActiveConfiguration();
 
@@ -94,7 +94,7 @@ router.get('/active', requireAuth, (req, res) => {
  * @param {string} id - Configuration ID
  * @returns {Object} Configuration object
  */
-router.get('/:id', requireAuth, (req, res) => {
+router.get('/:id', requireAuth, (req: any, res: any) => {
   try {
     const config = getConfiguration(req.params.id);
 
@@ -129,7 +129,7 @@ router.get('/:id', requireAuth, (req, res) => {
  * @body {Object} data - Configuration data
  * @returns {Object} Created configuration
  */
-router.post('/', requireAuth, (req, res) => {
+router.post('/', requireAuth, (req: any, res: any) => {
   try {
     const { name, description, config_data, is_active } = req.body;
 
@@ -162,7 +162,7 @@ router.post('/', requireAuth, (req, res) => {
  * @body {Object} updates - Fields to update
  * @returns {Object} Updated configuration
  */
-router.put('/:id', requireAuth, (req, res) => {
+router.put('/:id', requireAuth, (req: any, res: any) => {
   try {
     const { id } = req.params;
     const updates = {};
@@ -201,7 +201,7 @@ router.put('/:id', requireAuth, (req, res) => {
  * @param {string} id - Configuration ID
  * @returns {Object} Success message
  */
-router.delete('/:id', requireAuth, (req, res) => {
+router.delete('/:id', requireAuth, (req: any, res: any) => {
   try {
     const deleted = deleteConfiguration(req.params.id);
 
@@ -224,7 +224,7 @@ router.delete('/:id', requireAuth, (req, res) => {
  * @param {string} id - Configuration ID
  * @returns {Object} Activated configuration
  */
-router.post('/:id/activate', requireAuth, (req, res) => {
+router.post('/:id/activate', requireAuth, (req: any, res: any) => {
   try {
     const config = setActiveConfiguration(req.params.id, req.session.userId);
 
@@ -253,7 +253,7 @@ router.post('/:id/activate', requireAuth, (req, res) => {
  * @body {Array<string>} orderedIds - Configuration IDs in desired order
  * @returns {Object} Success message
  */
-router.put('/order/update', requireAuth, (req, res) => {
+router.put('/order/update', requireAuth, (req: any, res: any) => {
   try {
     const { orderedIds } = req.body;
 

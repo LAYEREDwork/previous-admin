@@ -3,7 +3,7 @@
  *
  * Handles database export/import, statistics, and maintenance operations.
  *
- * @module server/database/maintenance
+ * @module backend/database/maintenance
  */
 
 import { existsSync, statSync } from 'fs';
@@ -15,7 +15,7 @@ import * as users from './users';
 export interface DatabaseExport {
   version: string;
   exportedAt: string;
-  users: Array<{ id: number; username: string; createdAt: string }>;
+  users: Array<{ id: string; username: string; password_hash: string; createdAt: string }>;
   configurations: Configuration[];
 }
 
@@ -47,8 +47,8 @@ export function exportDatabase(): DatabaseExport {
     users: allUsers.map((user) => ({
       id: user.id,
       username: user.username,
-      passwordHash: user.passwordHash,
-      createdAt: user.createdAt,
+      password_hash: user.password_hash,
+      createdAt: user.created_at,
     })),
     configurations: allConfigurations,
   };

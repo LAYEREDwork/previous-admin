@@ -11,7 +11,6 @@ import { ImportExport } from './components/pages/ImportExportPage';
 import { System } from './components/pages/SystemPage';
 import { About } from './components/pages/AboutPage';
 import { Login } from './components/pages/LoginPage';
-import { Configuration } from './lib/database';
 import { CustomProvider } from 'rsuite';
 
 function AppContent() {
@@ -36,7 +35,7 @@ function AppContent() {
     );
   }
 
-  function handleEditConfig(_config: Configuration) {
+  function handleEditConfig(/* config: Configuration */) {
     setCurrentTab('editor');
   }
 

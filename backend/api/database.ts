@@ -21,7 +21,7 @@ const router = express.Router();
  * @authentication required
  * @returns {Object} Complete database dump
  */
-router.get('/export', requireAuth, (req, res) => {
+router.get('/export', requireAuth, (req: any, res: any) => {
   try {
     const dump = exportDatabase();
     res.json(dump);
@@ -40,7 +40,7 @@ router.get('/export', requireAuth, (req, res) => {
  * @body {boolean} merge - If true, merge with existing data; if false, replace
  * @returns {Object} Import statistics
  */
-router.post('/import', requireAuth, (req, res) => {
+router.post('/import', requireAuth, (req: any, res: any) => {
   try {
     const { dump, merge = false } = req.body;
 
@@ -77,7 +77,7 @@ router.post('/import', requireAuth, (req, res) => {
  * @authentication required
  * @returns {Object} Database statistics
  */
-router.get('/stats', requireAuth, (req, res) => {
+router.get('/stats', requireAuth, (req: any, res: any) => {
   try {
     const stats = getDatabaseStatistics();
     res.json(stats);
@@ -97,7 +97,7 @@ router.get('/stats', requireAuth, (req, res) => {
  * @body {Object} dump - Database dump object
  * @returns {Object} Import statistics
  */
-router.post('/setup-import', (req, res) => {
+router.post('/setup-import', (req: any, res: any) => {
   try {
     if (hasAnyUsers()) {
       return res.status(400).json({

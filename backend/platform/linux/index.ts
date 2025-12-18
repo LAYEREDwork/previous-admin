@@ -8,7 +8,7 @@
  * - dmidecode: System board information
  * - tvservice/xrandr: Display resolution
  *
- * @module server/platform/linux
+ * @module backend/platform/linux
  */
 
 import { execAsync } from '../../api/helpers';

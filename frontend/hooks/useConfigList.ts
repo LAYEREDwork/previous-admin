@@ -25,7 +25,7 @@ export function useConfigListLogic(onEdit: (config: Configuration) => void) {
 
   useEffect(() => {
     loadConfigs();
-  }, []);
+  }, [loadConfigs]);
 
   useEffect(() => {
     if (showNewConfig) {

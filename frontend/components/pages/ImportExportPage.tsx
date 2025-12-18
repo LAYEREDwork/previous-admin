@@ -97,7 +97,7 @@ export function ImportExport() {
 
           try {
             data = JSON.parse(text);
-          } catch (_parseError) {
+          } catch {
             errors.push(`${file.name}: ${translation.importExport.invalidJson}`);
             continue;
           }
@@ -198,7 +198,7 @@ export function ImportExport() {
 
       try {
         dump = JSON.parse(text);
-      } catch (_parseError) {
+      } catch {
         throw new Error(translation.importExport.invalidJson);
       }
 

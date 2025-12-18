@@ -1,3 +1,17 @@
+import 'express-session';
+
+/**
+ * Extend Express session data with custom properties
+ */
+declare global {
+  namespace Express {
+    interface SessionData {
+      userId?: string;
+      username?: string;
+    }
+  }
+}
+
 /**
  * Previous system configuration object
  */
@@ -109,16 +123,6 @@ export interface UpdateConfigurationRequest {
   description?: string;
   config_data?: any;
   is_active?: boolean;
-}
-
-/**
- * Express request with authenticated user session
- */
-export interface AuthenticatedRequest extends Express.Request {
-  session: Express.SessionData & {
-    userId?: string;
-    username?: string;
-  };
 }
 
 /**

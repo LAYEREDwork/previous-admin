@@ -13,7 +13,7 @@
  * @requires middleware - Authentication middleware
  */
 
-import express, { Request, Response } from 'express';
+import express from 'express';
 import { getConfigManager, getDefaultConfig, PreviousConfig } from '../config/index';
 import { requireAuth } from '../middleware';
 
@@ -43,7 +43,7 @@ const configManager = getConfigManager();
  * });
  * const { config } = await res.json();
  */
-router.get('/', requireAuth, async (req: Request, res: Response) => {
+router.get('/', requireAuth, async (req: any, res: any) => {
   try {
     let config = await configManager.readConfig();
 
@@ -87,7 +87,7 @@ router.get('/', requireAuth, async (req: Request, res: Response) => {
  * });
  * const { success, config } = await res.json();
  */
-router.put('/', requireAuth, async (req: Request, res: Response) => {
+router.put('/', requireAuth, async (req: any, res: any) => {
   try {
     const { config }: { config: PreviousConfig } = req.body;
 

@@ -4,7 +4,7 @@
  * Provides a unified interface for platform-specific operations.
  * Abstracts differences between macOS and Linux.
  *
- * @module server/platform
+ * @module backend/platform
  */
 
 import os from 'os';

@@ -1,5 +1,8 @@
 [![Mastodon: @phranck](https://img.shields.io/badge/Mastodon-@phranck-blue.svg?style=flat)](https://oldbytes.space/@phranck)
 [![Mastodon: @phranck](https://img.shields.io/badge/Mastodon-@LAYERED-blue.svg?style=flat)](https://oldbytes.space/@LAYERED)
+[![TypeScript](https://img.shields.io/badge/TypeScript-85%25-blue.svg?style=flat)](https://www.typescriptlang.org/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-8%25-yellow.svg?style=flat)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![Shell](https://img.shields.io/badge/Shell-4%25-green.svg?style=flat)](https://en.wikipedia.org/wiki/Shell_script)
 
 # Previous Admin [WIP]
 
@@ -52,7 +55,7 @@ Full internationalization support for:
 
 ### Automated Installation
 
-The quickest way to get Previous Admin up and running on a Linux system (e.g., Raspberry Pi):
+The quickest way to get Previous Admin up and running on a **Linux system** (Ubuntu/Debian/Raspberry Pi):
 
 ```bash
 # Clone the repository
@@ -63,19 +66,34 @@ cd previous-admin
 sudo ./setup.sh
 ```
 
-The setup script will:
-- Install all required dependencies (Node.js, Python, systemd services)
-- Create the necessary user accounts
-- Build the application
-- Configure and start the systemd services
-- Set up Avahi/Bonjour for network discovery
-- Display access information
+The setup script will automatically:
+- Install Node.js 20+ and required system dependencies
+- Create dedicated system user (`next`)
+- Build the application for production
+- Install and configure systemd services
+- Set up Avahi/Bonjour for network discovery (`next.local`)
+- Start all services and display access information
 
 After installation, access the admin interface at:
 - [http://next.local:2342](http://next.local:2342) (via Bonjour/mDNS)
-- `http://<IP-Adresse>:2342`
+- `http://<your-ip>:2342`
 
-> **Note:** The `next.local` address works on devices that support Bonjour/mDNS (macOS, iOS, Windows with Bonjour, Linux with Avahi). Your device's hostname remains unchanged – `next.local` is published as an additional alias.
+> **Note:** The `next.local` address works on devices that support Bonjour/mDNS (macOS, iOS, Windows with Bonjour, Linux with Avahi). For manual installation on macOS or other platforms, see [DEPLOYMENT.md](DEPLOYMENT.md).
+
+### Uninstallation
+
+To completely remove Previous Admin from your system:
+
+```bash
+# Run the uninstall script (requires root)
+sudo ./uninstall.sh
+```
+
+The uninstall script offers:
+- Optional database backup before removal
+- Complete cleanup of systemd services
+- Removal of installation directory and user account
+- Optional Node.js uninstallation
 
 ### Manual Installation
 
@@ -83,10 +101,14 @@ For detailed manual installation instructions, platform-specific setup guides, a
 
 ## Technology Stack
 
-- **Frontend**: React 18, TypeScript, Vite, Tailwind CSS, rsuite
-- **Backend**: Node.js, Express, TypeScript
-- **Database**: SQLite
-- **Authentication**: Custom admin user with password-based authentication
+- **Frontend**: React 18 + TypeScript, Vite, Tailwind CSS, RSuite UI
+- **Backend**: Node.js + Express (TypeScript), SQLite via better-sqlite3
+- **Database**: SQLite mit automatischer Schema-Initialisierung
+- **Authentication**: Session-basiert mit express-session
+- **Real-time**: WebSocket-Unterstützung für Live-Systemmetriken
+- **Network**: Avahi/Bonjour für automatische Netzwerkerkennung
+- **Build**: Vite für Frontend, TypeScript-Compiler für Backend
+- **Code Quality**: ESLint mit TypeScript-Regeln, vollständige Typ-Sicherheit
 
 ## Development
 
@@ -94,15 +116,50 @@ For detailed manual installation instructions, platform-specific setup guides, a
 # Install dependencies
 npm install
 
-# Run backend in development mode
-npm run backend
+# Start development servers
+npm run dev  # Starts both frontend (port 5173) and backend (port 3001)
 
-# Run frontend in development mode (in another terminal)
-npm run dev
+# Or run separately:
+npm run backend  # Backend only (port 3001)
+npm run frontend # Frontend only (port 5173)
 
 # Build for production
 npm run build
+
+# Code quality checks
+npm run lint    # ESLint
+npm run type-check  # TypeScript compilation check
 ```
+
+### Project Structure
+
+```
+previous-admin/
+├── backend/            # Express TypeScript server
+│   ├── api/            # REST API endpoints
+│   ├── config/         # Configuration file management
+│   ├── database/       # SQLite database operations
+│   └── platform/       # Platform-specific utilities
+├── frontend/           # React TypeScript application
+│   ├── components/     # UI components and pages
+│   ├── contexts/       # React contexts (Auth, Config, etc.)
+│   ├── hooks/          # Custom React hooks
+│   ├── lib/            # Utilities, API client, translations
+│   └── pages/          # Main application pages
+├── shared/             # Shared constants and types
+└── systemd/            # Systemd service files
+```
+
+### Code Quality & Architecture
+
+This project follows modern TypeScript best practices with:
+- **Full Type Safety**: Zero TypeScript compilation errors
+- **Clean Architecture**: Separation of business logic from UI components
+- **Custom Hooks**: Business logic extracted into reusable React hooks
+- **Internationalization**: Complete translation support for 5 languages
+- **Responsive Design**: Mobile-first approach with Tailwind CSS
+- **Security**: Session-based authentication with secure password hashing
+- **Real-time Updates**: WebSocket integration for live system monitoring
 
 ## Disclaimer
 

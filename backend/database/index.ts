@@ -4,7 +4,7 @@
  * Central export point for all database operations.
  * Provides access to users, configurations, and maintenance functions.
  *
- * @module server/database
+ * @module backend/database
  */
 
 // Core database functions

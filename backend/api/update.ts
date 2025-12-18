@@ -37,7 +37,7 @@ const router = express.Router();
  * const { success, message } = await res.json();
  * // Application will restart automatically
  */
-router.post('/', requireAuth, async (req, res) => {
+router.post('/', requireAuth, async (req: any, res: any) => {
   try {
     const adminDir = process.cwd();
     const { stdout: gitStatus } = await execAsync('git status', { cwd: adminDir });
@@ -56,7 +56,7 @@ router.post('/', requireAuth, async (req, res) => {
     }, 1000);
   } catch (error) {
     console.error('Error updating application:', error);
-    res.status(500).json({ error: error.message || 'Failed to update application' });
+    res.status(500).json({ error: (error as Error).message || 'Failed to update application' });
   }
 });
 
@@ -74,7 +74,7 @@ router.post('/', requireAuth, async (req, res) => {
  *   - releaseNotes {string|null}: Release notes for latest version
  *   - currentReleaseNotes {string|null}: Release notes for current version
  */
-router.get('/version', requireAuth, async (req, res) => {
+router.get('/version', requireAuth, async (req: any, res: any) => {
   const REPO_API_URL = 'https://codeberg.org/api/v1/repos/phranck/previous-admin';
   const REPO_URL = 'https://codeberg.org/phranck/previous-admin';
 
@@ -136,7 +136,7 @@ router.get('/version', requireAuth, async (req, res) => {
         });
         if (commitResponse.ok) {
           const commitData = await commitResponse.json();
-          releaseNotes = commitData.message || null;
+          releaseNotes = (commitData as any).message || null;
         }
       } catch (err) {
         console.error('Error fetching latest commit message:', err);
@@ -155,7 +155,7 @@ router.get('/version', requireAuth, async (req, res) => {
         });
         if (commitResponse.ok) {
           const commitData = await commitResponse.json();
-          currentReleaseNotes = commitData.message || null;
+          currentReleaseNotes = (commitData as any).message || null;
         }
       } catch (err) {
         console.error('Error fetching current commit message:', err);

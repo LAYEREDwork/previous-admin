@@ -30,7 +30,7 @@ const CONFIG_SUBPATH = '.config/previous/previous.cfg';
  * const configPath = getConfigPath('/home/user');
  * // Returns: /home/user/.config/previous/previous.cfg
  */
-export function getConfigPath(homeDir) {
+export function getConfigPath(homeDir: string) {
   return path.join(homeDir, CONFIG_SUBPATH);
 }
 
@@ -47,12 +47,12 @@ export function getConfigPath(homeDir) {
  * @example
  * await ensureConfigDir('/home/user');
  */
-export async function ensureConfigDir(homeDir) {
+export async function ensureConfigDir(homeDir: string) {
   const configDir = path.join(homeDir, '.config/previous');
   try {
     await fs.mkdir(configDir, { recursive: true });
   } catch (error) {
-    throw new Error('Failed to create config directory: ' + error.message);
+    throw new Error('Failed to create config directory: ' + (error as Error).message);
   }
 }
 
@@ -69,7 +69,7 @@ export async function ensureConfigDir(homeDir) {
  * @example
  * const config = parseConfig(iniFileContent);
  */
-export function parseConfig(iniContent) {
+export function parseConfig(iniContent: string) {
   const parsed = ini.parse(iniContent);
 
   return {
@@ -130,7 +130,7 @@ export function parseConfig(iniContent) {
  * @example
  * const iniContent = serializeConfig(configObject);
  */
-export function serializeConfig(config) {
+export function serializeConfig(config: any) {
   const iniData = {
     System: {
       CPUType: config.system.cpu_type,
@@ -193,15 +193,15 @@ export function serializeConfig(config) {
  * @example
  * const config = await readConfig('/path/to/config');
  */
-export async function readConfig(configPath) {
+export async function readConfig(configPath: string) {
   try {
     const content = await fs.readFile(configPath, 'utf-8');
     return parseConfig(content);
   } catch (error) {
-    if (error.code === 'ENOENT') {
+    if ((error as any).code === 'ENOENT') {
       return null;
     }
-    throw new Error('Failed to read config file: ' + error.message);
+    throw new Error('Failed to read config file: ' + (error as Error).message);
   }
 }
 
@@ -220,12 +220,12 @@ export async function readConfig(configPath) {
  * @example
  * await writeConfig('/path/to/config', configObject);
  */
-export async function writeConfig(configPath, config) {
+export async function writeConfig(configPath: string, config: any) {
   try {
     const content = serializeConfig(config);
     await fs.writeFile(configPath, content, 'utf-8');
   } catch (error) {
-    throw new Error('Failed to write config file: ' + error.message);
+    throw new Error('Failed to write config file: ' + (error as Error).message);
   }
 }
 

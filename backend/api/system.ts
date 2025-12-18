@@ -21,7 +21,6 @@ import { getMetricsSnapshot } from '../metrics';
 import { requireAuth } from '../middleware';
 import { DATABASE_PATH } from '../database/core';
 import { closeDatabase, reinitializeDatabase } from '../database';
-import type { AuthenticatedRequest } from '../types';
 
 const SYSTEM_ROUTER = express.Router();
 
@@ -60,7 +59,7 @@ SYSTEM_ROUTER.get('/health', (_request: Request, response: Response) => {
  * @returns System information object
  * @throws 500 if unable to gather system information
  */
-SYSTEM_ROUTER.get('/system-info', requireAuth, async (request: AuthenticatedRequest, response: Response) => {
+SYSTEM_ROUTER.get('/system-info', requireAuth, async (request: Request, response: Response) => {
   try {
     const systemInfo = await getSystemInfo();
     response.json(systemInfo);
@@ -89,7 +88,7 @@ SYSTEM_ROUTER.get('/system-info', requireAuth, async (request: AuthenticatedRequ
  * @returns Metrics snapshot object
  * @throws 500 if unable to collect metrics
  */
-SYSTEM_ROUTER.get('/metrics', requireAuth, async (request: AuthenticatedRequest, response: Response) => {
+SYSTEM_ROUTER.get('/metrics', requireAuth, async (request: Request, response: Response) => {
   try {
     const metricsSnapshot = await getMetricsSnapshot();
     response.json(metricsSnapshot);
@@ -121,7 +120,7 @@ SYSTEM_ROUTER.get('/metrics', requireAuth, async (request: AuthenticatedRequest,
  * @returns Success confirmation
  * @throws 500 if reset operation fails
  */
-SYSTEM_ROUTER.post('/reset', requireAuth, (request: AuthenticatedRequest, response: Response) => {
+SYSTEM_ROUTER.post('/reset', requireAuth, (request: Request, response: Response) => {
   try {
     // Step 1: Close database connection
     closeDatabase();

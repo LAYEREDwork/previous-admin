@@ -54,6 +54,7 @@ export const DEFAULT_CONFIG: PreviousConfig = {
 export const API_CONFIG = {
   PORT: process.env.PORT || 3001,
   CORS_ORIGIN: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  MAX_PAYLOAD_SIZE: '10mb',
 };
 
 /**
@@ -63,6 +64,7 @@ export const SESSION_CONFIG = {
   SECRET: process.env.SESSION_SECRET || 'your-secret-key-change-in-production',
   NAME: 'sessionId',
   MAX_AGE: 24 * 60 * 60 * 1000, // 24 hours
+  MAX_AGE_MS: 24 * 60 * 60 * 1000, // 24 hours
   SECURE: process.env.NODE_ENV === 'production',
   HTTP_ONLY: true,
   SAME_SITE: 'lax' as const,
@@ -74,6 +76,7 @@ export const SESSION_CONFIG = {
  */
 export const PASSWORD_CONFIG = {
   SALT_ROUNDS: 10,
+  MIN_LENGTH: 6,
 };
 
 /**

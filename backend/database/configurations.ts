@@ -4,7 +4,7 @@
  * Handles CRUD operations for configuration profiles.
  * Each configuration is stored with metadata and timestamps.
  *
- * @module server/database/configurations
+ * @module backend/database/configurations
  */
 
 import { v4 as uuidv4 } from 'uuid';

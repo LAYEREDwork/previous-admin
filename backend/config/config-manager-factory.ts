@@ -4,7 +4,7 @@
  * Creates platform-specific config managers.
  * Abstracts platform detection and manager creation.
  *
- * @module server/config/config-manager-factory
+ * @module backend/config/config-manager-factory
  */
 
 import os from 'os';

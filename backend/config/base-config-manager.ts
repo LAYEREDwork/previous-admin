@@ -4,7 +4,7 @@
  * Abstract base for platform-specific configuration handling.
  * Defines common interface for all platforms.
  *
- * @module server/config/base-config-manager
+ * @module backend/config/base-config-manager
  */
 
 /**

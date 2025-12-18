@@ -4,7 +4,7 @@
  * Configuration location: ~/.config/previous/previous.cfg
  * Follows XDG Base Directory specification.
  *
- * @module server/config/linux-config-manager
+ * @module backend/config/linux-config-manager
  */
 
 import fs from 'fs/promises';

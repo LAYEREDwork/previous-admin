@@ -5,7 +5,7 @@
  * Uses INI format for configuration storage.
  * Platform-agnostic - works on all supported platforms.
  *
- * @module server/config/config-io
+ * @module backend/config/config-io
  */
 
 import fs from 'fs/promises';

@@ -4,7 +4,7 @@
  * Configuration location: ~/.config/previous/previous.cfg
  * Uses standard XDG-like structure on macOS.
  *
- * @module server/config/macos-config-manager
+ * @module backend/config/macos-config-manager
  */
 
 import fs from 'fs/promises';
