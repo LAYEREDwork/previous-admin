@@ -3,6 +3,7 @@ import { Translations } from '.';
 
 export const it: Translations = {
   about: {
+    generalResources: 'Risorse Generali',
     layeredCodeberg: 'phranck aka LAYERED su Codeberg',
     layeredMastodon: 'LAYERED su Mastodon',
     layeredOfficialWebsite: 'Sito Ufficiale LAYERED',
@@ -137,6 +138,11 @@ export const it: Translations = {
     signOut: 'Esci',
   },
   importExport: {
+    databaseTitle: 'Gestione Database',
+    errorExport: 'Errore esportazione',
+    errorImport: 'Errore importazione',
+    exportedCount: 'Configurazioni esportate: {count}',
+    loading: 'Caricamento...',
     title: 'Importa/Esporta',
     description: 'Importa ed esporta configurazioni o esegui il backup dell\'intera banca dati',
     databaseDescription: "Esporta o importa l'intero database incluse tutte le configurazioni",

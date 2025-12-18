@@ -1,10 +1,10 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { ButtonGroup, Button, IconButton } from 'rsuite';
 
 interface SegmentOption<T extends string> {
   value: T;
   label?: string;
-  icon?: ReactNode;
+  icon?: React.ComponentType<any> | ReactNode;
 }
 
 interface AnimatedSegmentedControlProps<T extends string> {
@@ -30,10 +30,16 @@ export function AnimatedSegmentedControl<T extends string>({
         const isActive = value === option.value;
 
         if (iconOnly && option.icon) {
+          const IconComponent = React.isValidElement(option.icon) 
+            ? option.icon 
+            : typeof option.icon === 'function' 
+              ? React.createElement(option.icon as React.ComponentType<any>) 
+              : option.icon;
+          
           return (
             <IconButton
               key={option.value}
-              icon={option.icon}
+              icon={IconComponent as React.ReactElement}
               onClick={() => onChange(option.value)}
               appearance={isActive ? 'primary' : 'default'}
               size={size}
@@ -57,7 +63,15 @@ export function AnimatedSegmentedControl<T extends string>({
               transform: isActive ? 'scale(1.02)' : 'scale(1)',
             }}
           >
-            {option.icon && <span className="inline-flex mr-2">{option.icon}</span>}
+            {option.icon && (
+              <span className="inline-flex mr-2">
+                {React.isValidElement(option.icon) 
+                  ? option.icon 
+                  : typeof option.icon === 'function' 
+                    ? React.createElement(option.icon as React.ComponentType<any>) 
+                    : option.icon}
+              </span>
+            )}
             {option.label}
           </Button>
         );

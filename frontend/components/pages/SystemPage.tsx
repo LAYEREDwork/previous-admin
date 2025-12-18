@@ -1,8 +1,9 @@
 import { BiRefresh, BiError, BiLineChart, BiHdd, BiGlobe, BiDesktop } from 'react-icons/bi';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
+import { useNotification } from '../../contexts/NotificationContext';
 import { useState, useEffect, useMemo } from 'react';
-import { Message, Button } from 'rsuite';
+import { Button } from 'rsuite';
 import { CenteredModal } from '../controls/CenteredModal';
 import { useControlSize } from '../../hooks/useControlSize';
 
@@ -72,7 +73,7 @@ function padDataToWindow<T extends Record<string, unknown>>(data: T[], windowSiz
   const padding = Array(windowSize - data.length).fill(null).map((_, i) => ({
     timestamp: Date.now() - (windowSize - i) * 1000,
     ...emptyValue
-  } as T));
+  } as unknown as T));
   return [...padding, ...data];
 }
 
@@ -80,6 +81,7 @@ export function System() {
   const { translation } = useLanguage();
   const controlSize = useControlSize();
   const { logout } = useAuth();
+  const { showError } = useNotification();
   const [systemInfo, setSystemInfo] = useState<SystemInfo | null>(null);
   const [loadingSystemInfo, setLoadingSystemInfo] = useState(true);
   const [systemInfoError, setSystemInfoError] = useState(false);
@@ -142,11 +144,11 @@ export function System() {
         // Logout and redirect to login
         await logout();
       } else {
-        Message.error(translation.common.error || 'Reset failed');
+        showError(translation.common.error || 'Reset failed');
       }
     } catch (err) {
       console.error('Reset error:', err);
-      Message.error(translation.common.error || 'Reset failed');
+      showError(translation.common.error || 'Reset failed');
     } finally {
       setIsResetting(false);
     }
@@ -194,9 +196,11 @@ export function System() {
                 history: trimHistory(message.data.memory.history)
               },
               diskIO: {
+                ...message.data.diskIO,
                 history: trimHistory(message.data.diskIO.history)
               },
               networkTraffic: {
+                ...message.data.networkTraffic,
                 history: trimHistory(message.data.networkTraffic.history)
               }
             };
@@ -391,7 +395,7 @@ export function System() {
                   </div>
                 </div>
                 {metrics && metrics.cpuLoad.history.length >= 1 ? (() => {
-                  const paddedData = padDataToWindow(metrics.cpuLoad.history, 60, { oneMin: null, fiveMin: null, fifteenMin: null });
+                  const paddedData = padDataToWindow(metrics.cpuLoad.history, 60, { oneMin: undefined, fiveMin: undefined, fifteenMin: undefined });
                   const indexedData = paddedData.map((item, index) => ({ ...item, index }));
                   return (
                     <ResponsiveContainer width="100%" height={240}>
@@ -401,13 +405,14 @@ export function System() {
                       <YAxis domain={[0, 'auto']} label={{ value: 'Load', angle: -90, position: 'insideLeft', style: { fill: '#6b7280' } }} tick={{ fill: '#6b7280' }} />
                       <Tooltip
                         contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '8px', color: '#fff' }}
-                        formatter={(value: number, name: string) => {
+                        formatter={(value: number | undefined, name: string | undefined) => {
+                          const numValue = value ?? 0;
                           const labels: Record<string, string> = {
                             oneMin: '1 min',
                             fiveMin: '5 min',
                             fifteenMin: '15 min'
                           };
-                          return [value.toFixed(2), labels[name] || name];
+                          return [`${numValue.toFixed(2)}`, labels[name || ''] || name || ''];
                         }}
                         labelFormatter={(timestamp) => new Date(timestamp).toLocaleTimeString()}
                       />
@@ -440,7 +445,7 @@ export function System() {
                   {translation.system.networkTraffic}
                 </h3>
                 {metrics && metrics.networkTraffic.history.length >= 1 ? (() => {
-                  const paddedData = padDataToWindow(metrics.networkTraffic.history, 60, { received: null, sent: null });
+                  const paddedData = padDataToWindow(metrics.networkTraffic.history, 60, { received: undefined, sent: undefined });
                   const networkUnit = getOptimalUnit(paddedData.filter(d => d.received !== null));
                   const convertedNetworkData = paddedData.map((item, index) => ({
                     ...item,
@@ -456,7 +461,7 @@ export function System() {
                         <YAxis domain={[0, 'auto']} label={{ value: networkUnit.unit, angle: -90, position: 'insideLeft', style: { fill: '#6b7280' } }} tick={{ fill: '#6b7280' }} />
                         <Tooltip
                           contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '8px', color: '#fff' }}
-                          formatter={(value: number, name: string) => [`${value.toFixed(2)} ${networkUnit.unit}`, name]}
+                          formatter={(value: number | undefined, name: string | undefined) => [`${(value ?? 0).toFixed(2)} ${networkUnit.unit}`, name || '']}
                           labelFormatter={(timestamp) => new Date(timestamp).toLocaleTimeString()}
                         />
                         <Legend wrapperStyle={{ paddingTop: '20px', color: '#6b7280' }} />
@@ -485,7 +490,7 @@ export function System() {
                   </div>
                 </div>
                 {metrics && metrics.memory.history.length >= 1 ? (() => {
-                  const paddedData = padDataToWindow(metrics.memory.history, 60, { value: null });
+                  const paddedData = padDataToWindow(metrics.memory.history, 60, { value: undefined });
                   const indexedData = paddedData.map((item, index) => ({ ...item, index }));
                   return (
                     <ResponsiveContainer width="100%" height={200}>
@@ -495,7 +500,7 @@ export function System() {
                       <YAxis domain={[0, 100]} label={{ value: '%', angle: -90, position: 'insideLeft', style: { fill: '#6b7280' } }} tick={{ fill: '#6b7280' }} />
                       <Tooltip
                         contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '8px', color: '#fff' }}
-                        formatter={(value: number) => [`${value.toFixed(1)}%`, 'Memory']}
+                        formatter={(value: number | undefined) => [`${(value ?? 0).toFixed(1)}%`, 'Memory']}
                         labelFormatter={(timestamp) => new Date(timestamp).toLocaleTimeString()}
                       />
                         <Line type="monotone" dataKey="value" stroke="#10b981" dot={false} strokeWidth={2} isAnimationActive={false} connectNulls />
@@ -514,7 +519,7 @@ export function System() {
                   Disk I/O
                 </h3>
                 {metrics && metrics.diskIO.history.length >= 1 ? (() => {
-                  const paddedData = padDataToWindow(metrics.diskIO.history, 60, { read: null, write: null });
+                  const paddedData = padDataToWindow(metrics.diskIO.history, 60, { read: undefined, write: undefined });
                   const diskUnit = getOptimalUnit(paddedData.filter(d => d.read !== null));
                   const convertedDiskData = paddedData.map((item, index) => ({
                     ...item,
@@ -530,7 +535,7 @@ export function System() {
                         <YAxis domain={[0, 'auto']} label={{ value: diskUnit.unit, angle: -90, position: 'insideLeft', style: { fill: '#6b7280' } }} tick={{ fill: '#6b7280' }} />
                         <Tooltip
                           contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '8px', color: '#fff' }}
-                          formatter={(value: number, name: string) => [`${value.toFixed(2)} ${diskUnit.unit}`, name]}
+                          formatter={(value: number | undefined, name: string | undefined) => [`${(value ?? 0).toFixed(2)} ${diskUnit.unit}`, name || '']}
                           labelFormatter={(timestamp) => new Date(timestamp).toLocaleTimeString()}
                         />
                         <Legend wrapperStyle={{ paddingTop: '20px', color: '#6b7280' }} />

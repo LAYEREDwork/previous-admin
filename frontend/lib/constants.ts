@@ -47,9 +47,17 @@ export const DEFAULT_CONFIG: PreviousConfig = {
     enabled: false,
     type: 'ethernet',
   },
+  ethernet: {
+    enabled: false,
+    type: 'ethernet',
+  },
   sound: {
     enabled: true,
     output: 'sdl',
+  },
+  printer: {
+    enabled: false,
+    type: 'parallel',
   },
   boot: {
     rom_file: '',

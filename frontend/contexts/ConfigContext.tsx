@@ -36,7 +36,13 @@ function mergeWithDefaults(loadedConfig: Partial<PreviousConfig> | null): Previo
       ...DEFAULT_CONFIG.scsi,
       ...loadedConfig.scsi,
     },
+    network: {
+      ...DEFAULT_CONFIG.network,
+      ...loadedConfig.network,
+    },
     ethernet: {
+      enabled: false,
+      type: 'ethernet',
       ...DEFAULT_CONFIG.ethernet,
       ...loadedConfig.ethernet,
     },
@@ -45,6 +51,8 @@ function mergeWithDefaults(loadedConfig: Partial<PreviousConfig> | null): Previo
       ...loadedConfig.sound,
     },
     printer: {
+      enabled: false,
+      type: 'parallel',
       ...DEFAULT_CONFIG.printer,
       ...loadedConfig.printer,
     },
@@ -55,6 +63,10 @@ function mergeWithDefaults(loadedConfig: Partial<PreviousConfig> | null): Previo
     keyboard: {
       ...DEFAULT_CONFIG.keyboard,
       ...loadedConfig.keyboard,
+    },
+    mouse: {
+      ...DEFAULT_CONFIG.mouse,
+      ...loadedConfig.mouse,
     },
   };
 }

@@ -3,6 +3,7 @@ import { Translations } from '.';
 
 export const fr: Translations = {
   about: {
+    generalResources: 'Ressources Générales',
     layeredCodeberg: 'phranck alias LAYERED sur Codeberg',
     layeredMastodon: 'LAYERED sur Mastodon',
     layeredOfficialWebsite: 'Site Officiel de LAYERED',
@@ -137,6 +138,11 @@ export const fr: Translations = {
     signOut: 'Se déconnecter',
   },
   importExport: {
+    databaseTitle: 'Gestion de la Base de Données',
+    errorExport: 'Erreur d\'exportation',
+    errorImport: 'Erreur d\'importation',
+    exportedCount: 'Configurations exportées: {count}',
+    loading: 'Chargement...',
     title: 'Import/Export',
     description: 'Importer et exporter des configurations ou sauvegarder la base de données entière',
     databaseDescription: 'Exportez ou importez la base de données entière, y compris toutes les configurations',
@@ -243,5 +249,12 @@ export const fr: Translations = {
     resetWarning:
       'Avertissement : Cela supprimera toutes les configurations et réinitialisera le système à la configuration initiale. Cette action est irréversible !',
     resetting: 'Réinitialisation...',
+  },
+  tabs: {
+    about: 'À propos',
+    configEditor: 'Éditeur de Configuration',
+    importExport: 'Importer/Exporter',
+    savedConfigs: 'Configurations Sauvegardées',
+    system: 'Système',
   },
 };

@@ -79,9 +79,17 @@ export interface PreviousConfig {
     enabled: boolean;
     type: string;
   };
+  ethernet?: {
+    enabled: boolean;
+    type: string;
+  };
   sound: {
     enabled: boolean;
     output: string;
+  };
+  printer?: {
+    enabled: boolean;
+    type: string;
   };
   boot: {
     rom_file: string;
