@@ -9,6 +9,7 @@
 
 import type { Configuration, PreviousConfig } from './types';
 import { API_BASE_URL } from './constants';
+import { ApiEndpoints } from '../../shared/constants';
 
 export { type Configuration, type PreviousConfig };
 
@@ -26,7 +27,7 @@ export const database = {
    * @throws {Error} If API request fails
    */
   async getConfigurations(): Promise<Configuration[]> {
-    const response = await fetch(`${API_BASE_URL}/api/configurations`, {
+    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.CONFIGURATIONS}`, {
       credentials: 'include',
     });
 
@@ -46,7 +47,7 @@ export const database = {
    * @throws {Error} If API request fails
    */
   async getConfiguration(id: string): Promise<Configuration | null> {
-    const response = await fetch(`${API_BASE_URL}/api/configurations/${id}`, {
+    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.CONFIGURATIONS}/${id}`, {
       credentials: 'include',
     });
 
@@ -80,7 +81,7 @@ export const database = {
     is_active: boolean,
     created_by: number | null = null
   ): Promise<Configuration> {
-    const response = await fetch(`${API_BASE_URL}/api/configurations`, {
+    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.CONFIGURATIONS}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -120,7 +121,7 @@ export const database = {
       is_active?: boolean;
     }
   ): Promise<void> {
-    const response = await fetch(`${API_BASE_URL}/api/configurations/${id}`, {
+    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.CONFIGURATIONS}/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -143,7 +144,7 @@ export const database = {
    * @throws {Error} If API request fails
    */
   async deleteConfiguration(id: string): Promise<void> {
-    const response = await fetch(`${API_BASE_URL}/api/configurations/${id}`, {
+    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.CONFIGURATIONS}/${id}`, {
       method: 'DELETE',
       credentials: 'include',
     });
@@ -162,7 +163,7 @@ export const database = {
    * @throws {Error} If API request fails
    */
   async setActiveConfiguration(id: string): Promise<void> {
-    const response = await fetch(`${API_BASE_URL}/api/configurations/${id}/activate`, {
+    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.CONFIGURATIONS}/${id}/activate`, {
       method: 'POST',
       credentials: 'include',
     });
@@ -180,7 +181,7 @@ export const database = {
    * @throws {Error} If API request fails
    */
   async getActiveConfiguration(): Promise<Configuration | null> {
-    const response = await fetch(`${API_BASE_URL}/api/configurations/active`, {
+    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.CONFIGURATIONS_ACTIVE}`, {
       credentials: 'include',
     });
 
@@ -200,7 +201,7 @@ export const database = {
    * @throws {Error} If API request fails
    */
   async updateConfigurationsOrder(orderedIds: string[]): Promise<void> {
-    const response = await fetch(`${API_BASE_URL}/api/configurations/order/update`, {
+    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.CONFIGURATIONS_ORDER_UPDATE}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

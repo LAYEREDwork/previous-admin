@@ -1,4 +1,5 @@
 import { API_BASE_URL } from './constants';
+import { ApiEndpoints } from '../../shared/constants';
 
 export const REPO_URL = 'https://codeberg.org/phranck/previous-admin';
 
@@ -29,7 +30,7 @@ export async function getCurrentVersion(): Promise<string> {
  */
 export async function checkForUpdates(): Promise<VersionInfo> {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/update/version`, {
+    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.UPDATE_VERSION}`, {
       headers: {
         'Accept': 'application/json',
       },
@@ -56,7 +57,7 @@ export async function checkForUpdates(): Promise<VersionInfo> {
 
 export async function updateApplication(): Promise<void> {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/update`, {
+    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.UPDATE}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

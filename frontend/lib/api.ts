@@ -1,5 +1,6 @@
 import type { PreviousConfig } from './types';
 import { API_BASE_URL } from './constants';
+import { ApiEndpoints } from '../../shared/constants';
 
 /**
  * Check if system setup is required
@@ -18,7 +19,7 @@ import { API_BASE_URL } from './constants';
  */
 export async function checkSetupRequired(): Promise<boolean> {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/auth/setup-required`, {
+    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.AUTH_SETUP_REQUIRED}`, {
       credentials: 'include',
     });
     const data = await response.json();
@@ -57,7 +58,7 @@ export const api = {
    * }
    */
   async setup(username: string, password: string) {
-    const response = await fetch(`${API_BASE_URL}/api/auth/setup`, {
+    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.AUTH_SETUP}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -96,7 +97,7 @@ export const api = {
    * }
    */
   async login(username: string, password: string) {
-    const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.AUTH_LOGIN}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -126,7 +127,7 @@ export const api = {
    * // Redirect to login page
    */
   async logout() {
-    const response = await fetch(`${API_BASE_URL}/api/auth/logout`, {
+    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.AUTH_LOGOUT}`, {
       method: 'POST',
       credentials: 'include',
     });
@@ -162,7 +163,7 @@ export const api = {
    * }
    */
   async getSession() {
-    const response = await fetch(`${API_BASE_URL}/api/auth/session`, {
+    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.AUTH_SESSION}`, {
       credentials: 'include',
     });
 
@@ -187,7 +188,7 @@ export const api = {
    * console.log(config.settings);
    */
   async getConfig() {
-    const response = await fetch(`${API_BASE_URL}/api/config`, {
+    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.CONFIG}`, {
       credentials: 'include',
     });
 
@@ -219,7 +220,7 @@ export const api = {
    * const { success } = await api.updateConfig(newConfig);
    */
   async updateConfig(config: PreviousConfig) {
-    const response = await fetch(`${API_BASE_URL}/api/config`, {
+    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.CONFIG}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
