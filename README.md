@@ -117,18 +117,18 @@ For detailed manual installation instructions, platform-specific setup guides, a
 npm install
 
 # Start development servers
-npm run dev  # Starts both frontend (port 5173) and backend (port 3001)
+npm run dev  # Starts both frontend (port 2342) and backend (port 3001)
 
 # Or run separately:
 npm run backend  # Backend only (port 3001)
-npm run frontend # Frontend only (port 5173)
+# Frontend only: npm run dev (port 2342)
 
 # Build for production
 npm run build
 
 # Code quality checks
 npm run lint    # ESLint
-npm run type-check  # TypeScript compilation check
+npm run typecheck  # TypeScript compilation check
 ```
 
 ### Project Structure
