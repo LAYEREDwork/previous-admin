@@ -1,5 +1,5 @@
 import { ReactNode, useState, useEffect } from 'react';
-import { BiLogOut, BiUser } from 'react-icons/bi';
+import { BiLogOut } from 'react-icons/bi';
 import { ThemeSwitcher } from '../controls/ThemeSwitcher';
 import { LanguageSwitcher } from '../controls/LanguageSwitcher';
 import { NeXTLogo } from '../controls/NeXTLogo';
@@ -18,7 +18,7 @@ interface LayoutProps {
 }
 
 export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
-  const { username, logout } = useAuth();
+  const { logout } = useAuth();
   const { translation } = useLanguage();
   const [version, setVersion] = useState<string>('');
 
@@ -32,7 +32,37 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-next-bg transition-colors flex flex-col">
-      <div className="md:sticky md:top-0 z-50 bg-white/75 dark:bg-next-panel/75 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-next-panel/60 border-b border-gray-200 dark:border-next-border shadow-sm transition-colors duration-200">
+      {/* Mobile Header - kompakter */}
+      <div className="md:hidden sticky top-0 z-50 bg-white/75 dark:bg-gray-800/75 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-gray-800/60 border-b border-gray-200 dark:border-gray-700 px-4 py-3 transition-colors duration-200">
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col items-center gap-1">
+            <h1 className="text-lg font-bold text-gray-900 dark:text-white text-center">
+              {translation.layout.title}
+            </h1>
+            {version && (
+              <span className="text-xs text-gray-500 dark:text-gray-400 font-mono">
+                v{version}
+              </span>
+            )}
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <ThemeSwitcher />
+              <LanguageSwitcher />
+            </div>
+            <Button
+              onClick={logout}
+              appearance="ghost"
+              size="sm"
+              title={translation.layout.signOut}
+            >
+              <BiLogOut size={16} />
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      <div className="hidden md:block md:sticky md:top-0 z-50 bg-white/75 dark:bg-next-panel/75 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-next-panel/60 border-b border-gray-200 dark:border-next-border shadow-sm transition-colors duration-200">
         <header className="border-b border-gray-200/50 dark:border-gray-700/50">
           <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-3 sm:py-6 gap-3 sm:gap-0">
@@ -57,12 +87,6 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
                 </div>
               </div>
               <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
-                <ButtonGroup>
-                  <Button appearance="default" size={controlSize} disabled>
-                    <BiUser size={16} className="inline-block mr-2" />
-                    <span className="truncate max-w-[80px] sm:max-w-none">{username}</span>
-                  </Button>
-                </ButtonGroup>
                 <div className="flex items-center gap-1.5 sm:gap-2">
                   <ThemeSwitcher />
                   <LanguageSwitcher />
@@ -84,9 +108,14 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
         <MainMenuPartial currentTab={currentTab} onTabChange={onTabChange} />
       </div>
 
-      <main className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 flex-grow w-full">
+      <main className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 flex-grow w-full pb-20 md:pb-8">
         {children}
       </main>
+
+      {/* Mobile Bottom Tabbar */}
+      <div className="md:hidden">
+        <MainMenuPartial currentTab={currentTab} onTabChange={onTabChange} />
+      </div>
 
       <FooterPartial />
     </div>

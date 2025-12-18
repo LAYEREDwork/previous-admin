@@ -141,51 +141,55 @@ export function ConfigEditor({ configId, onTabChange }: { configId?: string; onT
       </div>
 
       <div className="flex flex-col gap-3 sm:gap-4">
-        <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-4">
-          <div className="w-full sm:w-auto">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-              {translation.configEditor.title}
-            </h2>
-          </div>
-          <div className="flex flex-col gap-3 sm:gap-4 items-start sm:items-center w-full sm:w-auto sm:flex-row">
-            <Button
-              onClick={toggleAllSections}
+        {/* Title - always full width on mobile/tablet portrait */}
+        <div className="w-full">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+            {translation.configEditor.title}
+          </h2>
+        </div>
+
+        {/* Controls - always in one row: toggle button left, others right */}
+        <div className="flex flex-row justify-between items-center gap-3 sm:gap-4">
+          <Button
+            onClick={toggleAllSections}
+            size={controlSize}
+            className="flex items-center gap-2 flex-shrink-0"
+          >
+            {Object.values(expandedSections).every(expanded => expanded) ? (
+              <BiChevronUp size={16} />
+            ) : (
+              <BiChevronDown size={16} />
+            )}
+            {Object.values(expandedSections).every(expanded => expanded)
+              ? translation.configEditor.sectionsCollapseAll
+              : translation.configEditor.sectionsExpandAll}
+          </Button>
+
+          <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
+            <AnimatedSegmentedControl
+              options={[
+                { value: 'editor', label: translation.configEditor.viewModeEditor },
+                { value: 'raw', label: translation.configEditor.viewModeRaw },
+              ]}
+              value={viewMode}
+              onChange={setViewMode}
               size={controlSize}
+              className="flex flex-nowrap"
+            />
+            <Button
+              onClick={handleSave}
+              disabled={saving}
+              loading={saving}
+              appearance="primary"
               className="flex items-center gap-2"
+              size={controlSize}
+              title={saving ? translation.configEditor.saving : translation.configEditor.save}
             >
-              {Object.values(expandedSections).every(expanded => expanded) ? (
-                <BiChevronUp size={16} />
-              ) : (
-                <BiChevronDown size={16} />
-              )}
-              {Object.values(expandedSections).every(expanded => expanded)
-                ? translation.configEditor.sectionsCollapseAll
-                : translation.configEditor.sectionsExpandAll}
+              <BiSave size={16} />
+              <span className="hidden sm:inline">
+                {saving ? translation.configEditor.saving : translation.configEditor.save}
+              </span>
             </Button>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center w-full sm:w-auto">
-              <AnimatedSegmentedControl
-                options={[
-                  { value: 'editor', label: translation.configEditor.viewModeEditor },
-                  { value: 'raw', label: translation.configEditor.viewModeRaw },
-                ]}
-                value={viewMode}
-                onChange={setViewMode}
-                size={controlSize}
-              />
-              <div className="flex gap-2">
-                <Button
-                  onClick={handleSave}
-                  disabled={saving}
-                  loading={saving}
-                  appearance="primary"
-                  className="flex items-center gap-2"
-                  size={controlSize}
-                >
-                  <BiSave size={16} />
-                  {saving ? translation.configEditor.saving : translation.configEditor.save}
-                </Button>
-              </div>
-            </div>
           </div>
         </div>
       </div>

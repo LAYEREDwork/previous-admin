@@ -14,6 +14,7 @@ interface AnimatedSegmentedControlProps<T extends string> {
   size?: 'xs' | 'sm' | 'md' | 'lg';
   iconOnly?: boolean;
   fullWidth?: boolean;
+  className?: string;
 }
 
 export function AnimatedSegmentedControl<T extends string>({
@@ -23,9 +24,10 @@ export function AnimatedSegmentedControl<T extends string>({
   size = 'sm',
   iconOnly = false,
   fullWidth = false,
+  className = '',
 }: AnimatedSegmentedControlProps<T>) {
   return (
-    <ButtonGroup justified={fullWidth} className={fullWidth ? 'w-full flex' : ''}>
+    <ButtonGroup justified={fullWidth} className={`${fullWidth ? 'w-full flex' : ''} flex flex-nowrap ${className}`}>
       {options.map((option) => {
         const isActive = value === option.value;
 
