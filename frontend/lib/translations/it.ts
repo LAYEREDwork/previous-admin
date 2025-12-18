@@ -38,6 +38,7 @@ export const it: Translations = {
     errorLoading: 'Errore nel caricamento delle configurazioni',
     errorSaving: 'Errore nel salvataggio della configurazione',
     failedToCopy: 'Errore durante la copia',
+    currentConfiguration: 'Configurazione corrente:',
     description: 'Modifica la configurazione Previous attiva',
     fillAllFields: 'Compila tutti i campi',
     fields: {

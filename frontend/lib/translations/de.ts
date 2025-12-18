@@ -35,6 +35,7 @@ export const de: Translations = {
     contentPlaceholder: 'Geben Sie hier Ihre Konfiguration ein...',
     copy: 'Kopieren',
     copiedToClipboard: 'In Zwischenablage kopiert',
+    currentConfiguration: 'Aktuelle Konfiguration:',
     description: 'Bearbeiten Sie die aktive Previous-Konfiguration',
     failedToCopy: 'Fehler beim Kopieren',
     fields: {

@@ -207,4 +207,18 @@
     top: 20px !important;
     z-index: 9999 !important;
   }
+
+  /* RSuite Panel Button Hover, Active, Focus - Light Mode */
+  .rs-panel-btn:hover,
+  .rs-panel-btn:active,
+  .rs-panel-btn:focus {
+    background-color: rgb(239, 239, 244) !important;
+  }
+
+  /* RSuite Panel Button Hover, Active, Focus - Dark Mode */
+  .dark .rs-panel-btn:hover,
+  .dark .rs-panel-btn:active,
+  .dark .rs-panel-btn:focus {
+    background-color: rgb(50, 51, 52) !important;
+  }
 }

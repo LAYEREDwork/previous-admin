@@ -12,6 +12,7 @@ import { System } from './components/pages/SystemPage';
 import { About } from './components/pages/AboutPage';
 import { Login } from './components/pages/LoginPage';
 import { CustomProvider } from 'rsuite';
+import { database, Configuration } from './lib/database';
 
 function AppContent() {
   const { isAuthenticated, loading } = useAuth();
@@ -21,6 +22,7 @@ function AppContent() {
     const savedTab = localStorage.getItem('currentTab');
     return savedTab || 'configs';
   });
+  const [editingConfigId, setEditingConfigId] = useState<string | null>(null);
 
   // Save current tab to localStorage whenever it changes
   useEffect(() => {
@@ -35,7 +37,8 @@ function AppContent() {
     );
   }
 
-  function handleEditConfig(/* config: Configuration */) {
+  function handleEditConfig(config: Configuration) {
+    setEditingConfigId(config.id);
     setCurrentTab('editor');
   }
 
@@ -43,7 +46,7 @@ function AppContent() {
     <Login />
   ) : (
     <Layout currentTab={currentTab} onTabChange={setCurrentTab}>
-      {currentTab === 'editor' && <ConfigEditor />}
+      {currentTab === 'editor' && <ConfigEditor configId={editingConfigId} />}
       {currentTab === 'configs' && <ConfigList onEdit={handleEditConfig} />}
       {currentTab === 'import-export' && <ImportExport />}
       {currentTab === 'system' && <System />}

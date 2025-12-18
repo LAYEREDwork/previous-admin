@@ -95,7 +95,7 @@ function getKeyboardLayout(type: string): number {
 }
 
 export function useConfigEditor() {
-  const { config, loading, error, updateConfig, refreshConfig } = useConfig();
+  const { config, configName, loading, error, updateConfig, refreshConfig, loadConfigById } = useConfig();
   const { translation } = useLanguage();
   const { showSuccess, showError } = useNotification();
 
@@ -195,6 +195,7 @@ export function useConfigEditor() {
   return {
     // State
     config,
+    configName,
     configData,
     loading,
     error,
@@ -207,6 +208,7 @@ export function useConfigEditor() {
     updateConfigField,
     copyToClipboard,
     refreshConfig,
+    loadConfigById,
 
     // Utilities
     convertToConfigFile,

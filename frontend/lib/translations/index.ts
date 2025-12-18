@@ -92,6 +92,7 @@ export interface Translations {
   configEditor: {
     title: string;
     description: string;
+    currentConfiguration: string;
     configName: string;
     configNamePlaceholder: string;
     configPath: string;

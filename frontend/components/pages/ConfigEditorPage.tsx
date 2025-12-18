@@ -1,5 +1,6 @@
 import { BiSave, BiCopy, BiRefresh } from 'react-icons/bi';
-import { Button, Input, SelectPicker, Toggle } from 'rsuite';
+import { Button, Input, SelectPicker, Toggle, Panel } from 'rsuite';
+import { useState, useEffect } from 'react';
 
 // Components
 import { AnimatedSegmentedControl } from '../controls/AnimatedSegmentedControl';
@@ -8,9 +9,10 @@ import { AnimatedSegmentedControl } from '../controls/AnimatedSegmentedControl';
 import { useControlSize } from '../../hooks/useControlSize';
 import { useConfigEditor } from '../../hooks/useConfigEditor';
 
-export function ConfigEditor() {
+export function ConfigEditor({ configId }: { configId?: string }) {
   const {
     config,
+    configName,
     configData,
     loading,
     error,
@@ -21,11 +23,37 @@ export function ConfigEditor() {
     updateConfigField,
     copyToClipboard,
     refreshConfig,
+    loadConfigById,
     convertToConfigFile,
     translation,
   } = useConfigEditor();
-
+  // Load config by ID if provided
+  useEffect(() => {
+    if (configId) {
+      loadConfigById(configId);
+    }
+  }, [configId, loadConfigById]);
   const controlSize = useControlSize('md');
+
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>(() => {
+    const saved = localStorage.getItem('configEditorSectionsExpanded');
+    if (saved) {
+      return JSON.parse(saved);
+    }
+    return {
+      system: true,
+      display: false,
+      scsi: false,
+      network: false,
+      sound: false,
+      boot: false,
+      input: false,
+    };
+  });
+
+  useEffect(() => {
+    localStorage.setItem('configEditorSectionsExpanded', JSON.stringify(expandedSections));
+  }, [expandedSections]);
 
   if (loading) {
     return (
@@ -71,7 +99,7 @@ export function ConfigEditor() {
             {translation.configEditor.title}
           </h2>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            {translation.configEditor.description}
+            {translation.configEditor.currentConfiguration} {configName || 'Default'}
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center w-full sm:w-auto">
@@ -121,8 +149,13 @@ export function ConfigEditor() {
           </pre>
         </div>
       ) : (
-        <div className="grid gap-6">
-          <Section title={translation.configEditor.sections.system}>
+        <div className="grid gap-4">
+          <Section
+            key="system"
+            title={translation.configEditor.sections.system}
+            expanded={expandedSections.system}
+            onToggle={(expanded) => setExpandedSections(prev => ({ ...prev, system: expanded }))}
+          >
             <Field label={translation.configEditor.fields.cpuType}>
               <SelectPicker
                 data={[
@@ -188,7 +221,12 @@ export function ConfigEditor() {
             </Field>
           </Section>
 
-          <Section title={translation.configEditor.sections.display}>
+          <Section
+            key="display"
+            title={translation.configEditor.sections.display}
+            expanded={expandedSections.display}
+            onToggle={(expanded) => setExpandedSections(prev => ({ ...prev, display: expanded }))}
+          >
             <Field label={translation.configEditor.fields.displayType}>
               <SelectPicker
                 data={[
@@ -255,7 +293,12 @@ export function ConfigEditor() {
             </Field>
           </Section>
 
-          <Section title={translation.configEditor.sections.scsi}>
+          <Section
+            key="scsi"
+            title={translation.configEditor.sections.scsi}
+            expanded={expandedSections.scsi}
+            onToggle={(expanded) => setExpandedSections(prev => ({ ...prev, scsi: expanded }))}
+          >
             {['hd0', 'hd1', 'hd2', 'hd3', 'hd4', 'hd5', 'hd6'].map((hd) => (
               <Field key={hd} label={`${translation.configEditor.fields.scsiHd} ${hd.toUpperCase()}`}>
                 <Input
@@ -277,7 +320,12 @@ export function ConfigEditor() {
             </Field>
           </Section>
 
-          <Section title={translation.configEditor.sections.network}>
+          <Section
+            key="network"
+            title={translation.configEditor.sections.network}
+            expanded={expandedSections.network}
+            onToggle={(expanded) => setExpandedSections(prev => ({ ...prev, network: expanded }))}
+          >
             <Field label={translation.configEditor.fields.networkEnabled}>
               <Toggle
                 checked={configData.network.enabled}
@@ -302,7 +350,12 @@ export function ConfigEditor() {
             </Field>
           </Section>
 
-          <Section title={translation.configEditor.sections.sound}>
+          <Section
+            key="sound"
+            title={translation.configEditor.sections.sound}
+            expanded={expandedSections.sound}
+            onToggle={(expanded) => setExpandedSections(prev => ({ ...prev, sound: expanded }))}
+          >
             <Field label={translation.configEditor.fields.soundEnabled}>
               <Toggle
                 checked={configData.sound.enabled}
@@ -328,7 +381,12 @@ export function ConfigEditor() {
             </Field>
           </Section>
 
-          <Section title={translation.configEditor.sections.boot}>
+          <Section
+            key="boot"
+            title={translation.configEditor.sections.boot}
+            expanded={expandedSections.boot}
+            onToggle={(expanded) => setExpandedSections(prev => ({ ...prev, boot: expanded }))}
+          >
             <Field label={translation.configEditor.fields.romFile}>
               <Input
                 value={configData.boot.rom_file}
@@ -353,7 +411,12 @@ export function ConfigEditor() {
             </Field>
           </Section>
 
-          <Section title={translation.configEditor.sections.input}>
+          <Section
+            key="input"
+            title={translation.configEditor.sections.input}
+            expanded={expandedSections.input}
+            onToggle={(expanded) => setExpandedSections(prev => ({ ...prev, input: expanded }))}
+          >
             <Field label={translation.configEditor.fields.keyboardType}>
               <SelectPicker
                 data={[
@@ -384,12 +447,19 @@ export function ConfigEditor() {
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({ title, children, expanded, onToggle }: { title: string; children: React.ReactNode; expanded: boolean; onToggle: (expanded: boolean) => void }) {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
-      <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4">{title}</h3>
-      <div className="grid gap-3 sm:gap-4">{children}</div>
-    </div>
+    <Panel
+      header={<div className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white p-0.5 cursor-pointer">{title}</div>}
+      collapsible
+      expanded={expanded}
+      onSelect={() => onToggle(!expanded)}
+      className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:bg-gray-50/30 dark:hover:bg-gray-800/30 transition-colors duration-200"
+    >
+      <div className="p-2 sm:p-3">
+        <div className="grid gap-3 sm:gap-4">{children}</div>
+      </div>
+    </Panel>
   );
 }
 

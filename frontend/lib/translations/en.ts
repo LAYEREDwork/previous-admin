@@ -38,6 +38,7 @@ export const en: Translations = {
     errorLoading: 'Error loading configurations',
     errorSaving: 'Error saving configuration',
     failedToCopy: 'Failed to copy to clipboard',
+    currentConfiguration: 'Current Configuration:',
     description: 'Edit the active Previous configuration',
     fillAllFields: 'Please fill in all fields',
     fields: {
