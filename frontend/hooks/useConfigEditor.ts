@@ -95,13 +95,54 @@ function getKeyboardLayout(type: string): number {
 }
 
 export function useConfigEditor() {
-  const { config, configName, loading, error, updateConfig, refreshConfig, loadConfigById } = useConfig();
+  const { config, configName, configDescription, loading, error, updateConfig, refreshConfig, loadConfigById, updateConfigMetadata } = useConfig();
   const { translation } = useLanguage();
   const { showSuccess, showError } = useNotification();
 
   const [configData, setConfigData] = useState<PreviousConfig | null>(null);
   const [saving, setSaving] = useState(false);
   const [viewMode, setViewMode] = useState<'editor' | 'raw'>('editor');
+
+  // Local state for metadata editing
+  const [localName, setLocalName] = useState(configName || '');
+  const [localDescription, setLocalDescription] = useState(configDescription || '');
+  const [hasChanges, setHasChanges] = useState(false);
+
+  // Expanded sections state with localStorage persistence
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>(() => {
+    const saved = localStorage.getItem('configEditorSectionsExpanded');
+    if (saved) {
+      return JSON.parse(saved);
+    }
+    return {
+      system: true,
+      display: false,
+      scsi: false,
+      network: false,
+      sound: false,
+      boot: false,
+      input: false,
+    };
+  });
+
+  // Persist expanded sections to localStorage
+  useEffect(() => {
+    localStorage.setItem('configEditorSectionsExpanded', JSON.stringify(expandedSections));
+  }, [expandedSections]);
+
+  // Sync local values with current config metadata
+  useEffect(() => {
+    setLocalName(configName || '');
+    setLocalDescription(configDescription || '');
+    setHasChanges(false);
+  }, [configName, configDescription]);
+
+  // Check for changes
+  useEffect(() => {
+    const nameChanged = localName !== (configName || '');
+    const descChanged = localDescription !== (configDescription || '');
+    setHasChanges(nameChanged || descChanged);
+  }, [localName, localDescription, configName, configDescription]);
 
   // Sync config to local state
   useEffect(() => {
@@ -120,6 +161,22 @@ export function useConfigEditor() {
     } catch (error) {
       showError(error instanceof Error ? error.message : 'Error saving config');
       console.error('Error saving config:', error);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function handleUpdateMetadata() {
+    if (!hasChanges) return;
+
+    setSaving(true);
+    try {
+      await updateConfigMetadata(localName, localDescription);
+      showSuccess(translation.configEditor.saveMetadata || 'Metadata saved');
+      setHasChanges(false);
+    } catch (error) {
+      showError(error instanceof Error ? error.message : 'Error saving metadata');
+      console.error('Error saving metadata:', error);
     } finally {
       setSaving(false);
     }
@@ -192,19 +249,43 @@ export function useConfigEditor() {
     }
   }
 
+  function toggleAllSections() {
+    const allExpanded = Object.values(expandedSections).every(expanded => expanded);
+    const newState = allExpanded ? false : true;
+    setExpandedSections({
+      system: newState,
+      display: newState,
+      scsi: newState,
+      network: newState,
+      sound: newState,
+      boot: newState,
+      input: newState,
+    });
+  }
+
   return {
     // State
     config,
     configName,
+    configDescription,
     configData,
     loading,
     error,
     saving,
     viewMode,
+    localName,
+    localDescription,
+    hasChanges,
+    expandedSections,
 
     // Actions
     setViewMode,
+    setLocalName,
+    setLocalDescription,
+    setExpandedSections,
+    toggleAllSections,
     handleSave,
+    handleUpdateMetadata,
     updateConfigField,
     copyToClipboard,
     refreshConfig,

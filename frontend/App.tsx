@@ -46,7 +46,7 @@ function AppContent() {
     <Login />
   ) : (
     <Layout currentTab={currentTab} onTabChange={setCurrentTab}>
-      {currentTab === 'editor' && <ConfigEditor configId={editingConfigId} />}
+      {currentTab === 'editor' && <ConfigEditor configId={editingConfigId} onTabChange={setCurrentTab} />}
       {currentTab === 'configs' && <ConfigList onEdit={handleEditConfig} />}
       {currentTab === 'import-export' && <ImportExport />}
       {currentTab === 'system' && <System />}

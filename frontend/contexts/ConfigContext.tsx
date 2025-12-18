@@ -14,11 +14,13 @@ import type { PreviousConfig } from '../lib/types';
 interface ConfigContextType {
   config: PreviousConfig | null;
   configName: string | null;
+  configDescription: string | null;
   loading: boolean;
   error: string | null;
   updateConfig: (config: PreviousConfig) => Promise<void>;
   refreshConfig: () => Promise<void>;
   loadConfigById: (id: string) => Promise<void>;
+  updateConfigMetadata: (name: string, description: string) => Promise<void>;
 }
 
 const ConfigContext = createContext<ConfigContextType | undefined>(undefined);
@@ -82,6 +84,8 @@ function mergeWithDefaults(loadedConfig: Partial<PreviousConfig> | null): Previo
 export function ConfigProvider({ children }: { children: ReactNode }) {
   const [config, setConfig] = useState<PreviousConfig | null>(null);
   const [configName, setConfigName] = useState<string | null>(null);
+  const [configDescription, setConfigDescription] = useState<string | null>(null);
+  const [currentConfigId, setCurrentConfigId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { isAuthenticated } = useAuth();
@@ -99,9 +103,13 @@ export function ConfigProvider({ children }: { children: ReactNode }) {
         const mergedConfig = mergeWithDefaults(activeConfig.config_data);
         setConfig(mergedConfig);
         setConfigName(activeConfig.name);
+        setConfigDescription(activeConfig.description);
+        setCurrentConfigId(activeConfig.id);
       } else {
         setConfig(DEFAULT_CONFIG);
         setConfigName(null);
+        setConfigDescription(null);
+        setCurrentConfigId(null);
       }
     } catch (err) {
       console.error('Error loading config from database:', err);
@@ -146,6 +154,8 @@ export function ConfigProvider({ children }: { children: ReactNode }) {
         const mergedConfig = mergeWithDefaults(configData.config_data);
         setConfig(mergedConfig);
         setConfigName(configData.name);
+        setConfigDescription(configData.description);
+        setCurrentConfigId(configData.id);
       } else {
         throw new Error('Configuration not found');
       }
@@ -157,9 +167,32 @@ export function ConfigProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const updateConfigMetadata = useCallback(async (name: string, description: string) => {
+    try {
+      setError(null);
+
+      if (!currentConfigId) {
+        throw new Error('No configuration loaded');
+      }
+
+      await database.updateConfiguration(currentConfigId, {
+        name,
+        description
+      });
+      setConfigName(name);
+      setConfigDescription(description);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update configuration metadata');
+      throw err;
+    }
+  }, [currentConfigId]);
+
   useEffect(() => {
     if (!isAuthenticated) {
       setConfig(null);
+      setConfigName(null);
+      setConfigDescription(null);
+      setCurrentConfigId(null);
       setLoading(false);
       return;
     }
@@ -168,7 +201,7 @@ export function ConfigProvider({ children }: { children: ReactNode }) {
   }, [isAuthenticated, refreshConfig]);
 
   return (
-    <ConfigContext.Provider value={{ config, configName, loading, error, updateConfig, refreshConfig, loadConfigById }}>
+    <ConfigContext.Provider value={{ config, configName, configDescription, loading, error, updateConfig, refreshConfig, loadConfigById, updateConfigMetadata }}>
       {children}
     </ConfigContext.Provider>
   );

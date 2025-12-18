@@ -4,6 +4,7 @@ import { Button, Input, IconButton } from 'rsuite';
 
 // Components
 import { CenteredModal } from '../controls/CenteredModal';
+import EmptyView from '../controls/EmptyView';
 
 // Hooks
 import { useLanguage } from '../../contexts/LanguageContext';
@@ -212,26 +213,15 @@ export function ConfigList({ onEdit }: ConfigListProps) {
       </div>
 
       {configs.length === 0 && !showNewConfig && (
-        <div className="flex flex-col items-center justify-center min-h-[60vh] py-16 px-4">
-          <div className="text-gray-300 dark:text-gray-600 mb-6">
-            <IoDocumentsOutline size={80} />
-          </div>
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-            {translation.configList.emptyStateTitle}
-          </h3>
-          <p className="text-gray-500 dark:text-gray-400 mb-6 text-center max-w-sm">
-            {translation.configList.emptyStateDescription}
-          </p>
-          <Button
-            onClick={() => setShowNewConfig(true)}
-            appearance="primary"
-            size={controlSize}
-            className="flex items-center gap-2"
-          >
-            <BiPlus size={18} />
-            {translation.configList.newConfig}
-          </Button>
-        </div>
+        <EmptyView
+          icon={IoDocumentsOutline}
+          title={translation.configList.emptyStateTitle}
+          description={translation.configList.emptyStateDescription}
+          actionText={translation.configList.newConfig}
+          actionIcon={BiPlus}
+          onAction={() => setShowNewConfig(true)}
+          buttonSize={controlSize}
+        />
       )}
     </div>
   );

@@ -145,6 +145,17 @@ export interface Translations {
       pathToCdImage: string;
       pathToRomFile: string;
     };
+    noConfigSelected: string;
+    noConfigSelectedDescription: string;
+    goToSavedConfigs: string;
+    configurationDetailsTitle: string;
+    configurationNameLabel: string;
+    configurationNamePlaceholder: string;
+    descriptionLabel: string;
+    configurationDescriptionPlaceholder: string;
+    saveMetadata: string;
+    sectionsCollapseAll: string;
+    sectionsExpandAll: string;
   };
   importExport: {
     title: string;

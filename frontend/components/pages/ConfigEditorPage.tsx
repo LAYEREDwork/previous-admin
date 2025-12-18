@@ -1,15 +1,17 @@
-import { BiSave, BiCopy, BiRefresh } from 'react-icons/bi';
+import { BiSave, BiCopy, BiRefresh, BiChevronUp, BiChevronDown } from 'react-icons/bi';
+import { IoDocumentText } from 'react-icons/io5';
 import { Button, Input, SelectPicker, Toggle, Panel } from 'rsuite';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 // Components
 import { AnimatedSegmentedControl } from '../controls/AnimatedSegmentedControl';
+import EmptyView from '../controls/EmptyView';
 
 // Hooks
 import { useControlSize } from '../../hooks/useControlSize';
 import { useConfigEditor } from '../../hooks/useConfigEditor';
 
-export function ConfigEditor({ configId }: { configId?: string }) {
+export function ConfigEditor({ configId, onTabChange }: { configId?: string; onTabChange?: (tab: string) => void }) {
   const {
     config,
     configName,
@@ -18,42 +20,38 @@ export function ConfigEditor({ configId }: { configId?: string }) {
     error,
     saving,
     viewMode,
+    localName,
+    localDescription,
+    hasChanges,
+    expandedSections,
     setViewMode,
+    setLocalName,
+    setLocalDescription,
+    setExpandedSections,
+    toggleAllSections,
     handleSave,
+    handleUpdateMetadata,
     updateConfigField,
     copyToClipboard,
     refreshConfig,
-    loadConfigById,
     convertToConfigFile,
     translation,
   } = useConfigEditor();
-  // Load config by ID if provided
-  useEffect(() => {
-    if (configId) {
-      loadConfigById(configId);
-    }
-  }, [configId, loadConfigById]);
+
   const controlSize = useControlSize('md');
 
-  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>(() => {
-    const saved = localStorage.getItem('configEditorSectionsExpanded');
-    if (saved) {
-      return JSON.parse(saved);
-    }
-    return {
-      system: true,
-      display: false,
-      scsi: false,
-      network: false,
-      sound: false,
-      boot: false,
-      input: false,
-    };
-  });
-
-  useEffect(() => {
-    localStorage.setItem('configEditorSectionsExpanded', JSON.stringify(expandedSections));
-  }, [expandedSections]);
+  // Show empty view if no active config exists and no specific config is selected
+  if (configId === undefined && configName === null) {
+    return (
+      <EmptyView
+        icon={IoDocumentText}
+        title={translation.configEditor.noConfigSelected}
+        description={translation.configEditor.noConfigSelectedDescription}
+        actionText={translation.configEditor.goToSavedConfigs}
+        onAction={() => onTabChange?.('configs')}
+      />
+    );
+  }
 
   if (loading) {
     return (
@@ -93,37 +91,101 @@ export function ConfigEditor({ configId }: { configId?: string }) {
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-4">
-        <div className="w-full sm:w-auto">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-            {translation.configEditor.title}
-          </h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            {translation.configEditor.currentConfiguration} {configName || 'Default'}
-          </p>
-        </div>
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center w-full sm:w-auto">
-          <AnimatedSegmentedControl
-            options={[
-              { value: 'editor', label: translation.configEditor.viewModeEditor },
-              { value: 'raw', label: translation.configEditor.viewModeRaw },
-            ]}
-            value={viewMode}
-            onChange={setViewMode}
-            size={controlSize}
-          />
-          <div className="flex gap-2">
+      {/* Configuration Metadata Section */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+          {translation.configEditor.configurationDetailsTitle}
+        </h3>
+        
+        <div className="grid gap-4">
+          {/* Config Name and Description in same row */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex flex-col">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                {translation.configEditor.configurationNameLabel}
+              </label>
+              <Input
+                value={localName}
+                onChange={setLocalName}
+                size={controlSize}
+                placeholder={translation.configEditor.configurationNamePlaceholder}
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                {translation.configEditor.descriptionLabel}
+              </label>
+              <Input
+                value={localDescription}
+                onChange={setLocalDescription}
+                size={controlSize}
+                placeholder={translation.configEditor.configurationDescriptionPlaceholder}
+              />
+            </div>
+          </div>
+
+          {/* Save Button */}
+          <div className="flex justify-end pt-2">
             <Button
-              onClick={handleSave}
-              disabled={saving}
-              loading={saving}
+              onClick={handleUpdateMetadata}
+              disabled={!hasChanges}
               appearance="primary"
-              className="flex items-center gap-2"
               size={controlSize}
+              className="flex items-center gap-2"
             >
               <BiSave size={16} />
-              {saving ? translation.configEditor.saving : translation.configEditor.save}
+              {translation.configEditor.saveMetadata}
             </Button>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-3 sm:gap-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-4">
+          <div className="w-full sm:w-auto">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+              {translation.configEditor.title}
+            </h2>
+          </div>
+          <div className="flex flex-col gap-3 sm:gap-4 items-start sm:items-center w-full sm:w-auto sm:flex-row">
+            <Button
+              onClick={toggleAllSections}
+              size={controlSize}
+              className="flex items-center gap-2"
+            >
+              {Object.values(expandedSections).every(expanded => expanded) ? (
+                <BiChevronUp size={16} />
+              ) : (
+                <BiChevronDown size={16} />
+              )}
+              {Object.values(expandedSections).every(expanded => expanded)
+                ? translation.configEditor.sectionsCollapseAll
+                : translation.configEditor.sectionsExpandAll}
+            </Button>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center w-full sm:w-auto">
+              <AnimatedSegmentedControl
+                options={[
+                  { value: 'editor', label: translation.configEditor.viewModeEditor },
+                  { value: 'raw', label: translation.configEditor.viewModeRaw },
+                ]}
+                value={viewMode}
+                onChange={setViewMode}
+                size={controlSize}
+              />
+              <div className="flex gap-2">
+                <Button
+                  onClick={handleSave}
+                  disabled={saving}
+                  loading={saving}
+                  appearance="primary"
+                  className="flex items-center gap-2"
+                  size={controlSize}
+                >
+                  <BiSave size={16} />
+                  {saving ? translation.configEditor.saving : translation.configEditor.save}
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
