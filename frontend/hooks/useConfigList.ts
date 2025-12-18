@@ -125,23 +125,18 @@ export function useConfigListLogic(onEdit: (config: Configuration) => void) {
     if (draggedIndex === null) return;
 
     setDragOverIndex(index);
-
-    if (draggedIndex === index) return;
-
-    const newConfigs = [...configs];
-    const draggedItem = newConfigs[draggedIndex];
-    newConfigs.splice(draggedIndex, 1);
-    newConfigs.splice(index, 0, draggedItem);
-
-    setConfigs(newConfigs);
-    setDraggedIndex(index);
   }
 
   async function handleDragEnd() {
-    if (draggedIndex === null) return;
+    if (draggedIndex === null || dragOverIndex === null) return;
 
     try {
-      const orderedIds = configs.map(config => config.id);
+      const newConfigs = [...configs];
+      const draggedItem = newConfigs[draggedIndex];
+      newConfigs.splice(draggedIndex, 1);
+      newConfigs.splice(dragOverIndex, 0, draggedItem);
+
+      const orderedIds = newConfigs.map(config => config.id);
       console.log('Saving new order:', orderedIds);
       await database.updateConfigurationsOrder(orderedIds);
       console.log('Order saved successfully');
