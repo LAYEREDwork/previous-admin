@@ -4,6 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useState, useEffect, useMemo } from 'react';
 import { Message, Button } from 'rsuite';
 import { CenteredModal } from '../controls/CenteredModal';
+import { useControlSize } from '../../hooks/useControlSize';
 
 import { API_BASE_URL } from '../../lib/constants';
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
@@ -77,6 +78,7 @@ function padDataToWindow<T extends Record<string, any>>(data: T[], windowSize: n
 
 export function System() {
   const { translation } = useLanguage();
+  const controlSize = useControlSize();
   const { logout } = useAuth();
   const [systemInfo, setSystemInfo] = useState<SystemInfo | null>(null);
   const [loadingSystemInfo, setLoadingSystemInfo] = useState(true);
@@ -628,16 +630,18 @@ export function System() {
               <p className="text-sm text-red-800 dark:text-red-200 mb-4">
                 {translation.system.resetDescription}
               </p>
-              <Button
-                onClick={() => setShowResetModal(true)}
-                appearance="primary"
-                color="red"
-                disabled={isResetting}
-                loading={isResetting}
-                size="md"
-              >
-                {translation.system.reset}
-              </Button>
+              <div className="flex justify-end">
+                <Button
+                  onClick={() => setShowResetModal(true)}
+                  appearance="primary"
+                  color="red"
+                  disabled={isResetting}
+                  loading={isResetting}
+                  size={controlSize}
+                >
+                  {translation.system.reset}
+                </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -671,6 +675,7 @@ export function System() {
             onClick={() => setShowResetModal(false)}
             appearance="default"
             disabled={isResetting}
+            size={controlSize}
           >
             {translation.common.cancel}
           </Button>
@@ -680,6 +685,7 @@ export function System() {
             color="red"
             loading={isResetting}
             disabled={isResetting}
+            size={controlSize}
           >
             {isResetting ? translation.system.resetting : translation.system.resetConfirm}
           </Button>

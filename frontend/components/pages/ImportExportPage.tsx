@@ -29,10 +29,7 @@ export function ImportExport() {
       const configs = await database.getConfigurations();
       const activeConfig = configs.find((c) => c.is_active);
 
-      if (!activeConfig) {
-        showWarning(translation.importExport.noActiveConfigToExport);
-        return;
-      }
+      if (!activeConfig) { return; }
 
       const exportData = {
         name: activeConfig.name,

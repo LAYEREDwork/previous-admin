@@ -1,11 +1,13 @@
 import { BiLinkExternal, BiInfoCircle, BiRefresh, BiCheck, BiError, BiFile } from 'react-icons/bi';
 import { Link, Button } from 'rsuite';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useControlSize } from '../../hooks/useControlSize';
 import { useState, useEffect } from 'react';
 import { checkForUpdates, updateApplication, type VersionInfo } from '../../lib/versionManager';
 
 export function About() {
    const { translation } = useLanguage();
+   const controlSize = useControlSize();
    const [versionInfo, setVersionInfo] = useState<VersionInfo | null>(null);
    const [checking, setChecking] = useState(true);
    const [updating, setUpdating] = useState(false);
@@ -55,7 +57,7 @@ export function About() {
          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                <BiInfoCircle size={20} />
-               {translation.system.appVersion}
+               {translation.about.appVersion}
             </h3>
             <div className="space-y-4">
                {checking ? (
@@ -120,8 +122,9 @@ export function About() {
                                     loading={updating}
                                     appearance="primary"
                                     color="orange"
+                                    size={controlSize}
                                     block
-                                    className="flex items-center justify-center gap-2"
+                                    className="flex items-center justify-center gap-2 cursor-pointer"
                                  >
                                     <BiRefresh size={16} />
                                     {updating ? translation.system.updating : translation.system.updateNow}
@@ -139,8 +142,9 @@ export function About() {
                      <Button
                         onClick={handleCheckForUpdates}
                         appearance="default"
+                        size={controlSize}
                         block
-                        className="flex items-center justify-center gap-2"
+                        className="flex items-center justify-center gap-2 cursor-pointer"
                      >
                         <BiRefresh size={16} />
                         {translation.system.checkForUpdates}
