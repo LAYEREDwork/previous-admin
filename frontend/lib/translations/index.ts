@@ -202,7 +202,6 @@ export interface Translations {
   system: {
     title: string;
     subtitle: string;
-    appVersion: string;
     currentVersion: string;
     checkingForUpdates: string;
     updateAvailable: string;
@@ -249,6 +248,7 @@ export interface Translations {
   about: {
     title: string;
     subtitle: string;
+    appVersion: string;
     layeredResources: string;
     previousResources: string;
     previousSite: string;

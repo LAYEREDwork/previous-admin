@@ -13,6 +13,7 @@ export const it: Translations = {
     previousSourceforge: 'Previous su SourceForge',
     subtitle: 'Gestore di configurazione NeXT Computer',
     title: `Informazioni su ${APP_NAME}`,
+    appVersion: `Versione di ${APP_NAME}`,
   },
   common: {
     cancel: 'Annulla',
@@ -187,7 +188,6 @@ export const it: Translations = {
   system: {
     title: 'Informazioni di sistema',
     subtitle: 'Versione e dettagli del sistema',
-    appVersion: 'Versione applicazione',
     currentVersion: 'Versione corrente',
     checkingForUpdates: 'Controllo aggiornamenti...',
     updateAvailable: 'Aggiornamento disponibile',
