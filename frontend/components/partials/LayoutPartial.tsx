@@ -78,7 +78,7 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
         </div>
       </div>
 
-      <div className="hidden md:block md:sticky md:top-0 z-50 bg-white/75 dark:bg-next-panel/75 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-next-panel/60 border-b border-gray-200 dark:border-next-border shadow-sm transition-colors duration-200">
+      <div className="hidden md:block md:sticky md:top-0 z-50 bg-white/75 dark:bg-next-panel/75 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-next-panel/60 border-b border-gray-200 dark:border-next-border shadow-md transition-colors duration-200">
         <header className="border-b border-gray-200/50 dark:border-gray-700/50">
           <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-3 sm:py-6 gap-3 sm:gap-0">

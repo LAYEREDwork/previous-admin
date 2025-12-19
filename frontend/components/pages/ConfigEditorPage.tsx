@@ -106,7 +106,7 @@ export function ConfigEditor({ configId, onTabChange }: { configId?: string; onT
   return (
     <div className="space-y-6 sm:space-y-8">
       {/* Configuration Metadata Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
           {translation.configEditor.configurationDetailsTitle}
         </h3>
@@ -209,7 +209,7 @@ export function ConfigEditor({ configId, onTabChange }: { configId?: string; onT
       </div>
 
       {viewMode === 'raw' ? (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
               {translation.configEditor.content}
@@ -534,7 +534,7 @@ function Section({ title, children, expanded, onToggle }: { title: string; child
       collapsible
       expanded={expanded}
       onSelect={() => onToggle(!expanded)}
-      className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:bg-gray-50/30 dark:hover:bg-gray-800/30 transition-colors duration-200"
+      className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 hover:bg-gray-50/30 dark:hover:bg-gray-800/30 transition-colors duration-200"
     >
       <div className="p-2 sm:p-3">
         <div className="grid gap-4 sm:gap-6">{children}</div>

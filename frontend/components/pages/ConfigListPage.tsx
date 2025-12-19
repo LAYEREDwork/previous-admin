@@ -144,13 +144,13 @@ export function ConfigList({ onEdit }: ConfigListProps) {
               onDragOver={(e) => handleDragOver(e, index)}
               onDragEnd={handleDragEnd}
               onDragLeave={handleDragLeave}
-              className={`bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-1 sm:p-3 hover:shadow-md transition-all ${configs.length > 1 ? 'cursor-move' : ''
+              className={`bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-1 sm:p-3 hover:shadow-md transition-all ${configs.length > 1 ? 'cursor-move' : ''
                 } ${draggedIndex === index ? 'opacity-50 scale-95' : ''} ${dragOverIndex === index && draggedIndex !== index ? 'border-next-accent' : ''
                 } relative`}
             >
               {config.is_active && (
                 <div className="absolute top-0 right-0 z-10">
-                  <span className="inline-block px-2 py-0.5 text-xs font-medium bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-tr-lg rounded-bl-lg shadow-sm border-b border-l border-green-200 dark:border-green-800">
+                  <span className="inline-block px-2 py-0.5 text-xs font-medium bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-tr-lg rounded-bl-lg shadow-md border-b border-l border-green-200 dark:border-green-800">
                     {translation.configList.active}
                   </span>
                 </div>

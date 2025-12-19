@@ -51,14 +51,14 @@ export function System() {
       </div>
 
       {loadingSystemInfo ? (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
           <div className="flex items-center gap-2 text-next-accent">
             <BiRefresh size={16} className="animate-spin" />
             <span className="text-sm">{translation.system.loading}</span>
           </div>
         </div>
       ) : systemInfoError ? (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
           <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
             <BiError size={16} />
             <span className="text-sm">{translation.system.errorLoading}</span>
@@ -66,7 +66,7 @@ export function System() {
         </div>
       ) : systemInfo ? (
         <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <BiHdd size={20} className="text-gray-600 dark:text-gray-400" />
               {translation.system.hostInfo}
@@ -187,7 +187,7 @@ export function System() {
           <div className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* CPU Load Chart */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                     <BiChip size={20} className="text-next-accent" />
@@ -248,10 +248,10 @@ export function System() {
               </div>
 
               {/* Memory Chart */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                    <BiHdd size={20} className="text-green-600 dark:text-green-400" />
+                    <BiChip size={20} className="text-green-600 dark:text-green-400" />
                     {translation.system.memory}
                   </h3>
                   <div className="text-right">
@@ -283,7 +283,7 @@ export function System() {
               </div>
 
               {/* Network Traffic Chart */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <BiGlobe size={20} className="text-cyan-600 dark:text-cyan-400" />
                   {translation.system.networkTraffic}
@@ -320,7 +320,7 @@ export function System() {
               </div>
 
               {/* Disk IO Chart */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <BiHdd size={20} className="text-orange-600 dark:text-orange-400" />
                   Disk I/O
@@ -359,7 +359,7 @@ export function System() {
 
             {/* Disk Space */}
             {systemInfo.disks && systemInfo.disks.length > 0 && (
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
                   <BiHdd size={20} className="text-orange-600 dark:text-orange-400" />
                   {translation.system.disks}
@@ -424,7 +424,7 @@ export function System() {
           </div>
         </div>
       ) : (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
           <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
             <span className="text-sm">Unable to load system information</span>
           </div>
