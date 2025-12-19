@@ -1,0 +1,22 @@
+pipeline:
+  update_badges:
+    image: alpine:latest
+    commands:
+      - apk add --no-cache bash findutils sed git
+      - chmod +x update_badges.sh
+      - ./update_badges.sh
+      - |
+        if git diff --quiet README.md; then
+          echo "Keine Änderungen an README.md"
+        else
+          git config --global user.email "ci@codeberg.org"
+          git config --global user.name "Woodpecker CI"
+          git add README.md
+          git commit -m "Update badges via CI"
+          git push
+        fi
+    when:
+      branch: main
+      event: push
+      path:
+        exclude: [README.md]  # Verhindert Schleifen, wenn nur README geändert wird
