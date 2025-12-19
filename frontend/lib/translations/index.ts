@@ -150,6 +150,7 @@ export interface Translations {
     export: string;
     exportActiveConfig: string;
     exportAllConfigs: string;
+    exportButton: string;
     exportCompleteDatabase: string;
     exportDatabase: string;
     exportDatabaseDescription: string;
@@ -159,12 +160,15 @@ export interface Translations {
     exportingDatabase: string;
     exportsAllData: string;
     import: string;
+    importButton: string;
     importDatabase: string;
     importDatabaseDescription: string;
     importDescription: string;
     importError: string;
+    errorImport: string;
     importFailed: string;
     importFromEmulator: string;
+    importSuccess: string;
     importedConfigName: string;
     importedConfiguration: string;
     importedCount: string;
@@ -176,6 +180,7 @@ export interface Translations {
     invalidJson: string;
     loading: string;
     noActiveConfig: string;
+    noActiveConfigToExport: string;
     noConfigsToExport: string;
     noValidConfigs: string;
     note1: string;
@@ -185,11 +190,16 @@ export interface Translations {
     notesTitle: string;
     selectConfigFile: string;
     selectDatabaseFile: string;
+    skippingInvalid: string;
+    successExport: string;
+    successImport: string;
     successExportActiveConfig: string;
     syncHelpApply: string;
     syncHelpImport: string;
     syncTitle: string;
+    syncError: string;
     syncToEmulator: string;
+    syncSuccess: string;
     syncing: string;
     title: string;
     warningReplaceAll: string;
@@ -255,6 +265,7 @@ export interface Translations {
     updateAvailable: string;
     updateError: string;
     updateNow: string;
+    upToDate: string;
     updating: string;
     uptime: string;
   };
