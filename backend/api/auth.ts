@@ -25,9 +25,7 @@ const router = express.Router();
  * const { setupRequired } = await res.json();
  */
 router.get('/setup-required', (req: any, res: any) => {
-  const setupRequired = !hasAnyUsers();
-  console.log('[Auth] Backend: Setup required check - result:', setupRequired);
-  res.json({ setupRequired });
+  res.json({ setupRequired: !hasAnyUsers() });
 });
 
 /**
@@ -55,30 +53,24 @@ router.get('/setup-required', (req: any, res: any) => {
  * });
  */
 router.post('/setup', async (req: any, res: any) => {
-  console.log('[Auth] Backend: Setup request received, body:', { username: req.body.username, password: '***' });
   try {
     if (hasAnyUsers()) {
-      console.log('[Auth] Backend: Setup failed - users already exist');
       return res.status(400).json({ error: 'Setup already completed' });
     }
 
     const { username, password } = req.body;
-    console.log('[Auth] Backend: Creating user:', username);
 
     const user = await createUser({ username, password });
-    console.log('[Auth] Backend: User created successfully:', user.username);
 
     req.session.username = user.username;
     req.session.userId = user.id;
-    console.log('[Auth] Backend: Session established for user:', user.username);
 
     res.json({
       success: true,
       username: user.username
     });
-    console.log('[Auth] Backend: Setup completed successfully');
   } catch (error) {
-    console.error('[Auth] Backend: Setup error:', error);
+    console.error('Setup error:', error);
     res.status(400).json({ error: (error as Error).message });
   }
 });
@@ -107,27 +99,22 @@ router.post('/setup', async (req: any, res: any) => {
  */
 router.post('/login', async (req: any, res: any) => {
   const { username, password } = req.body;
-  console.log('[Auth] Backend: Login attempt for user:', username);
 
   try {
     const result = await authenticateUser(username, password);
-    console.log('[Auth] Backend: Authentication result:', result.success ? 'success' : 'failed');
 
     if (!result.success) {
-      console.log('[Auth] Backend: Login failed - invalid credentials');
       return res.status(401).json({ error: result.error });
     }
 
     req.session.username = result.user.username;
     req.session.userId = result.user.id;
-    console.log('[Auth] Backend: Session established for user:', result.user.username);
 
     res.json({
       username: result.user.username
     });
-    console.log('[Auth] Backend: Login completed successfully');
   } catch (error) {
-    console.error('[Auth] Backend: Login error:', error);
+    console.error('Login error:', error);
     res.status(500).json({ error: 'Authentication failed' });
   }
 });
@@ -173,10 +160,6 @@ router.post('/logout', (req: any, res: any) => {
  * const { authenticated, username, setupRequired } = await res.json();
  */
 router.get('/session', (req: any, res: any) => {
-  const hasSession = !!req.session.username;
-  const setupRequired = !hasAnyUsers();
-  console.log('[Auth] Backend: Session check - authenticated:', hasSession, 'setupRequired:', setupRequired);
-
   if (req.session.username) {
     res.json({
       authenticated: true,
@@ -186,7 +169,7 @@ router.get('/session', (req: any, res: any) => {
   } else {
     res.json({
       authenticated: false,
-      setupRequired: setupRequired
+      setupRequired: !hasAnyUsers()
     });
   }
 });

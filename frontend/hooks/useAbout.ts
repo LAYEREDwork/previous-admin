@@ -16,30 +16,26 @@ export function useAboutLogic() {
   }, []);
 
   const handleCheckForUpdates = async () => {
-    console.log('[Update] Hook: Starting version check...');
     setChecking(true);
     setError(false);
     try {
       const info = await checkForUpdates();
       setVersionInfo(info);
-      console.log('[Update] Hook: Version check completed successfully');
     } catch (err) {
       setError(true);
-      console.error('[Update] Hook: Error during version check:', err);
+      console.error('Error checking for updates:', err);
     } finally {
       setChecking(false);
     }
   };
 
   const handleUpdate = async () => {
-    console.log('[Update] Hook: Starting update process...');
     setUpdating(true);
     setError(false);
     try {
       await updateApplication();
-      console.log('[Update] Hook: Update initiated successfully');
     } catch (err) {
-      console.error('[Update] Hook: Error during update:', err);
+      console.error('Error updating application:', err);
       setError(true);
       setUpdating(false);
     }

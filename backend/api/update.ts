@@ -11,37 +11,52 @@ const router = express.Router();
 
 /**
  * POST /api/update
- * Check for updates and inform user to update manually
+ * Pull latest changes from git repository and restart application
  *
- * Instructs the user to perform updates manually for security reasons.
- * No automatic updates are performed via API.
+ * Performs git pull on the current repository and gracefully restarts
+ * the application. The response is sent before restart begins.
  *
- * Requires authentication.
+ * Requires authentication and a valid git repository.
  *
  * @authentication {boolean} required
  *
  * @returns {Object}
- *   - success {boolean}: false (update not performed)
- *   - message {string}: Instruction to update manually
+ *   - success {boolean}: true if update command succeeded
+ *   - message {string}: Status message about restart
  *
- * @throws {500} If system error occurs
+ * @throws {400} If not a git repository (git status fails)
+ * @throws {500} If git pull fails or system error occurs
  *
  * @side-effects
- *   - None (no automatic update or restart)
+ *   - Pulls latest changes from git remote
+ *   - Restarts the application process after 1 second delay
+ *   - All active connections will be closed
  *
  * @example
  * const res = await fetch('/api/update', { method: 'POST' });
  * const { success, message } = await res.json();
- * // success will be false, message will instruct manual update
+ * // Application will restart automatically
  */
 router.post('/', requireAuth, async (req: any, res: any) => {
-  console.log('[Update] Backend: Starting update check...');
   try {
-    console.log('[Update] Backend: Update not implemented via API');
-    res.json({ success: false, message: 'Update must be performed manually' });
+    const adminDir = process.cwd();
+    const { stdout: gitStatus } = await execAsync('git status', { cwd: adminDir });
+
+    if (!gitStatus) {
+      return res.status(400).json({ error: 'Not a git repository' });
+    }
+
+    await execAsync('git pull', { cwd: adminDir });
+
+    res.json({ success: true, message: 'Update completed. The application will restart shortly.' });
+
+    setTimeout(() => {
+      console.log('Restarting application after git pull...');
+      process.exit(0);
+    }, 1000);
   } catch (error) {
-    console.error('[Update] Backend: Error checking for updates:', error);
-    res.status(500).json({ error: (error as Error).message || 'Failed to check for updates' });
+    console.error('Error updating application:', error);
+    res.status(500).json({ error: (error as Error).message || 'Failed to update application' });
   }
 });
 
@@ -63,24 +78,20 @@ router.get('/version', requireAuth, async (req: any, res: any) => {
   const REPO_API_URL = 'https://codeberg.org/api/v1/repos/phranck/previous-admin';
   const REPO_URL = 'https://codeberg.org/phranck/previous-admin';
 
-  console.log('[Update] Backend: Checking for version updates...');
   try {
     // Read current version from package.json
     const packageJson = await import('../../package.json', { with: { type: 'json' } });
     const currentVersion = packageJson.default.version || '1.0.0';
-    console.log('[Update] Backend: Current version:', currentVersion);
 
-    // Fetch releases from Codeberg API
-    console.log('[Update] Backend: Fetching releases from Codeberg API...');
-    const releasesResponse = await fetch(`${REPO_API_URL}/releases`, {
+    // Fetch tags from Codeberg API
+    const tagsResponse = await fetch(`${REPO_API_URL}/tags`, {
       headers: {
         'Accept': 'application/json',
         'User-Agent': 'Previous-Admin-Backend',
       },
     });
 
-    if (!releasesResponse.ok) {
-      console.log('[Update] Backend: Failed to fetch releases from Codeberg API');
+    if (!tagsResponse.ok) {
       return res.json({
         currentVersion,
         latestVersion: null,
@@ -91,11 +102,9 @@ router.get('/version', requireAuth, async (req: any, res: any) => {
       });
     }
 
-    const releases = await releasesResponse.json() as any[];
-    console.log('[Update] Backend: Retrieved', releases.length, 'releases from repository');
+    const tags = await tagsResponse.json();
 
-    if (!Array.isArray(releases) || releases.length === 0) {
-      console.log('[Update] Backend: No releases found');
+    if (!Array.isArray(tags) || tags.length === 0) {
       return res.json({
         currentVersion,
         latestVersion: null,
@@ -106,28 +115,63 @@ router.get('/version', requireAuth, async (req: any, res: any) => {
       });
     }
 
-    const latestRelease = releases[0];
-    const latestVersion = latestRelease.tag_name.replace(/^v/, '');
+    const latestTag = tags[0];
+    const latestVersion = latestTag.name.replace(/^v/, '');
     const updateAvailable = compareVersions(latestVersion, currentVersion) > 0;
-    console.log('[Update] Backend: Latest version:', latestVersion, 'Update available:', updateAvailable);
 
-    // Find current version release
-    const currentRelease = releases.find((release: any) => 
-      release.tag_name === `v${currentVersion}` || release.tag_name === currentVersion
+    // Find current version tag
+    const currentTag = tags.find((tag: any) => 
+      tag.name === `v${currentVersion}` || tag.name === currentVersion
     );
 
-    const result = {
+    // Fetch release notes for latest version
+    let releaseNotes: string | null = null;
+    if (latestTag.commit?.sha) {
+      try {
+        const commitResponse = await fetch(`${REPO_API_URL}/git/commits/${latestTag.commit.sha}`, {
+          headers: {
+            'Accept': 'application/json',
+            'User-Agent': 'Previous-Admin-Backend',
+          },
+        });
+        if (commitResponse.ok) {
+          const commitData = await commitResponse.json();
+          releaseNotes = (commitData as any).message || null;
+        }
+      } catch (err) {
+        console.error('Error fetching latest commit message:', err);
+      }
+    }
+
+    // Fetch release notes for current version
+    let currentReleaseNotes: string | null = null;
+    if (currentTag?.commit?.sha) {
+      try {
+        const commitResponse = await fetch(`${REPO_API_URL}/git/commits/${currentTag.commit.sha}`, {
+          headers: {
+            'Accept': 'application/json',
+            'User-Agent': 'Previous-Admin-Backend',
+          },
+        });
+        if (commitResponse.ok) {
+          const commitData = await commitResponse.json();
+          currentReleaseNotes = (commitData as any).message || null;
+        }
+      } catch (err) {
+        console.error('Error fetching current commit message:', err);
+      }
+    }
+
+    res.json({
       currentVersion,
       latestVersion,
       updateAvailable,
-      releaseUrl: latestRelease.html_url,
-      releaseNotes: latestRelease.body || null,
-      currentReleaseNotes: currentRelease?.body || null,
-    };
-    console.log('[Update] Backend: Version check completed:', result);
-    res.json(result);
+      releaseUrl: `${REPO_URL}/releases/tag/${latestTag.name}`,
+      releaseNotes,
+      currentReleaseNotes,
+    });
   } catch (error) {
-    console.error('[Update] Backend: Error checking for updates:', error);
+    console.error('Error checking for updates:', error);
     res.status(500).json({ error: 'Failed to check for updates' });
   }
 });

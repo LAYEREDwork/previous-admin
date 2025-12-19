@@ -13,27 +13,6 @@
  * @module backend
  */
 
-import fs from 'fs';
-import path from 'path';
-
-// Redirect all console output to backend.log
-const logFile = path.join(process.cwd(), 'backend.log');
-const logStream = fs.createWriteStream(logFile, { flags: 'a' });
-
-// Redirect stdout and stderr to the log file
-const originalStdoutWrite = process.stdout.write;
-const originalStderrWrite = process.stderr.write;
-
-process.stdout.write = function(chunk: any, encoding?: any, callback?: any) {
-  logStream.write(chunk, encoding);
-  return originalStdoutWrite.call(process.stdout, chunk, encoding, callback);
-};
-
-process.stderr.write = function(chunk: any, encoding?: any, callback?: any) {
-  logStream.write(chunk, encoding);
-  return originalStderrWrite.call(process.stderr, chunk, encoding, callback);
-};
-
 import crypto from 'crypto';
 import express, { Express, Request, Response } from 'express';
 import { createServer, Server as HttpServer } from 'http';
