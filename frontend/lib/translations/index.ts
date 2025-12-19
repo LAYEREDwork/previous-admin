@@ -86,8 +86,12 @@ export interface Translations {
     errorDeletingConfiguration: string;
     errorSettingActiveConfiguration: string;
     configurationExportedSuccessfully: string;
+    configurationDuplicatedSuccessfully: string;
+    errorDuplicatingConfiguration: string;
     errorExportingConfiguration: string;
     errorUpdatingOrder: string;
+    duplicate: string;
+    copySuffix: string;
   };
   configEditor: {
     title: string;
@@ -147,6 +151,9 @@ export interface Translations {
     };
     noConfigSelected: string;
     noConfigSelectedDescription: string;
+    noSavedConfigs: string;
+    noSavedConfigsDescription: string;
+    createFirstConfig: string;
     goToSavedConfigs: string;
     configurationDetailsTitle: string;
     configurationNameLabel: string;

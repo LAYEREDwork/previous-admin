@@ -1,6 +1,6 @@
-import { BiPlus, BiTrash, BiEdit, BiMenu, BiCheckCircle, BiCircle, BiUpload } from 'react-icons/bi';
+import { BiPlus, BiTrash, BiEdit, BiMenu, BiCheckCircle, BiCircle, BiUpload, BiCopy } from 'react-icons/bi';
 import { IoDocumentsOutline, IoDocumentText } from 'react-icons/io5';
-import { Button, Input, IconButton } from 'rsuite';
+import { Button, Input, IconButton, Toggle } from 'rsuite';
 
 // Components
 import { CenteredModal } from '../controls/CenteredModal';
@@ -36,6 +36,7 @@ export function ConfigList({ onEdit }: ConfigListProps) {
     newConfigNameRef,
     createConfig,
     deleteConfig,
+    duplicateConfig,
     setActiveConfig,
     exportSingleConfig,
     handleDragStart,
@@ -148,28 +149,34 @@ export function ConfigList({ onEdit }: ConfigListProps) {
                 } relative`}
             >
               {config.is_active && (
-                <div className="absolute top-0 left-0 z-10">
-                  <span className="inline-block px-2 py-0.5 text-xs font-medium bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-tl-lg rounded-br-lg shadow-sm border-b border-r border-green-200 dark:border-green-800">
+                <div className="absolute top-0 right-0 z-10">
+                  <span className="inline-block px-2 py-0.5 text-xs font-medium bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-tr-lg rounded-bl-lg shadow-sm border-b border-l border-green-200 dark:border-green-800">
                     {translation.configList.active}
                   </span>
                 </div>
               )}
 
-              <div className={`flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 ${config.is_active ? 'pt-6 sm:pt-0' : ''}`}>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
                 <div className="flex items-start sm:items-center gap-2 sm:gap-3 flex-1 min-w-0">
-                  {configs.length > 1 && (
-                    <div className="text-gray-400 dark:text-gray-500 flex-shrink-0 mt-0.5 sm:mt-0">
-                      <BiMenu size={18} className="sm:w-5 sm:h-5" />
-                    </div>
+                  {!config.is_active && (
+                    <IconButton
+                      onClick={() => setActiveConfig(config.id)}
+                      icon={<BiCircle size={21} />}
+                      appearance="subtle"
+                      size="sm"
+                      title="Set as active"
+                      className="text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
+                    />
                   )}
-                  <IconButton
-                    onClick={() => setActiveConfig(config.id)}
-                    icon={config.is_active ? <BiCheckCircle size={18} className="text-green-500" /> : <BiCircle size={18} />}
-                    appearance="subtle"
-                    size="sm"
-                    title={config.is_active ? 'Active configuration' : 'Set as active'}
-                    className="text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
-                  />
+                  {config.is_active && (
+                    <IconButton
+                      icon={<BiCheckCircle size={21} />}
+                      size="sm"
+                      appearance="subtle"
+                      disabled
+                      className="!text-green-700 dark:!text-green-300 !cursor-default"
+                    />
+                  )}
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-0.5 sm:mb-1">
                       <h3 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white truncate">
@@ -183,24 +190,61 @@ export function ConfigList({ onEdit }: ConfigListProps) {
                     )}
                   </div>
                 </div>
-                <div className="flex flex-row justify-end gap-2 w-full sm:w-auto mt-2 sm:mt-0">
+                <div className="md:hidden flex justify-between gap-1 mt-2">
+                  <IconButton
+                    icon={<BiUpload size={22} />}
+                    size="sm"
+                    appearance="subtle"
+                    onClick={() => exportSingleConfig(config)}
+                    title="Export configuration"
+                  />
+                  <IconButton
+                    icon={<BiCopy size={22} />}
+                    size="sm"
+                    appearance="subtle"
+                    onClick={() => duplicateConfig(config)}
+                    title={translation.configList.duplicate}
+                  />
+                  <IconButton
+                    icon={<BiEdit size={22} />}
+                    size="sm"
+                    appearance="subtle"
+                    onClick={() => onEdit(config)}
+                    title={translation.configList.edit}
+                  />
+                  <IconButton
+                    icon={<BiTrash size={22} />}
+                    size="sm"
+                    appearance="subtle"
+                    onClick={() => deleteConfig(config.id)}
+                    title={translation.configList.delete}
+                  />
+                </div>
+                <div className="hidden md:flex absolute bottom-2 right-2 flex-row gap-2">
                   <IconButton
                     icon={<BiUpload />}
-                    size="sm"
+                    size="md"
                     appearance="default"
                     onClick={() => exportSingleConfig(config)}
                     title="Export configuration"
                   />
                   <IconButton
+                    icon={<BiCopy />}
+                    size="md"
+                    appearance="default"
+                    onClick={() => duplicateConfig(config)}
+                    title={translation.configList.duplicate}
+                  />
+                  <IconButton
                     icon={<BiEdit />}
-                    size="sm"
+                    size="md"
                     appearance="default"
                     onClick={() => onEdit(config)}
                     title={translation.configList.edit}
                   />
                   <IconButton
                     icon={<BiTrash />}
-                    size="sm"
+                    size="md"
                     appearance="default"
                     onClick={() => deleteConfig(config.id)}
                     title={translation.configList.delete}

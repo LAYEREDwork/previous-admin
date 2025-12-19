@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 
 // Hooks
+import { useConfig } from '../contexts/ConfigContext';
 import { useNotification } from '../contexts/NotificationContext';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -16,6 +17,7 @@ import { downloadFile, generateConfigFilename } from '../lib/utils';
 export function useConfigListLogic(onEdit: (config: Configuration) => void) {
   const { showSuccess, showError, showConfirm } = useNotification();
   const { translation } = useLanguage();
+  const { refreshConfig } = useConfig();
 
   const [configs, setConfigs] = useState<Configuration[]>([]);
   const [loading, setLoading] = useState(true);
@@ -56,18 +58,23 @@ export function useConfigListLogic(onEdit: (config: Configuration) => void) {
   async function createConfig() {
     if (!newConfigName.trim()) return;
 
+    const isFirstConfig = configs.length === 0;
+    console.log('Creating config:', newConfigName, 'isFirstConfig:', isFirstConfig);
+
     try {
       await database.createConfiguration(
         newConfigName,
         newConfigDesc,
         DEFAULT_CONFIG,
-        configs.length === 0
+        isFirstConfig
       );
 
       setShowNewConfig(false);
       setNewConfigName('');
       setNewConfigDesc('');
       await loadConfigs();
+      // Refresh the active config in ConfigContext
+      await refreshConfig();
     } catch (error) {
       console.error('Error creating config:', error);
       showError(translation.configList.errorCreatingConfiguration);
@@ -113,6 +120,28 @@ export function useConfigListLogic(onEdit: (config: Configuration) => void) {
     } catch (error) {
       console.error('Error exporting config:', error);
       showError(translation.configList.errorExportingConfiguration);
+    }
+  }
+
+  async function duplicateConfig(config: Configuration) {
+    try {
+      const duplicatedConfig = {
+        name: config.name + translation.configList.copySuffix,
+        description: config.description,
+        config_data: config.config_data,
+      };
+
+      await database.createConfiguration(
+        duplicatedConfig.name,
+        duplicatedConfig.description,
+        duplicatedConfig.config_data,
+        false
+      );
+      loadConfigs();
+      showSuccess(translation.configList.configurationDuplicatedSuccessfully || 'Configuration duplicated successfully');
+    } catch (error) {
+      console.error('Error duplicating config:', error);
+      showError(translation.configList.errorDuplicatingConfiguration || 'Error duplicating configuration');
     }
   }
 
@@ -176,6 +205,7 @@ export function useConfigListLogic(onEdit: (config: Configuration) => void) {
     loadConfigs,
     createConfig,
     deleteConfig,
+    duplicateConfig,
     setActiveConfig,
     exportSingleConfig,
     handleDragStart,

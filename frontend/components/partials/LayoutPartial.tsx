@@ -21,11 +21,27 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
   const { logout } = useAuth();
   const { translation } = useLanguage();
   const [version, setVersion] = useState<string>('');
+  const [isPortrait, setIsPortrait] = useState<boolean>(false);
 
   const controlSize = useControlSize('sm');
 
   useEffect(() => {
     getCurrentVersion().then(setVersion);
+  }, []);
+
+  useEffect(() => {
+    const checkOrientation = () => {
+      setIsPortrait(window.innerHeight > window.innerWidth);
+    };
+
+    checkOrientation();
+    window.addEventListener('resize', checkOrientation);
+    window.addEventListener('orientationchange', checkOrientation);
+
+    return () => {
+      window.removeEventListener('resize', checkOrientation);
+      window.removeEventListener('orientationchange', checkOrientation);
+    };
   }, []);
 
 
@@ -108,7 +124,7 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
         <MainMenuPartial currentTab={currentTab} onTabChange={onTabChange} />
       </div>
 
-      <main className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 flex-grow w-full pb-20 md:pb-8">
+      <main className={`max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 flex-grow w-full pb-16 md:pb-8 ${isPortrait && window.innerWidth < 768 ? 'pb-20' : ''}`}>
         {children}
       </main>
 
@@ -117,7 +133,8 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
         <MainMenuPartial currentTab={currentTab} onTabChange={onTabChange} />
       </div>
 
-      <FooterPartial />
+      {/* Footer nur auf Desktop oder im Landscape anzeigen */}
+      {!(window.innerWidth < 768 && isPortrait) && <FooterPartial />}
     </div>
   );
 }

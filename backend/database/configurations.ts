@@ -156,34 +156,55 @@ export function createConfiguration(
   const now = new Date().toISOString();
   const database = getDatabase();
 
-  // Get next sort order
-  const maxOrderResult = database
-    .prepare('SELECT COALESCE(MAX(sort_order), -1) + 1 as nextOrder FROM configurations')
-    .get() as { nextOrder: number };
+  console.log('Creating configuration:', request.name, 'is_active:', request.is_active);
 
-  database
-    .prepare(`
-      INSERT INTO configurations (id, name, description, config_data, is_active, created_at, updated_at, created_by, sort_order)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `)
-    .run(
-      configurationId,
-      request.name,
-      request.description || '',
-      JSON.stringify(request.config_data),
-      0,
-      now,
-      now,
-      userId,
-      maxOrderResult.nextOrder
-    );
+  database.prepare('BEGIN TRANSACTION').run();
 
-  const createdConfig = getConfiguration(configurationId);
-  if (!createdConfig) {
-    throw new Error('Failed to retrieve created configuration');
+  try {
+    // If this config should be active, deactivate all others first
+    if (request.is_active) {
+      console.log('Deactivating all other configs for user:', userId);
+      database
+        .prepare('UPDATE configurations SET is_active = 0 WHERE created_by = ?')
+        .run(userId);
+    }
+
+    // Get next sort order
+    const maxOrderResult = database
+      .prepare('SELECT COALESCE(MAX(sort_order), -1) + 1 as nextOrder FROM configurations')
+      .get() as { nextOrder: number };
+
+    database
+      .prepare(`
+        INSERT INTO configurations (id, name, description, config_data, is_active, created_at, updated_at, created_by, sort_order)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `)
+      .run(
+        configurationId,
+        request.name,
+        request.description || '',
+        JSON.stringify(request.config_data),
+        request.is_active ? 1 : 0,
+        now,
+        now,
+        userId,
+        maxOrderResult.nextOrder
+      );
+
+    database.prepare('COMMIT').run();
+
+    const createdConfig = getConfiguration(configurationId);
+    if (!createdConfig) {
+      throw new Error('Failed to retrieve created configuration');
+    }
+
+    console.log('Created config:', createdConfig.name, 'is_active:', createdConfig.is_active);
+
+    return createdConfig;
+  } catch (error) {
+    database.prepare('ROLLBACK').run();
+    throw error;
   }
-
-  return createdConfig;
 }
 
 /**

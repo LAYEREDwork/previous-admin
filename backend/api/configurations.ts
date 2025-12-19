@@ -133,6 +133,8 @@ router.post('/', requireAuth, (req: any, res: any) => {
   try {
     const { name, description, config_data, is_active } = req.body;
 
+    console.log('API create config:', name, 'is_active:', is_active);
+
     if (!name || !config_data) {
       return res.status(400).json({ error: 'Name and config_data are required' });
     }
@@ -143,6 +145,8 @@ router.post('/', requireAuth, (req: any, res: any) => {
       config_data: typeof config_data === 'string' ? JSON.parse(config_data) : config_data,
       is_active: Boolean(is_active)
     });
+
+    console.log('API created config:', config.name, 'is_active:', config.is_active);
 
     res.status(201).json({
       configuration: config
@@ -267,6 +271,35 @@ router.put('/order/update', requireAuth, (req: any, res: any) => {
   } catch (error) {
     console.error('Error updating configurations order:', error);
     res.status(500).json({ error: 'Failed to update configurations order' });
+  }
+});
+
+/**
+ * POST /api/configurations/deactivate-all
+ * Deactivate all configurations
+ *
+ * @authentication required
+ * @returns {Object} Success message
+ */
+router.post('/deactivate-all', requireAuth, (req: any, res: any) => {
+  console.log('Deactivate-all route called for user:', req.session.userId);
+  try {
+    const database = getDatabase();
+    
+    // Deactivate all configurations for this user
+    if (req.session.userId !== undefined) {
+      database
+        .prepare('UPDATE configurations SET is_active = 0 WHERE created_by = ?')
+        .run(req.session.userId);
+    } else {
+      database.prepare('UPDATE configurations SET is_active = 0').run();
+    }
+
+    console.log('Successfully deactivated all configurations for user:', req.session.userId);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error deactivating all configurations:', error);
+    res.status(500).json({ error: 'Failed to deactivate all configurations' });
   }
 });
 

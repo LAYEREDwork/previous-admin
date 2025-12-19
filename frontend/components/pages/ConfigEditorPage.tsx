@@ -23,6 +23,7 @@ export function ConfigEditor({ configId, onTabChange }: { configId?: string; onT
     localName,
     localDescription,
     hasChanges,
+    hasSavedConfigs,
     expandedSections,
     setViewMode,
     setLocalName,
@@ -36,12 +37,25 @@ export function ConfigEditor({ configId, onTabChange }: { configId?: string; onT
     refreshConfig,
     convertToConfigFile,
     translation,
-  } = useConfigEditor();
+  } = useConfigEditor(configId);
 
   const controlSize = useControlSize('md');
 
-  // Show empty view if no active config exists and no specific config is selected
-  if (configId === undefined && configName === null) {
+  // Show empty view if no saved configs exist
+  if (hasSavedConfigs === false || hasSavedConfigs === null) {
+    return (
+      <EmptyView
+        icon={IoDocumentText}
+        title={translation.configEditor.noSavedConfigs}
+        description={translation.configEditor.noSavedConfigsDescription}
+        actionText={translation.configEditor.createFirstConfig}
+        onAction={() => onTabChange?.('configs')}
+      />
+    );
+  }
+
+  // Show empty view if configs exist but no active config is selected
+  if (hasSavedConfigs === true && configId === undefined && configName === null) {
     return (
       <EmptyView
         icon={IoDocumentText}
@@ -90,16 +104,16 @@ export function ConfigEditor({ configId, onTabChange }: { configId?: string; onT
   }
 
   return (
-    <div className="space-y-4 sm:space-y-6">
+    <div className="space-y-6 sm:space-y-8">
       {/* Configuration Metadata Section */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
           {translation.configEditor.configurationDetailsTitle}
         </h3>
         
-        <div className="grid gap-4">
+        <div className="grid gap-6">
           {/* Config Name and Description in same row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20">
             <div className="flex flex-col">
               <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 {translation.configEditor.configurationNameLabel}
@@ -215,7 +229,7 @@ export function ConfigEditor({ configId, onTabChange }: { configId?: string; onT
           </pre>
         </div>
       ) : (
-        <div className="grid gap-4">
+        <div className="grid gap-6">
           <Section
             key="system"
             title={translation.configEditor.sections.system}
@@ -523,7 +537,7 @@ function Section({ title, children, expanded, onToggle }: { title: string; child
       className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:bg-gray-50/30 dark:hover:bg-gray-800/30 transition-colors duration-200"
     >
       <div className="p-2 sm:p-3">
-        <div className="grid gap-3 sm:gap-4">{children}</div>
+        <div className="grid gap-4 sm:gap-6">{children}</div>
       </div>
     </Panel>
   );

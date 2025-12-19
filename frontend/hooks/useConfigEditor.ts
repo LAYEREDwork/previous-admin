@@ -94,7 +94,7 @@ function getKeyboardLayout(type: string): number {
   }
 }
 
-export function useConfigEditor() {
+export function useConfigEditor(configId?: string) {
   const { config, configName, configDescription, loading, error, updateConfig, refreshConfig, loadConfigById, updateConfigMetadata } = useConfig();
   const { translation } = useLanguage();
   const { showSuccess, showError } = useNotification();
@@ -107,6 +107,9 @@ export function useConfigEditor() {
   const [localName, setLocalName] = useState(configName || '');
   const [localDescription, setLocalDescription] = useState(configDescription || '');
   const [hasChanges, setHasChanges] = useState(false);
+
+  // Check if there are any saved configs
+  const [hasSavedConfigs, setHasSavedConfigs] = useState<boolean | null>(null);
 
   // Expanded sections state with localStorage persistence
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>(() => {
@@ -136,6 +139,24 @@ export function useConfigEditor() {
     setLocalDescription(configDescription || '');
     setHasChanges(false);
   }, [configName, configDescription]);
+
+  // Load specific config when configId changes
+  useEffect(() => {
+    if (configId) {
+      loadConfigById(configId);
+    }
+  }, [configId, loadConfigById]);
+
+  // Check if there are any saved configs when no config is selected
+  useEffect(() => {
+    if (configId === undefined) {
+      database.getConfigurations().then(configs => {
+        setHasSavedConfigs(configs.length > 0);
+      }).catch(() => {
+        setHasSavedConfigs(false);
+      });
+    }
+  }, [configId]);
 
   // Check for changes
   useEffect(() => {
@@ -172,7 +193,6 @@ export function useConfigEditor() {
     setSaving(true);
     try {
       await updateConfigMetadata(localName, localDescription);
-      showSuccess(translation.configEditor.saveMetadata || 'Metadata saved');
       setHasChanges(false);
     } catch (error) {
       showError(error instanceof Error ? error.message : 'Error saving metadata');
@@ -276,6 +296,7 @@ export function useConfigEditor() {
     localName,
     localDescription,
     hasChanges,
+    hasSavedConfigs,
     expandedSections,
 
     // Actions
