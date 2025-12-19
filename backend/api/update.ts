@@ -91,17 +91,17 @@ router.get('/version', requireAuth, async (req: any, res: any) => {
     const currentVersion = packageJson.default.version || '1.0.0';
     console.log('[Update] Backend: Current version:', currentVersion);
 
-    // Fetch tags from Codeberg API
-    console.log('[Update] Backend: Fetching tags from Codeberg API...');
-    const tagsResponse = await fetch(`${REPO_API_URL}/tags`, {
+// Fetch releases from Codeberg API
+    console.log('[Update] Backend: Fetching releases from Codeberg API...');
+    const releasesResponse = await fetch(`${REPO_API_URL}/releases`, {
       headers: {
         'Accept': 'application/json',
         'User-Agent': 'Previous-Admin-Backend',
       },
     });
 
-    if (!tagsResponse.ok) {
-      console.log('[Update] Backend: Failed to fetch tags from Codeberg API');
+    if (!releasesResponse.ok) {
+      console.log('[Update] Backend: Failed to fetch releases from Codeberg API');
       return res.json({
         currentVersion,
         latestVersion: null,
@@ -112,11 +112,11 @@ router.get('/version', requireAuth, async (req: any, res: any) => {
       });
     }
 
-    const tags = await tagsResponse.json();
-    console.log('[Update] Backend: Retrieved', tags.length, 'tags from repository');
+    const releases = await releasesResponse.json();
+    console.log('[Update] Backend: Retrieved', releases.length, 'releases from repository');
 
-    if (!Array.isArray(tags) || tags.length === 0) {
-      console.log('[Update] Backend: No tags found');
+    if (!Array.isArray(releases) || releases.length === 0) {
+      console.log('[Update] Backend: No releases found');
       return res.json({
         currentVersion,
         latestVersion: null,
@@ -127,61 +127,27 @@ router.get('/version', requireAuth, async (req: any, res: any) => {
       });
     }
 
-    const latestTag = tags[0];
-    const latestVersion = latestTag.name.replace(/^v/, '');
+    const latestRelease = releases[0];
+    const latestVersion = latestRelease.tag_name.replace(/^v/, '');
     const updateAvailable = compareVersions(latestVersion, currentVersion) > 0;
     console.log('[Update] Backend: Latest version:', latestVersion, 'Update available:', updateAvailable);
 
-    // Find current version tag
-    const currentTag = tags.find((tag: any) => 
-      tag.name === `v${currentVersion}` || tag.name === currentVersion
+    // Find current version release
+    const currentRelease = releases.find((release: any) =>
+      release.tag_name === `v${currentVersion}` || release.tag_name === currentVersion
     );
 
-    // Fetch release notes for latest version
-    let releaseNotes: string | null = null;
-    if (latestTag.commit?.sha) {
-      try {
-        console.log('[Update] Backend: Fetching release notes for latest version...');
-        const commitResponse = await fetch(`${REPO_API_URL}/git/commits/${latestTag.commit.sha}`, {
-          headers: {
-            'Accept': 'application/json',
-            'User-Agent': 'Previous-Admin-Backend',
-          },
-        });
-        if (commitResponse.ok) {
-          const commitData = await commitResponse.json();
-          releaseNotes = (commitData as any).message || null;
-        }
-      } catch (err) {
-        console.error('[Update] Backend: Error fetching latest commit message:', err);
-      }
-    }
+    // Get release notes from latest release body
+    const releaseNotes = latestRelease.body || null;
 
-    // Fetch release notes for current version
-    let currentReleaseNotes: string | null = null;
-    if (currentTag?.commit?.sha) {
-      try {
-        console.log('[Update] Backend: Fetching release notes for current version...');
-        const commitResponse = await fetch(`${REPO_API_URL}/git/commits/${currentTag.commit.sha}`, {
-          headers: {
-            'Accept': 'application/json',
-            'User-Agent': 'Previous-Admin-Backend',
-          },
-        });
-        if (commitResponse.ok) {
-          const commitData = await commitResponse.json();
-          currentReleaseNotes = (commitData as any).message || null;
-        }
-      } catch (err) {
-        console.error('[Update] Backend: Error fetching current commit message:', err);
-      }
-    }
+    // Get release notes from current release body
+    const currentReleaseNotes = currentRelease?.body || null;
 
     const result = {
       currentVersion,
       latestVersion,
       updateAvailable,
-      releaseUrl: `${REPO_URL}/releases/tag/${latestTag.name}`,
+      releaseUrl: `${REPO_URL}/releases/tag/${latestRelease.tag_name}`,
       releaseNotes,
       currentReleaseNotes,
     };
