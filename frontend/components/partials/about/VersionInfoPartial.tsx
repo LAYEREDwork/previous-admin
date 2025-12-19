@@ -31,13 +31,13 @@ export function VersionInfoPartial({
   const controlSize = useControlSize();
 
   const [currentReleaseNotesCollapsed, setCurrentReleaseNotesCollapsed] = useState(true);
-  const [newReleaseNotesCollapsed, setNewReleaseNotesCollapsed] = useState(false);
+  const [newReleaseNotesCollapsed, setNewReleaseNotesCollapsed] = useState(true);
 
   // Custom components for ReactMarkdown styling
   const markdownComponents = {
-    h1: ({ children }: any) => <h1 className="text-lg font-bold text-gray-900 dark:text-white mt-4 mb-2">{children}</h1>,
-    h2: ({ children }: any) => <h2 className="text-base font-bold text-gray-900 dark:text-white mt-3 mb-2">{children}</h2>,
-    h3: ({ children }: any) => <h3 className="text-sm font-bold text-gray-900 dark:text-white mt-2 mb-1">{children}</h3>,
+    h1: ({ children }: any) => <h1 className="text-xl font-bold text-gray-900 dark:text-white mt-10 mb-2">{children}</h1>,
+    h2: ({ children }: any) => <h2 className="text-lg font-bold text-gray-900 dark:text-white mt-8 mb-2">{children}</h2>,
+    h3: ({ children }: any) => <h3 className="text-base font-bold text-gray-900 dark:text-white mt-6 mb-1">{children}</h3>,
     p: ({ children }: any) => <p className="text-gray-700 dark:text-gray-300 mb-2 leading-relaxed">{children}</p>,
     strong: ({ children }: any) => <strong className="font-bold text-gray-900 dark:text-white">{children}</strong>,
     em: ({ children }: any) => <em className="italic text-gray-700 dark:text-gray-300">{children}</em>,
@@ -111,10 +111,10 @@ export function VersionInfoPartial({
                       <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 border border-amber-200 dark:border-amber-700">
                         <button
                           onClick={() => setNewReleaseNotesCollapsed(!newReleaseNotesCollapsed)}
-                          className="flex items-center gap-2 text-amber-700 dark:text-amber-300 hover:text-amber-900 dark:hover:text-amber-100 transition-colors w-full text-left"
+                          className="flex items-center justify-between w-full text-amber-700 dark:text-amber-300 hover:text-amber-900 dark:hover:text-amber-100 transition-colors"
                         >
-                          {newReleaseNotesCollapsed ? <BiChevronDown size={14} /> : <BiChevronUp size={14} />}
                           <span className="text-xs font-semibold">New Release Notes</span>
+                          {newReleaseNotesCollapsed ? <BiChevronDown size={14} /> : <BiChevronUp size={14} />}
                         </button>
                         {!newReleaseNotesCollapsed && (
                           <div className="mt-2">
