@@ -18,13 +18,16 @@ import { ApiEndpoints } from '../../shared/constants';
  * }
  */
 export async function checkSetupRequired(): Promise<boolean> {
+  console.log('[API] Checking if setup is required...');
   try {
     const response = await fetch(`${API_BASE_URL}${ApiEndpoints.AUTH_SETUP_REQUIRED}`, {
       credentials: 'include',
     });
     const data = await response.json();
+    console.log('[API] Setup required check result:', data.setupRequired);
     return data.setupRequired;
-  } catch {
+  } catch (error) {
+    console.error('[API] Error checking setup required:', error);
     return false;
   }
 }
@@ -58,6 +61,7 @@ export const api = {
    * }
    */
   async setup(username: string, password: string) {
+    console.log('[API] Setup: Starting setup for user:', username);
     const response = await fetch(`${API_BASE_URL}${ApiEndpoints.AUTH_SETUP}`, {
       method: 'POST',
       headers: {
@@ -69,10 +73,13 @@ export const api = {
 
     if (!response.ok) {
       const error = await response.json();
+      console.error('[API] Setup: Setup failed with response:', error);
       throw new Error(error.error || 'Setup failed');
     }
 
-    return response.json();
+    const result = await response.json();
+    console.log('[API] Setup: Setup completed successfully:', result);
+    return result;
   },
 
   /**
@@ -97,6 +104,7 @@ export const api = {
    * }
    */
   async login(username: string, password: string) {
+    console.log('[API] Login: Starting login for user:', username);
     const response = await fetch(`${API_BASE_URL}${ApiEndpoints.AUTH_LOGIN}`, {
       method: 'POST',
       headers: {
@@ -108,10 +116,13 @@ export const api = {
 
     if (!response.ok) {
       const error = await response.json();
+      console.error('[API] Login: Login failed with response:', error);
       throw new Error(error.error || 'Login failed');
     }
 
-    return response.json();
+    const result = await response.json();
+    console.log('[API] Login: Login completed successfully:', result);
+    return result;
   },
 
   /**
@@ -163,15 +174,19 @@ export const api = {
    * }
    */
   async getSession() {
+    console.log('[API] Session: Checking current session...');
     const response = await fetch(`${API_BASE_URL}${ApiEndpoints.AUTH_SESSION}`, {
       credentials: 'include',
     });
 
     if (!response.ok) {
+      console.error('[API] Session: Failed to get session, response status:', response.status);
       throw new Error('Failed to get session');
     }
 
-    return response.json();
+    const result = await response.json();
+    console.log('[API] Session: Session check result:', result);
+    return result;
   },
 
   /**

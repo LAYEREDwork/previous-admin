@@ -31,7 +31,11 @@ export function useLoginLogic() {
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    checkSetupRequired().then(required => setIsSetup(required));
+    console.log('[Login] Hook: Checking if setup is required...');
+    checkSetupRequired().then(required => {
+      console.log('[Login] Hook: Setup required:', required);
+      setIsSetup(required);
+    });
   }, []);
 
   useEffect(() => {
@@ -54,65 +58,86 @@ export function useLoginLogic() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('[Login] Hook: Form submitted, isSetup:', isSetup, 'username:', username);
 
     if (isSetup && password !== confirmPassword) {
+      console.log('[Login] Hook: Password mismatch detected');
       showError(translation.login.passwordMismatch);
       return;
     }
 
     setLoading(true);
+    console.log('[Login] Hook: Starting authentication process...');
 
     try {
       if (isSetup) {
+        console.log('[Login] Hook: Calling setup API...');
         await setup(username, password);
+        console.log('[Login] Hook: Setup completed successfully');
       } else {
+        console.log('[Login] Hook: Calling login API...');
         await login(username, password);
+        console.log('[Login] Hook: Login completed successfully');
       }
     } catch (err) {
+      console.error('[Login] Hook: Authentication failed:', err);
       showError(err instanceof Error ? err.message : translation.login.loginFailed);
     } finally {
       setLoading(false);
+      console.log('[Login] Hook: Authentication process finished');
     }
   };
 
   const handleDatabaseImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (!file) return;
+    if (!file) {
+      console.log('[Login] Hook: No file selected for database import');
+      return;
+    }
 
+    console.log('[Login] Hook: Starting database import, file:', file.name, 'size:', file.size);
     setImporting(true);
     try {
       const text = await file.text();
+      console.log('[Login] Hook: File content loaded, parsing JSON...');
       let dump;
 
       try {
         dump = JSON.parse(text);
+        console.log('[Login] Hook: JSON parsed successfully');
       } catch {
+        console.error('[Login] Hook: Invalid JSON file format');
         throw new Error('Invalid JSON file format');
       }
 
       if (!dump || typeof dump !== 'object') {
+        console.error('[Login] Hook: Invalid database dump structure');
         throw new Error('Invalid database dump structure');
       }
 
+      console.log('[Login] Hook: Calling database setup import...');
       const result = await database.setupImportDatabase(dump);
+      console.log('[Login] Hook: Database import completed:', result);
 
       showSuccess(translation.login.databaseImportSuccess.replace('{count}', result.stats.configurations.imported.toString()));
 
       event.target.value = '';
 
       // Clear session cache and reload page to ensure fresh state from backend
+      console.log('[Login] Hook: Clearing caches and reloading page in 1.5 seconds...');
       setTimeout(() => {
         localStorage.clear();
         sessionStorage.clear();
         window.location.reload();
       }, 1500);
     } catch (error) {
-      console.error('Error importing database:', error);
+      console.error('[Login] Hook: Error importing database:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       showError(translation.login.databaseImportFailed.replace('{error}', errorMessage));
       event.target.value = '';
     } finally {
       setImporting(false);
+      console.log('[Login] Hook: Database import process finished');
     }
   };
 
