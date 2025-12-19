@@ -29,6 +29,7 @@ export async function getCurrentVersion(): Promise<string> {
  * Check for updates via backend API (avoids CORS issues)
  */
 export async function checkForUpdates(): Promise<VersionInfo> {
+  console.log('[Update] Checking for updates...');
   try {
     const response = await fetch(`${API_BASE_URL}${ApiEndpoints.UPDATE_VERSION}`, {
       headers: {
@@ -41,9 +42,11 @@ export async function checkForUpdates(): Promise<VersionInfo> {
       throw new Error('Failed to fetch version info');
     }
 
-    return await response.json();
+    const versionInfo = await response.json();
+    console.log('[Update] Version info received:', versionInfo);
+    return versionInfo;
   } catch (error) {
-    console.error('Error checking for updates:', error);
+    console.error('[Update] Error checking for updates:', error);
     return {
       currentVersion: '1.0.0',
       latestVersion: null,
@@ -56,6 +59,7 @@ export async function checkForUpdates(): Promise<VersionInfo> {
 }
 
 export async function updateApplication(): Promise<void> {
+  console.log('[Update] Starting application update...');
   try {
     const response = await fetch(`${API_BASE_URL}${ApiEndpoints.UPDATE}`, {
       method: 'POST',
@@ -70,13 +74,16 @@ export async function updateApplication(): Promise<void> {
       throw new Error(error.error || 'Update failed');
     }
 
-    await response.json();
+    const result = await response.json();
+    console.log('[Update] Update response received:', result);
+    console.log('[Update] Application will reload in 2 seconds...');
 
     setTimeout(() => {
+      console.log('[Update] Reloading application...');
       window.location.reload();
     }, 2000);
   } catch (error) {
-    console.error('Error updating application:', error);
+    console.error('[Update] Error updating application:', error);
     throw error;
   }
 }

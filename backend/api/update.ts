@@ -38,24 +38,30 @@ const router = express.Router();
  * // Application will restart automatically
  */
 router.post('/', requireAuth, async (req: any, res: any) => {
+  console.log('[Update] Backend: Starting update process...');
   try {
     const adminDir = process.cwd();
+    console.log('[Update] Backend: Checking git status in directory:', adminDir);
     const { stdout: gitStatus } = await execAsync('git status', { cwd: adminDir });
 
     if (!gitStatus) {
+      console.error('[Update] Backend: Not a git repository');
       return res.status(400).json({ error: 'Not a git repository' });
     }
 
+    console.log('[Update] Backend: Executing git pull...');
     await execAsync('git pull', { cwd: adminDir });
+    console.log('[Update] Backend: Git pull completed successfully');
 
     res.json({ success: true, message: 'Update completed. The application will restart shortly.' });
+    console.log('[Update] Backend: Response sent, scheduling restart in 1 second...');
 
     setTimeout(() => {
-      console.log('Restarting application after git pull...');
+      console.log('[Update] Backend: Restarting application after git pull...');
       process.exit(0);
     }, 1000);
   } catch (error) {
-    console.error('Error updating application:', error);
+    console.error('[Update] Backend: Error updating application:', error);
     res.status(500).json({ error: (error as Error).message || 'Failed to update application' });
   }
 });
@@ -78,12 +84,15 @@ router.get('/version', requireAuth, async (req: any, res: any) => {
   const REPO_API_URL = 'https://codeberg.org/api/v1/repos/phranck/previous-admin';
   const REPO_URL = 'https://codeberg.org/phranck/previous-admin';
 
+  console.log('[Update] Backend: Checking for version updates...');
   try {
     // Read current version from package.json
     const packageJson = await import('../../package.json', { with: { type: 'json' } });
     const currentVersion = packageJson.default.version || '1.0.0';
+    console.log('[Update] Backend: Current version:', currentVersion);
 
     // Fetch tags from Codeberg API
+    console.log('[Update] Backend: Fetching tags from Codeberg API...');
     const tagsResponse = await fetch(`${REPO_API_URL}/tags`, {
       headers: {
         'Accept': 'application/json',
@@ -92,6 +101,7 @@ router.get('/version', requireAuth, async (req: any, res: any) => {
     });
 
     if (!tagsResponse.ok) {
+      console.log('[Update] Backend: Failed to fetch tags from Codeberg API');
       return res.json({
         currentVersion,
         latestVersion: null,
@@ -103,8 +113,10 @@ router.get('/version', requireAuth, async (req: any, res: any) => {
     }
 
     const tags = await tagsResponse.json();
+    console.log('[Update] Backend: Retrieved', tags.length, 'tags from repository');
 
     if (!Array.isArray(tags) || tags.length === 0) {
+      console.log('[Update] Backend: No tags found');
       return res.json({
         currentVersion,
         latestVersion: null,
@@ -118,6 +130,7 @@ router.get('/version', requireAuth, async (req: any, res: any) => {
     const latestTag = tags[0];
     const latestVersion = latestTag.name.replace(/^v/, '');
     const updateAvailable = compareVersions(latestVersion, currentVersion) > 0;
+    console.log('[Update] Backend: Latest version:', latestVersion, 'Update available:', updateAvailable);
 
     // Find current version tag
     const currentTag = tags.find((tag: any) => 
@@ -128,6 +141,7 @@ router.get('/version', requireAuth, async (req: any, res: any) => {
     let releaseNotes: string | null = null;
     if (latestTag.commit?.sha) {
       try {
+        console.log('[Update] Backend: Fetching release notes for latest version...');
         const commitResponse = await fetch(`${REPO_API_URL}/git/commits/${latestTag.commit.sha}`, {
           headers: {
             'Accept': 'application/json',
@@ -139,7 +153,7 @@ router.get('/version', requireAuth, async (req: any, res: any) => {
           releaseNotes = (commitData as any).message || null;
         }
       } catch (err) {
-        console.error('Error fetching latest commit message:', err);
+        console.error('[Update] Backend: Error fetching latest commit message:', err);
       }
     }
 
@@ -147,6 +161,7 @@ router.get('/version', requireAuth, async (req: any, res: any) => {
     let currentReleaseNotes: string | null = null;
     if (currentTag?.commit?.sha) {
       try {
+        console.log('[Update] Backend: Fetching release notes for current version...');
         const commitResponse = await fetch(`${REPO_API_URL}/git/commits/${currentTag.commit.sha}`, {
           headers: {
             'Accept': 'application/json',
@@ -158,20 +173,22 @@ router.get('/version', requireAuth, async (req: any, res: any) => {
           currentReleaseNotes = (commitData as any).message || null;
         }
       } catch (err) {
-        console.error('Error fetching current commit message:', err);
+        console.error('[Update] Backend: Error fetching current commit message:', err);
       }
     }
 
-    res.json({
+    const result = {
       currentVersion,
       latestVersion,
       updateAvailable,
       releaseUrl: `${REPO_URL}/releases/tag/${latestTag.name}`,
       releaseNotes,
       currentReleaseNotes,
-    });
+    };
+    console.log('[Update] Backend: Version check completed:', result);
+    res.json(result);
   } catch (error) {
-    console.error('Error checking for updates:', error);
+    console.error('[Update] Backend: Error checking for updates:', error);
     res.status(500).json({ error: 'Failed to check for updates' });
   }
 });
