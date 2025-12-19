@@ -268,6 +268,8 @@ export interface Translations {
     upToDate: string;
     updating: string;
     uptime: string;
+    currentReleaseNotes: string;
+    releaseNotes: string;
   };
   tabs: {
     about: string;

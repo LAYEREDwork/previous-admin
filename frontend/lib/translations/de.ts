@@ -244,6 +244,8 @@ export const de: Translations = {
     upToDate: 'Auf dem neuesten Stand',
     uptime: 'Betriebszeit',
     resolution: 'Auflösung',
+    currentReleaseNotes: 'Aktuelle Release-Notes',
+    releaseNotes: 'Release-Notes',
   },
   tabs: {
     about: 'Über',

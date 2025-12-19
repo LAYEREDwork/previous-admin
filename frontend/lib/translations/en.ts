@@ -244,6 +244,8 @@ export const en: Translations = {
     seconds: 's',
     source: 'Source',
     uptime: 'Uptime',
+    currentReleaseNotes: 'Current Release Notes',
+    releaseNotes: 'Release Notes',
   },
   tabs: {
     about: 'About',

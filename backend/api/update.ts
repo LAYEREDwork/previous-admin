@@ -40,18 +40,56 @@ const router = express.Router();
 router.post('/', requireAuth, async (req: any, res: any) => {
   try {
     const adminDir = process.cwd();
-    const { stdout: gitStatus } = await execAsync('git status', { cwd: adminDir });
 
-    if (!gitStatus) {
-      return res.status(400).json({ error: 'Not a git repository' });
+    // Get latest version info
+    const versionResponse = await fetch(`${API_BASE_URL}${ApiEndpoints.UPDATE_VERSION}`, {
+      headers: {
+        'Accept': 'application/json',
+      },
+      credentials: 'include',
+    });
+
+    if (!versionResponse.ok) {
+      throw new Error('Failed to fetch version info');
     }
 
-    await execAsync('git pull', { cwd: adminDir });
+    const versionInfo = await versionResponse.json();
+    const latestVersion = versionInfo.latestVersion;
+
+    if (!latestVersion) {
+      throw new Error('No latest version available');
+    }
+
+    const zipUrl = `https://codeberg.org/phranck/previous-admin/archive/${latestVersion}.zip`;
+    const zipPath = `${adminDir}/update.zip`;
+    const extractDir = `${adminDir}/update_temp`;
+
+    // Download the ZIP
+    await execAsync(`curl -L -o ${zipPath} ${zipUrl}`, { cwd: adminDir });
+
+    // Create temp directory
+    await execAsync(`mkdir -p ${extractDir}`, { cwd: adminDir });
+
+    // Extract ZIP
+    await execAsync(`unzip -o ${zipPath} -d ${extractDir}`, { cwd: adminDir });
+
+    // Find the extracted directory (assuming it's named like previous-admin-1.0.0)
+    const { stdout: lsOutput } = await execAsync(`ls -d ${extractDir}/*`, { cwd: adminDir });
+    const sourceDir = lsOutput.trim().split('\n')[0];
+
+    // Backup current directory (optional, but safe)
+    await execAsync(`cp -r ${adminDir} ${adminDir}.backup`, { cwd: adminDir });
+
+    // Copy new files (exclude certain directories like node_modules, .git)
+    await execAsync(`rsync -av --exclude='node_modules' --exclude='.git' --exclude='update.zip' --exclude='update_temp' ${sourceDir}/ ${adminDir}/`, { cwd: adminDir });
+
+    // Clean up
+    await execAsync(`rm -rf ${zipPath} ${extractDir} ${adminDir}.backup`, { cwd: adminDir });
 
     res.json({ success: true, message: 'Update completed. The application will restart shortly.' });
 
     setTimeout(() => {
-      console.log('Restarting application after git pull...');
+      console.log('Restarting application after update...');
       process.exit(0);
     }, 1000);
   } catch (error) {
@@ -83,15 +121,15 @@ router.get('/version', requireAuth, async (req: any, res: any) => {
     const packageJson = await import('../../package.json', { with: { type: 'json' } });
     const currentVersion = packageJson.default.version || '1.0.0';
 
-    // Fetch tags from Codeberg API
-    const tagsResponse = await fetch(`${REPO_API_URL}/tags`, {
+    // Fetch releases from Codeberg API
+    const releasesResponse = await fetch(`${REPO_API_URL}/releases`, {
       headers: {
         'Accept': 'application/json',
         'User-Agent': 'Previous-Admin-Backend',
       },
     });
 
-    if (!tagsResponse.ok) {
+    if (!releasesResponse.ok) {
       return res.json({
         currentVersion,
         latestVersion: null,
@@ -102,9 +140,9 @@ router.get('/version', requireAuth, async (req: any, res: any) => {
       });
     }
 
-    const tags = await tagsResponse.json();
+    const releases = await releasesResponse.json();
 
-    if (!Array.isArray(tags) || tags.length === 0) {
+    if (!Array.isArray(releases) || releases.length === 0) {
       return res.json({
         currentVersion,
         latestVersion: null,
@@ -115,58 +153,26 @@ router.get('/version', requireAuth, async (req: any, res: any) => {
       });
     }
 
-    const latestTag = tags[0];
-    const latestVersion = latestTag.name.replace(/^v/, '');
+    const latestRelease = releases[0];
+    const latestVersion = latestRelease.tag_name.replace(/^v/, '');
     const updateAvailable = compareVersions(latestVersion, currentVersion) > 0;
 
-    // Find current version tag
-    const currentTag = tags.find((tag: any) => 
-      tag.name === `v${currentVersion}` || tag.name === currentVersion
+    // Find current version release
+    const currentRelease = releases.find((release: any) => 
+      release.tag_name === `v${currentVersion}` || release.tag_name === currentVersion
     );
 
     // Fetch release notes for latest version
-    let releaseNotes: string | null = null;
-    if (latestTag.commit?.sha) {
-      try {
-        const commitResponse = await fetch(`${REPO_API_URL}/git/commits/${latestTag.commit.sha}`, {
-          headers: {
-            'Accept': 'application/json',
-            'User-Agent': 'Previous-Admin-Backend',
-          },
-        });
-        if (commitResponse.ok) {
-          const commitData = await commitResponse.json();
-          releaseNotes = (commitData as any).message || null;
-        }
-      } catch (err) {
-        console.error('Error fetching latest commit message:', err);
-      }
-    }
+    let releaseNotes: string | null = latestRelease.body || null;
 
     // Fetch release notes for current version
-    let currentReleaseNotes: string | null = null;
-    if (currentTag?.commit?.sha) {
-      try {
-        const commitResponse = await fetch(`${REPO_API_URL}/git/commits/${currentTag.commit.sha}`, {
-          headers: {
-            'Accept': 'application/json',
-            'User-Agent': 'Previous-Admin-Backend',
-          },
-        });
-        if (commitResponse.ok) {
-          const commitData = await commitResponse.json();
-          currentReleaseNotes = (commitData as any).message || null;
-        }
-      } catch (err) {
-        console.error('Error fetching current commit message:', err);
-      }
-    }
+    let currentReleaseNotes: string | null = currentRelease?.body || null;
 
     res.json({
       currentVersion,
       latestVersion,
       updateAvailable,
-      releaseUrl: `${REPO_URL}/releases/tag/${latestTag.name}`,
+      releaseUrl: latestRelease.html_url,
       releaseNotes,
       currentReleaseNotes,
     });

@@ -250,6 +250,8 @@ export const fr: Translations = {
     minutes: 'm',
     seconds: 's',
     reset: 'Réinitialiser le Système',
+    currentReleaseNotes: 'Notes de Version Actuelles',
+    releaseNotes: 'Notes de Version',
     resetTitle: 'Réinitialiser le Système',
     resetDescription: "Supprime toutes les données, y compris l'utilisateur administrateur, et revient à la configuration initiale. L'utilisateur administrateur doit être recréé après la réinitialisation.",
     resetConfirm: 'Réinitialiser',

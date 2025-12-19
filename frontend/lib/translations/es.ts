@@ -250,6 +250,8 @@ export const es: Translations = {
     minutes: 'm',
     seconds: 's',
     reset: 'Restablecer Sistema',
+    currentReleaseNotes: 'Notas de la Versión Actual',
+    releaseNotes: 'Notas de la Versión',
     resetTitle: 'Restablecer Sistema',
     resetDescription: 'Elimina todos los datos, incluido el usuario administrador, y vuelve a la configuración inicial. El usuario administrador debe ser recreado después del restablecimiento.',
     resetConfirm: 'Restablecer',

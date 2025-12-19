@@ -17,3 +17,6 @@ applyTo: '**'
 - When I ask for optimization, focus on performance, memory usage, maintainability and readability.
 - Always test new code or changes thoroughly to ensure they work as intended and do not introduce new issues.
 - If I ask if a feature is possible, just answer the question with a descriptive yes or no, without implementing it.
+- For this project, Previous Admin, never use `git pull` to implement the update process! Always use downloading and extracting the new version from the GitHub releases page.
+- Aendere niemals Dateien, die mit der geforderten Aufgabe nichts zu tun haben.
+- Wenn ich bestaetige, dass ein implementierter Code funktioniert, darf er niemals ohne meine ausdrueckliche Aufforderung veraendert werden.

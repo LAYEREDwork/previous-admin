@@ -144,24 +144,28 @@ export function ConfigProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const loadConfigById = useCallback(async (id: string) => {
+    console.log('Loading config by ID:', id);
     try {
       setLoading(true);
       setError(null);
 
       const configData = await database.getConfiguration(id);
-      if (configData && configData.config_data) {
+      console.log('Config data from DB:', configData);
+      if (configData) {
         // Merge with defaults to ensure all required fields exist
         const mergedConfig = mergeWithDefaults(configData.config_data);
+        console.log('Merged config:', mergedConfig);
         setConfig(mergedConfig);
         setConfigName(configData.name);
         setConfigDescription(configData.description);
         setCurrentConfigId(configData.id);
+        console.log('Config loaded successfully');
       } else {
         throw new Error('Configuration not found');
       }
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Error loading config');
       console.error('Error loading config by ID:', error);
+      setError(error instanceof Error ? error.message : 'Error loading config');
     } finally {
       setLoading(false);
     }

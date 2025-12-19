@@ -250,6 +250,8 @@ export const it: Translations = {
     minutes: 'm',
     seconds: 's',
     reset: 'Resetta Sistema',
+    currentReleaseNotes: 'Note di Rilascio Correnti',
+    releaseNotes: 'Note di Rilascio',
     resetTitle: 'Resetta Sistema',
     resetDescription: `Elimina tutti i dati, incluso l'utente admin, e torna alla configurazione iniziale. L'utente admin dovrà essere ricreato dopo il reset.`,
     resetConfirm: 'Resetta',

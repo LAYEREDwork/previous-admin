@@ -1,8 +1,10 @@
-import { BiInfoCircle, BiRefresh, BiCheck, BiError, BiFile } from 'react-icons/bi';
+import React, { useState } from 'react';
+import { BiInfoCircle, BiRefresh, BiCheck, BiError, BiFile, BiChevronUp, BiChevronDown } from 'react-icons/bi';
 import { Button } from 'rsuite';
 import { useLanguage } from '../../../contexts/LanguageContext';
 import { useControlSize } from '../../../hooks/useControlSize';
 import { type VersionInfo } from '../../../lib/versionManager';
+import ReactMarkdown from 'react-markdown';
 
 interface VersionInfoPartialProps {
   versionInfo: VersionInfo | null;
@@ -27,6 +29,9 @@ export function VersionInfoPartial({
   const { translation } = useLanguage();
   const controlSize = useControlSize();
 
+  const [currentExpanded, setCurrentExpanded] = useState(true);
+  const [newExpanded, setNewExpanded] = useState(false);
+
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
       <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
@@ -50,13 +55,33 @@ export function VersionInfoPartial({
 
             {versionInfo?.currentReleaseNotes && (
               <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-3 border border-gray-200 dark:border-gray-700">
-                <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300 mb-2">
-                  <BiFile size={14} />
-                  <span className="text-xs font-semibold">Current Release Notes</span>
+                <div
+                  className="flex justify-between items-center cursor-pointer mb-2"
+                  onClick={() => setCurrentExpanded(!currentExpanded)}
+                >
+                  <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                    <BiFile size={14} />
+                    <span className="text-xs font-semibold">{translation.system.currentReleaseNotes}</span>
+                  </div>
+                  {currentExpanded ? <BiChevronUp size={16} /> : <BiChevronDown size={16} />}
                 </div>
-                <p className="text-xs text-gray-600 dark:text-gray-400 whitespace-pre-wrap">
-                  {versionInfo.currentReleaseNotes}
-                </p>
+                {currentExpanded && (
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <ReactMarkdown
+                    components={{
+                      h1: ({ children }) => <h1 className="text-lg font-semibold mt-8 mb-2 uppercase">{children}</h1>,
+                      h2: ({ children }) => <h2 className="text-base font-semibold mt-8 mb-2 uppercase">{children}</h2>,
+                      h3: ({ children }) => <h3 className="text-sm font-semibold mt-6 mb-1 uppercase">{children}</h3>,
+                      p: ({ children }) => <p className="mb-2">{children}</p>,
+                      ul: ({ children }) => <ul className="list-disc pl-4 mb-2">{children}</ul>,
+                      ol: ({ children }) => <ol className="list-decimal pl-4 mb-2">{children}</ol>,
+                      li: ({ children }) => <li className="mb-1">{children}</li>,
+                    }}
+                  >
+                    {versionInfo.currentReleaseNotes}
+                  </ReactMarkdown>
+                </div>
+                )}
               </div>
             )}
 
@@ -80,13 +105,33 @@ export function VersionInfoPartial({
 
                     {versionInfo.releaseNotes && (
                       <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 border border-amber-200 dark:border-amber-700">
-                        <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300 mb-2">
-                          <BiFile size={14} />
-                          <span className="text-xs font-semibold">New Release Notes</span>
+                        <div
+                          className="flex justify-between items-center cursor-pointer mb-2"
+                          onClick={() => setNewExpanded(!newExpanded)}
+                        >
+                          <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
+                            <BiFile size={14} />
+                            <span className="text-base font-semibold">{translation.system.releaseNotes}</span>
+                          </div>
+                          {newExpanded ? <BiChevronUp size={16} /> : <BiChevronDown size={16} />}
                         </div>
-                        <p className="text-xs text-amber-600 dark:text-amber-400 whitespace-pre-wrap">
-                          {versionInfo.releaseNotes}
-                        </p>
+                        {newExpanded && (
+                          <div className="text-sm text-amber-600 dark:text-amber-400">
+                          <ReactMarkdown
+                            components={{
+                              h1: ({ children }) => <h1 className="text-lg font-semibold mt-8 mb-2 uppercase text-amber-700 dark:text-amber-300">{children}</h1>,
+                              h2: ({ children }) => <h2 className="text-base font-semibold mt-8 mb-2 uppercase text-amber-700 dark:text-amber-300">{children}</h2>,
+                              h3: ({ children }) => <h3 className="text-sm font-semibold mt-6 mb-1 uppercase text-amber-700 dark:text-amber-300">{children}</h3>,
+                              p: ({ children }) => <p className="mb-2">{children}</p>,
+                              ul: ({ children }) => <ul className="list-disc list-inside mb-2">{children}</ul>,
+                              ol: ({ children }) => <ol className="list-decimal list-inside mb-2">{children}</ol>,
+                              li: ({ children }) => <li className="mb-1">{children}</li>,
+                            }}
+                          >
+                            {versionInfo.releaseNotes}
+                          </ReactMarkdown>
+                        </div>
+                        )}
                       </div>
                     )}
 
