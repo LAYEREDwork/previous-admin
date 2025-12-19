@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { BiRefresh, BiError, BiLineChart, BiHdd, BiGlobe, BiDesktop } from 'react-icons/bi';
+import { BiRefresh, BiError, BiLineChart, BiHdd, BiGlobe, BiDesktop, BiChip } from 'react-icons/bi';
 import { Button } from 'rsuite';
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
@@ -302,7 +302,7 @@ export function System() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-gray-200 dark:border-gray-700 pt-4">
                 <div>
                   <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-                    <BiLineChart size={16} className="text-next-accent" />
+                    <BiChip size={16} className="text-next-accent" />
                     {translation.system.cpu}
                   </h4>
                   <div className="grid grid-cols-3 gap-3">
@@ -324,7 +324,7 @@ export function System() {
                 {systemInfo.gpu && systemInfo.gpu.length > 0 && systemInfo.gpu[0] !== 'N/A' && (
                   <div>
                     <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-                      <BiDesktop size={16} className="text-green-600 dark:text-green-400" />
+                      <BiChip size={16} className="text-green-600 dark:text-green-400" />
                       {translation.system.gpu}
                     </h4>
                     <div className="space-y-2">
@@ -386,7 +386,7 @@ export function System() {
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                    <BiLineChart size={20} className="text-next-accent" />
+                    <BiChip size={20} className="text-next-accent" />
                     {translation.system.cpuLoadAverage}
                   </h3>
                   <div className="text-right">
@@ -518,7 +518,7 @@ export function System() {
               {/* Disk IO Chart */}
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                  <BiLineChart size={20} className="text-orange-600 dark:text-orange-400" />
+                  <BiHdd size={20} className="text-orange-600 dark:text-orange-400" />
                   Disk I/O
                 </h3>
                 {metrics && metrics.diskIO.history.length >= 1 ? (() => {

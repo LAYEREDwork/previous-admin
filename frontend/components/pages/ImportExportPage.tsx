@@ -198,7 +198,7 @@ export function ImportExport() {
                 className="flex items-center justify-center gap-2 cursor-pointer"
                 size={controlSize}
               >
-                <BiFile size={18} />
+                <BiDownload size={18} />
                 {databaseImporting ? translation.importExport.importingDatabase : translation.importExport.selectDatabaseFile}
               </Button>
             </label>

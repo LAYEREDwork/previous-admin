@@ -144,7 +144,7 @@ export function ConfigList({ onEdit }: ConfigListProps) {
               onDragOver={(e) => handleDragOver(e, index)}
               onDragEnd={handleDragEnd}
               onDragLeave={handleDragLeave}
-              className={`bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-2 sm:p-3 hover:shadow-md transition-all ${configs.length > 1 ? 'cursor-move' : ''
+              className={`bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-1 sm:p-3 hover:shadow-md transition-all ${configs.length > 1 ? 'cursor-move' : ''
                 } ${draggedIndex === index ? 'opacity-50 scale-95' : ''} ${dragOverIndex === index && draggedIndex !== index ? 'border-next-accent' : ''
                 } relative`}
             >
@@ -190,30 +190,30 @@ export function ConfigList({ onEdit }: ConfigListProps) {
                     )}
                   </div>
                 </div>
-                <div className="md:hidden flex justify-between gap-1 mt-2">
+                <div className="md:hidden flex justify-end gap-3 mt-2">
                   <IconButton
-                    icon={<BiUpload size={22} />}
+                    icon={<BiUpload size={24} />}
                     size="sm"
                     appearance="subtle"
                     onClick={() => exportSingleConfig(config)}
                     title="Export configuration"
                   />
                   <IconButton
-                    icon={<BiCopy size={22} />}
+                    icon={<BiCopy size={24} />}
                     size="sm"
                     appearance="subtle"
                     onClick={() => duplicateConfig(config)}
                     title={translation.configList.duplicate}
                   />
                   <IconButton
-                    icon={<BiEdit size={22} />}
+                    icon={<BiEdit size={24} />}
                     size="sm"
                     appearance="subtle"
                     onClick={() => onEdit(config)}
                     title={translation.configList.edit}
                   />
                   <IconButton
-                    icon={<BiTrash size={22} />}
+                    icon={<BiTrash size={24} />}
                     size="sm"
                     appearance="subtle"
                     onClick={() => deleteConfig(config.id)}
