@@ -135,19 +135,26 @@ npm run typecheck  # TypeScript compilation check
 
 ```
 previous-admin/
-├── backend/            # Express TypeScript server
-│   ├── api/            # REST API endpoints
-│   ├── config/         # Configuration file management
-│   ├── database/       # SQLite database operations
-│   └── platform/       # Platform-specific utilities
-├── frontend/           # React TypeScript application
-│   ├── components/     # UI components and pages
-│   ├── contexts/       # React contexts (Auth, Config, etc.)
-│   ├── hooks/          # Custom React hooks
-│   ├── lib/            # Utilities, API client, translations
-│   └── pages/          # Main application pages
-├── shared/             # Shared constants and types
-└── systemd/            # Systemd service files
+├── backend/                    # Express TypeScript server
+│   ├── api/                    # REST API endpoints
+│   ├── config/                 # Configuration file management
+│   ├── database/               # SQLite database operations
+│   └── platform/               # Platform-specific utilities
+│       ├── linux/              # Linux-specific implementations
+│       └── macos/              # macOS-specific implementations
+├── frontend/                   # React TypeScript application
+│   ├── components/             # UI components
+│   │   ├── controls/           # Reusable UI controls
+│   │   ├── pages/              # Main application pages
+│   │   └── partials/           # Reusable UI partials
+│   │       └── about/          # About page partials
+│   ├── contexts/               # React contexts for state management
+│   ├── hooks/                  # Page business logic
+│   └── lib/                    # Utilities and shared code
+│       └── translations/       # Internationalization files
+├── public/                     # Static assets
+├── shared/                     # Shared constants and types
+└── systemd/                    # Systemd service files
 ```
 
 ### Code Quality & Architecture
