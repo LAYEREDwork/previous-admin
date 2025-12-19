@@ -3,8 +3,9 @@ import { Button } from 'rsuite';
 import { useLanguage } from '../../../contexts/LanguageContext';
 import { useControlSize } from '../../../hooks/useControlSize';
 import { type VersionInfo } from '../../../lib/versionManager';
-import ReactMarkdown from 'react-markdown';
 import { useState } from 'react';
+import { CenteredModal } from '../../controls/CenteredModal';
+import ReactMarkdown from 'react-markdown';
 
 interface VersionInfoPartialProps {
   versionInfo: VersionInfo | null;
@@ -29,8 +30,24 @@ export function VersionInfoPartial({
   const { translation } = useLanguage();
   const controlSize = useControlSize();
 
-  const [currentReleaseNotesExpanded, setCurrentReleaseNotesExpanded] = useState(false);
-  const [latestReleaseNotesExpanded, setLatestReleaseNotesExpanded] = useState(false);
+  const [currentReleaseNotesCollapsed, setCurrentReleaseNotesCollapsed] = useState(true);
+  const [newReleaseNotesCollapsed, setNewReleaseNotesCollapsed] = useState(false);
+
+  // Custom components for ReactMarkdown styling
+  const markdownComponents = {
+    h1: ({ children }: any) => <h1 className="text-lg font-bold text-gray-900 dark:text-white mt-4 mb-2">{children}</h1>,
+    h2: ({ children }: any) => <h2 className="text-base font-bold text-gray-900 dark:text-white mt-3 mb-2">{children}</h2>,
+    h3: ({ children }: any) => <h3 className="text-sm font-bold text-gray-900 dark:text-white mt-2 mb-1">{children}</h3>,
+    p: ({ children }: any) => <p className="text-gray-700 dark:text-gray-300 mb-2 leading-relaxed">{children}</p>,
+    strong: ({ children }: any) => <strong className="font-bold text-gray-900 dark:text-white">{children}</strong>,
+    em: ({ children }: any) => <em className="italic text-gray-700 dark:text-gray-300">{children}</em>,
+    code: ({ children }: any) => <code className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm font-mono text-gray-900 dark:text-gray-100">{children}</code>,
+    pre: ({ children }: any) => <pre className="bg-gray-100 dark:bg-gray-800 p-3 rounded mb-2 overflow-x-auto">{children}</pre>,
+    ul: ({ children }: any) => <ul className="list-disc list-inside mb-2 space-y-1">{children}</ul>,
+    ol: ({ children }: any) => <ol className="list-decimal list-inside mb-2 space-y-1">{children}</ol>,
+    li: ({ children }: any) => <li className="text-gray-700 dark:text-gray-300">{children}</li>,
+    blockquote: ({ children }: any) => <blockquote className="border-l-4 border-gray-300 dark:border-gray-600 pl-4 italic text-gray-600 dark:text-gray-400 mb-2">{children}</blockquote>,
+  };
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
@@ -54,22 +71,19 @@ export function VersionInfoPartial({
             </div>
 
             {versionInfo?.currentReleaseNotes && (
-              <div className="bg-gray-100 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
+              <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-3 border border-gray-200 dark:border-gray-700">
                 <button
-                  onClick={() => setCurrentReleaseNotesExpanded(!currentReleaseNotesExpanded)}
-                  className="w-full flex items-center justify-between p-3 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                  onClick={() => setCurrentReleaseNotesCollapsed(!currentReleaseNotesCollapsed)}
+                  className="flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors w-full text-left"
                 >
-                  <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                    <BiFile size={14} />
-                    <span className="text-xs font-semibold">Current Release Notes</span>
-                  </div>
-                  {currentReleaseNotesExpanded ? <BiChevronUp size={16} /> : <BiChevronDown size={16} />}
+                  {currentReleaseNotesCollapsed ? <BiChevronDown size={14} /> : <BiChevronUp size={14} />}
+                  <span className="text-xs font-semibold">Current Release Notes</span>
                 </button>
-                {currentReleaseNotesExpanded && (
-                  <div className="px-3 pb-3">
-                    <div className="prose prose-sm dark:prose-invert max-w-none">
-                      <ReactMarkdown>{versionInfo.currentReleaseNotes}</ReactMarkdown>
-                    </div>
+                {!currentReleaseNotesCollapsed && (
+                  <div className="mt-2">
+                    <ReactMarkdown components={markdownComponents}>
+                      {versionInfo.currentReleaseNotes}
+                    </ReactMarkdown>
                   </div>
                 )}
               </div>
@@ -94,22 +108,19 @@ export function VersionInfoPartial({
                     </div>
 
                     {versionInfo.releaseNotes && (
-                      <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-700">
+                      <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 border border-amber-200 dark:border-amber-700">
                         <button
-                          onClick={() => setLatestReleaseNotesExpanded(!latestReleaseNotesExpanded)}
-                          className="w-full flex items-center justify-between p-3 hover:bg-amber-100 dark:hover:bg-amber-900/30 rounded-lg transition-colors"
+                          onClick={() => setNewReleaseNotesCollapsed(!newReleaseNotesCollapsed)}
+                          className="flex items-center gap-2 text-amber-700 dark:text-amber-300 hover:text-amber-900 dark:hover:text-amber-100 transition-colors w-full text-left"
                         >
-                          <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
-                            <BiFile size={14} />
-                            <span className="text-xs font-semibold">New Release Notes</span>
-                          </div>
-                          {latestReleaseNotesExpanded ? <BiChevronUp size={16} /> : <BiChevronDown size={16} />}
+                          {newReleaseNotesCollapsed ? <BiChevronDown size={14} /> : <BiChevronUp size={14} />}
+                          <span className="text-xs font-semibold">New Release Notes</span>
                         </button>
-                        {latestReleaseNotesExpanded && (
-                          <div className="px-3 pb-3">
-                            <div className="prose prose-sm dark:prose-invert max-w-none prose-amber">
-                              <ReactMarkdown>{versionInfo.releaseNotes}</ReactMarkdown>
-                            </div>
+                        {!newReleaseNotesCollapsed && (
+                          <div className="mt-2">
+                            <ReactMarkdown components={markdownComponents}>
+                              {versionInfo.releaseNotes}
+                            </ReactMarkdown>
                           </div>
                         )}
                       </div>
@@ -151,6 +162,32 @@ export function VersionInfoPartial({
           </>
         )}
       </div>
+
+      {/* Update Progress Modal */}
+      <CenteredModal
+        isOpen={updating}
+        onClose={() => {}} // Prevent closing during update
+        title={translation.system.updating}
+        size="sm"
+      >
+        <div className="flex flex-col items-center gap-4 py-4">
+          <div className="flex items-center gap-3">
+            <BiRefresh size={24} className="animate-spin text-next-accent" />
+            <span className="text-lg font-medium text-gray-900 dark:text-white">
+              {translation.system.updating}
+            </span>
+          </div>
+          <div className="text-center text-sm text-gray-600 dark:text-gray-400">
+            <p>{translation.system.updateInProgress}</p>
+            <p className="mt-2 text-xs">
+              Please do not close this window or navigate away.
+            </p>
+          </div>
+          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div className="bg-next-accent h-2 rounded-full animate-pulse" style={{ width: '60%' }}></div>
+          </div>
+        </div>
+      </CenteredModal>
     </div>
   );
 }
