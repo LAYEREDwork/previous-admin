@@ -110,7 +110,7 @@ export interface UserSessionData {
 export interface CreateConfigurationRequest {
   name: string;
   description: string;
-  config_data: any;
+  config_data: PreviousConfig;
   is_active?: boolean;
   created_by?: string | null;
 }
@@ -121,7 +121,7 @@ export interface CreateConfigurationRequest {
 export interface UpdateConfigurationRequest {
   name?: string;
   description?: string;
-  config_data?: any;
+  config_data?: PreviousConfig;
   is_active?: boolean;
 }
 

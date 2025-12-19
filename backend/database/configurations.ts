@@ -8,7 +8,7 @@
  */
 
 import { v4 as uuidv4 } from 'uuid';
-import type { Configuration, CreateConfigurationRequest, UpdateConfigurationRequest } from '../types';
+import type { Configuration, CreateConfigurationRequest, UpdateConfigurationRequest, PreviousConfig } from '../types';
 import { getDatabase } from './core';
 
 /**
@@ -34,16 +34,16 @@ export function getConfigurations(userId?: number): Configuration[] {
     FROM configurations
   `;
 
-  let configurations: Configuration[];
+  let configurations: any[];
   
   if (userId !== undefined) {
     configurations = database
       .prepare(query + ' WHERE created_by = ? ORDER BY sort_order ASC')
-      .all(userId) as Configuration[];
+      .all(userId) as any[];
   } else {
     configurations = database
       .prepare(query + ' ORDER BY sort_order ASC')
-      .all() as Configuration[];
+      .all() as any[];
   }
 
   return configurations.map((config: any) => ({
@@ -87,7 +87,7 @@ export function getConfiguration(configurationId: string): Configuration | undef
     id: c.id,
     name: c.name,
     description: c.description,
-    config_data: JSON.parse(c.config_data),
+    config_data: JSON.parse(c.config_data) as PreviousConfig,
     is_active: !!c.is_active,
     created_at: c.created_at,
     updated_at: c.updated_at,
@@ -112,16 +112,16 @@ export function getActiveConfiguration(userId?: number): Configuration | undefin
     WHERE is_active = 1
   `;
 
-  let activeConfig: Configuration | undefined;
+  let activeConfig: any;
   
   if (userId !== undefined) {
     activeConfig = database
       .prepare(query + ' AND created_by = ? LIMIT 1')
-      .get(userId) as Configuration | undefined;
+      .get(userId) as any;
   } else {
     activeConfig = database
       .prepare(query + ' LIMIT 1')
-      .get() as Configuration | undefined;
+      .get() as any;
   }
 
   if (!activeConfig) {
@@ -132,7 +132,7 @@ export function getActiveConfiguration(userId?: number): Configuration | undefin
     id: activeConfig.id,
     name: activeConfig.name,
     description: activeConfig.description,
-    config_data: JSON.parse(activeConfig.config_data),
+    config_data: JSON.parse(activeConfig.config_data) as PreviousConfig,
     is_active: !!activeConfig.is_active,
     created_at: activeConfig.created_at,
     updated_at: activeConfig.updated_at,
