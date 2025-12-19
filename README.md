@@ -1,8 +1,8 @@
 [![Mastodon: @phranck](https://img.shields.io/badge/Mastodon-@phranck-blue.svg?style=flat)](https://oldbytes.space/@phranck)
 [![Mastodon: @phranck](https://img.shields.io/badge/Mastodon-@LAYERED-blue.svg?style=flat)](https://oldbytes.space/@LAYERED)
-[![TypeScript](https://img.shields.io/badge/TypeScript-85%25-blue.svg?style=flat)](https://www.typescriptlang.org/)
-[![JavaScript](https://img.shields.io/badge/JavaScript-8%25-yellow.svg?style=flat)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![Shell](https://img.shields.io/badge/Shell-4%25-green.svg?style=flat)](https://en.wikipedia.org/wiki/Shell_script)
+[![TypeScript](https://img.shields.io/badge/TypeScript-96%25-blue.svg?style=flat)](https://www.typescriptlang.org/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-1%25-yellow.svg?style=flat)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![Shell](https://img.shields.io/badge/Shell-3%25-green.svg?style=flat)](https://en.wikipedia.org/wiki/Shell_script)
 
 # Previous Admin [WIP]
 
