@@ -4,6 +4,9 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Barlow', 'sans-serif'],
+      },
       colors: {
         next: {
           bg: '#0a0a0a',

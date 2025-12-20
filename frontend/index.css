@@ -1,5 +1,115 @@
 @import "rsuite/dist/rsuite.min.css";
 
+@font-face {
+  font-family: 'Barlow';
+  src: url('/assets/fonts/Barlow-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('/assets/fonts/Barlow-ThinItalic.ttf') format('truetype');
+  font-weight: 100;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('/assets/fonts/Barlow-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('/assets/fonts/Barlow-ExtraLightItalic.ttf') format('truetype');
+  font-weight: 200;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('/assets/fonts/Barlow-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('/assets/fonts/Barlow-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('/assets/fonts/Barlow-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('/assets/fonts/Barlow-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('/assets/fonts/Barlow-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('/assets/fonts/Barlow-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('/assets/fonts/Barlow-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('/assets/fonts/Barlow-SemiBoldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('/assets/fonts/Barlow-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('/assets/fonts/Barlow-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('/assets/fonts/Barlow-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('/assets/fonts/Barlow-ExtraBoldItalic.ttf') format('truetype');
+  font-weight: 800;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('/assets/fonts/Barlow-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('/assets/fonts/Barlow-BlackItalic.ttf') format('truetype');
+  font-weight: 900;
+  font-style: italic;
+}
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,6 +117,7 @@
 @layer base {
   html {
     font-size: 110%;
+    font-family: "Barlow", sans-serif;
   }
 
   .dark {
@@ -75,7 +186,7 @@
     background-color: #252525 !important;
     color: #fff !important;
   }
-  
+
   .dark .rs-picker-toggle {
     background-color: #1a1a1a !important;
     border-color: #2a2a2a !important;
@@ -174,7 +285,7 @@
     display: flex !important;
     flex-direction: column !important;
   }
-  
+
   div.rs-modal div.rs-modal-header,
   .rs-modal .rs-modal-header,
   .rs-modal-header {
@@ -182,14 +293,14 @@
     border-top-right-radius: 1rem !important;
     flex-shrink: 0 !important;
   }
-  
+
   div.rs-modal div.rs-modal-body,
   .rs-modal .rs-modal-body,
   .rs-modal-body {
     overflow-y: auto !important;
     flex: 1 1 auto !important;
   }
-  
+
   div.rs-modal div.rs-modal-footer,
   .rs-modal .rs-modal-footer,
   .rs-modal-footer {
