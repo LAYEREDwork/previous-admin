@@ -10,7 +10,7 @@ interface EditorControlsPartialProps {
     handleSave: () => void;
     expandedSections: Record<string, boolean>;
     toggleAllSections: () => void;
-    controlSize: 'sm' | 'md' | 'lg';
+    controlSize: 'xs' | 'sm' | 'md' | 'lg';
     translation: Translations;
 }
 

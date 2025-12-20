@@ -15,7 +15,7 @@ import { RawViewPartial } from '../partials/config-editor/RawViewPartial';
 import { useControlSize } from '../../hooks/useControlSize';
 import { useConfigEditor } from '../../hooks/useConfigEditor';
 
-export function ConfigEditor({ configId, onTabChange }: { configId?: string; onTabChange?: (tab: string) => void }) {
+export function ConfigEditor({ configId, onTabChange }: { configId?: string | null; onTabChange?: (tab: string) => void }) {
   const {
     config,
     configName,
@@ -45,32 +45,7 @@ export function ConfigEditor({ configId, onTabChange }: { configId?: string; onT
 
   const controlSize = useControlSize('md');
 
-  // Show empty view if no saved configs exist
-  if (hasSavedConfigs === false || hasSavedConfigs === null) {
-    return (
-      <PAEmptyView
-        icon={IoDocumentText}
-        title={translation.configEditor.noSavedConfigs}
-        description={translation.configEditor.noSavedConfigsDescription}
-        actionText={translation.configEditor.createFirstConfig}
-        onAction={() => onTabChange?.('configs')}
-      />
-    );
-  }
-
-  // Show empty view if configs exist but no active config is selected
-  if (hasSavedConfigs === true && configId === undefined && configName === null) {
-    return (
-      <PAEmptyView
-        icon={IoDocumentText}
-        title={translation.configEditor.noConfigSelected}
-        description={translation.configEditor.noConfigSelectedDescription}
-        actionText={translation.configEditor.goToSavedConfigs}
-        onAction={() => onTabChange?.('configs')}
-      />
-    );
-  }
-
+  // 1. Loading state must come first
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-12">
@@ -80,6 +55,7 @@ export function ConfigEditor({ configId, onTabChange }: { configId?: string; onT
     );
   }
 
+  // 2. Error state
   if (error) {
     return (
       <div className="text-center py-12">
@@ -99,6 +75,34 @@ export function ConfigEditor({ configId, onTabChange }: { configId?: string; onT
     );
   }
 
+  // 3. Handle cases where no config is selected or none exists
+  if (!configId) {
+    if (hasSavedConfigs === false) {
+      return (
+        <PAEmptyView
+          icon={IoDocumentText}
+          title={translation.configEditor.noSavedConfigs}
+          description={translation.configEditor.noSavedConfigsDescription}
+          actionText={translation.configEditor.createFirstConfig}
+          onAction={() => onTabChange?.('configs')}
+        />
+      );
+    }
+
+    if (hasSavedConfigs === true && configName === null) {
+      return (
+        <PAEmptyView
+          icon={IoDocumentText}
+          title={translation.configEditor.noConfigSelected}
+          description={translation.configEditor.noConfigSelectedDescription}
+          actionText={translation.configEditor.goToSavedConfigs}
+          onAction={() => onTabChange?.('configs')}
+        />
+      );
+    }
+  }
+
+  // 4. Ensure we have config data before rendering the editor
   if (!config || !configData) {
     return (
       <div className="flex flex-col items-center justify-center py-12">

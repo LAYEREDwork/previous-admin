@@ -9,7 +9,7 @@ interface EditorViewPartialProps {
     updateConfigField: (path: string[], value: string | number | boolean) => void;
     expandedSections: Record<string, boolean>;
     setExpandedSections: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
-    controlSize: 'sm' | 'md' | 'lg';
+    controlSize: 'xs' | 'sm' | 'md' | 'lg';
     translation: Translations;
 }
 
@@ -21,6 +21,8 @@ export function EditorViewPartial({
     controlSize,
     translation
 }: EditorViewPartialProps) {
+    const rsuiteSize = controlSize === 'xs' ? 'sm' : controlSize;
+
     return (
         <div className="grid gap-6">
             {/* System Section */}
@@ -41,7 +43,7 @@ export function EditorViewPartial({
                         onChange={(value) => updateConfigField(['system', 'cpu_type'], value || '68030')}
                         block
                         searchable={false}
-                        size={controlSize}
+                        size={rsuiteSize}
                     />
                 </EditorFieldPartial>
 
@@ -54,7 +56,7 @@ export function EditorViewPartial({
                         }
                         min={1}
                         max={100}
-                        size={controlSize}
+                        size={rsuiteSize}
                     />
                 </EditorFieldPartial>
 
@@ -74,7 +76,7 @@ export function EditorViewPartial({
                         }
                         block
                         searchable={false}
-                        size={controlSize}
+                        size={rsuiteSize}
                     />
                 </EditorFieldPartial>
 
@@ -82,7 +84,7 @@ export function EditorViewPartial({
                     <Toggle
                         checked={configData.system.turbo}
                         onChange={(checked) => updateConfigField(['system', 'turbo'], checked)}
-                        size={controlSize}
+                        size={rsuiteSize}
                     />
                 </EditorFieldPartial>
 
@@ -90,7 +92,7 @@ export function EditorViewPartial({
                     <Toggle
                         checked={configData.system.fpu}
                         onChange={(checked) => updateConfigField(['system', 'fpu'], checked)}
-                        size={controlSize}
+                        size={rsuiteSize}
                     />
                 </EditorFieldPartial>
             </EditorSectionPartial>
@@ -112,7 +114,7 @@ export function EditorViewPartial({
                         onChange={(value) => updateConfigField(['display', 'type'], value || 'color')}
                         block
                         searchable={false}
-                        size={controlSize}
+                        size={rsuiteSize}
                     />
                 </EditorFieldPartial>
 
@@ -122,7 +124,7 @@ export function EditorViewPartial({
                         value={configData.display.width.toString()}
                         onChange={(value) => updateConfigField(['display', 'width'], parseInt(value) || 0)}
                         step={16}
-                        size={controlSize}
+                        size={rsuiteSize}
                     />
                 </EditorFieldPartial>
 
@@ -132,7 +134,7 @@ export function EditorViewPartial({
                         value={configData.display.height.toString()}
                         onChange={(value) => updateConfigField(['display', 'height'], parseInt(value) || 0)}
                         step={16}
-                        size={controlSize}
+                        size={rsuiteSize}
                     />
                 </EditorFieldPartial>
 
@@ -150,7 +152,7 @@ export function EditorViewPartial({
                         }
                         block
                         searchable={false}
-                        size={controlSize}
+                        size={rsuiteSize}
                     />
                 </EditorFieldPartial>
 
@@ -163,7 +165,7 @@ export function EditorViewPartial({
                         }
                         min={0}
                         max={8}
-                        size={controlSize}
+                        size={rsuiteSize}
                     />
                 </EditorFieldPartial>
             </EditorSectionPartial>
@@ -181,7 +183,7 @@ export function EditorViewPartial({
                             value={configData.scsi[hd as keyof typeof configData.scsi]}
                             onChange={(value) => updateConfigField(['scsi', hd], value)}
                             placeholder={translation.configEditor.fields.pathToDiskImage}
-                            size={controlSize}
+                            size={rsuiteSize}
                         />
                     </EditorFieldPartial>
                 ))}
@@ -191,7 +193,7 @@ export function EditorViewPartial({
                         value={configData.scsi.cd}
                         onChange={(value) => updateConfigField(['scsi', 'cd'], value)}
                         placeholder={translation.configEditor.fields.pathToCdImage}
-                        size={controlSize}
+                        size={rsuiteSize}
                     />
                 </EditorFieldPartial>
             </EditorSectionPartial>
@@ -207,7 +209,7 @@ export function EditorViewPartial({
                     <Toggle
                         checked={configData.network.enabled}
                         onChange={(checked) => updateConfigField(['network', 'enabled'], checked)}
-                        size={controlSize}
+                        size={rsuiteSize}
                     />
                 </EditorFieldPartial>
 
@@ -222,7 +224,7 @@ export function EditorViewPartial({
                         disabled={!configData.network.enabled}
                         block
                         searchable={false}
-                        size={controlSize}
+                        size={rsuiteSize}
                     />
                 </EditorFieldPartial>
             </EditorSectionPartial>
@@ -238,7 +240,7 @@ export function EditorViewPartial({
                     <Toggle
                         checked={configData.sound.enabled}
                         onChange={(checked) => updateConfigField(['sound', 'enabled'], checked)}
-                        size={controlSize}
+                        size={rsuiteSize}
                     />
                 </EditorFieldPartial>
 
@@ -254,7 +256,7 @@ export function EditorViewPartial({
                         disabled={!configData.sound.enabled}
                         block
                         searchable={false}
-                        size={controlSize}
+                        size={rsuiteSize}
                     />
                 </EditorFieldPartial>
             </EditorSectionPartial>
@@ -271,7 +273,7 @@ export function EditorViewPartial({
                         value={configData.boot.rom_file}
                         onChange={(value) => updateConfigField(['boot', 'rom_file'], value)}
                         placeholder={translation.configEditor.fields.pathToRomFile}
-                        size={controlSize}
+                        size={rsuiteSize}
                     />
                 </EditorFieldPartial>
 
@@ -285,7 +287,7 @@ export function EditorViewPartial({
                         onChange={(value) => updateConfigField(['boot', 'scsi_id'], value || 0)}
                         block
                         searchable={false}
-                        size={controlSize}
+                        size={rsuiteSize}
                     />
                 </EditorFieldPartial>
             </EditorSectionPartial>
@@ -309,7 +311,7 @@ export function EditorViewPartial({
                         onChange={(value) => updateConfigField(['keyboard', 'type'], value || 'us')}
                         block
                         searchable={false}
-                        size={controlSize}
+                        size={rsuiteSize}
                     />
                 </EditorFieldPartial>
 
@@ -317,7 +319,7 @@ export function EditorViewPartial({
                     <Toggle
                         checked={configData.mouse.enabled}
                         onChange={(checked) => updateConfigField(['mouse', 'enabled'], checked)}
-                        size={controlSize}
+                        size={rsuiteSize}
                     />
                 </EditorFieldPartial>
             </EditorSectionPartial>

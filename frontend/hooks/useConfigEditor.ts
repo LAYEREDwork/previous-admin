@@ -18,7 +18,7 @@ import { convertToConfigFile } from '../lib/configConverter';
  * Custom hook to handle configuration editor business logic.
  * Orchestrates sub-hooks for metadata, sections, and persistence.
  */
-export function useConfigEditor(configId?: string) {
+export function useConfigEditor(configId?: string | null) {
   const {
     config,
     configName,
@@ -27,7 +27,8 @@ export function useConfigEditor(configId?: string) {
     error,
     updateConfig,
     loadConfigById,
-    updateConfigMetadata
+    updateConfigMetadata,
+    refreshConfig
   } = useConfig();
 
   const { translation } = useLanguage();
@@ -62,10 +63,12 @@ export function useConfigEditor(configId?: string) {
 
   // Check if there are any saved configs when no config is selected
   useEffect(() => {
-    if (configId === undefined) {
+    if (!configId) {
       database.getConfigurations()
         .then(configs => setHasSavedConfigs(configs.length > 0))
         .catch(() => setHasSavedConfigs(false));
+    } else {
+      setHasSavedConfigs(true);
     }
   }, [configId]);
 
@@ -176,6 +179,7 @@ export function useConfigEditor(configId?: string) {
     updateConfigField,
     copyToClipboard,
     loadConfigById,
+    refreshConfig,
 
     // Utilities
     convertToConfigFile,

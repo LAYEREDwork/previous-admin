@@ -10,7 +10,7 @@ interface ConfigDetailsPartialProps {
     setLocalDescription: (desc: string) => void;
     hasChanges: boolean;
     handleUpdateMetadata: () => void;
-    controlSize: 'sm' | 'md' | 'lg';
+    controlSize: 'xs' | 'sm' | 'md' | 'lg';
     translation: Translations;
 }
 
@@ -24,6 +24,8 @@ export function ConfigDetailsPartial({
     controlSize,
     translation
 }: ConfigDetailsPartialProps) {
+    const rsuiteSize = controlSize === 'xs' ? 'sm' : controlSize;
+
     return (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
@@ -39,7 +41,7 @@ export function ConfigDetailsPartial({
                         <Input
                             value={localName}
                             onChange={setLocalName}
-                            size={controlSize}
+                            size={rsuiteSize}
                             placeholder={translation.configEditor.configurationNamePlaceholder}
                         />
                     </div>
@@ -50,7 +52,7 @@ export function ConfigDetailsPartial({
                         <Input
                             value={localDescription}
                             onChange={setLocalDescription}
-                            size={controlSize}
+                            size={rsuiteSize}
                             placeholder={translation.configEditor.configurationDescriptionPlaceholder}
                         />
                     </div>
