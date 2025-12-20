@@ -18,6 +18,7 @@ export const fr: Translations = {
   },
   common: {
     cancel: 'Annuler',
+    confirm: 'Continuer',
     error: 'Erreur',
     loading: 'Chargement...',
     reload: 'Recharger',
@@ -103,6 +104,8 @@ export const fr: Translations = {
     errorUpdatingOrder: 'Erreur lors de la mise à jour de l\'ordre',
     loading: 'Chargement des configurations...',
     newConfig: 'Nouvelle Configuration',
+    setActive: 'Définir comme actif',
+    export: 'Exporter',
     noConfigs: 'Aucune configuration enregistrée',
     noConfigsDescription: 'Créez votre première configuration pour commencer',
     search: 'Rechercher des configurations',
@@ -257,6 +260,7 @@ export const fr: Translations = {
     resetConfirm: 'Réinitialiser',
     resetWarning: 'Avertissement : Cela supprimera toutes les configurations et réinitialisera le système à la configuration initiale. Cette action est irréversible !',
     resetting: 'Réinitialisation...',
+    updateFrequency: 'Fréquence de mise à jour',
   },
   tabs: {
     about: 'À propos',

@@ -1,17 +1,20 @@
-import { BiPlus, BiTrash, BiEdit, BiMenu, BiCheckCircle, BiCircle, BiUpload, BiCopy } from 'react-icons/bi';
-import { IoDocumentsOutline, IoDocumentText } from 'react-icons/io5';
-import { Button, Input, IconButton, Toggle } from 'rsuite';
+import { BiPlus } from 'react-icons/bi';
+import { IoDocumentsOutline } from 'react-icons/io5';
 
 // Components
-import { CenteredModal } from '../controls/CenteredModal';
 import EmptyView from '../controls/EmptyView';
+
+// Partials
+import { ConfigListItemPartial } from '../partials/config-list/ConfigListItemPartial';
+import { ConfigListHeaderPartial } from '../partials/config-list/ConfigListHeaderPartial';
+import { NewConfigModalPartial } from '../partials/config-list/NewConfigModalPartial';
 
 // Hooks
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useControlSize } from '../../hooks/useControlSize';
 import { useConfigListLogic } from '../../hooks/useConfigList';
 
-// Types/Utilities
+// Types
 import { Configuration } from '../../lib/database';
 
 interface ConfigListProps {
@@ -56,206 +59,54 @@ export function ConfigList({ onEdit }: ConfigListProps) {
 
   return (
     <div className="space-y-4">
+      {/* Header Section */}
       {configs.length > 0 && (
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-            {translation.configList.title}
-          </h2>
-          <Button
-            onClick={() => setShowNewConfig(true)}
-            appearance="primary"
-            className="flex items-center gap-2"
-            size={controlSize}
-          >
-            <BiPlus size={18} />
-            {translation.configList.newConfig}
-          </Button>
-        </div>
+        <ConfigListHeaderPartial
+          onNewConfigClick={() => setShowNewConfig(true)}
+          controlSize={controlSize}
+          translation={translation}
+        />
       )}
 
-      <CenteredModal
+      {/* New Configuration Modal */}
+      <NewConfigModalPartial
         open={showNewConfig}
-        onClose={() => handleCloseNewConfigModal()}
-        size="sm"
-      >
-        <CenteredModal.Header>
-          <CenteredModal.Title>
-            <IoDocumentText size={32} className="inline-block mr-2 -mt-0.5" />
-            {translation.configList.newConfig}
-          </CenteredModal.Title>
-        </CenteredModal.Header>
-        <CenteredModal.Body>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                {translation.configEditor.configName}
-              </label>
-              <Input
-                inputRef={newConfigNameRef}
-                value={newConfigName}
-                onChange={setNewConfigName}
-                placeholder={translation.configEditor.configNamePlaceholder}
-                size={controlSize}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                {translation.configList.description}
-              </label>
-              <Input
-                as="textarea"
-                value={newConfigDesc}
-                onChange={setNewConfigDesc}
-                rows={3}
-                placeholder={translation.configList.description}
-                size={controlSize}
-              />
-            </div>
-          </div>
-        </CenteredModal.Body>
-        <CenteredModal.Footer>
-          <Button
-            onClick={() => handleCloseNewConfigModal()}
-            appearance="subtle"
-            size={controlSize}
-          >
-            {translation.common.cancel}
-          </Button>
-          <Button
-            onClick={createConfig}
-            disabled={!newConfigName.trim()}
-            appearance="primary"
-            size={controlSize}
-          >
-            {translation.common.save}
-          </Button>
-        </CenteredModal.Footer>
-      </CenteredModal>
+        onClose={handleCloseNewConfigModal}
+        onSave={createConfig}
+        name={newConfigName}
+        setName={setNewConfigName}
+        description={newConfigDesc}
+        setDescription={setNewConfigDesc}
+        nameRef={newConfigNameRef}
+        controlSize={controlSize}
+        translation={translation}
+      />
 
+      {/* Configurations List */}
       <div className="grid gap-3">
         {configs.map((config, index) => (
-          <div key={config.id} className="relative">
-            {dragOverIndex === index && draggedIndex !== index && (
-              <div className="absolute -top-1 left-0 right-0 h-1 bg-next-accent rounded-full z-10"></div>
-            )}
-            <div
-              draggable={configs.length > 1}
-              onDragStart={() => handleDragStart(index)}
-              onDragOver={(e) => handleDragOver(e, index)}
-              onDragEnd={handleDragEnd}
-              onDragLeave={handleDragLeave}
-              className={`bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-1 sm:p-3 hover:shadow-md transition-all ${configs.length > 1 ? 'cursor-move' : ''
-                } ${draggedIndex === index ? 'opacity-50 scale-95' : ''} ${dragOverIndex === index && draggedIndex !== index ? 'border-next-accent' : ''
-                } relative`}
-            >
-              {config.is_active && (
-                <div className="absolute top-0 right-0 z-10">
-                  <span className="inline-block px-2 py-0.5 text-xs font-medium bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-tr-lg rounded-bl-lg shadow-md border-b border-l border-green-200 dark:border-green-800">
-                    {translation.configList.active}
-                  </span>
-                </div>
-              )}
-
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-                <div className="flex items-start sm:items-center gap-2 sm:gap-3 flex-1 min-w-0">
-                  {!config.is_active && (
-                    <IconButton
-                      onClick={() => setActiveConfig(config.id)}
-                      icon={<BiCircle size={21} />}
-                      appearance="subtle"
-                      size="sm"
-                      title="Set as active"
-                      className="text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
-                    />
-                  )}
-                  {config.is_active && (
-                    <IconButton
-                      icon={<BiCheckCircle size={21} />}
-                      size="sm"
-                      appearance="subtle"
-                      disabled
-                      className="!text-green-700 dark:!text-green-300 !cursor-default"
-                    />
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-0.5 sm:mb-1">
-                      <h3 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white truncate">
-                        {config.name}
-                      </h3>
-                    </div>
-                    {config.description && (
-                      <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 line-clamp-2 sm:truncate">
-                        {config.description}
-                      </p>
-                    )}
-                  </div>
-                </div>
-                <div className="md:hidden flex justify-end gap-3 mt-2">
-                  <IconButton
-                    icon={<BiUpload size={24} />}
-                    size="sm"
-                    appearance="subtle"
-                    onClick={() => exportSingleConfig(config)}
-                    title="Export configuration"
-                  />
-                  <IconButton
-                    icon={<BiCopy size={24} />}
-                    size="sm"
-                    appearance="subtle"
-                    onClick={() => duplicateConfig(config)}
-                    title={translation.configList.duplicate}
-                  />
-                  <IconButton
-                    icon={<BiEdit size={24} />}
-                    size="sm"
-                    appearance="subtle"
-                    onClick={() => onEdit(config)}
-                    title={translation.configList.edit}
-                  />
-                  <IconButton
-                    icon={<BiTrash size={24} />}
-                    size="sm"
-                    appearance="subtle"
-                    onClick={() => deleteConfig(config.id)}
-                    title={translation.configList.delete}
-                  />
-                </div>
-                <div className="hidden md:flex absolute bottom-2 right-2 flex-row gap-2">
-                  <IconButton
-                    icon={<BiUpload />}
-                    size="md"
-                    appearance="default"
-                    onClick={() => exportSingleConfig(config)}
-                    title="Export configuration"
-                  />
-                  <IconButton
-                    icon={<BiCopy />}
-                    size="md"
-                    appearance="default"
-                    onClick={() => duplicateConfig(config)}
-                    title={translation.configList.duplicate}
-                  />
-                  <IconButton
-                    icon={<BiEdit />}
-                    size="md"
-                    appearance="default"
-                    onClick={() => onEdit(config)}
-                    title={translation.configList.edit}
-                  />
-                  <IconButton
-                    icon={<BiTrash />}
-                    size="md"
-                    appearance="default"
-                    onClick={() => deleteConfig(config.id)}
-                    title={translation.configList.delete}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+          <ConfigListItemPartial
+            key={config.id}
+            config={config}
+            index={index}
+            totalConfigs={configs.length}
+            draggedIndex={draggedIndex}
+            dragOverIndex={dragOverIndex}
+            handleDragStart={handleDragStart}
+            handleDragOver={handleDragOver}
+            handleDragEnd={handleDragEnd}
+            handleDragLeave={handleDragLeave}
+            setActiveConfig={setActiveConfig}
+            exportSingleConfig={exportSingleConfig}
+            duplicateConfig={duplicateConfig}
+            onEdit={onEdit}
+            deleteConfig={deleteConfig}
+            translation={translation}
+          />
         ))}
       </div>
 
+      {/* Empty State */}
       {configs.length === 0 && !showNewConfig && (
         <EmptyView
           icon={IoDocumentsOutline}

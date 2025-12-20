@@ -1,4 +1,6 @@
 import 'express-session';
+import { Request, Response } from 'express';
+import { Session, SessionData } from 'express-session';
 
 /**
  * Extend Express session data with custom properties
@@ -11,6 +13,22 @@ declare global {
     }
   }
 }
+
+/**
+ * Authenticated request with session data
+ */
+export interface AuthenticatedRequest extends Request {
+  session: Session & Partial<SessionData> & {
+    userId?: string;
+    username?: string;
+    destroy: (callback: (err?: Error) => void) => void;
+  };
+}
+
+/**
+ * Typed Express response
+ */
+export type TypedResponse<T = unknown> = Response<T>;
 
 /**
  * Previous system configuration object

@@ -18,6 +18,7 @@ export const es: Translations = {
   },
   common: {
     cancel: 'Cancelar',
+    confirm: 'Continuar',
     error: 'Error',
     loading: 'Cargando...',
     reload: 'Recargar',
@@ -103,6 +104,8 @@ export const es: Translations = {
     errorUpdatingOrder: 'Error al actualizar el orden',
     loading: 'Cargando configuraciones...',
     newConfig: 'Nueva Configuración',
+    setActive: 'Establecer como activo',
+    export: 'Exportar',
     noConfigs: 'No hay configuraciones guardadas',
     noConfigsDescription: 'Crea tu primera configuración para empezar',
     search: 'Buscar configuraciones',
@@ -257,6 +260,7 @@ export const es: Translations = {
     resetConfirm: 'Restablecer',
     resetWarning: 'Advertencia: ¡Esto eliminará todas las configuraciones y restablecerá el sistema a la configuración inicial. ¡Esta acción no se puede deshacer!',
     resetting: 'Restableciendo...',
+    updateFrequency: 'Frecuencia de actualización',
   },
   tabs: {
     about: 'Acerca de',

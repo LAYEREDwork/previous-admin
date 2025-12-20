@@ -72,10 +72,20 @@ export const DEFAULT_CONFIG: PreviousConfig = {
 };
 
 /**
+ * Backend server port
+ *
+ * The port on which the backend Express server runs.
+ * Used for both HTTP API requests and WebSocket connections.
+ *
+ * @type {number}
+ */
+export const BACKEND_PORT = 3001;
+
+/**
  * Base URL for API requests
  *
  * Dynamically constructs API endpoint based on current hostname.
- * Backend server must be running on port 3001.
+ * Backend server must be running on the configured BACKEND_PORT.
  * Uses HTTP protocol (browser may upgrade to HTTPS automatically).
  *
  * @type {string}
@@ -87,7 +97,17 @@ export const DEFAULT_CONFIG: PreviousConfig = {
  * // If accessing from 'localhost':
  * // API_BASE_URL = 'http://localhost:3001'
  */
-export const API_BASE_URL = `http://${window.location.hostname}:3001`;
+export const API_BASE_URL = `http://${window.location.hostname}:${BACKEND_PORT}`;
+
+/**
+ * WebSocket URL for real-time metrics
+ *
+ * Dynamically constructs WebSocket endpoint based on current hostname and protocol.
+ * Uses secure WebSocket (wss:) when page is served over HTTPS.
+ *
+ * @type {string}
+ */
+export const WS_URL = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.hostname}:${BACKEND_PORT}`;
 
 /**
  * Available metrics update frequencies (in seconds)
@@ -100,7 +120,7 @@ export const API_BASE_URL = `http://${window.location.hostname}:3001`;
  * @example
  * METRICS_UPDATE_FREQUENCIES // [0.5, 0.75, 1.0, 1.5, 2.0]
  */
-export const METRICS_UPDATE_FREQUENCIES = [0.5, 0.75, 1.0, 1.5, 2.0];
+export const METRICS_UPDATE_FREQUENCIES = [0.25, 0.5, 1.0, 1.5, 1.75];
 
 /**
  * Default metrics update frequency (in seconds)

@@ -42,6 +42,7 @@ export interface Translations {
   };
   common: {
     cancel: string;
+    confirm: string;
     error: string;
     loading: string;
     reload: string;
@@ -129,6 +130,8 @@ export interface Translations {
     errorUpdatingOrder: string;
     loading: string;
     newConfig: string;
+    setActive: string;
+    export: string;
     title: string;
   };
   footer: {
@@ -270,6 +273,7 @@ export interface Translations {
     uptime: string;
     currentReleaseNotes: string;
     releaseNotes: string;
+    updateFrequency: string;
   };
   tabs: {
     about: string;

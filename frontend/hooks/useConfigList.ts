@@ -1,51 +1,29 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 // Hooks
-import { useConfig } from '../contexts/ConfigContext';
 import { useNotification } from '../contexts/NotificationContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useConfigDnD } from './useConfigDnD';
+import { useNewConfigModal } from './useNewConfigModal';
+import { useConfigActions } from './useConfigActions';
 
 // Utilities
 import { database, Configuration } from '../lib/database';
-import { DEFAULT_CONFIG } from '../lib/constants';
-import { downloadFile, generateConfigFilename } from '../lib/utils';
 
 /**
  * Custom hook to handle config list page business logic.
- * Manages state and operations for configuration management.
+ * Orchestrates specialized hooks to provide a clean interface for the UI.
  */
 export function useConfigListLogic(onEdit: (config: Configuration) => void) {
-  const { showSuccess, showError, showConfirm } = useNotification();
+  const { showError } = useNotification();
   const { translation } = useLanguage();
-  const { refreshConfig } = useConfig();
 
   const [configs, setConfigs] = useState<Configuration[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showNewConfig, setShowNewConfig] = useState(false);
-  const [newConfigName, setNewConfigName] = useState('');
-  const [newConfigDesc, setNewConfigDesc] = useState('');
-  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
-  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
-  const newConfigNameRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    loadConfigs();
-  }, [loadConfigs]);
-
-  useEffect(() => {
-    if (showNewConfig) {
-      // Kurze Verzögerung für Modal-Animation
-      setTimeout(() => {
-        newConfigNameRef.current?.focus();
-      }, 100);
-    }
-  }, [showNewConfig]);
-
-  async function loadConfigs() {
+  const loadConfigs = useCallback(async () => {
     try {
       const data = await database.getConfigurations();
-      console.log('Loaded configurations:', data?.map(config => ({ id: config.id, name: config.name, sort_order: config.sort_order })));
       setConfigs(data || []);
     } catch (error) {
       console.error('Error loading configs:', error);
@@ -53,142 +31,47 @@ export function useConfigListLogic(onEdit: (config: Configuration) => void) {
     } finally {
       setLoading(false);
     }
-  }
+  }, [showError, translation.configList.errorLoadingConfigurations]);
 
-  async function createConfig() {
-    if (!newConfigName.trim()) return;
+  const {
+    showNewConfig,
+    setShowNewConfig,
+    newConfigName,
+    setNewConfigName,
+    newConfigDesc,
+    setNewConfigDesc,
+    newConfigNameRef,
+    handleClose: handleCloseNewConfigModal,
+  } = useNewConfigModal();
 
+  const {
+    createConfig: performCreate,
+    deleteConfig,
+    duplicateConfig,
+    setActiveConfig,
+    exportSingleConfig,
+  } = useConfigActions(loadConfigs);
+
+  const {
+    draggedIndex,
+    dragOverIndex,
+    handleDragStart,
+    handleDragOver,
+    handleDragEnd,
+    handleDragLeave,
+  } = useConfigDnD(configs, loadConfigs);
+
+  useEffect(() => {
+    loadConfigs();
+  }, [loadConfigs]);
+
+  const createConfig = async () => {
     const isFirstConfig = configs.length === 0;
-    console.log('Creating config:', newConfigName, 'isFirstConfig:', isFirstConfig);
-
-    try {
-      await database.createConfiguration(
-        newConfigName,
-        newConfigDesc,
-        DEFAULT_CONFIG,
-        isFirstConfig
-      );
-
-      setShowNewConfig(false);
-      setNewConfigName('');
-      setNewConfigDesc('');
-      await loadConfigs();
-      // Refresh the active config in ConfigContext
-      await refreshConfig();
-    } catch (error) {
-      console.error('Error creating config:', error);
-      showError(translation.configList.errorCreatingConfiguration);
+    const success = await performCreate(newConfigName, newConfigDesc, isFirstConfig);
+    if (success) {
+      handleCloseNewConfigModal();
     }
-  }
-
-  async function deleteConfig(id: string) {
-    showConfirm(
-      translation.configList.confirmDelete,
-      async () => {
-        try {
-          await database.deleteConfiguration(id);
-          setConfigs(configs.filter((config) => config.id !== id));
-        } catch (error) {
-          console.error('Error deleting config:', error);
-          showError(translation.configList.errorDeletingConfiguration);
-        }
-      }
-    );
-  }
-
-  async function setActiveConfig(id: string) {
-    try {
-      await database.setActiveConfiguration(id);
-      loadConfigs();
-    } catch (error) {
-      console.error('Error setting active config:', error);
-      showError(translation.configList.errorSettingActiveConfiguration);
-    }
-  }
-
-  function exportSingleConfig(config: Configuration) {
-    try {
-      const exportData = {
-        name: config.name,
-        description: config.description,
-        config: config.config_data,
-        exported_at: new Date().toISOString(),
-      };
-
-      downloadFile(exportData, generateConfigFilename(config.name));
-      showSuccess(translation.configList.configurationExportedSuccessfully);
-    } catch (error) {
-      console.error('Error exporting config:', error);
-      showError(translation.configList.errorExportingConfiguration);
-    }
-  }
-
-  async function duplicateConfig(config: Configuration) {
-    try {
-      const duplicatedConfig = {
-        name: config.name + translation.configList.copySuffix,
-        description: config.description,
-        config_data: config.config_data,
-      };
-
-      await database.createConfiguration(
-        duplicatedConfig.name,
-        duplicatedConfig.description,
-        duplicatedConfig.config_data,
-        false
-      );
-      loadConfigs();
-      showSuccess(translation.configList.configurationDuplicatedSuccessfully || 'Configuration duplicated successfully');
-    } catch (error) {
-      console.error('Error duplicating config:', error);
-      showError(translation.configList.errorDuplicatingConfiguration || 'Error duplicating configuration');
-    }
-  }
-
-  function handleDragStart(index: number) {
-    setDraggedIndex(index);
-  }
-
-  function handleDragOver(e: React.DragEvent, index: number) {
-    e.preventDefault();
-    if (draggedIndex === null) return;
-
-    setDragOverIndex(index);
-  }
-
-  async function handleDragEnd() {
-    if (draggedIndex === null || dragOverIndex === null) return;
-
-    try {
-      const newConfigs = [...configs];
-      const draggedItem = newConfigs[draggedIndex];
-      newConfigs.splice(draggedIndex, 1);
-      newConfigs.splice(dragOverIndex, 0, draggedItem);
-
-      const orderedIds = newConfigs.map(config => config.id);
-      console.log('Saving new order:', orderedIds);
-      await database.updateConfigurationsOrder(orderedIds);
-      console.log('Order saved successfully');
-      await loadConfigs();
-    } catch (error) {
-      console.error('Error updating order:', error);
-      showError(translation.configList.errorUpdatingOrder);
-      loadConfigs();
-    } finally {
-      setDraggedIndex(null);
-      setDragOverIndex(null);
-    }
-  }
-
-  function handleDragLeave() {
-    setDragOverIndex(null);
-  }
-
-  function handleCloseNewConfigModal() {
-    setShowNewConfig(false);
-    setNewConfigName('');
-    setNewConfigDesc('');
-  }
+  };
 
   return {
     configs,
@@ -204,7 +87,7 @@ export function useConfigListLogic(onEdit: (config: Configuration) => void) {
     newConfigNameRef,
     loadConfigs,
     createConfig,
-    deleteConfig,
+    deleteConfig: (id: string) => deleteConfig(id),
     duplicateConfig,
     setActiveConfig,
     exportSingleConfig,

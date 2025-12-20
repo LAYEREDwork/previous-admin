@@ -3,14 +3,54 @@
  * Handles user setup, login, logout, and session management
  */
 
-import express from 'express';
+import express, { Request, Response } from 'express';
 import {
   hasAnyUsers,
   createUser,
   authenticateUser
 } from '../database';
+import { AuthenticatedRequest } from '../types';
 
 const router = express.Router();
+
+// Request body types
+interface SetupRequestBody {
+  username: string;
+  password: string;
+}
+
+interface LoginRequestBody {
+  username: string;
+  password: string;
+}
+
+// Response types
+interface SetupRequiredResponse {
+  setupRequired: boolean;
+}
+
+interface SetupResponse {
+  success: boolean;
+  username: string;
+}
+
+interface LoginResponse {
+  username: string;
+}
+
+interface LogoutResponse {
+  success: boolean;
+}
+
+interface SessionResponse {
+  authenticated: boolean;
+  username?: string;
+  setupRequired: boolean;
+}
+
+interface ErrorResponse {
+  error: string;
+}
 
 /**
  * GET /api/auth/setup-required
@@ -24,7 +64,7 @@ const router = express.Router();
  * const res = await fetch('/api/auth/setup-required');
  * const { setupRequired } = await res.json();
  */
-router.get('/setup-required', (req: any, res: any) => {
+router.get('/setup-required', (_req: Request, res: Response<SetupRequiredResponse>) => {
   res.json({ setupRequired: !hasAnyUsers() });
 });
 
@@ -52,7 +92,10 @@ router.get('/setup-required', (req: any, res: any) => {
  *   body: JSON.stringify({ username: 'admin', password: 'secure123' })
  * });
  */
-router.post('/setup', async (req: any, res: any) => {
+router.post('/setup', async (
+  req: Request<object, SetupResponse | ErrorResponse, SetupRequestBody>,
+  res: Response<SetupResponse | ErrorResponse>
+) => {
   try {
     if (hasAnyUsers()) {
       return res.status(400).json({ error: 'Setup already completed' });
@@ -62,8 +105,8 @@ router.post('/setup', async (req: any, res: any) => {
 
     const user = await createUser({ username, password });
 
-    req.session.username = user.username;
-    req.session.userId = user.id;
+    (req as AuthenticatedRequest).session.username = user.username;
+    (req as AuthenticatedRequest).session.userId = user.id;
 
     res.json({
       success: true,
@@ -97,7 +140,10 @@ router.post('/setup', async (req: any, res: any) => {
  *   body: JSON.stringify({ username: 'admin', password: 'password' })
  * });
  */
-router.post('/login', async (req: any, res: any) => {
+router.post('/login', async (
+  req: Request<object, LoginResponse | ErrorResponse, LoginRequestBody>,
+  res: Response<LoginResponse | ErrorResponse>
+) => {
   const { username, password } = req.body;
 
   try {
@@ -107,8 +153,8 @@ router.post('/login', async (req: any, res: any) => {
       return res.status(401).json({ error: result.error });
     }
 
-    req.session.username = result.user.username;
-    req.session.userId = result.user.id;
+    (req as AuthenticatedRequest).session.username = result.user.username;
+    (req as AuthenticatedRequest).session.userId = result.user.id;
 
     res.json({
       username: result.user.username
@@ -133,8 +179,11 @@ router.post('/login', async (req: any, res: any) => {
  * @example
  * const res = await fetch('/api/auth/logout', { method: 'POST' });
  */
-router.post('/logout', (req: any, res: any) => {
-  req.session.destroy((err: any) => {
+router.post('/logout', (
+  req: Request,
+  res: Response<LogoutResponse | ErrorResponse>
+) => {
+  (req as AuthenticatedRequest).session.destroy((err?: Error) => {
     if (err) {
       return res.status(500).json({ error: 'Logout failed' });
     }
@@ -159,11 +208,15 @@ router.post('/logout', (req: any, res: any) => {
  * const res = await fetch('/api/auth/session');
  * const { authenticated, username, setupRequired } = await res.json();
  */
-router.get('/session', (req: any, res: any) => {
-  if (req.session.username) {
+router.get('/session', (
+  req: Request,
+  res: Response<SessionResponse>
+) => {
+  const authReq = req as AuthenticatedRequest;
+  if (authReq.session.username) {
     res.json({
       authenticated: true,
-      username: req.session.username,
+      username: authReq.session.username,
       setupRequired: false
     });
   } else {

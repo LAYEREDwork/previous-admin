@@ -18,6 +18,7 @@ export const it: Translations = {
   },
   common: {
     cancel: 'Annulla',
+    confirm: 'Continua',
     error: 'Errore',
     loading: 'Caricamento...',
     reload: 'Ricarica',
@@ -103,6 +104,8 @@ export const it: Translations = {
     errorUpdatingOrder: 'Errore durante l\'aggiornamento dell\'ordine',
     loading: 'Caricamento configurazioni...',
     newConfig: 'Nuova Configurazione',
+    setActive: 'Imposta come attivo',
+    export: 'Esporta',
     noConfigs: 'Nessuna configurazione salvata',
     noConfigsDescription: 'Crea la tua prima configurazione per iniziare',
     search: 'Cerca configurazioni',
@@ -257,6 +260,7 @@ export const it: Translations = {
     resetConfirm: 'Resetta',
     resetWarning: 'Attenzione: Questo eliminerà tutte le configurazioni e ripristinerà il sistema alla configurazione iniziale. Questa azione non può essere annullata!',
     resetting: 'Reset in corso...',
+    updateFrequency: 'Frequenza di aggiornamento',
   },
   tabs: {
     about: 'Informazioni',

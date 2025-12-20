@@ -4,6 +4,7 @@ import { LanguageProvider } from './contexts/LanguageContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ConfigProvider } from './contexts/ConfigContext';
 import { NotificationProvider } from './contexts/NotificationContext';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { Layout } from './components/partials/LayoutPartial';
 import { ConfigEditor } from './components/pages/ConfigEditorPage';
 import { ConfigList } from './components/pages/ConfigListPage';
@@ -12,7 +13,7 @@ import { System } from './components/pages/SystemPage';
 import { About } from './components/pages/AboutPage';
 import { Login } from './components/pages/LoginPage';
 import { CustomProvider } from 'rsuite';
-import { database, Configuration } from './lib/database';
+import { Configuration } from './lib/database';
 
 function AppContent() {
   const { isAuthenticated, loading } = useAuth();
@@ -63,17 +64,19 @@ function AppContent() {
 
 function App() {
   return (
-    <ThemeProvider>
-      <LanguageProvider>
-        <NotificationProvider>
-          <AuthProvider>
-            <ConfigProvider>
-              <AppContent />
-            </ConfigProvider>
-          </AuthProvider>
-        </NotificationProvider>
-      </LanguageProvider>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <LanguageProvider>
+          <NotificationProvider>
+            <AuthProvider>
+              <ConfigProvider>
+                <AppContent />
+              </ConfigProvider>
+            </AuthProvider>
+          </NotificationProvider>
+        </LanguageProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 

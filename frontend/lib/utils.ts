@@ -149,3 +149,17 @@ export function formatUptime(seconds: number, labels: { days: string; hours: str
 
   return parts.join(' ');
 }
+
+/**
+ * Helper function to pad data to fixed window size
+ */
+export function padDataToWindow<T extends Record<string, unknown>>(data: T[], windowSize: number, emptyValue: Partial<T>): T[] {
+  if (data.length >= windowSize) {
+    return data.slice(-windowSize);
+  }
+  const padding = Array(windowSize - data.length).fill(null).map((_, i) => ({
+    timestamp: Date.now() - (windowSize - i) * 1000,
+    ...emptyValue
+  } as unknown as T));
+  return [...padding, ...data];
+}

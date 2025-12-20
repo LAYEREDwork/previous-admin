@@ -1,6 +1,52 @@
+/**
+ * API client for backend communication
+ *
+ * Provides methods for authentication, configuration management, and session handling.
+ * Uses the centralized httpClient for all requests.
+ *
+ * @module frontend/lib/api
+ */
+
 import type { PreviousConfig } from './types';
-import { API_BASE_URL } from './constants';
+import { http, ApiError } from './httpClient';
 import { ApiEndpoints } from '../../shared/constants';
+import { WS_URL } from './constants';
+
+// Re-export ApiError for consumers
+export { ApiError };
+
+// Response types
+interface SetupResponse {
+  success: boolean;
+  username: string;
+}
+
+interface LoginResponse {
+  username: string;
+}
+
+interface LogoutResponse {
+  success: boolean;
+}
+
+interface SessionResponse {
+  authenticated: boolean;
+  username?: string;
+  setupRequired: boolean;
+}
+
+interface SetupRequiredResponse {
+  setupRequired: boolean;
+}
+
+interface ConfigResponse {
+  config: PreviousConfig;
+}
+
+interface UpdateConfigResponse {
+  success: boolean;
+  config: PreviousConfig;
+}
 
 /**
  * Check if system setup is required
@@ -9,7 +55,6 @@ import { ApiEndpoints } from '../../shared/constants';
  * Returns false on network errors (safe default).
  *
  * @returns {Promise<boolean>} true if setup is required, false otherwise
- * @throws {void} Does not throw, catches all errors and returns false
  *
  * @example
  * const setupNeeded = await checkSetupRequired();
@@ -19,10 +64,7 @@ import { ApiEndpoints } from '../../shared/constants';
  */
 export async function checkSetupRequired(): Promise<boolean> {
   try {
-    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.AUTH_SETUP_REQUIRED}`, {
-      credentials: 'include',
-    });
-    const data = await response.json();
+    const data = await http.get<SetupRequiredResponse>(ApiEndpoints.AUTH_SETUP_REQUIRED);
     return data.setupRequired;
   } catch {
     return false;
@@ -34,7 +76,7 @@ export async function checkSetupRequired(): Promise<boolean> {
  *
  * Provides methods for authentication, configuration management, and session handling.
  * All methods include credentials and handle JSON responses automatically.
- * Throws on non-OK HTTP status or JSON parse errors.
+ * Throws ApiError on non-OK HTTP status or network errors.
  */
 export const api = {
   /**
@@ -45,34 +87,11 @@ export const api = {
    *
    * @param {string} username - Admin username
    * @param {string} password - Admin password
-   *
-   * @returns {Promise<{success: boolean, username: string}>} Setup confirmation
-   * @throws {Error} On setup failure (already setup, invalid credentials, network error)
-   *
-   * @example
-   * try {
-   *   const result = await api.setup('admin', 'password123');
-   *   console.log('Setup complete:', result.username);
-   * } catch (error) {
-   *   console.error('Setup failed:', error.message);
-   * }
+   * @returns {Promise<SetupResponse>} Setup confirmation
+   * @throws {ApiError} On setup failure
    */
-  async setup(username: string, password: string) {
-    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.AUTH_SETUP}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({ username, password }),
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Setup failed');
-    }
-
-    return response.json();
+  async setup(username: string, password: string): Promise<SetupResponse> {
+    return http.post<SetupResponse>(ApiEndpoints.AUTH_SETUP, { username, password });
   },
 
   /**
@@ -82,36 +101,11 @@ export const api = {
    *
    * @param {string} username - Username
    * @param {string} password - Password
-   *
-   * @returns {Promise<{username: string}>} Authenticated user info
-   * @throws {Error} On authentication failure (invalid credentials, network error)
-   *
-   * @example
-   * try {
-   *   const user = await api.login('admin', 'password');
-   *   console.log('Logged in as:', user.username);
-   * } catch (error) {
-   *   if (error.message.includes('401')) {
-   *     console.error('Invalid credentials');
-   *   }
-   * }
+   * @returns {Promise<LoginResponse>} Authenticated user info
+   * @throws {ApiError} On authentication failure
    */
-  async login(username: string, password: string) {
-    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.AUTH_LOGIN}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({ username, password }),
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Login failed');
-    }
-
-    return response.json();
+  async login(username: string, password: string): Promise<LoginResponse> {
+    return http.post<LoginResponse>(ApiEndpoints.AUTH_LOGIN, { username, password });
   },
 
   /**
@@ -119,24 +113,11 @@ export const api = {
    *
    * Logs out current user and destroys session.
    *
-   * @returns {Promise<{success: boolean}>} Logout confirmation
-   * @throws {Error} On logout failure (network error)
-   *
-   * @example
-   * await api.logout();
-   * // Redirect to login page
+   * @returns {Promise<LogoutResponse>} Logout confirmation
+   * @throws {ApiError} On logout failure
    */
-  async logout() {
-    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.AUTH_LOGOUT}`, {
-      method: 'POST',
-      credentials: 'include',
-    });
-
-    if (!response.ok) {
-      throw new Error('Logout failed');
-    }
-
-    return response.json();
+  async logout(): Promise<LogoutResponse> {
+    return http.post<LogoutResponse>(ApiEndpoints.AUTH_LOGOUT);
   },
 
   /**
@@ -145,33 +126,11 @@ export const api = {
    * Retrieves authentication status and setup requirement.
    * Can be called without authentication.
    *
-   * @returns {Promise<{authenticated: boolean, username?: string, setupRequired: boolean}>}
-   *   - authenticated {boolean}: true if user has valid session
-   *   - username {string}: Current username (only if authenticated)
-   *   - setupRequired {boolean}: true if system setup is needed
-   *
-   * @throws {Error} On network failure
-   *
-   * @example
-   * const session = await api.getSession();
-   * if (session.authenticated) {
-   *   console.log('User:', session.username);
-   * } else if (session.setupRequired) {
-   *   // Show setup form
-   * } else {
-   *   // Show login form
-   * }
+   * @returns {Promise<SessionResponse>} Session information
+   * @throws {ApiError} On network failure
    */
-  async getSession() {
-    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.AUTH_SESSION}`, {
-      credentials: 'include',
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to get session');
-    }
-
-    return response.json();
+  async getSession(): Promise<SessionResponse> {
+    return http.get<SessionResponse>(ApiEndpoints.AUTH_SESSION);
   },
 
   /**
@@ -180,24 +139,11 @@ export const api = {
    * Gets the current user's configuration file.
    * Requires authentication.
    *
-   * @returns {Promise<{config: PreviousConfig}>} User configuration object
-   * @throws {Error} If not authenticated or retrieval fails
-   *
-   * @example
-   * const { config } = await api.getConfig();
-   * console.log(config.settings);
+   * @returns {Promise<ConfigResponse>} User configuration object
+   * @throws {ApiError} If not authenticated or retrieval fails
    */
-  async getConfig() {
-    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.CONFIG}`, {
-      credentials: 'include',
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Failed to get configuration');
-    }
-
-    return response.json();
+  async getConfig(): Promise<ConfigResponse> {
+    return http.get<ConfigResponse>(ApiEndpoints.CONFIG);
   },
 
   /**
@@ -207,50 +153,22 @@ export const api = {
    * Requires authentication.
    *
    * @param {PreviousConfig} config - Complete configuration object
-   *
-   * @returns {Promise<{success: boolean, config: PreviousConfig}>} Update confirmation
-   * @throws {Error} If not authenticated or update fails
-   *
-   * @side-effects
-   *   - Saves config to disk
-   *   - Broadcasts update to other connected clients via WebSocket
-   *
-   * @example
-   * const newConfig = { ...oldConfig, theme: 'dark' };
-   * const { success } = await api.updateConfig(newConfig);
+   * @returns {Promise<UpdateConfigResponse>} Update confirmation
+   * @throws {ApiError} If not authenticated or update fails
    */
-  async updateConfig(config: PreviousConfig) {
-    const response = await fetch(`${API_BASE_URL}${ApiEndpoints.CONFIG}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({ config }),
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Failed to update configuration');
-    }
-
-    return response.json();
+  async updateConfig(config: PreviousConfig): Promise<UpdateConfigResponse> {
+    return http.put<UpdateConfigResponse>(ApiEndpoints.CONFIG, { config });
   },
 };
 
 /**
  * Construct WebSocket URL for current connection
  *
- * Determines correct WebSocket protocol (ws: or wss:) based on
- * current page protocol and connects to backend on port 3001.
+ * Uses the centralized WS_URL constant for consistency.
  *
- * @returns {string} WebSocket URL (e.g., 'wss://example.com:3001')
- *
- * @example
- * const wsUrl = getWebSocketUrl();
- * const ws = new WebSocket(wsUrl);
+ * @returns {string} WebSocket URL
+ * @deprecated Use WS_URL constant from './constants' instead
  */
 export function getWebSocketUrl(): string {
-  const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-  return `${wsProtocol}//${window.location.hostname}:3001`;
+  return WS_URL;
 }

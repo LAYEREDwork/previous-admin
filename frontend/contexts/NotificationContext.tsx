@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { BiCheckCircle, BiXCircle, BiError, BiInfoCircle, BiX } from 'react-icons/bi';
+import { useLanguage } from './LanguageContext';
 
 export type AlertType = 'success' | 'error' | 'warning' | 'info' | 'confirm';
 
@@ -30,6 +31,7 @@ interface NotificationContextType {
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 export function NotificationProvider({ children }: { children: ReactNode }) {
+  const { translation } = useLanguage();
   const [alerts, setAlerts] = useState<Alert[]>([]);
 
   const removeAlert = useCallback((id: string) => {
@@ -94,20 +96,20 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     (message: string, onConfirm: () => void, onCancel?: () => void) => {
       showAlert(message, 'confirm', [
         {
-          label: 'Abbruch',
+          label: translation.common.cancel,
           onClick: onCancel,
           action: 'close',
           variant: 'secondary',
         },
         {
-          label: 'Weiter',
+          label: translation.common.confirm,
           onClick: onConfirm,
           action: 'close',
           variant: 'primary',
         },
       ]);
     },
-    [showAlert]
+    [showAlert, translation.common.cancel, translation.common.confirm]
   );
 
   return (

@@ -7,8 +7,9 @@
  * @module server/api/configurations
  */
 
-import express from 'express';
+import express, { Request, Response } from 'express';
 import {
+  getDatabase,
   getConfigurations,
   getConfiguration,
   createConfiguration,
@@ -19,8 +20,56 @@ import {
   updateConfigurationsOrder
 } from '../database';
 import { requireAuth } from '../middleware';
+import { AuthenticatedRequest, Configuration, PreviousConfig, UpdateConfigurationRequest } from '../types';
 
 const router = express.Router();
+
+// Response types
+interface ConfigurationResponse {
+  configuration: Configuration | null;
+}
+
+interface ConfigurationsListResponse {
+  configurations: Array<{
+    id: string;
+    name: string;
+    description: string;
+    config_data: string;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
+    created_by: string | null;
+    sort_order: number;
+  }>;
+}
+
+interface SuccessResponse {
+  success: boolean;
+  message?: string;
+}
+
+interface ErrorResponse {
+  error: string;
+}
+
+// Request body types
+interface CreateConfigurationBody {
+  name: string;
+  description?: string;
+  config_data: PreviousConfig | string;
+  is_active?: boolean;
+}
+
+interface UpdateConfigurationBody {
+  name?: string;
+  description?: string;
+  config_data?: PreviousConfig | string;
+  is_active?: boolean;
+}
+
+interface UpdateOrderBody {
+  orderedIds: string[];
+}
 
 /**
  * GET /api/configurations
@@ -29,7 +78,10 @@ const router = express.Router();
  * @authentication required
  * @returns {Array} Array of configuration objects
  */
-router.get('/', requireAuth, (req: any, res: any) => {
+router.get('/', requireAuth, (
+  _req: Request,
+  res: Response<ConfigurationsListResponse | ErrorResponse>
+) => {
   try {
     const configurations = getConfigurations();
 
@@ -59,7 +111,10 @@ router.get('/', requireAuth, (req: any, res: any) => {
  * @authentication required
  * @returns {Object|null} Active configuration or null
  */
-router.get('/active', requireAuth, (req: any, res: any) => {
+router.get('/active', requireAuth, (
+  _req: Request,
+  res: Response<ConfigurationResponse | ErrorResponse>
+) => {
   try {
     const config = getActiveConfiguration();
 
@@ -94,7 +149,10 @@ router.get('/active', requireAuth, (req: any, res: any) => {
  * @param {string} id - Configuration ID
  * @returns {Object} Configuration object
  */
-router.get('/:id', requireAuth, (req: any, res: any) => {
+router.get('/:id', requireAuth, (
+  req: Request<{ id: string }>,
+  res: Response<ConfigurationResponse | ErrorResponse>
+) => {
   try {
     const config = getConfiguration(req.params.id);
 
@@ -129,9 +187,13 @@ router.get('/:id', requireAuth, (req: any, res: any) => {
  * @body {Object} data - Configuration data
  * @returns {Object} Created configuration
  */
-router.post('/', requireAuth, (req: any, res: any) => {
+router.post('/', requireAuth, (
+  req: Request<object, ConfigurationResponse | ErrorResponse, CreateConfigurationBody>,
+  res: Response<ConfigurationResponse | ErrorResponse>
+) => {
   try {
     const { name, description, config_data, is_active } = req.body;
+    const authReq = req as AuthenticatedRequest;
 
     console.log('API create config:', name, 'is_active:', is_active);
 
@@ -139,7 +201,7 @@ router.post('/', requireAuth, (req: any, res: any) => {
       return res.status(400).json({ error: 'Name and config_data are required' });
     }
 
-    const config = createConfiguration(req.session.userId, {
+    const config = createConfiguration(authReq.session.userId, {
       name,
       description: description || '',
       config_data: typeof config_data === 'string' ? JSON.parse(config_data) : config_data,
@@ -166,10 +228,14 @@ router.post('/', requireAuth, (req: any, res: any) => {
  * @body {Object} updates - Fields to update
  * @returns {Object} Updated configuration
  */
-router.put('/:id', requireAuth, (req: any, res: any) => {
+router.put('/:id', requireAuth, (
+  req: Request<{ id: string }, ConfigurationResponse | ErrorResponse, UpdateConfigurationBody>,
+  res: Response<ConfigurationResponse | ErrorResponse>
+) => {
   try {
     const { id } = req.params;
-    const updates = {};
+    const authReq = req as AuthenticatedRequest;
+    const updates: UpdateConfigurationRequest = {};
 
     if (req.body.name !== undefined) updates.name = req.body.name;
     if (req.body.description !== undefined) updates.description = req.body.description;
@@ -185,7 +251,7 @@ router.put('/:id', requireAuth, (req: any, res: any) => {
     }
 
     if (req.app.locals.broadcastConfigUpdate && updates.is_active) {
-      req.app.locals.broadcastConfigUpdate(req.session.username, config.config_data);
+      req.app.locals.broadcastConfigUpdate(authReq.session.username, config.config_data);
     }
 
     res.json({
@@ -205,7 +271,10 @@ router.put('/:id', requireAuth, (req: any, res: any) => {
  * @param {string} id - Configuration ID
  * @returns {Object} Success message
  */
-router.delete('/:id', requireAuth, (req: any, res: any) => {
+router.delete('/:id', requireAuth, (
+  req: Request<{ id: string }>,
+  res: Response<SuccessResponse | ErrorResponse>
+) => {
   try {
     const deleted = deleteConfiguration(req.params.id);
 
@@ -228,16 +297,20 @@ router.delete('/:id', requireAuth, (req: any, res: any) => {
  * @param {string} id - Configuration ID
  * @returns {Object} Activated configuration
  */
-router.post('/:id/activate', requireAuth, (req: any, res: any) => {
+router.post('/:id/activate', requireAuth, (
+  req: Request<{ id: string }>,
+  res: Response<ConfigurationResponse | ErrorResponse>
+) => {
   try {
-    const config = setActiveConfiguration(req.params.id, req.session.userId);
+    const authReq = req as AuthenticatedRequest;
+    const config = setActiveConfiguration(req.params.id, authReq.session.userId);
 
     if (!config) {
       return res.status(404).json({ error: 'Configuration not found' });
     }
 
     if (req.app.locals.broadcastConfigUpdate) {
-      req.app.locals.broadcastConfigUpdate(req.session.username, config.config_data);
+      req.app.locals.broadcastConfigUpdate(authReq.session.username, config.config_data);
     }
 
     res.json({
@@ -257,7 +330,10 @@ router.post('/:id/activate', requireAuth, (req: any, res: any) => {
  * @body {Array<string>} orderedIds - Configuration IDs in desired order
  * @returns {Object} Success message
  */
-router.put('/order/update', requireAuth, (req: any, res: any) => {
+router.put('/order/update', requireAuth, (
+  req: Request<object, SuccessResponse | ErrorResponse, UpdateOrderBody>,
+  res: Response<SuccessResponse | ErrorResponse>
+) => {
   try {
     const { orderedIds } = req.body;
 
@@ -281,21 +357,25 @@ router.put('/order/update', requireAuth, (req: any, res: any) => {
  * @authentication required
  * @returns {Object} Success message
  */
-router.post('/deactivate-all', requireAuth, (req: any, res: any) => {
-  console.log('Deactivate-all route called for user:', req.session.userId);
+router.post('/deactivate-all', requireAuth, (
+  req: Request,
+  res: Response<SuccessResponse | ErrorResponse>
+) => {
+  const authReq = req as AuthenticatedRequest;
+  console.log('Deactivate-all route called for user:', authReq.session.userId);
   try {
     const database = getDatabase();
-    
+
     // Deactivate all configurations for this user
-    if (req.session.userId !== undefined) {
+    if (authReq.session.userId !== undefined) {
       database
         .prepare('UPDATE configurations SET is_active = 0 WHERE created_by = ?')
-        .run(req.session.userId);
+        .run(authReq.session.userId);
     } else {
       database.prepare('UPDATE configurations SET is_active = 0').run();
     }
 
-    console.log('Successfully deactivated all configurations for user:', req.session.userId);
+    console.log('Successfully deactivated all configurations for user:', authReq.session.userId);
     res.json({ success: true });
   } catch (error) {
     console.error('Error deactivating all configurations:', error);

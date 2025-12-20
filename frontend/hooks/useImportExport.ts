@@ -31,6 +31,7 @@ export function useImportExport() {
   // Load configurations on mount
   useEffect(() => {
     loadConfigurations();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /**

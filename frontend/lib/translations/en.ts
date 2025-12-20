@@ -18,6 +18,7 @@ export const en: Translations = {
   },
   common: {
     cancel: 'Cancel',
+    confirm: 'Continue',
     error: 'Error',
     loading: 'Loading...',
     reload: 'Reload',
@@ -102,6 +103,8 @@ export const en: Translations = {
     errorUpdatingOrder: 'Error updating order',
     loading: 'Loading configurations...',
     newConfig: 'New Configuration',
+    setActive: 'Set as Active',
+    export: 'Export',
     title: 'Saved Configurations',
     configurationExportedSuccessfully: 'Configuration exported successfully',
     configurationDuplicatedSuccessfully: 'Configuration duplicated successfully',
@@ -246,6 +249,7 @@ export const en: Translations = {
     uptime: 'Uptime',
     currentReleaseNotes: 'Current Release Notes',
     releaseNotes: 'Release Notes',
+    updateFrequency: 'Update Frequency',
   },
   tabs: {
     about: 'About',
