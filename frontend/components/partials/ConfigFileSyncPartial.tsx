@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { BiRefresh, BiUpload, BiDownload, BiCheck, BiInfoCircle } from 'react-icons/bi';
 import { database, Configuration } from '../../lib/database';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { Button } from 'rsuite';
+import { PAButton } from '../controls/PAButton';
 import { useControlSize } from '../../hooks/useControlSize';
 
 export function ConfigFileSyncPartial() {
@@ -78,7 +78,7 @@ export function ConfigFileSyncPartial() {
       </div>
 
       <div className="grid md:grid-cols-2 gap-4 mb-4">
-        <Button
+        <PAButton
           onClick={handleSyncToFile}
           disabled={syncing || !configs.find(config => config.is_active)}
           loading={syncing}
@@ -89,9 +89,9 @@ export function ConfigFileSyncPartial() {
         >
           <BiUpload size={18} />
           {syncing ? translation.importExport.syncing : translation.importExport.syncToEmulator}
-        </Button>
+        </PAButton>
 
-        <Button
+        <PAButton
           onClick={handleLoadFromFile}
           disabled={loading}
           loading={loading}
@@ -101,16 +101,15 @@ export function ConfigFileSyncPartial() {
         >
           <BiDownload size={18} />
           {loading ? translation.importExport.loading : translation.importExport.importFromEmulator}
-        </Button>
+        </PAButton>
       </div>
 
       {message && (
         <div
-          className={`flex items-center gap-2 p-3 rounded-lg ${
-            message.type === 'success'
+          className={`flex items-center gap-2 p-3 rounded-lg ${message.type === 'success'
               ? 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-300'
               : 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300'
-          }`}
+            }`}
         >
           {message.type === 'success' ? (
             <BiCheck size={18} />

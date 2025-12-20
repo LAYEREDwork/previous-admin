@@ -1,5 +1,5 @@
 import { useLanguage } from '../../contexts/LanguageContext';
-import { GeminiIcon } from '../controls/GeminiIcon';
+import { PAGeminiIcon } from '../controls/PAGeminiIcon';
 
 export function FooterPartial() {
     const { translation } = useLanguage();
@@ -13,7 +13,7 @@ export function FooterPartial() {
                 <div className="text-gray-500 dark:text-next-text-dim space-y-0.5 text-xs">
                     <div className="flex items-center justify-center gap-1">
                         <span>{translation.footer.madeIn}</span>
-                        <GeminiIcon size={16} className="align-middle -translate-y-[3px]" />
+                        <PAGeminiIcon size={16} className="align-middle -translate-y-[3px]" />
                         <span>{translation.footer.inBregenz}</span>
                     </div>
                     <div>{translation.footer.atLakeConstance}</div>

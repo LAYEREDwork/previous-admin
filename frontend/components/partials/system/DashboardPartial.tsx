@@ -1,6 +1,6 @@
 import { BiChip, BiGlobe, BiHdd } from 'react-icons/bi';
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import { AnimatedSegmentedControl } from '../../controls/AnimatedSegmentedControl';
+import { PASegmentedControl } from '../../controls/PASegmentedControl';
 import { METRICS_UPDATE_FREQUENCIES } from '../../../lib/constants';
 import { Metrics } from '../../../hooks/useSystem';
 import { Translations } from '../../../lib/translations';
@@ -29,7 +29,7 @@ export function DashboardPartial({
                     <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                         {translation.system.updateFrequency}
                     </span>
-                    <AnimatedSegmentedControl
+                    <PASegmentedControl
                         options={METRICS_UPDATE_FREQUENCIES.map(freq => ({
                             value: freq.toString(),
                             label: `${freq}s`

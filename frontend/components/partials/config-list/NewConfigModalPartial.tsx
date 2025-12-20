@@ -1,6 +1,7 @@
 import { IoDocumentText } from 'react-icons/io5';
-import { Button, Input } from 'rsuite';
-import { CenteredModal } from '../../controls/CenteredModal';
+import { Input } from 'rsuite';
+import { PAButton } from '../../controls/PAButton';
+import { PAModal } from '../../controls/PAModal';
 import { Translations } from '../../../lib/translations';
 
 interface NewConfigModalPartialProps {
@@ -29,18 +30,19 @@ export function NewConfigModalPartial({
     translation
 }: NewConfigModalPartialProps) {
     return (
-        <CenteredModal
+        <PAModal
             open={open}
             onClose={onClose}
             size="sm"
+            controlSize={controlSize as any}
         >
-            <CenteredModal.Header>
-                <CenteredModal.Title>
+            <PAModal.Header>
+                <PAModal.Title>
                     <IoDocumentText size={32} className="inline-block mr-2 -mt-0.5" />
                     {translation.configList.newConfig}
-                </CenteredModal.Title>
-            </CenteredModal.Header>
-            <CenteredModal.Body>
+                </PAModal.Title>
+            </PAModal.Header>
+            <PAModal.Body>
                 <div className="space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -68,24 +70,24 @@ export function NewConfigModalPartial({
                         />
                     </div>
                 </div>
-            </CenteredModal.Body>
-            <CenteredModal.Footer>
-                <Button
+            </PAModal.Body>
+            <PAModal.Footer>
+                <PAButton
                     onClick={onClose}
                     appearance="subtle"
                     size={controlSize}
                 >
                     {translation.common.cancel}
-                </Button>
-                <Button
+                </PAButton>
+                <PAButton
                     onClick={onSave}
                     disabled={!name.trim()}
                     appearance="primary"
                     size={controlSize}
                 >
                     {translation.common.save}
-                </Button>
-            </CenteredModal.Footer>
-        </CenteredModal>
+                </PAButton>
+            </PAModal.Footer>
+        </PAModal>
     );
 }

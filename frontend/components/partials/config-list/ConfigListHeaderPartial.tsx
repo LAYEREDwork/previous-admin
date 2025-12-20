@@ -1,5 +1,5 @@
 import { BiPlus } from 'react-icons/bi';
-import { Button } from 'rsuite';
+import { PAButton } from '../../controls/PAButton';
 import { Translations } from '../../../lib/translations';
 
 interface ConfigListHeaderPartialProps {
@@ -18,15 +18,16 @@ export function ConfigListHeaderPartial({
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                 {translation.configList.title}
             </h2>
-            <Button
+            <PAButton
                 onClick={onNewConfigClick}
                 appearance="primary"
                 className="flex items-center gap-2"
                 size={controlSize}
+                color="accent"
             >
                 <BiPlus size={18} />
                 {translation.configList.newConfig}
-            </Button>
+            </PAButton>
         </div>
     );
 }

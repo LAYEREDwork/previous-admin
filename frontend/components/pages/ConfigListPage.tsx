@@ -2,7 +2,7 @@ import { BiPlus } from 'react-icons/bi';
 import { IoDocumentsOutline } from 'react-icons/io5';
 
 // Components
-import EmptyView from '../controls/EmptyView';
+import { PAEmptyView } from '../controls/PAEmptyView';
 
 // Partials
 import { ConfigListItemPartial } from '../partials/config-list/ConfigListItemPartial';
@@ -108,14 +108,13 @@ export function ConfigList({ onEdit }: ConfigListProps) {
 
       {/* Empty State */}
       {configs.length === 0 && !showNewConfig && (
-        <EmptyView
-          icon={IoDocumentsOutline}
-          title={translation.configList.emptyStateTitle}
-          description={translation.configList.emptyStateDescription}
-          actionText={translation.configList.newConfig}
+        <PAEmptyView
+          icon={BiListCheck}
+          title={translation.configList.emptyTitle}
+          description={translation.configList.emptyDescription}
+          actionText={translation.configList.addNew}
           actionIcon={BiPlus}
           onAction={() => setShowNewConfig(true)}
-          buttonSize={controlSize}
         />
       )}
     </div>

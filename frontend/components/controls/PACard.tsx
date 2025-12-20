@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
 
-interface CardProps {
+interface PACardProps {
   children: ReactNode;
   className?: string;
 }
 
-export function Card({ children, className = '' }: CardProps) {
+export function PACard({ children, className = '' }: PACardProps) {
   return (
     <div className={`bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 ${className}`}>
       {children}
@@ -13,12 +13,12 @@ export function Card({ children, className = '' }: CardProps) {
   );
 }
 
-interface CardHeaderProps {
+interface PACardHeaderProps {
   children: ReactNode;
   className?: string;
 }
 
-export function CardHeader({ children, className = '' }: CardHeaderProps) {
+export function PACardHeader({ children, className = '' }: PACardHeaderProps) {
   return (
     <div className={`p-4 sm:p-6 ${className}`}>
       {children}
@@ -26,13 +26,13 @@ export function CardHeader({ children, className = '' }: CardHeaderProps) {
   );
 }
 
-interface CardTitleProps {
+interface PACardTitleProps {
   children: ReactNode;
   icon?: ReactNode;
   className?: string;
 }
 
-export function CardTitle({ children, icon, className = '' }: CardTitleProps) {
+export function PACardTitle({ children, icon, className = '' }: PACardTitleProps) {
   return (
     <h3 className={`text-base sm:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2 ${className}`}>
       {icon}
@@ -41,12 +41,12 @@ export function CardTitle({ children, icon, className = '' }: CardTitleProps) {
   );
 }
 
-interface CardContentProps {
+interface PACardContentProps {
   children: ReactNode;
   className?: string;
 }
 
-export function CardContent({ children, className = '' }: CardContentProps) {
+export function PACardContent({ children, className = '' }: PACardContentProps) {
   return (
     <div className={`p-4 sm:p-6 ${className}`}>
       {children}

@@ -1,9 +1,9 @@
 import { BiRefresh } from 'react-icons/bi';
 import { IoDocumentText } from 'react-icons/io5';
-import { Button } from 'rsuite';
+import { PAButton } from '../controls/PAButton';
 
 // Components
-import EmptyView from '../controls/EmptyView';
+import { PAEmptyView } from '../controls/PAEmptyView';
 
 // Partials
 import { ConfigDetailsPartial } from '../partials/config-editor/ConfigDetailsPartial';
@@ -48,7 +48,7 @@ export function ConfigEditor({ configId, onTabChange }: { configId?: string; onT
   // Show empty view if no saved configs exist
   if (hasSavedConfigs === false || hasSavedConfigs === null) {
     return (
-      <EmptyView
+      <PAEmptyView
         icon={IoDocumentText}
         title={translation.configEditor.noSavedConfigs}
         description={translation.configEditor.noSavedConfigsDescription}
@@ -61,7 +61,7 @@ export function ConfigEditor({ configId, onTabChange }: { configId?: string; onT
   // Show empty view if configs exist but no active config is selected
   if (hasSavedConfigs === true && configId === undefined && configName === null) {
     return (
-      <EmptyView
+      <PAEmptyView
         icon={IoDocumentText}
         title={translation.configEditor.noConfigSelected}
         description={translation.configEditor.noConfigSelectedDescription}
@@ -85,14 +85,16 @@ export function ConfigEditor({ configId, onTabChange }: { configId?: string; onT
       <div className="text-center py-12">
         <div className="mb-4">
           <p className="text-gray-500 dark:text-gray-400 mb-4">{translation.configEditor.errorLoading}</p>
-          <Button
+          <PAButton
             onClick={refreshConfig}
             appearance="primary"
+            color="accent"
             className="flex items-center gap-2 mx-auto"
+            size={controlSize}
           >
             <BiRefresh size={16} />
             {translation.common.reload || 'Reload'}
-          </Button>
+          </PAButton>
         </div>
       </div>
     );

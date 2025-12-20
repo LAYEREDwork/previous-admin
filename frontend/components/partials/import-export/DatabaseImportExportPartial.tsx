@@ -1,5 +1,5 @@
 import { BiDownload, BiUpload, BiData } from 'react-icons/bi';
-import { Button } from 'rsuite';
+import { PAButton } from '../../controls/PAButton';
 import { Translations } from '../../../lib/translations';
 
 interface DatabaseImportExportPartialProps {
@@ -55,7 +55,7 @@ export function DatabaseImportExportPartial({
                             className="hidden"
                             id="import-database"
                         />
-                        <Button
+                        <PAButton
                             as="span"
                             appearance="primary"
                             loading={databaseImporting}
@@ -65,7 +65,7 @@ export function DatabaseImportExportPartial({
                         >
                             <BiDownload size={18} />
                             {databaseImporting ? translation.importExport.importingDatabase : translation.importExport.selectDatabaseFile}
-                        </Button>
+                        </PAButton>
                     </label>
 
                     <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
@@ -90,7 +90,7 @@ export function DatabaseImportExportPartial({
                         {translation.importExport.exportDatabaseDescription}
                     </p>
 
-                    <Button
+                    <PAButton
                         onClick={exportDatabaseDump}
                         disabled={databaseExporting}
                         loading={databaseExporting}
@@ -102,7 +102,7 @@ export function DatabaseImportExportPartial({
                     >
                         <BiUpload size={18} />
                         {databaseExporting ? translation.importExport.exportingDatabase : translation.importExport.exportCompleteDatabase}
-                    </Button>
+                    </PAButton>
 
                     <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                         <p className="text-xs text-blue-800 dark:text-blue-300">

@@ -1,5 +1,5 @@
 import { BiCopy } from 'react-icons/bi';
-import { Button } from 'rsuite';
+import { PAButton } from '../../controls/PAButton';
 import { Translations } from '../../../lib/translations';
 import { PreviousConfig } from '../../../lib/types';
 
@@ -22,7 +22,7 @@ export function RawViewPartial({
                 <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
                     {translation.configEditor.content}
                 </h3>
-                <Button
+                <PAButton
                     onClick={copyToClipboard}
                     appearance="ghost"
                     size="sm"
@@ -30,7 +30,7 @@ export function RawViewPartial({
                 >
                     <BiCopy size={16} />
                     {translation.configEditor.copy}
-                </Button>
+                </PAButton>
             </div>
             <pre className="font-mono text-sm text-gray-900 dark:text-gray-100 whitespace-pre-wrap overflow-x-auto">
                 {convertToConfigFile(configData)}

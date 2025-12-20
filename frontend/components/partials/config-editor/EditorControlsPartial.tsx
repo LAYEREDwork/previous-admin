@@ -1,6 +1,6 @@
 import { BiSave, BiChevronUp, BiChevronDown } from 'react-icons/bi';
-import { Button } from 'rsuite';
-import { AnimatedSegmentedControl } from '../../controls/AnimatedSegmentedControl';
+import { PAButton } from '../../controls/PAButton';
+import { PASegmentedControl } from '../../controls/PASegmentedControl';
 import { Translations } from '../../../lib/translations';
 
 interface EditorControlsPartialProps {
@@ -35,7 +35,7 @@ export function EditorControlsPartial({
             </div>
 
             <div className="flex flex-row justify-between items-center gap-3 sm:gap-4">
-                <Button
+                <PAButton
                     onClick={toggleAllSections}
                     size={controlSize}
                     className="flex items-center gap-2 flex-shrink-0"
@@ -44,10 +44,10 @@ export function EditorControlsPartial({
                     {allExpanded
                         ? translation.configEditor.sectionsCollapseAll
                         : translation.configEditor.sectionsExpandAll}
-                </Button>
+                </PAButton>
 
                 <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
-                    <AnimatedSegmentedControl
+                    <PASegmentedControl
                         options={[
                             { value: 'editor', label: translation.configEditor.viewModeEditor },
                             { value: 'raw', label: translation.configEditor.viewModeRaw },
@@ -57,11 +57,12 @@ export function EditorControlsPartial({
                         size={controlSize}
                         className="flex flex-nowrap"
                     />
-                    <Button
+                    <PAButton
                         onClick={handleSave}
                         disabled={saving}
                         loading={saving}
                         appearance="primary"
+                        color="accent"
                         className="flex items-center gap-2"
                         size={controlSize}
                         title={saving ? translation.configEditor.saving : translation.configEditor.save}
@@ -70,7 +71,7 @@ export function EditorControlsPartial({
                         <span className="hidden sm:inline">
                             {saving ? translation.configEditor.saving : translation.configEditor.save}
                         </span>
-                    </Button>
+                    </PAButton>
                 </div>
             </div>
         </div>

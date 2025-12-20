@@ -1,5 +1,6 @@
 import { BiUserPlus, BiLock, BiShow, BiHide, BiLogInCircle, BiDownload } from 'react-icons/bi';
-import { Input, InputGroup, Button, Divider } from 'rsuite';
+import { Input, InputGroup, Divider } from 'rsuite';
+import { PAButton } from '../../controls/PAButton';
 import { Translations } from '../../../lib/translations';
 
 interface LoginFormPartialProps {
@@ -111,12 +112,13 @@ export function LoginFormPartial({
                     </div>
                 )}
 
-                <Button
+                <PAButton
                     type="submit"
                     disabled={loading}
                     loading={loading}
                     appearance="primary"
                     size={controlSize}
+                    color="accent"
                     block
                     className="flex items-center justify-center gap-2"
                 >
@@ -131,7 +133,7 @@ export function LoginFormPartial({
                             {loading ? translation.login.signingIn : translation.login.signIn}
                         </>
                     )}
-                </Button>
+                </PAButton>
             </form>
 
             {isSetup && (
@@ -148,7 +150,7 @@ export function LoginFormPartial({
                                 className="hidden"
                                 id="import-setup-database"
                             />
-                            <Button
+                            <PAButton
                                 as="span"
                                 appearance="ghost"
                                 size={controlSize}
@@ -159,7 +161,7 @@ export function LoginFormPartial({
                             >
                                 <BiDownload size={18} className="sm:w-[18px] sm:h-[18px]" />
                                 {importing ? 'Importing Database...' : 'Import Existing Database'}
-                            </Button>
+                            </PAButton>
                         </label>
                         <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
                             Restore from a previously exported database backup

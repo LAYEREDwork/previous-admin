@@ -1,5 +1,6 @@
 import { BiSave } from 'react-icons/bi';
-import { Button, Input } from 'rsuite';
+import { Input } from 'rsuite';
+import { PAButton } from '../../controls/PAButton';
 import { Translations } from '../../../lib/translations';
 
 interface ConfigDetailsPartialProps {
@@ -56,16 +57,17 @@ export function ConfigDetailsPartial({
                 </div>
 
                 <div className="flex justify-end pt-2">
-                    <Button
+                    <PAButton
                         onClick={handleUpdateMetadata}
                         disabled={!hasChanges}
                         appearance="primary"
+                        color="accent"
                         size={controlSize}
                         className="flex items-center gap-2"
                     >
                         <BiSave size={16} />
                         {translation.configEditor.saveMetadata}
-                    </Button>
+                    </PAButton>
                 </div>
             </div>
         </div>

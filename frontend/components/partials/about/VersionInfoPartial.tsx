@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BiInfoCircle, BiRefresh, BiCheck, BiError, BiFile, BiChevronUp, BiChevronDown } from 'react-icons/bi';
-import { Button } from 'rsuite';
+import { PAButton } from '../../controls/PAButton';
 import { useLanguage } from '../../../contexts/LanguageContext';
 import { useControlSize } from '../../../hooks/useControlSize';
 import { type VersionInfo } from '../../../lib/versionManager';
@@ -67,20 +67,20 @@ export function VersionInfoPartial({
                 </div>
                 {currentExpanded && (
                   <div className="text-sm text-gray-600 dark:text-gray-400">
-                  <ReactMarkdown
-                    components={{
-                      h1: ({ children }) => <h1 className="text-lg font-semibold mt-8 mb-2 uppercase">{children}</h1>,
-                      h2: ({ children }) => <h2 className="text-base font-semibold mt-8 mb-2 uppercase">{children}</h2>,
-                      h3: ({ children }) => <h3 className="text-sm font-semibold mt-6 mb-1 uppercase">{children}</h3>,
-                      p: ({ children }) => <p className="mb-2">{children}</p>,
-                      ul: ({ children }) => <ul className="list-disc pl-4 mb-2">{children}</ul>,
-                      ol: ({ children }) => <ol className="list-decimal pl-4 mb-2">{children}</ol>,
-                      li: ({ children }) => <li className="mb-1">{children}</li>,
-                    }}
-                  >
-                    {versionInfo.currentReleaseNotes}
-                  </ReactMarkdown>
-                </div>
+                    <ReactMarkdown
+                      components={{
+                        h1: ({ children }) => <h1 className="text-lg font-semibold mt-8 mb-2 uppercase">{children}</h1>,
+                        h2: ({ children }) => <h2 className="text-base font-semibold mt-8 mb-2 uppercase">{children}</h2>,
+                        h3: ({ children }) => <h3 className="text-sm font-semibold mt-6 mb-1 uppercase">{children}</h3>,
+                        p: ({ children }) => <p className="mb-2">{children}</p>,
+                        ul: ({ children }) => <ul className="list-disc pl-4 mb-2">{children}</ul>,
+                        ol: ({ children }) => <ol className="list-decimal pl-4 mb-2">{children}</ol>,
+                        li: ({ children }) => <li className="mb-1">{children}</li>,
+                      }}
+                    >
+                      {versionInfo.currentReleaseNotes}
+                    </ReactMarkdown>
+                  </div>
                 )}
               </div>
             )}
@@ -117,25 +117,25 @@ export function VersionInfoPartial({
                         </div>
                         {newExpanded && (
                           <div className="text-sm text-amber-600 dark:text-amber-400">
-                          <ReactMarkdown
-                            components={{
-                              h1: ({ children }) => <h1 className="text-lg font-semibold mt-8 mb-2 uppercase text-amber-700 dark:text-amber-300">{children}</h1>,
-                              h2: ({ children }) => <h2 className="text-base font-semibold mt-8 mb-2 uppercase text-amber-700 dark:text-amber-300">{children}</h2>,
-                              h3: ({ children }) => <h3 className="text-sm font-semibold mt-6 mb-1 uppercase text-amber-700 dark:text-amber-300">{children}</h3>,
-                              p: ({ children }) => <p className="mb-2">{children}</p>,
-                              ul: ({ children }) => <ul className="list-disc list-inside mb-2">{children}</ul>,
-                              ol: ({ children }) => <ol className="list-decimal list-inside mb-2">{children}</ol>,
-                              li: ({ children }) => <li className="mb-1">{children}</li>,
-                            }}
-                          >
-                            {versionInfo.releaseNotes}
-                          </ReactMarkdown>
-                        </div>
+                            <ReactMarkdown
+                              components={{
+                                h1: ({ children }) => <h1 className="text-lg font-semibold mt-8 mb-2 uppercase text-amber-700 dark:text-amber-300">{children}</h1>,
+                                h2: ({ children }) => <h2 className="text-base font-semibold mt-8 mb-2 uppercase text-amber-700 dark:text-amber-300">{children}</h2>,
+                                h3: ({ children }) => <h3 className="text-sm font-semibold mt-6 mb-1 uppercase text-amber-700 dark:text-amber-300">{children}</h3>,
+                                p: ({ children }) => <p className="mb-2">{children}</p>,
+                                ul: ({ children }) => <ul className="list-disc list-inside mb-2">{children}</ul>,
+                                ol: ({ children }) => <ol className="list-decimal list-inside mb-2">{children}</ol>,
+                                li: ({ children }) => <li className="mb-1">{children}</li>,
+                              }}
+                            >
+                              {versionInfo.releaseNotes}
+                            </ReactMarkdown>
+                          </div>
                         )}
                       </div>
                     )}
 
-                    <Button
+                    <PAButton
                       onClick={handleUpdate}
                       disabled={updating}
                       loading={updating}
@@ -147,7 +147,7 @@ export function VersionInfoPartial({
                     >
                       <BiRefresh size={16} />
                       {updating ? translation.system.updating : translation.system.updateNow}
-                    </Button>
+                    </PAButton>
                   </>
                 ) : (
                   <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
@@ -158,7 +158,7 @@ export function VersionInfoPartial({
               </div>
             )}
 
-            <Button
+            <PAButton
               onClick={handleCheckForUpdates}
               appearance="default"
               size={controlSize}
@@ -167,7 +167,7 @@ export function VersionInfoPartial({
             >
               <BiRefresh size={16} />
               {translation.system.checkForUpdates}
-            </Button>
+            </PAButton>
           </>
         )}
       </div>

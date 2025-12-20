@@ -1,4 +1,4 @@
-import { Button } from 'rsuite';
+import { PAButton } from '../../controls/PAButton';
 import { Translations } from '../../../lib/translations';
 
 interface ResetSystemPartialProps {
@@ -24,7 +24,7 @@ export function ResetSystemPartial({
                     {translation.system.resetDescription}
                 </p>
                 <div className="flex justify-end">
-                    <Button
+                    <PAButton
                         onClick={onResetClick}
                         appearance="primary"
                         color="red"
@@ -33,7 +33,7 @@ export function ResetSystemPartial({
                         size={controlSize}
                     >
                         {translation.system.reset}
-                    </Button>
+                    </PAButton>
                 </div>
             </div>
         </div>

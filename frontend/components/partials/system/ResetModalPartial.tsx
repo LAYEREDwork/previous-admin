@@ -1,5 +1,5 @@
-import { Button } from 'rsuite';
-import { CenteredModal } from '../../controls/CenteredModal';
+import { PAButton } from '../../controls/PAButton';
+import { PAModal } from '../../controls/PAModal';
 import { Translations } from '../../../lib/translations';
 
 interface ResetModalPartialProps {
@@ -20,11 +20,11 @@ export function ResetModalPartial({
     translation
 }: ResetModalPartialProps) {
     return (
-        <CenteredModal open={open} onClose={onClose} size="sm">
-            <CenteredModal.Header>
-                <CenteredModal.Title>{translation.system.resetTitle}</CenteredModal.Title>
-            </CenteredModal.Header>
-            <CenteredModal.Body>
+        <PAModal open={open} onClose={onClose} size="sm" controlSize={controlSize as any}>
+            <PAModal.Header>
+                <PAModal.Title>{translation.system.resetTitle}</PAModal.Title>
+            </PAModal.Header>
+            <PAModal.Body>
                 <div className="space-y-4">
                     <p className="text-sm text-gray-700 dark:text-gray-300">
                         {translation.system.resetDescription}
@@ -35,17 +35,17 @@ export function ResetModalPartial({
                         </p>
                     </div>
                 </div>
-            </CenteredModal.Body>
-            <CenteredModal.Footer>
-                <Button
+            </PAModal.Body>
+            <PAModal.Footer>
+                <PAButton
                     onClick={onClose}
                     appearance="default"
                     disabled={isResetting}
                     size={controlSize}
                 >
                     {translation.common.cancel}
-                </Button>
-                <Button
+                </PAButton>
+                <PAButton
                     onClick={onConfirm}
                     appearance="primary"
                     color="red"
@@ -54,8 +54,8 @@ export function ResetModalPartial({
                     size={controlSize}
                 >
                     {isResetting ? translation.system.resetting : translation.system.resetConfirm}
-                </Button>
-            </CenteredModal.Footer>
-        </CenteredModal>
+                </PAButton>
+            </PAModal.Footer>
+        </PAModal>
     );
 }

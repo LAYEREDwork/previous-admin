@@ -1,14 +1,15 @@
 import { ReactNode, useState, useEffect } from 'react';
 import { BiLogOut } from 'react-icons/bi';
-import { ThemeSwitcher } from '../controls/ThemeSwitcher';
-import { LanguageSwitcher } from '../controls/LanguageSwitcher';
-import { NeXTLogo } from '../controls/NeXTLogo';
+import { PAThemeSwitcher } from '../controls/PAThemeSwitcher';
+import { PALanguageSwitcher } from '../controls/PALanguageSwitcher';
+import { PANeXTLogo } from '../controls/PANeXTLogo';
 import { FooterPartial } from './FooterPartial';
 import { MainMenuPartial } from './MainMenuPartial';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { getCurrentVersion } from '../../lib/versionManager';
-import { Button, ButtonGroup } from 'rsuite';
+import { ButtonGroup } from 'rsuite';
+import { PAButton } from '../controls/PAButton';
 import { useControlSize } from '../../hooks/useControlSize';
 
 interface LayoutProps {
@@ -63,17 +64,17 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <ThemeSwitcher />
-              <LanguageSwitcher />
+              <PAThemeSwitcher />
+              <PALanguageSwitcher />
             </div>
-            <Button
+            <PAButton
               onClick={logout}
               appearance="ghost"
               size="sm"
               title={translation.layout.signOut}
             >
               <BiLogOut size={16} />
-            </Button>
+            </PAButton>
           </div>
         </div>
       </div>
@@ -84,7 +85,7 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-3 sm:py-6 gap-3 sm:gap-0">
               <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
                 <div className="w-16 h-16 sm:w-[72px] sm:h-[72px] flex-shrink-0">
-                  <NeXTLogo size={72} className="w-full h-full" />
+                  <PANeXTLogo size={72} className="w-full h-full" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
@@ -104,9 +105,9 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
               </div>
               <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
                 <div className="flex items-center gap-1.5 sm:gap-2">
-                  <ThemeSwitcher />
-                  <LanguageSwitcher />
-                  <Button
+                  <PAThemeSwitcher />
+                  <PALanguageSwitcher />
+                  <PAButton
                     onClick={logout}
                     appearance="default"
                     size={controlSize}
@@ -114,7 +115,7 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
                   >
                     <BiLogOut size={16} className="inline-block mr-2" />
                     <span className="hidden md:inline">{translation.layout.signOut}</span>
-                  </Button>
+                  </PAButton>
                 </div>
               </div>
             </div>

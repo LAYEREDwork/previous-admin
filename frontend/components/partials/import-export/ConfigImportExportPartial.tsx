@@ -1,5 +1,5 @@
 import { BiDownload, BiUpload, BiFile } from 'react-icons/bi';
-import { Button } from 'rsuite';
+import { PAButton } from '../../controls/PAButton';
 import { Translations } from '../../../lib/translations';
 import { Configuration } from '../../../lib/database';
 
@@ -51,7 +51,7 @@ export function ConfigImportExportPartial({
                         className="hidden"
                         id="import-file"
                     />
-                    <Button
+                    <PAButton
                         as="span"
                         appearance="primary"
                         loading={importing}
@@ -61,7 +61,7 @@ export function ConfigImportExportPartial({
                     >
                         <BiFile size={18} />
                         {importing ? translation.importExport.importing : translation.importExport.selectConfigFile}
-                    </Button>
+                    </PAButton>
                 </label>
 
                 <div className="mt-4 p-3 bg-cyan-50 dark:bg-cyan-900/20 rounded-lg">
@@ -87,7 +87,7 @@ export function ConfigImportExportPartial({
                 </p>
 
                 <div className="space-y-3">
-                    <Button
+                    <PAButton
                         onClick={exportConfig}
                         disabled={exporting || !configs.find(config => config.is_active)}
                         loading={exporting}
@@ -99,9 +99,9 @@ export function ConfigImportExportPartial({
                     >
                         <BiUpload size={18} />
                         {exporting ? translation.importExport.exporting : translation.importExport.exportActiveConfig}
-                    </Button>
+                    </PAButton>
 
-                    <Button
+                    <PAButton
                         onClick={exportAllConfigs}
                         disabled={exporting || configs.length === 0}
                         loading={exporting}
@@ -112,7 +112,7 @@ export function ConfigImportExportPartial({
                     >
                         <BiUpload size={18} />
                         {exporting ? translation.importExport.exporting : translation.importExport.exportAllConfigs}
-                    </Button>
+                    </PAButton>
                 </div>
 
                 <div className="mt-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">

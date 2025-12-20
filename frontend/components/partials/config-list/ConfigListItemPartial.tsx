@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BiTrash, BiEdit, BiCheckCircle, BiCircle, BiUpload, BiCopy } from 'react-icons/bi';
-import { IconButton } from 'rsuite';
+import { PAIconButton } from '../../controls/PAIconButton';
 import { Configuration } from '../../../lib/database';
 import { Translations } from '../../../lib/translations';
 
@@ -78,7 +78,7 @@ export function ConfigListItemPartial({
                 <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0 pr-14 sm:pr-0">
                     <div className="flex items-center justify-center">
                         {!config.is_active ? (
-                            <IconButton
+                            <PAIconButton
                                 onClick={() => setActiveConfig(config.id)}
                                 icon={<BiCircle size={isMobile ? 22 : 26} />}
                                 appearance="subtle"
@@ -87,7 +87,7 @@ export function ConfigListItemPartial({
                                 className="text-gray-400 hover:text-next-accent dark:hover:text-next-accent transition-colors"
                             />
                         ) : (
-                            <IconButton
+                            <PAIconButton
                                 icon={<BiCheckCircle size={isMobile ? 22 : 26} />}
                                 size={isMobile ? 'xs' : 'sm'}
                                 appearance="subtle"
@@ -116,37 +116,34 @@ export function ConfigListItemPartial({
 
                 {/* Action Buttons - Bottom Right */}
                 <div className="flex items-center justify-end gap-1.5 sm:gap-2 mt-2 sm:mt-0 sm:absolute sm:bottom-3 sm:right-3">
-                    <IconButton
+                    <PAIconButton
                         icon={<BiUpload size={isMobile ? 16 : 18} />}
                         size={isMobile ? 'xs' : 'sm'}
                         appearance="default"
                         onClick={() => exportSingleConfig(config)}
                         title={translation.configList.export}
-                        className="hover:!text-next-accent"
                     />
-                    <IconButton
+                    <PAIconButton
                         icon={<BiCopy size={16} />}
                         size={isMobile ? 'xs' : 'sm'}
                         appearance="default"
                         onClick={() => duplicateConfig(config)}
                         title={translation.configList.duplicate}
-                        className="hover:!text-next-accent"
                     />
-                    <IconButton
-                        icon={<BiEdit size={isMobile ? 16 : 18} />}
+                    <PAIconButton
+                        icon={<BiEdit size={16} />}
                         size={isMobile ? 'xs' : 'sm'}
                         appearance="default"
                         onClick={() => onEdit(config)}
                         title={translation.configList.edit}
-                        className="hover:!text-next-accent"
                     />
-                    <IconButton
-                        icon={<BiTrash size={isMobile ? 16 : 18} />}
+                    <PAIconButton
+                        icon={<BiTrash size={16} />}
                         size={isMobile ? 'xs' : 'sm'}
                         appearance="default"
                         onClick={() => deleteConfig(config.id)}
                         title={translation.configList.delete}
-                        className="hover:!text-red-500"
+                        className="hover:!text-red-500 hover:!bg-red-50 dark:hover:!bg-red-900/20"
                     />
                 </div>
             </div>

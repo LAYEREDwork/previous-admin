@@ -2,18 +2,22 @@ import { BiMoon, BiSun } from 'react-icons/bi';
 import { HiComputerDesktop } from 'react-icons/hi2';
 
 // Components
-import { AnimatedSegmentedControl } from './AnimatedSegmentedControl';
+import { PASegmentedControl } from './PASegmentedControl';
 
 // Hooks
 import { useTheme } from '../../contexts/ThemeContext';
 import { useControlSize } from '../../hooks/useControlSize';
 
-export function ThemeSwitcher() {
+/**
+ * Theme Switcher Component
+ * PA prefix for Previous Admin
+ */
+export function PAThemeSwitcher() {
   const { theme, setTheme } = useTheme();
   const controlSize = useControlSize('sm');
 
   return (
-    <AnimatedSegmentedControl
+    <PASegmentedControl
       options={[
         { value: 'system', icon: <HiComputerDesktop size={18} />, label: 'System theme' },
         { value: 'light', icon: <BiSun size={18} />, label: 'Light mode' },

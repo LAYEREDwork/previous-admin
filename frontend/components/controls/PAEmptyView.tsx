@@ -1,11 +1,10 @@
-import React from 'react';
-import { Button } from 'rsuite';
+import { PAButton } from './PAButton';
 import { IconType } from 'react-icons';
 
 /**
- * Props für die EmptyView-Komponente
+ * Props für die PAEmptyView-Komponente
  */
-interface EmptyViewProps {
+interface PAEmptyViewProps {
   /** Das anzuzeigende Icon */
   icon: IconType;
   /** Die Größe des Icons */
@@ -31,8 +30,9 @@ interface EmptyViewProps {
 /**
  * Eine wiederverwendbare Komponente für leere Zustände (Empty States).
  * Zeigt ein Icon, Titel, Beschreibung und einen Aktionsbutton an.
+ * PA prefix for Previous Admin.
  */
-const EmptyView: React.FC<EmptyViewProps> = ({
+export const PAEmptyView: React.FC<PAEmptyViewProps> = ({
   icon: Icon,
   iconSize = 80,
   title,
@@ -55,17 +55,16 @@ const EmptyView: React.FC<EmptyViewProps> = ({
       <p className="text-gray-500 dark:text-gray-400 mb-6 text-center max-w-sm" style={{ maxWidth: '400px' }}>
         {description}
       </p>
-      <Button
+      <PAButton
         onClick={onAction}
         appearance="primary"
+        color="accent"
         size={buttonSize}
         className="flex items-center gap-2"
       >
         {ActionIcon && <ActionIcon size={actionIconSize} />}
         {actionText}
-      </Button>
+      </PAButton>
     </div>
   );
 };
-
-export default EmptyView;

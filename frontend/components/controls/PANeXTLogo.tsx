@@ -1,4 +1,4 @@
-export function NeXTLogo({ size = 40, className = '' }: { size?: number; className?: string }) {
+export function PANeXTLogo({ size = 40, className = '' }: { size?: number; className?: string }) {
   return (
     <div className={className} style={{ width: size, height: size }}>
       <img

@@ -5,12 +5,13 @@ interface GeminiIconProps {
 
 /**
  * Google Gemini Logo Icon
+ * PA prefix for Previous Admin
  * 
  * Verwendung:
- * <GeminiIcon size={24} />
- * <GeminiIcon size={32} className="text-blue-500" />
+ * <PAGeminiIcon size={24} />
+ * <PAGeminiIcon size={32} className="text-blue-500" />
  */
-export function GeminiIcon({ size = 24, className = '' }: GeminiIconProps) {
+export function PAGeminiIcon({ size = 24, className = '' }: PAGeminiIconProps) {
   // Originale Dimensionen: 344x127
   const aspectRatio = 344 / 127;
   const width = size * aspectRatio;
