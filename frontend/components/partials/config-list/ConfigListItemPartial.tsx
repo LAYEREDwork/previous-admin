@@ -76,7 +76,7 @@ export function ConfigListItemPartial({
 
                 {/* Main Content Area */}
                 <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0 pr-14 sm:pr-0">
-                    <div className="flex items-center justify-center">
+                    <div className="flex items-center justify-center min-w-[34px] sm:min-w-[40px]">
                         {!config.is_active ? (
                             <PAIconButton
                                 onClick={() => setActiveConfig(config.id)}
@@ -87,14 +87,9 @@ export function ConfigListItemPartial({
                                 className="text-gray-400 hover:text-next-accent dark:hover:text-next-accent transition-colors"
                             />
                         ) : (
-                            <PAIconButton
-                                icon={<BiCheckCircle size={isMobile ? 22 : 26} />}
-                                size={isMobile ? 'xs' : 'sm'}
-                                appearance="subtle"
-                                disabled
-                                title={translation.configList.active}
-                                className="!text-green-600 dark:!text-green-400 !cursor-default"
-                            />
+                            <div className="flex items-center justify-center text-green-600 dark:text-green-400 p-1">
+                                <BiCheckCircle size={isMobile ? 24 : 28} />
+                            </div>
                         )}
                     </div>
 
