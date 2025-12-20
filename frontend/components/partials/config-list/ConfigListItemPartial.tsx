@@ -117,33 +117,36 @@ export function ConfigListItemPartial({
                 {/* Action Buttons - Bottom Right */}
                 <div className="flex items-center justify-end gap-1.5 sm:gap-2 mt-2 sm:mt-0 sm:absolute sm:bottom-3 sm:right-3">
                     <PAIconButton
-                        icon={<BiUpload size={isMobile ? 16 : 18} />}
+                        icon={<BiUpload size={isMobile ? 16 : 18} className="transition-colors group-hover:text-next-accent" />}
                         size={isMobile ? 'xs' : 'sm'}
                         appearance="default"
                         onClick={() => exportSingleConfig(config)}
                         title={translation.configList.export}
+                        className="group"
                     />
                     <PAIconButton
-                        icon={<BiCopy size={16} />}
+                        icon={<BiCopy size={16} className="transition-colors group-hover:text-next-accent" />}
                         size={isMobile ? 'xs' : 'sm'}
                         appearance="default"
                         onClick={() => duplicateConfig(config)}
                         title={translation.configList.duplicate}
+                        className="group"
                     />
                     <PAIconButton
-                        icon={<BiEdit size={16} />}
+                        icon={<BiEdit size={16} className="transition-colors group-hover:text-next-accent" />}
                         size={isMobile ? 'xs' : 'sm'}
                         appearance="default"
                         onClick={() => onEdit(config)}
                         title={translation.configList.edit}
+                        className="group"
                     />
                     <PAIconButton
-                        icon={<BiTrash size={16} />}
+                        icon={<BiTrash size={16} className="transition-colors group-hover:text-red-500" />}
                         size={isMobile ? 'xs' : 'sm'}
                         appearance="default"
                         onClick={() => deleteConfig(config.id)}
                         title={translation.configList.delete}
-                        className="hover:!text-red-500 hover:!bg-red-50 dark:hover:!bg-red-900/20"
+                        className="group hover:!bg-red-50 dark:hover:!bg-red-900/20"
                     />
                 </div>
             </div>

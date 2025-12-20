@@ -83,7 +83,6 @@ export function ConfigFileSyncPartial() {
           disabled={syncing || !configs.find(config => config.is_active)}
           loading={syncing}
           appearance="primary"
-          color="cyan"
           className="flex items-center justify-center gap-2"
           size={controlSize}
         >
@@ -107,8 +106,8 @@ export function ConfigFileSyncPartial() {
       {message && (
         <div
           className={`flex items-center gap-2 p-3 rounded-lg ${message.type === 'success'
-              ? 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-300'
-              : 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300'
+            ? 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-300'
+            : 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300'
             }`}
         >
           {message.type === 'success' ? (

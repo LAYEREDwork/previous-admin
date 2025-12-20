@@ -61,7 +61,6 @@ export function ConfigDetailsPartial({
                         onClick={handleUpdateMetadata}
                         disabled={!hasChanges}
                         appearance="primary"
-                        color="accent"
                         size={controlSize}
                         className="flex items-center gap-2"
                     >

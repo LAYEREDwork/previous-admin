@@ -23,7 +23,6 @@ export function ConfigListHeaderPartial({
                 appearance="primary"
                 className="flex items-center gap-2"
                 size={controlSize}
-                color="accent"
             >
                 <BiPlus size={18} />
                 {translation.configList.newConfig}

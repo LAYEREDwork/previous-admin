@@ -34,7 +34,7 @@ export function PAIconButton({
         <PAButton
             {...props}
             size={size}
-            className={`${sizeClasses[size]} ${circle ? 'rounded-full' : 'rounded-lg'} ${className}`}
+            className={`${sizeClasses[size as keyof typeof sizeClasses]} ${circle ? 'rounded-full' : 'rounded-md'} ${className}`}
             icon={icon}
         />
     );

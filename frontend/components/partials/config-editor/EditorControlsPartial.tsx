@@ -62,7 +62,6 @@ export function EditorControlsPartial({
                         disabled={saving}
                         loading={saving}
                         appearance="primary"
-                        color="accent"
                         className="flex items-center gap-2"
                         size={controlSize}
                         title={saving ? translation.configEditor.saving : translation.configEditor.save}

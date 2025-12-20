@@ -88,7 +88,6 @@ export function ConfigEditor({ configId, onTabChange }: { configId?: string; onT
           <PAButton
             onClick={refreshConfig}
             appearance="primary"
-            color="accent"
             className="flex items-center gap-2 mx-auto"
             size={controlSize}
           >

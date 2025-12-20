@@ -58,7 +58,6 @@ export const PAEmptyView: React.FC<PAEmptyViewProps> = ({
       <PAButton
         onClick={onAction}
         appearance="primary"
-        color="accent"
         size={buttonSize}
         className="flex items-center gap-2"
       >

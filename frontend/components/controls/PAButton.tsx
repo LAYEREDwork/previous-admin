@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { Button as RSuiteButton, ButtonProps as RSuiteButtonProps } from 'rsuite';
 
 interface PAButtonProps extends Omit<RSuiteButtonProps, 'size' | 'color'> {
@@ -69,7 +69,7 @@ export function PAButton({
 
     const baseClasses = `
     inline-flex items-center justify-center gap-2 
-    font-semibold rounded-full select-none 
+    font-semibold select-none 
     transition-all duration-200 
     ${containerHeights[size as keyof typeof containerHeights] || containerHeights.md} 
     ${fontSizes[size as keyof typeof fontSizes] || fontSizes.md} 
@@ -78,9 +78,11 @@ export function PAButton({
     ${props.disabled ? 'opacity-50 cursor-not-allowed grayscale' : 'cursor-pointer'}
   `;
 
+    const radiusClass = className.includes('rounded-') ? '' : 'rounded-full';
+
     return (
         <RSuiteButton
-            className={`${baseClasses} ${className}`}
+            className={`${baseClasses} ${radiusClass} ${className}`}
             {...props}
         >
             {icon && <span className="flex items-center justify-center">{icon}</span>}

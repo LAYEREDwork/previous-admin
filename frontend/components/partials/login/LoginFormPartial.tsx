@@ -118,7 +118,6 @@ export function LoginFormPartial({
                     loading={loading}
                     appearance="primary"
                     size={controlSize}
-                    color="accent"
                     block
                     className="flex items-center justify-center gap-2"
                 >
