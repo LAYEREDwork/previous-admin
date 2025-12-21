@@ -9,6 +9,7 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 2342,
+    allowedHosts: ['cube.local', 'next.local', 'localhost', '127.0.0.1'],
   },
   preview: {
     host: '0.0.0.0',
