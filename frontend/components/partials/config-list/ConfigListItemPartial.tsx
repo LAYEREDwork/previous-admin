@@ -45,12 +45,12 @@ export function ConfigListItemPartial({
 }: ConfigListItemPartialProps) {
   return (
     <div
-      className={`relative w-full flex flex-row items-start sm:items-center justify-between gap-2 px-4 py-3 pb-12 sm:pb-3 rounded-lg border shadow-sm transition-all ${
+      className={`relative w-full flex flex-row gap-3 p-3 rounded-lg border shadow-sm transition-all ${
         isActive
           ? 'border-primary-500 bg-primary-50/20 dark:bg-primary-900/20'
           : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-neutral-900 hover:border-gray-300 dark:hover:border-gray-600'
       } ${isDragged ? 'bg-gray-100 bg-opacity-70 dark:bg-gray-800 dark:bg-opacity-70' : ''} ${isDragOver ? 'border-primary-500' : ''}`}
-      style={{ boxShadow: `0 0 12px rgba(6, 182, 212, ${isActive ? 0.6 : 0})`, transition: 'box-shadow 0.4s ease-in-out, border-color 0.4s ease-in-out' }}
+      style={{ boxShadow: `0 0 12px rgba(6, 182, 212, ${isActive ? 0.6 : 0})`, transition: `box-shadow ${isActive ? 0.4 : 0.2}s ease-in-out, border-color ${isActive ? 0.4 : 0.2}s ease-in-out` }}
       tabIndex={0}
       aria-label={config.name}
       draggable={hasMultipleConfigs}
@@ -59,17 +59,8 @@ export function ConfigListItemPartial({
       onDragEnd={() => hasMultipleConfigs && onDragEnd()}
       onDragLeave={() => hasMultipleConfigs && onDragLeave()}
     >
-      <div className="flex flex-row items-start gap-2 flex-1">
-        {hasMultipleConfigs && (
-          <IconButton
-            icon={<BiMenu size={26} />}
-            appearance="subtle"
-            className="flex-shrink-0 cursor-pointer text-gray-500 hover:text-gray-700"
-            style={{ backgroundColor: 'transparent' }}
-            title={translation.configList.move}
-            size="lg"
-          />
-        )}
+      {/* Linke Spalte: Active Button oben, Drag Button unten */}
+      <div className="flex flex-col justify-between items-center">
         <IconButton
           icon={isActive ? <BiCheckCircle size={26} /> : <BiCircle size={26} />}
           appearance="subtle"
@@ -80,26 +71,36 @@ export function ConfigListItemPartial({
           disabled={isActive}
           size="lg"
         />
-        <div className="flex flex-col gap-0.5 flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <span className="font-semibold text-base text-gray-900 dark:text-gray-100 truncate">
-              {config.name}
-            </span>
-          </div>
-          <span className="text-xs text-gray-500 dark:text-gray-400 whitespace-normal sm:truncate">
-            {config.description}
-          </span>
-        </div>
+        {hasMultipleConfigs && (
+          <IconButton
+            icon={<BiMenu size={26} />}
+            appearance="subtle"
+            className="flex-shrink-0 cursor-grab text-gray-500 hover:text-gray-700"
+            style={{ backgroundColor: 'transparent' }}
+            title={translation.configList.move}
+            size="lg"
+          />
+        )}
       </div>
-      <ConfigListActionsPartial
-        config={config}
-        isMobile={isMobile}
-        exportSingleConfig={exportSingleConfig}
-        duplicateConfig={duplicateConfig}
-        onEdit={onEdit}
-        deleteConfig={deleteConfig}
-        translation={translation}
-      />
+
+      {/* Rechte Spalte: Name, Description, Action Buttons */}
+      <div className="flex-1 flex flex-col gap-1 min-w-0">
+        <span className="font-semibold text-base text-gray-900 dark:text-gray-100 truncate">
+          {config.name}
+        </span>
+        <span className="text-xs text-gray-500 dark:text-gray-400">
+          {config.description}
+        </span>
+        <ConfigListActionsPartial
+          config={config}
+          isMobile={isMobile}
+          exportSingleConfig={exportSingleConfig}
+          duplicateConfig={duplicateConfig}
+          onEdit={onEdit}
+          deleteConfig={deleteConfig}
+          translation={translation}
+        />
+      </div>
     </div>
   );
 }

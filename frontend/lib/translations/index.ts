@@ -130,6 +130,7 @@ export interface Translations {
     errorSettingActiveConfiguration: string;
     errorUpdatingOrder: string;
     loading: string;
+    move: string;
     newConfig: string;
     setActive: string;
     export: string;

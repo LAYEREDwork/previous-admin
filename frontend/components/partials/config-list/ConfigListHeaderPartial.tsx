@@ -21,7 +21,7 @@ export function ConfigListHeaderPartial({
             <PAButton
                 onClick={onNewConfigClick}
                 appearance="primary"
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 self-end sm:self-auto"
                 size={controlSize}
             >
                 <BiPlus size={18} />

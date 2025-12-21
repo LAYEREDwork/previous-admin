@@ -25,35 +25,38 @@ export function ConfigListActionsPartial({
   deleteConfig,
   translation
 }: ConfigListActionsPartialProps) {
+  const iconSize = isMobile ? 16 : 18;
+  const buttonSize = isMobile ? 'xs' : 'sm';
+
   return (
-    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 sm:left-auto sm:right-3 sm:translate-x-0 flex items-center justify-center sm:justify-end gap-3 sm:gap-2">
+    <div className="flex items-center justify-end gap-2 mt-2">
       <PAIconButton
-        icon={<BiUpload size={isMobile ? 16 : 18} className="transition-colors group-hover:text-next-accent" />}
-        size={isMobile ? 'xs' : 'sm'}
+        icon={<BiUpload size={iconSize} className="transition-colors group-hover:text-primary-500" />}
+        size={buttonSize}
         appearance="default"
         onClick={() => exportSingleConfig(config)}
         title={translation.configList.export}
         className="group hover:!bg-primary-50 dark:hover:!bg-primary-900/20"
       />
       <PAIconButton
-        icon={<BiCopy size={16} className="transition-colors group-hover:text-next-accent" />}
-        size={isMobile ? 'xs' : 'sm'}
+        icon={<BiCopy size={iconSize} className="transition-colors group-hover:text-primary-500" />}
+        size={buttonSize}
         appearance="default"
         onClick={() => duplicateConfig(config)}
         title={translation.configList.duplicate}
         className="group hover:!bg-primary-50 dark:hover:!bg-primary-900/20"
       />
       <PAIconButton
-        icon={<BiEdit size={16} className="transition-colors group-hover:text-next-accent" />}
-        size={isMobile ? 'xs' : 'sm'}
+        icon={<BiEdit size={iconSize} className="transition-colors group-hover:text-primary-500" />}
+        size={buttonSize}
         appearance="default"
         onClick={() => onEdit(config)}
         title={translation.configList.edit}
         className="group hover:!bg-primary-50 dark:hover:!bg-primary-900/20"
       />
       <PAIconButton
-        icon={<BiTrash size={16} className="transition-colors group-hover:text-red-500" />}
-        size={isMobile ? 'xs' : 'sm'}
+        icon={<BiTrash size={iconSize} className="transition-colors group-hover:text-red-500" />}
+        size={buttonSize}
         appearance="default"
         onClick={() => deleteConfig(config.id)}
         title={translation.configList.delete}
