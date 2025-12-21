@@ -5,7 +5,7 @@ import { PAEmptyView } from '../controls/PAEmptyView';
 
 // Partials
 import { ConfigListItemPartial } from '../partials/config-list/PAConfigListItemPartial';
-import { ConfigListHeaderPartial } from '../partials/config-list/PAConfigListHeaderPartial';
+import { PAConfigListHeaderPartial } from '../partials/config-list/PAConfigListHeaderPartial';
 import { NewConfigModalPartial } from '../partials/config-list/PANewConfigModalPartial';
 
 // Hooks
@@ -60,7 +60,7 @@ export function PAConfigList({ onEdit }: ConfigListProps) {
     <div className="space-y-4">
       {/* Header Section */}
       {configs.length > 0 && (
-        <ConfigListHeaderPartial
+        <PAConfigListHeaderPartial
           onNewConfigClick={() => setShowNewConfig(true)}
           controlSize={controlSize}
           translation={translation}

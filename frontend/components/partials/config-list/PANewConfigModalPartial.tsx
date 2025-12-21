@@ -1,6 +1,6 @@
 import { IoDocumentText } from 'react-icons/io5';
 import { Input } from 'rsuite';
-import { PAButton } from '../../controls/PAButton';
+import { PASkeuomorphButton } from '../../controls/PASkeuomorphButton';
 import { PAModal } from '../../controls/PAModal';
 import { Translations } from '../../../lib/translations';
 
@@ -13,7 +13,7 @@ interface NewConfigModalPartialProps {
     description: string;
     setDescription: (desc: string) => void;
     nameRef: React.RefObject<HTMLInputElement>;
-    controlSize: 'sm' | 'md' | 'lg';
+    controlSize: 'xs' |'sm' | 'md' | 'lg';
     translation: Translations;
 }
 
@@ -72,21 +72,22 @@ export function NewConfigModalPartial({
                 </div>
             </PAModal.Body>
             <PAModal.Footer>
-                <PAButton
+                <PASkeuomorphButton
                     onClick={onClose}
-                    appearance="subtle"
+                    containerBg="dark"
                     size={controlSize}
                 >
                     {translation.common.cancel}
-                </PAButton>
-                <PAButton
+                </PASkeuomorphButton>
+                <PASkeuomorphButton
                     onClick={onSave}
                     disabled={!name.trim()}
-                    appearance="primary"
+                    active={!!name.trim()}
+                    containerBg="dark"
                     size={controlSize}
                 >
                     {translation.common.save}
-                </PAButton>
+                </PASkeuomorphButton>
             </PAModal.Footer>
         </PAModal>
     );

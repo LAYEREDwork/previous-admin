@@ -9,7 +9,7 @@ export default {
       },
       colors: {
         next: {
-          bg: '#1a1a1a',
+          bg: '#141414',
           panel: '#1a1a1a',
           border: '#2a2a2a',
           hover: '#252525',

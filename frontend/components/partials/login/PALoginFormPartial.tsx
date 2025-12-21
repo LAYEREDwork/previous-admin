@@ -1,6 +1,6 @@
 import { BiUserPlus, BiLock, BiShow, BiHide, BiLogInCircle, BiDownload } from 'react-icons/bi';
 import { Input, InputGroup, Divider } from 'rsuite';
-import { PAButton } from '../../controls/PAButton';
+import { PASkeuomorphButton, PASkeuomorphButtonType } from '../../controls/PASkeuomorphButton';
 import { Translations } from '../../../lib/translations';
 
 interface LoginFormPartialProps {
@@ -112,14 +112,12 @@ export function LoginFormPartial({
                     </div>
                 )}
 
-                <PAButton
-                    type="submit"
+                <PASkeuomorphButton
+                    buttonType={PASkeuomorphButtonType.submit}
                     disabled={loading}
-                    loading={loading}
-                    appearance="primary"
+                    active={!loading}
                     size={controlSize}
-                    block
-                    className="flex items-center justify-center gap-2"
+                    fullWidth
                 >
                     {isSetup ? (
                         <>
@@ -132,7 +130,7 @@ export function LoginFormPartial({
                             {loading ? translation.login.signingIn : translation.login.signIn}
                         </>
                     )}
-                </PAButton>
+                </PASkeuomorphButton>
             </form>
 
             {isSetup && (
@@ -149,18 +147,17 @@ export function LoginFormPartial({
                                 className="hidden"
                                 id="import-setup-database"
                             />
-                            <PAButton
+                            <PASkeuomorphButton
                                 as="span"
-                                appearance="ghost"
+                                containerBg="light"
                                 size={controlSize}
-                                block
+                                fullWidth
                                 disabled={importing || loading}
-                                loading={importing}
                                 className="flex items-center justify-center gap-2 cursor-pointer"
                             >
                                 <BiDownload size={18} className="sm:w-[18px] sm:h-[18px]" />
                                 {importing ? 'Importing Database...' : 'Import Existing Database'}
-                            </PAButton>
+                            </PASkeuomorphButton>
                         </label>
                         <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
                             Restore from a previously exported database backup

@@ -4,7 +4,7 @@
  */
 
 // Size Enum (xs, sm, md, lg, xl)
-export const PASizeEnum = {
+export const PASize = {
   XS: 'xs',
   SM: 'sm',
   MD: 'md',
@@ -13,7 +13,7 @@ export const PASizeEnum = {
 } as const;
 
 // Typography Size Enum (xs through 6xl)
-export const PATypographySizeEnum = {
+export const PATypographySize = {
   XS: 'xs',
   SM: 'sm',
   MD: 'md',
@@ -27,13 +27,13 @@ export const PATypographySizeEnum = {
 } as const;
 
 // Size type derived from enum
-export type PASize = typeof PASizeEnum[keyof typeof PASizeEnum];
+export type PASize = typeof PASize[keyof typeof PASize];
 
 // Basic size type (xs, sm, md, lg) - excludes xl
 export type PABasicSize = Exclude<PASize, 'xl'>;
 
 // Text/Typography size type
-export type PATextSize = typeof PATypographySizeEnum[keyof typeof PATypographySizeEnum];
+export type PATextSize = typeof PATypographySize[keyof typeof PATypographySize];
 
 // Breakpoints for responsive values
 export type PABreakpoints = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | '2xl';

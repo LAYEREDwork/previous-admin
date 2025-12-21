@@ -4,11 +4,11 @@ import { Translations } from '../../../lib/translations';
 
 interface ConfigListHeaderPartialProps {
     onNewConfigClick: () => void;
-    controlSize: 'sm' | 'md' | 'lg';
+    controlSize: 'xs' | 'sm' | 'md' | 'lg';
     translation: Translations;
 }
 
-export function ConfigListHeaderPartial({
+export function PAConfigListHeaderPartial({
     onNewConfigClick,
     controlSize,
     translation
