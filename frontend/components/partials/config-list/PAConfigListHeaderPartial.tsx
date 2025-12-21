@@ -1,5 +1,5 @@
 import { BiPlus } from 'react-icons/bi';
-import { PAButton } from '../../controls/PAButton';
+import { PASkeuomorphButton } from '../../controls/PASkeuomorphButton';
 import { Translations } from '../../../lib/translations';
 
 interface ConfigListHeaderPartialProps {
@@ -18,15 +18,14 @@ export function ConfigListHeaderPartial({
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                 {translation.configList.title}
             </h2>
-            <PAButton
+            <PASkeuomorphButton
                 onClick={onNewConfigClick}
-                appearance="primary"
-                className="flex items-center gap-2 self-end sm:self-auto"
+                icon={<BiPlus size={18} />}
                 size={controlSize}
+                className="self-end sm:self-auto"
             >
-                <BiPlus size={18} />
                 {translation.configList.newConfig}
-            </PAButton>
+            </PASkeuomorphButton>
         </div>
     );
 }

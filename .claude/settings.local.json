@@ -4,7 +4,8 @@
       "Bash(npx tsc:*)",
       "Bash(npm run typecheck:*)",
       "Bash(git add:*)",
-      "Bash(git commit -m \"$\\(cat <<''EOF''\nRedesign ConfigListItem layout with two-column structure\n\nRestructure config list items to have active/drag buttons in left column\nand name/description/actions in right column. Action buttons now right-\naligned and New Configuration button right-aligned on mobile.\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nRedesign ConfigListItem layout with two-column structure\n\nRestructure config list items to have active/drag buttons in left column\nand name/description/actions in right column. Action buttons now right-\naligned and New Configuration button right-aligned on mobile.\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(grep:*)"
     ]
   }
 }
