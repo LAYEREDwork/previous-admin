@@ -43,7 +43,7 @@ export function ConfigListItemPartial({
           icon={isActive ? <BiCheckCircle size={26} /> : <BiCircle size={26} />}
           appearance="subtle"
           onClick={() => !isActive && setActiveConfig(config.id)}
-          className={`flex-shrink-0 ${isActive ? 'cursor-default !text-green-500' : 'cursor-pointer text-gray-500 hover:text-gray-200'}`}
+          className={`flex-shrink-0 ${isActive ? 'cursor-default !text-green-500 !cursor-default' : 'cursor-pointer text-gray-500 hover:text-gray-200'}`}
           style={{ backgroundColor: 'transparent' }}
           title={isActive ? translation.configList.active : translation.configList.activate}
           disabled={isActive}
