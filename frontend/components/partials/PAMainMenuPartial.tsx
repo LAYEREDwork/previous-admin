@@ -1,6 +1,6 @@
 import React from 'react';
 import { BiHdd, BiFile, BiInfoCircle, BiCog } from 'react-icons/bi';
-import { IoDocumentsOutline } from 'react-icons/io5';
+import { IoDocumentOutline } from 'react-icons/io5';
 import { useLanguage } from '../../contexts/PALanguageContext';
 import { PASegmentedControl } from '../controls/PASegmentedControl';
 
@@ -13,7 +13,7 @@ export function MainMenuPartial({ currentTab, onTabChange }: MainMenuProps) {
     const { translation } = useLanguage();
 
     const tabs = [
-        { value: 'configs', label: translation.tabs.savedConfigs, icon: <IoDocumentsOutline size={18} /> },
+        { value: 'configs', label: translation.tabs.savedConfigs, icon: <IoDocumentOutline size={18} /> },
         { value: 'editor', label: translation.tabs.configEditor, icon: <BiHdd size={18} /> },
         { value: 'import-export', label: translation.tabs.importExport, icon: <BiFile size={18} /> },
         { value: 'system', label: translation.tabs.system, icon: <BiCog size={18} /> },
