@@ -25,13 +25,13 @@ export function ConfigListActionsPartial({
   deleteConfig,
   translation
 }: ConfigListActionsPartialProps) {
-  const iconSize = isMobile ? 16 : 18;
-  const buttonSize = isMobile ? 'xs' : 'sm';
+  const iconSize = isMobile ? 20 : 24;
+  const buttonSize = isMobile ? 'sm' : 'md';
 
   return (
-    <div className="flex items-center justify-end gap-2 mt-2">
+    <div className="flex items-center justify-end gap-2 mt-2 sm:mt-0">
       <PAIconButton
-        icon={<BiUpload size={iconSize} className="transition-colors group-hover:text-primary-500" />}
+        icon={<BiUpload size={iconSize} className="text-gray-400 transition-colors group-hover:text-primary-500" />}
         size={buttonSize}
         appearance="default"
         onClick={() => exportSingleConfig(config)}
@@ -39,7 +39,7 @@ export function ConfigListActionsPartial({
         className="group hover:!bg-primary-50 dark:hover:!bg-primary-900/20"
       />
       <PAIconButton
-        icon={<BiCopy size={iconSize} className="transition-colors group-hover:text-primary-500" />}
+        icon={<BiCopy size={iconSize} className="text-gray-400 transition-colors group-hover:text-primary-500" />}
         size={buttonSize}
         appearance="default"
         onClick={() => duplicateConfig(config)}
@@ -47,7 +47,7 @@ export function ConfigListActionsPartial({
         className="group hover:!bg-primary-50 dark:hover:!bg-primary-900/20"
       />
       <PAIconButton
-        icon={<BiEdit size={iconSize} className="transition-colors group-hover:text-primary-500" />}
+        icon={<BiEdit size={iconSize} className="text-gray-400 transition-colors group-hover:text-primary-500" />}
         size={buttonSize}
         appearance="default"
         onClick={() => onEdit(config)}
@@ -55,7 +55,7 @@ export function ConfigListActionsPartial({
         className="group hover:!bg-primary-50 dark:hover:!bg-primary-900/20"
       />
       <PAIconButton
-        icon={<BiTrash size={iconSize} className="transition-colors group-hover:text-red-500" />}
+        icon={<BiTrash size={iconSize} className="text-gray-400 transition-colors group-hover:text-red-500" />}
         size={buttonSize}
         appearance="default"
         onClick={() => deleteConfig(config.id)}

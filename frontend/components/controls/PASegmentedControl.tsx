@@ -94,7 +94,7 @@ export function PASegmentedControl<T extends string>({
     >
       {/* Sliding Active Tile (Active Segment Background) */}
       <div
-        className="absolute top-1 bottom-1 bg-white dark:bg-gray-600 shadow-sm rounded-full pointer-events-none z-0 transition-all"
+        className="absolute top-1 bottom-1 bg-primary-500 shadow-sm rounded-full pointer-events-none z-0 transition-all"
         style={sliderStyle}
       />
 
@@ -124,7 +124,7 @@ export function PASegmentedControl<T extends string>({
             onClick={() => onChange(option.value)}
             className={`segment-item relative z-10 flex items-center justify-center gap-2 font-semibold h-full px-3 transition-colors duration-300 rounded-full ${fontSizes[size]
               } ${fullWidth ? 'flex-1' : ''} ${isActive
-                ? 'text-gray-900 dark:text-white'
+                ? 'text-white'
                 : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
               }`}
           >

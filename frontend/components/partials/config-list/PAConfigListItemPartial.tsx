@@ -45,7 +45,7 @@ export function ConfigListItemPartial({
 }: ConfigListItemPartialProps) {
   return (
     <div
-      className={`relative w-full flex flex-row gap-3 p-3 rounded-lg border shadow-sm transition-all ${
+      className={`relative w-full flex flex-row gap-3 sm:gap-2 p-3 sm:p-2 rounded-lg border shadow-sm transition-all ${
         isActive
           ? 'border-primary-500 bg-primary-50/20 dark:bg-primary-900/20'
           : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-neutral-900 hover:border-gray-300 dark:hover:border-gray-600'
@@ -60,9 +60,9 @@ export function ConfigListItemPartial({
       onDragLeave={() => hasMultipleConfigs && onDragLeave()}
     >
       {/* Linke Spalte: Active Button oben, Drag Button unten */}
-      <div className="flex flex-col justify-between items-center">
+      <div className="flex flex-col justify-between items-center w-10 sm:w-12">
         <IconButton
-          icon={isActive ? <BiCheckCircle size={26} /> : <BiCircle size={26} />}
+          icon={isActive ? <BiCheckCircle size={28} /> : <BiCircle size={28} />}
           appearance="subtle"
           onClick={() => !isActive && setActiveConfig(config.id)}
           className={`flex-shrink-0 ${isActive ? 'cursor-default !text-primary-500 !cursor-default' : 'cursor-pointer text-gray-800 hover:text-gray-200'}`}
@@ -73,7 +73,7 @@ export function ConfigListItemPartial({
         />
         {hasMultipleConfigs && (
           <IconButton
-            icon={<BiMenu size={26} />}
+            icon={<BiMenu size={28} />}
             appearance="subtle"
             className="flex-shrink-0 cursor-grab text-gray-500 hover:text-gray-700"
             style={{ backgroundColor: 'transparent' }}
@@ -83,7 +83,7 @@ export function ConfigListItemPartial({
         )}
       </div>
 
-      {/* Rechte Spalte: Name, Description, Action Buttons */}
+      {/* Mittlere Spalte: Name, Description */}
       <div className="flex-1 flex flex-col gap-1 min-w-0">
         <span className="font-semibold text-base text-gray-900 dark:text-gray-100 truncate">
           {config.name}
@@ -91,6 +91,22 @@ export function ConfigListItemPartial({
         <span className="text-xs text-gray-500 dark:text-gray-400">
           {config.description}
         </span>
+        {/* Mobile: Action Buttons unter Description */}
+        <div className="sm:hidden">
+          <ConfigListActionsPartial
+            config={config}
+            isMobile={isMobile}
+            exportSingleConfig={exportSingleConfig}
+            duplicateConfig={duplicateConfig}
+            onEdit={onEdit}
+            deleteConfig={deleteConfig}
+            translation={translation}
+          />
+        </div>
+      </div>
+
+      {/* Rechte Spalte: Action Buttons - nur Desktop, vertikal zentriert */}
+      <div className="hidden sm:flex items-center">
         <ConfigListActionsPartial
           config={config}
           isMobile={isMobile}
