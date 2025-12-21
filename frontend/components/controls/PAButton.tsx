@@ -51,7 +51,7 @@ export function PAButton({
                 case 'orange': return 'bg-orange-500 hover:bg-orange-600 text-white shadow-sm';
                 case 'accent': return 'bg-next-accent hover:opacity-90 text-white shadow-sm';
                 case 'cyan': return 'bg-cyan-600 hover:bg-cyan-700 text-white shadow-sm';
-                default: return 'bg-blue-600 hover:bg-blue-700 text-white shadow-sm';
+                default: return 'bg-primary-600 hover:bg-primary-700 text-white shadow-sm';
             }
         }
 

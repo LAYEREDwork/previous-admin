@@ -104,6 +104,7 @@ export const it: Translations = {
     errorSettingActiveConfiguration: 'Errore durante l\'impostazione della configurazione attiva',
     errorUpdatingOrder: 'Errore durante l\'aggiornamento dell\'ordine',
     loading: 'Caricamento configurazioni...',
+    move: 'Sposta',
     newConfig: 'Nuova Configurazione',
     setActive: 'Imposta come attivo',
     export: 'Esporta',

@@ -103,6 +103,7 @@ export const de: Translations = {
     errorSettingActiveConfiguration: 'Fehler beim Setzen der aktiven Konfiguration',
     errorUpdatingOrder: 'Fehler beim Aktualisieren der Reihenfolge',
     loading: 'Lade Konfigurationen...',
+    move: 'Verschieben',
     newConfig: 'Neue Konfiguration',
     setActive: 'Als aktiv setzen',
     export: 'Exportieren',

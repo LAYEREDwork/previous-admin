@@ -40,6 +40,12 @@ export function ConfigList({ onEdit }: ConfigListProps) {
     exportSingleConfig,
     setActiveConfig,
     handleCloseNewConfigModal,
+    handleDragStart,
+    handleDragOver,
+    handleDragEnd,
+    handleDragLeave,
+    draggedIndex,
+    dragOverIndex,
   } = useConfigListLogic(onEdit);
 
   if (loading) {
@@ -77,7 +83,7 @@ export function ConfigList({ onEdit }: ConfigListProps) {
 
       {/* Configurations List */}
       <div className="grid gap-3">
-        {configs.map((config) => (
+        {configs.map((config, index) => (
           <ConfigListItemPartial
             key={config.id}
             config={config}
@@ -89,6 +95,14 @@ export function ConfigList({ onEdit }: ConfigListProps) {
             deleteConfig={deleteConfig}
             translation={translation}
             setActiveConfig={setActiveConfig}
+            hasMultipleConfigs={configs.length > 1}
+            index={index}
+            onDragStart={handleDragStart}
+            onDragOver={handleDragOver}
+            onDragEnd={handleDragEnd}
+            onDragLeave={handleDragLeave}
+            isDragged={draggedIndex === index}
+            isDragOver={dragOverIndex === index}
           />
         ))}
       </div>

@@ -33,7 +33,7 @@ export function ConfigListActionsPartial({
         appearance="default"
         onClick={() => exportSingleConfig(config)}
         title={translation.configList.export}
-        className="group"
+        className="group hover:!bg-primary-50 dark:hover:!bg-primary-900/20"
       />
       <PAIconButton
         icon={<BiCopy size={16} className="transition-colors group-hover:text-next-accent" />}
@@ -41,7 +41,7 @@ export function ConfigListActionsPartial({
         appearance="default"
         onClick={() => duplicateConfig(config)}
         title={translation.configList.duplicate}
-        className="group"
+        className="group hover:!bg-primary-50 dark:hover:!bg-primary-900/20"
       />
       <PAIconButton
         icon={<BiEdit size={16} className="transition-colors group-hover:text-next-accent" />}
@@ -49,7 +49,7 @@ export function ConfigListActionsPartial({
         appearance="default"
         onClick={() => onEdit(config)}
         title={translation.configList.edit}
-        className="group"
+        className="group hover:!bg-primary-50 dark:hover:!bg-primary-900/20"
       />
       <PAIconButton
         icon={<BiTrash size={16} className="transition-colors group-hover:text-red-500" />}
