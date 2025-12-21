@@ -9,7 +9,7 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
+export function PALanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>(() => {
     const saved = localStorage.getItem('language');
     if (saved && ['en', 'de', 'it', 'es', 'fr'].includes(saved)) {

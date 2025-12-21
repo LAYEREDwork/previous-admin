@@ -1,6 +1,6 @@
 import { SelectPicker, Input, Toggle } from 'rsuite';
-import { EditorSectionPartial } from './EditorSectionPartial';
-import { EditorFieldPartial } from './EditorFieldPartial';
+import { EditorSectionPartial } from './PAEditorSectionPartial';
+import { EditorFieldPartial } from './PAEditorFieldPartial';
 import { PreviousConfig } from '../../../lib/types';
 import { Translations } from '../../../lib/translations';
 

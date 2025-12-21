@@ -1,14 +1,14 @@
 // Hooks
-import { useLanguage } from '../../contexts/LanguageContext';
+import { useLanguage } from '../../contexts/PALanguageContext';
 import { useAboutLogic } from '../../hooks/useAbout';
 
 // Components
-import { VersionInfoPartial } from '../partials/about/VersionInfoPartial';
-import { PreviousResourcesPartial } from '../partials/about/PreviousResourcesPartial';
-import { LayeredResourcesPartial } from '../partials/about/LayeredResourcesPartial';
-import { GeneralResourcesPartial } from '../partials/about/GeneralResourcesPartial';
+import { VersionInfoPartial } from '../partials/about/PAVersionInfoPartial';
+import { PreviousResourcesPartial } from '../partials/about/PAPreviousResourcesPartial';
+import { LayeredResourcesPartial } from '../partials/about/PALayeredResourcesPartial';
+import { GeneralResourcesPartial } from '../partials/about/PAGeneralResourcesPartial';
 
-export function About() {
+export function PAAbout() {
    const { translation } = useLanguage();
    const { versionInfo, checking, updating, error, handleCheckForUpdates, handleUpdate } = useAboutLogic();
 

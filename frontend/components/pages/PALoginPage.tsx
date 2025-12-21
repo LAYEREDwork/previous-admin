@@ -4,10 +4,10 @@ import { PALanguageSwitcher } from '../controls/PALanguageSwitcher';
 import { PAThemeSwitcher } from '../controls/PAThemeSwitcher';
 
 // Partials
-import { LoginFormPartial } from '../partials/login/LoginFormPartial';
+import { LoginFormPartial } from '../partials/login/PALoginFormPartial';
 
 // Hooks
-import { useLanguage } from '../../contexts/LanguageContext';
+import { useLanguage } from '../../contexts/PALanguageContext';
 import { useControlSize } from '../../hooks/useControlSize';
 import { useLoginLogic } from '../../hooks/useLogin';
 

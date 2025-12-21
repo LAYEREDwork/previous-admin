@@ -22,7 +22,7 @@ interface ErrorBoundaryState {
  *   <App />
  * </ErrorBoundary>
  */
-export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+export class PAErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false, error: null };
@@ -105,4 +105,4 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   }
 }
 
-export default ErrorBoundary;
+export default PAErrorBoundary;

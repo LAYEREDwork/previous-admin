@@ -1,18 +1,18 @@
 import { BiRefresh, BiError } from 'react-icons/bi';
 
 // Partials
-import { HostInfoPartial } from '../partials/system/HostInfoPartial';
-import { DashboardPartial } from '../partials/system/DashboardPartial';
-import { DiskSpacePartial } from '../partials/system/DiskSpacePartial';
-import { ResetSystemPartial } from '../partials/system/ResetSystemPartial';
-import { ResetModalPartial } from '../partials/system/ResetModalPartial';
+import { HostInfoPartial } from '../partials/system/PAHostInfoPartial';
+import { DashboardPartial } from '../partials/system/PADashboardPartial';
+import { DiskSpacePartial } from '../partials/system/PADiskSpacePartial';
+import { ResetSystemPartial } from '../partials/system/PAResetSystemPartial';
+import { ResetModalPartial } from '../partials/system/PAResetModalPartial';
 
 // Hooks
-import { useLanguage } from '../../contexts/LanguageContext';
+import { useLanguage } from '../../contexts/PALanguageContext';
 import { useControlSize } from '../../hooks/useControlSize';
 import { useSystem } from '../../hooks/useSystem';
 
-export function System() {
+export function PASystem() {
   const { translation } = useLanguage();
   const controlSize = useControlSize();
   const {

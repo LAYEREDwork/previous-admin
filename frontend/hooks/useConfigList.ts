@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 
 // Hooks
-import { useNotification } from '../contexts/NotificationContext';
-import { useLanguage } from '../contexts/LanguageContext';
+import { useNotification } from '../contexts/PANotificationContext';
+import { useLanguage } from '../contexts/PALanguageContext';
 import { useConfigDnD } from './useConfigDnD';
 import { useNewConfigModal } from './useNewConfigModal';
 import { useConfigActions } from './useConfigActions';

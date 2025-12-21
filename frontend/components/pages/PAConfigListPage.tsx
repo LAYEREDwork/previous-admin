@@ -4,12 +4,12 @@
 import { PAEmptyView } from '../controls/PAEmptyView';
 
 // Partials
-import { ConfigListItemPartial } from '../partials/config-list/ConfigListItemPartial';
-import { ConfigListHeaderPartial } from '../partials/config-list/ConfigListHeaderPartial';
-import { NewConfigModalPartial } from '../partials/config-list/NewConfigModalPartial';
+import { ConfigListItemPartial } from '../partials/config-list/PAConfigListItemPartial';
+import { ConfigListHeaderPartial } from '../partials/config-list/PAConfigListHeaderPartial';
+import { NewConfigModalPartial } from '../partials/config-list/PANewConfigModalPartial';
 
 // Hooks
-import { useLanguage } from '../../contexts/LanguageContext';
+import { useLanguage } from '../../contexts/PALanguageContext';
 import { useControlSize } from '../../hooks/useControlSize';
 import { useConfigListLogic } from '../../hooks/useConfigList';
 
@@ -20,7 +20,7 @@ interface ConfigListProps {
   onEdit: (config: Configuration) => void;
 }
 
-export function ConfigList({ onEdit }: ConfigListProps) {
+export function PAConfigList({ onEdit }: ConfigListProps) {
   const { translation } = useLanguage();
   const controlSize = useControlSize('md');
 

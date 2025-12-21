@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BiRefresh, BiUpload, BiDownload, BiCheck, BiInfoCircle } from 'react-icons/bi';
 import { database, Configuration } from '../../lib/database';
-import { useLanguage } from '../../contexts/LanguageContext';
+import { useLanguage } from '../../contexts/PALanguageContext';
 import { PAButton } from '../controls/PAButton';
 import { useControlSize } from '../../hooks/useControlSize';
 

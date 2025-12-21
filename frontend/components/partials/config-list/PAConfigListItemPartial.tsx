@@ -1,4 +1,4 @@
-import { ConfigListActionsPartial } from './ConfigListActionsPartial';
+import { ConfigListActionsPartial } from './PAConfigListActionsPartial';
 import { Configuration } from '../../../lib/database';
 import type { Translations } from '../../../lib/translations';
 import { IconButton } from 'rsuite';

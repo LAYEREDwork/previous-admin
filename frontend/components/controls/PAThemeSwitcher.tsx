@@ -5,7 +5,7 @@ import { HiComputerDesktop } from 'react-icons/hi2';
 import { PASegmentedControl } from './PASegmentedControl';
 
 // Hooks
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../contexts/PAThemeContext';
 import { useControlSize } from '../../hooks/useControlSize';
 
 /**

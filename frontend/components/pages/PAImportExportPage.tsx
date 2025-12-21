@@ -1,20 +1,20 @@
 // Components
-import { ConfigFileSyncPartial } from '../partials/ConfigFileSyncPartial';
+import { ConfigFileSyncPartial } from '../partials/PAConfigFileSyncPartial';
 
 // Partials
-import { ConfigImportExportPartial } from '../partials/import-export/ConfigImportExportPartial';
-import { DatabaseImportExportPartial } from '../partials/import-export/DatabaseImportExportPartial';
-import { ImportExportNotesPartial } from '../partials/import-export/ImportExportNotesPartial';
+import { ConfigImportExportPartial } from '../partials/import-export/PAConfigImportExportPartial';
+import { DatabaseImportExportPartial } from '../partials/import-export/PADatabaseImportExportPartial';
+import { ImportExportNotesPartial } from '../partials/import-export/PAImportExportNotesPartial';
 
 // Hooks
-import { useLanguage } from '../../contexts/LanguageContext';
+import { useLanguage } from '../../contexts/PALanguageContext';
 import { useControlSize } from '../../hooks/useControlSize';
 import { useImportExport } from '../../hooks/useImportExport';
 
 /**
  * Import/Export page component
  */
-export function ImportExport() {
+export function PAImportExport() {
   const { translation } = useLanguage();
   const {
     importing,

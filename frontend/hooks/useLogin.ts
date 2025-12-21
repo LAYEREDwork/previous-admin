@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 
 // Hooks
-import { useAuth } from '../contexts/AuthContext';
-import { useLanguage } from '../contexts/LanguageContext';
-import { useNotification } from '../contexts/NotificationContext';
+import { useAuth } from '../contexts/PAAuthContext';
+import { useLanguage } from '../contexts/PALanguageContext';
+import { useNotification } from '../contexts/PANotificationContext';
 
 // Utilities
 import { checkSetupRequired } from '../lib/api';

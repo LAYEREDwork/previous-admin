@@ -1,7 +1,7 @@
 import React from 'react';
 import { BiHdd, BiFile, BiInfoCircle, BiCog } from 'react-icons/bi';
 import { IoDocumentsOutline } from 'react-icons/io5';
-import { useLanguage } from '../../contexts/LanguageContext';
+import { useLanguage } from '../../contexts/PALanguageContext';
 import { PASegmentedControl } from '../controls/PASegmentedControl';
 
 interface MainMenuProps {

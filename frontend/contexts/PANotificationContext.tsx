@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { BiCheckCircle, BiXCircle, BiError, BiInfoCircle, BiX } from 'react-icons/bi';
-import { useLanguage } from './LanguageContext';
+import { useLanguage } from './PALanguageContext';
 
 export type AlertType = 'success' | 'error' | 'warning' | 'info' | 'confirm';
 
@@ -30,7 +30,7 @@ interface NotificationContextType {
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
-export function NotificationProvider({ children }: { children: ReactNode }) {
+export function PANotificationProvider({ children }: { children: ReactNode }) {
   const { translation } = useLanguage();
   const [alerts, setAlerts] = useState<Alert[]>([]);
 

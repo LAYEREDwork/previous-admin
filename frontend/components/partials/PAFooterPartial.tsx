@@ -1,4 +1,4 @@
-import { useLanguage } from '../../contexts/LanguageContext';
+import { useLanguage } from '../../contexts/PALanguageContext';
 import { PAGeminiIcon } from '../controls/PAGeminiIcon';
 
 export function FooterPartial() {

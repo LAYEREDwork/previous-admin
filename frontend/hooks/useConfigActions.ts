@@ -1,7 +1,7 @@
 import { Configuration, database } from '../lib/database';
-import { useNotification } from '../contexts/NotificationContext';
-import { useLanguage } from '../contexts/LanguageContext';
-import { useConfig } from '../contexts/ConfigContext';
+import { useNotification } from '../contexts/PANotificationContext';
+import { useLanguage } from '../contexts/PALanguageContext';
+import { useConfig } from '../contexts/PAConfigContext';
 import { DEFAULT_CONFIG } from '../lib/constants';
 import { downloadFile, generateConfigFilename } from '../lib/utils';
 

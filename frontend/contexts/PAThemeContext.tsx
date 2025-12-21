@@ -10,7 +10,7 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
+export function PAThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => {
     const stored = localStorage.getItem('theme');
     return (stored as Theme) || 'system';

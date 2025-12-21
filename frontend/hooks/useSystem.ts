@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 
 // Hooks
-import { useLanguage } from '../contexts/LanguageContext';
-import { useAuth } from '../contexts/AuthContext';
-import { useNotification } from '../contexts/NotificationContext';
+import { useLanguage } from '../contexts/PALanguageContext';
+import { useAuth } from '../contexts/PAAuthContext';
+import { useNotification } from '../contexts/PANotificationContext';
 import { useSystemMetrics } from './useSystemMetrics';
 
 // Utilities

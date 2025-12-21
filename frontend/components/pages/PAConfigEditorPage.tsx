@@ -6,16 +6,16 @@ import { PAButton } from '../controls/PAButton';
 import { PAEmptyView } from '../controls/PAEmptyView';
 
 // Partials
-import { ConfigDetailsPartial } from '../partials/config-editor/ConfigDetailsPartial';
-import { EditorControlsPartial } from '../partials/config-editor/EditorControlsPartial';
-import { EditorViewPartial } from '../partials/config-editor/EditorViewPartial';
-import { RawViewPartial } from '../partials/config-editor/RawViewPartial';
+import { ConfigDetailsPartial } from '../partials/config-editor/PAConfigDetailsPartial';
+import { EditorControlsPartial } from '../partials/config-editor/PAEditorControlsPartial';
+import { EditorViewPartial } from '../partials/config-editor/PAEditorViewPartial';
+import { RawViewPartial } from '../partials/config-editor/PARawViewPartial';
 
 // Hooks
 import { useControlSize } from '../../hooks/useControlSize';
 import { useConfigEditor } from '../../hooks/useConfigEditor';
 
-export function ConfigEditor({ configId, onTabChange }: { configId?: string | null; onTabChange?: (tab: string) => void }) {
+export function PAConfigEditor({ configId, onTabChange }: { configId?: string | null; onTabChange?: (tab: string) => void }) {
   const {
     config,
     configName,

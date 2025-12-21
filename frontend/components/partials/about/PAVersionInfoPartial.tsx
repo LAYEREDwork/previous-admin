@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BiInfoCircle, BiRefresh, BiCheck, BiError, BiFile, BiChevronUp, BiChevronDown } from 'react-icons/bi';
 import { PAButton } from '../../controls/PAButton';
-import { useLanguage } from '../../../contexts/LanguageContext';
+import { useLanguage } from '../../../contexts/PALanguageContext';
 import { useControlSize } from '../../../hooks/useControlSize';
 import { type VersionInfo } from '../../../lib/versionManager';
 import ReactMarkdown from 'react-markdown';

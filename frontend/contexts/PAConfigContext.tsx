@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react';
 
 // Hooks
-import { useAuth } from './AuthContext';
+import { useAuth } from './PAAuthContext';
 
 // Utilities
 import { api } from '../lib/api';
@@ -81,7 +81,7 @@ function mergeWithDefaults(loadedConfig: Partial<PreviousConfig> | null): Previo
   };
 }
 
-export function ConfigProvider({ children }: { children: ReactNode }) {
+export function PAConfigProvider({ children }: { children: ReactNode }) {
   const [config, setConfig] = useState<PreviousConfig | null>(null);
   const [configName, setConfigName] = useState<string | null>(null);
   const [configDescription, setConfigDescription] = useState<string | null>(null);

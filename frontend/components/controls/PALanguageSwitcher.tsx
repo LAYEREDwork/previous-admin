@@ -3,7 +3,7 @@ import { Dropdown } from 'rsuite';
 import { PAButton } from './PAButton';
 
 // Hooks
-import { useLanguage } from '../../contexts/LanguageContext';
+import { useLanguage } from '../../contexts/PALanguageContext';
 import { useControlSize } from '../../hooks/useControlSize';
 
 // Types/Utilities

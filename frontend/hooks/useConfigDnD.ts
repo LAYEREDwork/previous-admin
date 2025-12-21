@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { database, Configuration } from '../lib/database';
-import { useNotification } from '../contexts/NotificationContext';
-import { useLanguage } from '../contexts/LanguageContext';
+import { useNotification } from '../contexts/PANotificationContext';
+import { useLanguage } from '../contexts/PALanguageContext';
 
 /**
  * Hook to handle drag and drop logic for configurations.

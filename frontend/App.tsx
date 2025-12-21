@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react';
-import { ThemeProvider, useTheme } from './contexts/ThemeContext';
-import { LanguageProvider } from './contexts/LanguageContext';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { ConfigProvider } from './contexts/ConfigContext';
-import { NotificationProvider } from './contexts/NotificationContext';
-import { ErrorBoundary } from './components/ErrorBoundary';
-import { Layout } from './components/partials/LayoutPartial';
-import { ConfigEditor } from './components/pages/ConfigEditorPage';
-import { ConfigList } from './components/pages/ConfigListPage';
-import { ImportExport } from './components/pages/ImportExportPage';
-import { System } from './components/pages/SystemPage';
-import { About } from './components/pages/AboutPage';
-import { Login } from './components/pages/LoginPage';
+import { PAThemeProvider, useTheme } from './contexts/PAThemeContext';
+import { PALanguageProvider } from './contexts/PALanguageContext';
+import { PAAuthProvider, useAuth } from './contexts/PAAuthContext';
+import { PAConfigProvider } from './contexts/PAConfigContext';
+import { PANotificationProvider } from './contexts/PANotificationContext';
+import { PAErrorBoundary } from './components/PAErrorBoundary';
+import { Layout } from './components/partials/PALayoutPartial';
+import { PAConfigEditor } from './components/pages/PAConfigEditorPage';
+import { PAConfigList } from './components/pages/PAConfigListPage';
+import { PAImportExport } from './components/pages/PAImportExportPage';
+import { PASystem } from './components/pages/PASystemPage';
+import { PAAbout } from './components/pages/PAAboutPage';
+import { Login } from './components/pages/PALoginPage';
 import { CustomProvider } from 'rsuite';
 import { Configuration } from './lib/database';
 
-function AppContent() {
+function PAAppContent() {
   const { isAuthenticated, loading } = useAuth();
   const { actualTheme } = useTheme();
   const [currentTab, setCurrentTab] = useState(() => {
@@ -47,11 +47,11 @@ function AppContent() {
     <Login />
   ) : (
     <Layout currentTab={currentTab} onTabChange={setCurrentTab}>
-      {currentTab === 'editor' && <ConfigEditor configId={editingConfigId} onTabChange={setCurrentTab} />}
-      {currentTab === 'configs' && <ConfigList onEdit={handleEditConfig} />}
-      {currentTab === 'import-export' && <ImportExport />}
-      {currentTab === 'system' && <System />}
-      {currentTab === 'about' && <About />}
+      {currentTab === 'editor' && <PAConfigEditor configId={editingConfigId} onTabChange={setCurrentTab} />}
+      {currentTab === 'configs' && <PAConfigList onEdit={handleEditConfig} />}
+      {currentTab === 'import-export' && <PAImportExport />}
+      {currentTab === 'system' && <PASystem />}
+      {currentTab === 'about' && <PAAbout />}
     </Layout>
   );
 
@@ -64,19 +64,19 @@ function AppContent() {
 
 function App() {
   return (
-    <ErrorBoundary>
-      <ThemeProvider>
-        <LanguageProvider>
-          <NotificationProvider>
-            <AuthProvider>
-              <ConfigProvider>
-                <AppContent />
-              </ConfigProvider>
-            </AuthProvider>
-          </NotificationProvider>
-        </LanguageProvider>
-      </ThemeProvider>
-    </ErrorBoundary>
+    <PAErrorBoundary>
+      <PAThemeProvider>
+        <PALanguageProvider>
+          <PANotificationProvider>
+            <PAAuthProvider>
+              <PAConfigProvider>
+                <PAAppContent />
+              </PAConfigProvider>
+            </PAAuthProvider>
+          </PANotificationProvider>
+        </PALanguageProvider>
+      </PAThemeProvider>
+    </PAErrorBoundary>
   );
 }
 
