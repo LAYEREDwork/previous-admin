@@ -43,7 +43,7 @@ export function MainMenuPartial({ currentTab, onTabChange }: MainMenuProps) {
                     onChange={onTabChange}
                     fullWidth
                     size="lg"
-                    iconOnly={window.innerWidth < 400}
+                    iconOnly
                 />
             </nav>
         </>

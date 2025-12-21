@@ -86,6 +86,7 @@ export const de: Translations = {
     viewModeRaw: 'Roh',
   },
   configList: {
+    activate: 'Aktivieren',
     active: 'Aktiv',
     confirmDelete: 'Diese Konfiguration löschen?',
     copySuffix: ' - Kopie',

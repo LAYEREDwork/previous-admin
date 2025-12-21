@@ -29,7 +29,6 @@ export function VersionInfoPartial({
   const { translation } = useLanguage();
   const controlSize = useControlSize();
 
-  const [currentExpanded, setCurrentExpanded] = useState(true);
   const [newExpanded, setNewExpanded] = useState(false);
 
   return (
@@ -53,38 +52,6 @@ export function VersionInfoPartial({
               </span>
             </div>
 
-            {versionInfo?.currentReleaseNotes && (
-              <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-3 border border-gray-200 dark:border-gray-700">
-                <div
-                  className="flex justify-between items-center cursor-pointer mb-2"
-                  onClick={() => setCurrentExpanded(!currentExpanded)}
-                >
-                  <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                    <BiFile size={14} />
-                    <span className="text-xs font-semibold">{translation.system.currentReleaseNotes}</span>
-                  </div>
-                  {currentExpanded ? <BiChevronUp size={16} /> : <BiChevronDown size={16} />}
-                </div>
-                {currentExpanded && (
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
-                    <ReactMarkdown
-                      components={{
-                        h1: ({ children }) => <h1 className="text-lg font-semibold mt-8 mb-2 uppercase">{children}</h1>,
-                        h2: ({ children }) => <h2 className="text-base font-semibold mt-8 mb-2 uppercase">{children}</h2>,
-                        h3: ({ children }) => <h3 className="text-sm font-semibold mt-6 mb-1 uppercase">{children}</h3>,
-                        p: ({ children }) => <p className="mb-2">{children}</p>,
-                        ul: ({ children }) => <ul className="list-disc pl-4 mb-2">{children}</ul>,
-                        ol: ({ children }) => <ol className="list-decimal pl-4 mb-2">{children}</ol>,
-                        li: ({ children }) => <li className="mb-1">{children}</li>,
-                      }}
-                    >
-                      {versionInfo.currentReleaseNotes}
-                    </ReactMarkdown>
-                  </div>
-                )}
-              </div>
-            )}
-
             {error && (
               <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
                 <BiError size={16} />
@@ -104,9 +71,9 @@ export function VersionInfoPartial({
                     </div>
 
                     {versionInfo.releaseNotes && (
-                      <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 border border-amber-200 dark:border-amber-700">
+                      <div className="bg-amber-50 dark:bg-amber-900/20 rounded-[24px] px-3 sm:px-5 py-2 min-h-[48px] border border-amber-200 dark:border-amber-700">
                         <div
-                          className="flex justify-between items-center cursor-pointer mb-2"
+                          className={`flex justify-between items-center cursor-pointer ${newExpanded ? 'mb-2' : ''}`}
                           onClick={() => setNewExpanded(!newExpanded)}
                         >
                           <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
@@ -115,23 +82,25 @@ export function VersionInfoPartial({
                           </div>
                           {newExpanded ? <BiChevronUp size={16} /> : <BiChevronDown size={16} />}
                         </div>
-                        {newExpanded && (
-                          <div className="text-sm text-amber-600 dark:text-amber-400">
-                            <ReactMarkdown
-                              components={{
-                                h1: ({ children }) => <h1 className="text-lg font-semibold mt-8 mb-2 uppercase text-amber-700 dark:text-amber-300">{children}</h1>,
-                                h2: ({ children }) => <h2 className="text-base font-semibold mt-8 mb-2 uppercase text-amber-700 dark:text-amber-300">{children}</h2>,
-                                h3: ({ children }) => <h3 className="text-sm font-semibold mt-6 mb-1 uppercase text-amber-700 dark:text-amber-300">{children}</h3>,
-                                p: ({ children }) => <p className="mb-2">{children}</p>,
-                                ul: ({ children }) => <ul className="list-disc list-inside mb-2">{children}</ul>,
-                                ol: ({ children }) => <ol className="list-decimal list-inside mb-2">{children}</ol>,
-                                li: ({ children }) => <li className="mb-1">{children}</li>,
-                              }}
-                            >
-                              {versionInfo.releaseNotes}
-                            </ReactMarkdown>
+                        <div className={`grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${newExpanded ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                          <div className="overflow-hidden">
+                            <div className="text-sm text-amber-600 dark:text-amber-400">
+                              <ReactMarkdown
+                                components={{
+                                  h1: ({ children }) => <h1 className="text-lg font-semibold mt-8 mb-2 uppercase text-amber-700 dark:text-amber-300">{children}</h1>,
+                                  h2: ({ children }) => <h2 className="text-base font-semibold mt-8 mb-2 uppercase text-amber-700 dark:text-amber-300">{children}</h2>,
+                                  h3: ({ children }) => <h3 className="text-sm font-semibold mt-6 mb-1 uppercase text-amber-700 dark:text-amber-300">{children}</h3>,
+                                  p: ({ children }) => <p className="mb-2">{children}</p>,
+                                  ul: ({ children }) => <ul className="list-disc pl-8 mb-2">{children}</ul>,
+                                  ol: ({ children }) => <ol className="list-decimal pl-8 mb-2">{children}</ol>,
+                                  li: ({ children }) => <li className="mb-1">{children}</li>,
+                                }}
+                              >
+                                {versionInfo.releaseNotes}
+                              </ReactMarkdown>
+                            </div>
                           </div>
-                        )}
+                        </div>
                       </div>
                     )}
 

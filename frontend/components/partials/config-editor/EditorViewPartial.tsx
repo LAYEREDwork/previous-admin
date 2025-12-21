@@ -24,7 +24,7 @@ export function EditorViewPartial({
     const rsuiteSize = controlSize === 'xs' ? 'sm' : controlSize;
 
     return (
-        <div className="grid gap-6">
+        <div className="grid gap-4">
             {/* System Section */}
             <EditorSectionPartial
                 key="system"

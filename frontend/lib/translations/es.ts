@@ -86,6 +86,7 @@ export const es: Translations = {
     viewModeRaw: 'Raw',
   },
   configList: {
+    activate: 'Activar',
     active: 'Activo',
     cancel: 'Cancelar',
     confirmDelete: '¿Eliminar esta configuración?',

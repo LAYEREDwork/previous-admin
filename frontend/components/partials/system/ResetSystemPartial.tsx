@@ -15,7 +15,7 @@ export function ResetSystemPartial({
     translation
 }: ResetSystemPartialProps) {
     return (
-        <div className="mt-8 border-t border-gray-200 dark:border-gray-700 pt-8">
+        <div className="mt-8">
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6">
                 <h3 className="text-lg font-semibold text-red-900 dark:text-red-100 mb-2">
                     {translation.system.resetTitle}

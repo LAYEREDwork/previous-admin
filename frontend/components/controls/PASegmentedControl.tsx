@@ -47,7 +47,7 @@ export function PASegmentedControl<T extends string>({
             width: activeElement.offsetWidth,
             height: activeElement.offsetHeight,
             opacity: 1,
-            transition: isReady ? 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)' : 'none',
+            transition: isReady ? 'all 0.3s cubic-bezier(0.34, 1.2, 0.64, 1)' : 'none',
           });
           if (!isReady) setIsReady(true);
         }
@@ -89,7 +89,7 @@ export function PASegmentedControl<T extends string>({
   return (
     <div
       ref={containerRef}
-      className={`relative flex bg-gray-200/50 dark:bg-gray-800/80 p-1 rounded-full select-none ${containerHeights[size]
+      className={`relative flex bg-gray-100 dark:bg-gray-700 p-1 rounded-full select-none ${containerHeights[size]
         } ${fullWidth ? 'w-full' : 'w-fit'} ${className}`}
     >
       {/* Sliding Active Tile (Active Segment Background) */}

@@ -110,6 +110,7 @@ export interface Translations {
     viewModeRaw: string;
   };
   configList: {
+    activate: string;
     active: string;
     configurationDuplicatedSuccessfully: string;
     configurationExportedSuccessfully: string;

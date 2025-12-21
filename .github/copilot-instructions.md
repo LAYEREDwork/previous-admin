@@ -1,5 +1,13 @@
 # Copilot Instructions for `previous-admin`
 
+## Allgemeine Richtlinien
+- Never use a single character for variable names, parameters, or any identifiers; use descriptive names instead.
+- Always add comments in code to explain non-trivial parts.
+- Always format code using proper indentation and spacing for better readability.
+- Always add documentation comments for all functions and classes in the code.
+- Never change code by yourself without my explicit request.
+-  Always communicate in German when discussing internal logic or UI strings.
+
 ## Architekturüberblick
 
 - **Frontend**: React 18 + TypeScript, Vite, Tailwind CSS, RSuite UI. Einstiegspunkt: [frontend/App.tsx](frontend/App.tsx). Komponenten, Kontexte und Seiten sind in `frontend/components/`, `frontend/contexts/` und `frontend/pages/` organisiert.
@@ -18,7 +26,7 @@
 - **API-Base-URL**: Im Frontend dynamisch: `http://${window.location.hostname}:3001`
 - **Session-Secret**: In Produktion MUSS `SESSION_SECRET` als Umgebungsvariable gesetzt werden.
 
-## Projekt-spezifische Konventionen
+## Projekt-spezifische Codier-Richtlinien
 
 - **Sprache**: Interne Kommunikation und UI-Strings sind mehrsprachig, Standard ist Deutsch. Übersetzungen liegen in [frontend/lib/translations/](frontend/lib/translations/).
 - **Benennung**: Keine einbuchstabigen Variablen/Parameter. Immer sprechende Namen verwenden.
@@ -46,6 +54,6 @@
 - **Konfigurations-CRUD**: [frontend/lib/database.ts](frontend/lib/database.ts), [backend/database/configurations.ts](backend/database/configurations.ts)
 - **Session-Handling**: [backend/index.ts](backend/index.ts), [backend/api/auth.ts](backend/api/auth.ts)
 
----
+## Benutzerdefinierte Befehle
 
-Bitte gib Feedback, falls bestimmte Workflows, Konventionen oder Integrationspunkte noch nicht ausreichend beschrieben sind!
+- **`:cm`**: Erstellt eine kompakte Commit-Message für die Änderungen seit dem letzten Commit. Es sollen nur aktuell geänderte Dateien berücksichtigt werden. Die Message soll eine Überschrift (Headline) und eine ungeordnete Liste enthalten und als reiner Text in einer Code-Box formatiert sein.

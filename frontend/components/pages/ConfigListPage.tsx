@@ -1,5 +1,4 @@
-import { BiPlus } from 'react-icons/bi';
-import { IoDocumentsOutline } from 'react-icons/io5';
+
 
 // Components
 import { PAEmptyView } from '../controls/PAEmptyView';
@@ -34,18 +33,12 @@ export function ConfigList({ onEdit }: ConfigListProps) {
     setNewConfigName,
     newConfigDesc,
     setNewConfigDesc,
-    draggedIndex,
-    dragOverIndex,
     newConfigNameRef,
     createConfig,
     deleteConfig,
     duplicateConfig,
-    setActiveConfig,
     exportSingleConfig,
-    handleDragStart,
-    handleDragOver,
-    handleDragEnd,
-    handleDragLeave,
+    setActiveConfig,
     handleCloseNewConfigModal,
   } = useConfigListLogic(onEdit);
 
@@ -84,24 +77,18 @@ export function ConfigList({ onEdit }: ConfigListProps) {
 
       {/* Configurations List */}
       <div className="grid gap-3">
-        {configs.map((config, index) => (
+        {configs.map((config) => (
           <ConfigListItemPartial
             key={config.id}
             config={config}
-            index={index}
-            totalConfigs={configs.length}
-            draggedIndex={draggedIndex}
-            dragOverIndex={dragOverIndex}
-            handleDragStart={handleDragStart}
-            handleDragOver={handleDragOver}
-            handleDragEnd={handleDragEnd}
-            handleDragLeave={handleDragLeave}
-            setActiveConfig={setActiveConfig}
+            isMobile={false} /* Passe ggf. an, falls mobile Detection vorhanden */
+            isActive={config.is_active}
             exportSingleConfig={exportSingleConfig}
             duplicateConfig={duplicateConfig}
             onEdit={onEdit}
             deleteConfig={deleteConfig}
             translation={translation}
+            setActiveConfig={setActiveConfig}
           />
         ))}
       </div>
@@ -109,11 +96,8 @@ export function ConfigList({ onEdit }: ConfigListProps) {
       {/* Empty State */}
       {configs.length === 0 && !showNewConfig && (
         <PAEmptyView
-          icon={BiListCheck}
-          title={translation.configList.emptyTitle}
-          description={translation.configList.emptyDescription}
-          actionText={translation.configList.addNew}
-          actionIcon={BiPlus}
+          title={translation.configList.title}
+          description={translation.configList.emptyStateDescription}
           onAction={() => setShowNewConfig(true)}
         />
       )}
