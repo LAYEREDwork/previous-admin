@@ -36,7 +36,7 @@ export function MainMenuPartial({ currentTab, onTabChange }: MainMenuProps) {
             </nav>
 
             {/* Mobile Bottom Tabbar */}
-            <nav className="md:hidden fixed bottom-4 left-4 right-4 z-50 drop-shadow-2xl">
+            <nav className="md:hidden fixed bottom-3 left-3 right-3 z-50 drop-shadow-2xl">
                 <PASegmentedControl
                     options={tabs.map(tab => ({ ...tab, icon: React.cloneElement(tab.icon as React.ReactElement, { size: 22 }) }))}
                     value={currentTab}

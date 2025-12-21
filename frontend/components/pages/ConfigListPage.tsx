@@ -5,6 +5,7 @@ import { PAEmptyView } from '../controls/PAEmptyView';
 
 // Partials
 import { ConfigListItemPartial } from '../partials/config-list/ConfigListItemPartial';
+import { Badge } from 'rsuite';
 import { ConfigListHeaderPartial } from '../partials/config-list/ConfigListHeaderPartial';
 import { NewConfigModalPartial } from '../partials/config-list/NewConfigModalPartial';
 
@@ -77,20 +78,34 @@ export function ConfigList({ onEdit }: ConfigListProps) {
 
       {/* Configurations List */}
       <div className="grid gap-3">
-        {configs.map((config) => (
-          <ConfigListItemPartial
-            key={config.id}
-            config={config}
-            isMobile={false} /* Passe ggf. an, falls mobile Detection vorhanden */
-            isActive={config.is_active}
-            exportSingleConfig={exportSingleConfig}
-            duplicateConfig={duplicateConfig}
-            onEdit={onEdit}
-            deleteConfig={deleteConfig}
-            translation={translation}
-            setActiveConfig={setActiveConfig}
-          />
-        ))}
+        {configs.map((config) => {
+          const isActive = config.is_active;
+          const item = (
+            <ConfigListItemPartial
+              key={config.id}
+              config={config}
+              isMobile={false} /* Passe ggf. an, falls mobile Detection vorhanden */
+              exportSingleConfig={exportSingleConfig}
+              duplicateConfig={duplicateConfig}
+              onEdit={onEdit}
+              deleteConfig={deleteConfig}
+              translation={translation}
+              setActiveConfig={setActiveConfig}
+            />
+          );
+          return isActive ? (
+            <Badge
+              key={config.id}
+              content={translation.configList.active}
+              color="green"
+              style={{ width: '100%' }}
+              display="block"
+              size="lg"
+            >
+              {item}
+            </Badge>
+          ) : item;
+        })}
       </div>
 
       {/* Empty State */}

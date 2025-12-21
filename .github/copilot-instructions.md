@@ -56,4 +56,4 @@
 
 ## Benutzerdefinierte Befehle
 
-- **`:cm`**: Erstellt eine kompakte Commit-Message für die Änderungen seit dem letzten Commit. Es sollen nur aktuell geänderte Dateien berücksichtigt werden. Die Message soll eine Überschrift (Headline) und eine ungeordnete Liste enthalten und als reiner Text in einer Code-Box formatiert sein.
+- **`:cm`**: Erstellt eine kompakte Commit-Message für die Änderungen seit dem letzten Commit. Es sollen nur aktuell geänderte Dateien berücksichtigt werden (`git status`). Die Message soll eine Überschrift (Headline) und eine ungeordnete Liste enthalten und als reiner Text in einer Code-Box formatiert sein.

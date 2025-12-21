@@ -1,7 +1,7 @@
 import { ConfigListActionsPartial } from './ConfigListActionsPartial';
 import { Configuration } from '../../../lib/database';
 import type { Translations } from '../../../lib/translations';
-import { Badge, IconButton } from 'rsuite';
+import { IconButton } from 'rsuite';
 import { BiCheckCircle, BiCircle } from 'react-icons/bi';
 
 interface ConfigListItemPartialProps {
@@ -29,22 +29,15 @@ export function ConfigListItemPartial({
 }: ConfigListItemPartialProps) {
   return (
     <div
-      className={
-        'relative flex flex-row items-start sm:items-center justify-between gap-2 px-4 py-3 pb-12 sm:pb-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-neutral-900 shadow-sm transition-colors'
-      }
+      className={`relative flex flex-row items-center justify-between gap-2 px-4 py-3 pb-14 sm:pb-3 rounded-lg border shadow-sm transition-all w-full overflow-hidden ${isActive
+        ? 'border-green-500 bg-green-50 dark:bg-green-900/10'
+        : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-neutral-900'
+        }`}
+      style={isActive ? { boxShadow: '0 0 12px rgba(34, 197, 94, 0.6)' } : undefined}
       tabIndex={0}
       aria-label={config.name}
     >
-      {isActive && (
-        <Badge
-          content={translation.configList.active}
-          color="green"
-          className="absolute top-[-18px] right-[-18px] m-2"
-          style={{ zIndex: 10, padding: '0px 10px' }}
-          size="lg"
-        />
-      )}
-      <div className="flex flex-row items-start gap-2 flex-1">
+      <div className="flex flex-row items-center gap-1 flex-1">
         <IconButton
           icon={isActive ? <BiCheckCircle size={26} /> : <BiCircle size={26} />}
           appearance="subtle"
@@ -61,7 +54,7 @@ export function ConfigListItemPartial({
               {config.name}
             </span>
           </div>
-          <span className="text-xs text-gray-500 dark:text-gray-400 truncate">
+          <span className="text-xs text-gray-500 dark:text-gray-400 break-words">
             {config.description}
           </span>
         </div>
