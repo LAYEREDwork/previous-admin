@@ -8,7 +8,6 @@ import { MainMenuPartial } from './MainMenuPartial';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { getCurrentVersion } from '../../lib/versionManager';
-import { ButtonGroup } from 'rsuite';
 import { PAButton } from '../controls/PAButton';
 import { useControlSize } from '../../hooks/useControlSize';
 
@@ -56,7 +55,7 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
             </div>
             <PAButton
               onClick={logout}
-              appearance="ghost"
+              appearance="default"
               size="sm"
               title={translation.layout.signOut}
             >

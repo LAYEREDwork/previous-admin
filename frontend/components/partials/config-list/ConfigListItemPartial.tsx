@@ -29,15 +29,16 @@ export function ConfigListItemPartial({
 }: ConfigListItemPartialProps) {
   return (
     <div
-      className={`relative flex flex-row items-center justify-between gap-2 px-4 py-3 pb-14 sm:pb-3 rounded-lg border shadow-sm transition-all w-full overflow-hidden ${isActive
-        ? 'border-green-500 bg-green-50 dark:bg-green-900/10'
-        : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-neutral-900'
-        }`}
+      className={`relative w-full flex flex-row items-start sm:items-center justify-between gap-2 px-4 py-3 pb-12 sm:pb-3 rounded-lg border shadow-sm transition-all ${
+        isActive
+          ? 'border-green-500 bg-green-50 dark:bg-green-900/10'
+          : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-neutral-900 hover:border-gray-300 dark:hover:border-gray-600'
+      }`}
       style={isActive ? { boxShadow: '0 0 12px rgba(34, 197, 94, 0.6)' } : undefined}
       tabIndex={0}
       aria-label={config.name}
     >
-      <div className="flex flex-row items-center gap-1 flex-1">
+      <div className="flex flex-row items-start gap-2 flex-1">
         <IconButton
           icon={isActive ? <BiCheckCircle size={26} /> : <BiCircle size={26} />}
           appearance="subtle"
@@ -54,7 +55,7 @@ export function ConfigListItemPartial({
               {config.name}
             </span>
           </div>
-          <span className="text-xs text-gray-500 dark:text-gray-400 break-words">
+          <span className="text-xs text-gray-500 dark:text-gray-400 whitespace-normal sm:truncate">
             {config.description}
           </span>
         </div>

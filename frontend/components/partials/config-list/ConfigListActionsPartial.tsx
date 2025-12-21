@@ -26,7 +26,7 @@ export function ConfigListActionsPartial({
   translation
 }: ConfigListActionsPartialProps) {
   return (
-    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 sm:left-auto sm:right-3 sm:translate-x-0 flex items-center justify-center sm:justify-end gap-3 sm:gap-2">
+    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 sm:left-auto sm:right-3 sm:translate-x-0 flex items-center justify-center sm:justify-end gap-3 sm:gap-2">
       <PAIconButton
         icon={<BiUpload size={isMobile ? 16 : 18} className="transition-colors group-hover:text-next-accent" />}
         size={isMobile ? 'xs' : 'sm'}
