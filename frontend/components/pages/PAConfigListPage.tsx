@@ -2,6 +2,7 @@
 
 // Components
 import { PAEmptyView } from '../controls/PAEmptyView';
+import { BiPlus } from 'react-icons/bi';
 
 // Partials
 import { ConfigListItemPartial } from '../partials/config-list/PAConfigListItemPartial';
@@ -110,8 +111,10 @@ export function PAConfigList({ onEdit }: ConfigListProps) {
       {/* Empty State */}
       {configs.length === 0 && !showNewConfig && (
         <PAEmptyView
-          title={translation.configList.title}
+          icon={BiPlus}
+          title={translation.configList.emptyStateTitle}
           description={translation.configList.emptyStateDescription}
+          actionText={translation.configList.newConfig}
           onAction={() => setShowNewConfig(true)}
         />
       )}
