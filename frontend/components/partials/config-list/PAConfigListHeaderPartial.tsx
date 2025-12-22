@@ -1,5 +1,5 @@
 import { BiPlus } from 'react-icons/bi';
-import { PASkeuomorphButton } from '../../controls/PASkeuomorphButton';
+import { PASkeuomorphButton, PASkeuomorphButtonShape } from '../../controls/PASkeuomorphButton';
 import { Translations } from '../../../lib/translations';
 
 interface ConfigListHeaderPartialProps {
@@ -23,6 +23,7 @@ export function PAConfigListHeaderPartial({
                 icon={<BiPlus size={18} />}
                 size={controlSize}
                 className="self-end sm:self-auto"
+                color='primary'
             >
                 {translation.configList.newConfig}
             </PASkeuomorphButton>

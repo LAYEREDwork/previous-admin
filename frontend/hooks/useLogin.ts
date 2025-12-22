@@ -34,19 +34,14 @@ export function useLoginLogic() {
     checkSetupRequired().then(required => setIsSetup(required));
   }, []);
 
+  // Focus auf das Username-Feld nur beim initialen Mount
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (!username) {
-        usernameRef.current?.focus();
-      } else if (!password) {
-        passwordRef.current?.focus();
-      } else if (isSetup && !confirmPassword) {
-        confirmPasswordRef.current?.focus();
-      }
+      usernameRef.current?.focus();
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [username, password, confirmPassword, isSetup]);
+  }, []);
 
   const handlePasswordVisibilityChange = () => {
     setVisible(!visible);

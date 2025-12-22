@@ -120,9 +120,10 @@ export function LoginFormPartial({
                     buttonType={PASkeuomorphButtonType.submit}
                     size={PASize.MD}
                     fullWidth
-                    disabled={importing || loading}
                     icon={isSetup ? <BiUserPlus size={18} /> : <BiLogInCircle size={18} />}
+                    disabled={importing || loading || !username || !password}
                     className="self-end sm:self-auto"
+                    color={username && password && !importing && !loading ? '#fff' : undefined}
                 >
                     {isSetup ? (
                         <>
@@ -151,12 +152,13 @@ export function LoginFormPartial({
                                 id="import-setup-database"
                             />
                             <PASkeuomorphButton
-                                size={controlSize}
+                                buttonType={PASkeuomorphButtonType.submit}
+                                size={PASize.MD}
                                 fullWidth
+                                icon={<BiDownload size={18} />}
                                 disabled={importing || loading}
                                 className="self-end sm:self-auto"
                             >
-                                <BiDownload size={18} className="sm:w-[18px] sm:h-[18px]" />
                                 {importing ? translation.login.importingDatabase : translation.login.importExistingDatabase}
                             </PASkeuomorphButton>
                         </label>
