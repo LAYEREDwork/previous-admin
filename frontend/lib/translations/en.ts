@@ -136,6 +136,10 @@ export const en: Translations = {
     databaseImportSuccess: 'Database imported successfully! {count} configurations restored. Please login with an existing user.',
     passwordMismatch: 'Passwords do not match',
     loginFailed: 'Login failed',
+    or: 'or',
+    importingDatabase: 'Importing database...',
+    importExistingDatabase: 'Import Existing Database',
+    importDatabaseHint: 'Restore a previously exported database backup',
   },
   layout: {
     title: APP_NAME,

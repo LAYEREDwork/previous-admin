@@ -57,7 +57,8 @@
 ## Benutzerdefinierte Befehle
 
 - **`:cm`**: Erstellt eine kompakte Commit-Message in Englisch, für die Änderungen seit dem letzten Commit. Es sollen nur aktuell geänderte Dateien berücksichtigt werden (`git status`). Die Message soll eine Überschrift (Headline) und eine ungeordnete Liste enthalten und als reiner Text in einer Code-Box formatiert sein.
-- **`:docs <Thema>`**: Generiert eine ausführliche Dokumentation zu dem angegebenen Thema im Kontext des `previous-admin` Projekts. Die Dokumentation soll in Markdown-Format sein und Code-Beispiele enthalten, wo es sinnvoll ist.
-- **`:arch`**: Gibt eine kurze Zusammenfassung der Architektur des `previous-admin` Projekts.
-- **`:dev-setup`**: Gibt eine Schritt-für-Schritt-Anleitung zur Einrichtung der Entwicklungsumgebung für das `previous-admin` Projekt.
-- **`:undo`**: Generiert Anweisungen, um die letzten Änderungen im Code rückgängig zu machen und den vorherigen Zustand wiederherzustellen.
+- **`:docs <Thema>`**: Generiert eine ausführliche Dokumentation zu dem angegebenen Thema im Kontext des aktuellen Projekts. Die Dokumentation soll in Markdown-Format sein und Code-Beispiele enthalten, wo es sinnvoll ist. Ist das Kommando von einem `>`-Symbol und einem Strinf gefolgt, schreibe die Anleitung als Markdown in ein File mit diesem Namen im Projekt Root-Verzeichnis. Ist kein Thema angegeben, generiere eine umfassende Dokumentation des gesamten Projekts.
+- **`:arch`**: Gibt eine kurze Zusammenfassung der Architektur des aktuellen Projekts. Ist das Kommando von einem `>`-Symbol und einem Strinf gefolgt, schreibe die Anleitung als Markdown in ein File mit diesem Namen im Projekt Root-Verzeichnis.
+- **`:dev-setup`**: Gib eine Schritt-für-Schritt-Anleitung zur Einrichtung der Entwicklungsumgebung für das aktuelle Projekt. Ist das Kommando von einem `>`-Symbol und einem Strinf gefolgt, schreibe die Anleitung als Markdown in ein File mit diesem Namen im Projekt Root-Verzeichnis.
+- **`:undo`**: Mach die letzten Änderungen im Code rückgängig und kehre zum vorherigen Zustand zurueck.
+- **`:scan`**: Scanne den Code des aktuellen Projekts und aktualisiere deinen Kontext.

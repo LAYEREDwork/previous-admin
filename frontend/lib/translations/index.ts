@@ -222,6 +222,10 @@ export interface Translations {
     databaseImportFailed: string;
     databaseImportSuccess: string;
     loginFailed: string;
+    or: string;
+    importingDatabase: string;
+    importExistingDatabase: string;
+    importDatabaseHint: string;
     password: string;
     passwordMismatch: string;
     passwordPlaceholder: string;

@@ -207,6 +207,10 @@ export const de: Translations = {
     databaseImportSuccess: 'Datenbank erfolgreich importiert! {count} Konfigurationen wiederhergestellt. Bitte mit einem bestehenden Benutzer anmelden.',
     passwordMismatch: 'Passwörter stimmen nicht überein',
     loginFailed: 'Anmeldung fehlgeschlagen',
+    or: 'oder',
+    importingDatabase: 'Datenbank wird importiert...',
+    importExistingDatabase: 'Vorhandene Datenbank importieren',
+    importDatabaseHint: 'Stellen Sie eine zuvor exportierte Datenbank-Backup-Datei wieder her',
   },
   system: {
     title: 'Systeminformationen',

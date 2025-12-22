@@ -2,6 +2,7 @@ import { BiUserPlus, BiLock, BiShow, BiHide, BiLogInCircle, BiDownload } from 'r
 import { Input, InputGroup, Divider } from 'rsuite';
 import { PASkeuomorphButton, PASkeuomorphButtonType } from '../../controls/PASkeuomorphButton';
 import { Translations } from '../../../lib/translations';
+import { PASize } from '../../../lib/types/sizes';
 
 interface LoginFormPartialProps {
     username: string;
@@ -48,7 +49,7 @@ export function LoginFormPartial({
         <div className="bg-white dark:bg-next-panel rounded-2xl shadow-xl p-5 sm:p-8 border border-gray-200 dark:border-next-border">
             <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                 <div>
-                    <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-next-text mb-2">
+                    <label htmlFor="username-input" className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-next-text mb-2">
                         {translation.login.username}
                     </label>
                     <InputGroup size={controlSize}>
@@ -56,6 +57,7 @@ export function LoginFormPartial({
                             <BiUserPlus />
                         </InputGroup.Addon>
                         <Input
+                            id="username-input"
                             inputRef={usernameRef}
                             type="text"
                             value={username}
@@ -67,7 +69,7 @@ export function LoginFormPartial({
                 </div>
 
                 <div>
-                    <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-next-text mb-2">
+                    <label htmlFor="password-input" className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-next-text mb-2">
                         {translation.login.password}
                     </label>
                     <InputGroup size={controlSize}>
@@ -75,6 +77,7 @@ export function LoginFormPartial({
                             <BiLock />
                         </InputGroup.Addon>
                         <Input
+                            id="password-input"
                             inputRef={passwordRef}
                             type={visible ? 'text' : 'password'}
                             value={password}
@@ -90,7 +93,7 @@ export function LoginFormPartial({
 
                 {isSetup && setConfirmPassword && (
                     <div>
-                        <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-next-text mb-2">
+                        <label htmlFor="confirm-password-input" className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-next-text mb-2">
                             {translation.login.confirmPassword}
                         </label>
                         <InputGroup size={controlSize}>
@@ -98,6 +101,7 @@ export function LoginFormPartial({
                                 <BiLock />
                             </InputGroup.Addon>
                             <Input
+                                id="confirm-password-input"
                                 inputRef={confirmPasswordRef}
                                 type={visible ? 'text' : 'password'}
                                 value={confirmPassword}
@@ -114,19 +118,18 @@ export function LoginFormPartial({
 
                 <PASkeuomorphButton
                     buttonType={PASkeuomorphButtonType.submit}
-                    disabled={loading}
-                    active={!loading}
-                    size={controlSize}
+                    size={PASize.MD}
                     fullWidth
+                    disabled={importing || loading}
+                    icon={isSetup ? <BiUserPlus size={18} /> : <BiLogInCircle size={18} />}
+                    className="self-end sm:self-auto"
                 >
                     {isSetup ? (
                         <>
-                            <BiUserPlus size={16} className="sm:w-[18px] sm:h-[18px]" />
                             {loading ? translation.login.creatingAccount : translation.login.createAccount}
                         </>
                     ) : (
                         <>
-                            <BiLogInCircle size={16} className="sm:w-[18px] sm:h-[18px]" />
                             {loading ? translation.login.signingIn : translation.login.signIn}
                         </>
                     )}
@@ -135,10 +138,10 @@ export function LoginFormPartial({
 
             {isSetup && (
                 <>
-                    <Divider>or</Divider>
+                    <Divider>{translation.login.or}</Divider>
 
                     <div className="mt-4 sm:mt-6">
-                        <label className="block">
+                        <label htmlFor="import-setup-database" className="block cursor-pointer">
                             <input
                                 type="file"
                                 accept=".json"
@@ -148,19 +151,17 @@ export function LoginFormPartial({
                                 id="import-setup-database"
                             />
                             <PASkeuomorphButton
-                                as="span"
-                                containerBg="light"
                                 size={controlSize}
                                 fullWidth
                                 disabled={importing || loading}
-                                className="flex items-center justify-center gap-2 cursor-pointer"
+                                className="self-end sm:self-auto"
                             >
                                 <BiDownload size={18} className="sm:w-[18px] sm:h-[18px]" />
-                                {importing ? 'Importing Database...' : 'Import Existing Database'}
+                                {importing ? translation.login.importingDatabase : translation.login.importExistingDatabase}
                             </PASkeuomorphButton>
                         </label>
                         <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
-                            Restore from a previously exported database backup
+                            {translation.login.importDatabaseHint}
                         </p>
                     </div>
                 </>
