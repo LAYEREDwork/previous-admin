@@ -1,11 +1,13 @@
 import { BiTrash, BiEdit, BiUpload, BiCopy } from 'react-icons/bi';
-import { PAIconButton } from '../../controls/PAIconButton';
+import { PASize } from '../../../lib/types/sizes';
+import { PANeomorphButton, PANeomorphButtonShape } from '../../controls/PANeomorphButton';
 import { Configuration } from '../../../lib/database';
 import { Translations } from '../../../lib/translations';
 
 interface ConfigListActionsPartialProps {
   config: Configuration;
   isMobile: boolean;
+  baseColor?: string;
   exportSingleConfig: (config: Configuration) => void;
   duplicateConfig: (config: Configuration) => void;
   onEdit: (config: Configuration) => void;
@@ -19,6 +21,7 @@ interface ConfigListActionsPartialProps {
 export function ConfigListActionsPartial({
   config,
   isMobile,
+  baseColor,
   exportSingleConfig,
   duplicateConfig,
   onEdit,
@@ -26,41 +29,42 @@ export function ConfigListActionsPartial({
   translation
 }: ConfigListActionsPartialProps) {
   const iconSize = isMobile ? 20 : 24;
-  const buttonSize = isMobile ? 'sm' : 'md';
+  const buttonSize = isMobile ? PASize.XS : PASize.SM;
 
   return (
     <div className="flex items-center justify-end gap-2 mt-2 sm:mt-0">
-      <PAIconButton
-        icon={<BiUpload size={iconSize} className="text-gray-400 transition-colors group-hover:text-primary-500" />}
+      <PANeomorphButton
+        icon={<BiUpload size={iconSize} />}
         size={buttonSize}
-        appearance="default"
-        onClick={() => exportSingleConfig(config)}
+        baseColor={baseColor}
+        shape={PANeomorphButtonShape.rect}
         title={translation.configList.export}
-        className="group hover:!bg-primary-50 dark:hover:!bg-primary-900/20"
+        onClick={() => exportSingleConfig(config)}
       />
-      <PAIconButton
-        icon={<BiCopy size={iconSize} className="text-gray-400 transition-colors group-hover:text-primary-500" />}
+      <PANeomorphButton
+        icon={<BiCopy size={iconSize} />}
         size={buttonSize}
-        appearance="default"
-        onClick={() => duplicateConfig(config)}
+        baseColor={baseColor}
+        shape={PANeomorphButtonShape.rect}
         title={translation.configList.duplicate}
-        className="group hover:!bg-primary-50 dark:hover:!bg-primary-900/20"
+        onClick={() => duplicateConfig(config)}
       />
-      <PAIconButton
-        icon={<BiEdit size={iconSize} className="text-gray-400 transition-colors group-hover:text-primary-500" />}
+      <PANeomorphButton
+        icon={<BiEdit size={iconSize} />}
         size={buttonSize}
-        appearance="default"
-        onClick={() => onEdit(config)}
+        baseColor={baseColor}
+        shape={PANeomorphButtonShape.rect}
         title={translation.configList.edit}
-        className="group hover:!bg-primary-50 dark:hover:!bg-primary-900/20"
+        onClick={() => onEdit(config)}
       />
-      <PAIconButton
-        icon={<BiTrash size={iconSize} className="text-gray-400 transition-colors group-hover:text-red-500" />}
+      <PANeomorphButton
+        icon={<BiTrash size={iconSize} />}
         size={buttonSize}
-        appearance="default"
-        onClick={() => deleteConfig(config.id)}
+        baseColor={baseColor}
+        shape={PANeomorphButtonShape.rect}
         title={translation.configList.delete}
-        className="group hover:!bg-red-50 dark:hover:!bg-red-900/20"
+        onClick={() => deleteConfig(config.id)}
+        color="#e53935"
       />
     </div>
   );

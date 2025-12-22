@@ -114,6 +114,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --next-shadow-dark: #000000;
+  --next-shadow-light: #454545;
+}
+
 @layer base {
   html {
     font-size: 110%;
@@ -163,6 +168,14 @@
 }
 
 @layer components {
+  .text-inner-emboss {
+    text-shadow: 0 -1px 1px rgba(0, 0, 0, 1), 0 1px 1px rgba(255, 255, 255, 1);
+  }
+
+  .icon-inner-emboss {
+    filter: drop-shadow(0 -1px 1px rgba(0, 0, 0, 1)) drop-shadow(0 1px 1px rgba(255, 255, 255, 1));
+  }
+
   .input {
     @apply w-full px-3 py-2 border border-gray-300 dark:border-next-border rounded-lg bg-white dark:bg-next-panel text-gray-900 dark:text-next-text focus:ring-2 focus:border-transparent transition-colors;
   }

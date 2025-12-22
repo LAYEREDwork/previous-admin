@@ -3,6 +3,12 @@ import { Configuration } from '../../../lib/database';
 import type { Translations } from '../../../lib/translations';
 import { IconButton } from 'rsuite';
 import { BiCheckCircle, BiCircle, BiMenu } from 'react-icons/bi';
+import { NOISE_TEXTURE } from '../../../lib/utils/color';
+
+const ITEM_BACKGROUND = '#1A1A1A'; // slightly darker than the site background (#141414) for separation
+const DRAG_BACKGROUND = '#181818';
+const ACTIVE_OVERLAY = 'rgba(6, 182, 212, 0.12)';
+const BUTTON_BASE_COLOR = '#0d0d0d';
 
 interface ConfigListItemPartialProps {
   config: Configuration;
@@ -43,14 +49,41 @@ export function ConfigListItemPartial({
   isDragged,
   isDragOver,
 }: ConfigListItemPartialProps) {
+  // Skeuomorphic shadow effects for frame only
+  const frameWidth = 2;
+  const shadowBlurRadius = 2;
+
+  const frameColorShadowLight = 'rgba(55, 55, 55, 1)';   // Top-left frame shadow
+  const frameColorShadowDark = '#000';   // Bottom-right frame shadow
+
+  const frameShadow = `inset ${frameWidth}px ${frameWidth}px ${shadowBlurRadius}px ${frameColorShadowDark}, inset -${frameWidth}px -${frameWidth}px ${shadowBlurRadius}px ${frameColorShadowLight}`;
+  const isDarkMode = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
+  const baseBackground = isDragged ? DRAG_BACKGROUND : ITEM_BACKGROUND;
+  const backgroundColor = isDarkMode ? baseBackground : undefined;
+  const backgroundImage = isDarkMode
+    ? `${isActive ? `linear-gradient(${ACTIVE_OVERLAY}, ${ACTIVE_OVERLAY}), ` : ''}${NOISE_TEXTURE}`
+    : undefined;
+
   return (
     <div
       className={`relative w-full flex flex-row gap-3 sm:gap-2 p-3 sm:p-2 rounded-lg border shadow-sm transition-all ${
         isActive
-          ? 'border-primary-500 bg-primary-50/20 dark:bg-primary-900/20'
-          : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-neutral-900 hover:border-gray-300 dark:hover:border-gray-600'
-      } ${isDragged ? 'bg-gray-100 bg-opacity-70 dark:bg-gray-800 dark:bg-opacity-70' : ''} ${isDragOver ? 'border-primary-500' : ''}`}
-      style={{ boxShadow: `0 0 12px rgba(6, 182, 212, ${isActive ? 0.6 : 0})`, transition: `box-shadow ${isActive ? 0.4 : 0.2}s ease-in-out, border-color ${isActive ? 0.4 : 0.2}s ease-in-out` }}
+          ? 'border-primary-500'
+          : 'border-gray-200 dark:border-next-border hover:border-gray-300 dark:hover:border-gray-500'
+      } ${isDragOver ? 'border-primary-500' : ''}`}
+      style={{
+        boxShadow: `0 0 12px rgba(6, 182, 212, ${isActive ? 0.6 : 0}), ${frameShadow}`,
+        transition: `box-shadow ${isActive ? 0.4 : 0.2}s ease-in-out, border-color ${isActive ? 0.4 : 0.2}s ease-in-out`,
+        backgroundColor,
+        backgroundImage,
+        backgroundBlendMode: isDarkMode ? 'soft-light' : undefined,
+        backgroundSize: isDarkMode ? 'auto' : undefined,
+        backgroundRepeat: isDarkMode ? 'repeat' : undefined,
+        backgroundOrigin: isDarkMode ? 'border-box' : undefined,
+        backgroundClip: isDarkMode ? 'padding-box' : undefined,
+        // Ensure slight contrast to site background when not active/dragged
+        ...(backgroundColor ? { color: 'inherit' } : {}),
+      }}
       tabIndex={0}
       aria-label={config.name}
       draggable={hasMultipleConfigs}
@@ -96,6 +129,7 @@ export function ConfigListItemPartial({
           <ConfigListActionsPartial
             config={config}
             isMobile={isMobile}
+            baseColor={BUTTON_BASE_COLOR}
             exportSingleConfig={exportSingleConfig}
             duplicateConfig={duplicateConfig}
             onEdit={onEdit}
@@ -110,6 +144,7 @@ export function ConfigListItemPartial({
         <ConfigListActionsPartial
           config={config}
           isMobile={isMobile}
+          baseColor={BUTTON_BASE_COLOR}
           exportSingleConfig={exportSingleConfig}
           duplicateConfig={duplicateConfig}
           onEdit={onEdit}

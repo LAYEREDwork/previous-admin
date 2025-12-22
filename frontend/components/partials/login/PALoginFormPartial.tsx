@@ -1,8 +1,11 @@
 import { BiUserPlus, BiLock, BiShow, BiHide, BiLogInCircle, BiDownload } from 'react-icons/bi';
 import { Input, InputGroup, Divider } from 'rsuite';
-import { PASkeuomorphButton, PASkeuomorphButtonType } from '../../controls/PASkeuomorphButton';
+import { PANeomorphButton, PANeomorphButtonType } from '../../controls/PANeomorphButton';
+import { PACard, PACardRelief } from '../../controls/PACard';
 import { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
+
+const LOGIN_PANEL_BACKGROUND = '#1a1a1a';
 
 interface LoginFormPartialProps {
     username: string;
@@ -46,15 +49,19 @@ export function LoginFormPartial({
     translation
 }: LoginFormPartialProps) {
     return (
-        <div className="bg-white dark:bg-next-panel rounded-2xl shadow-xl p-5 sm:p-8 border border-gray-200 dark:border-next-border">
+        <PACard
+            className="rounded-2xl shadow-xl p-5 sm:p-8"
+            backgroundColor={LOGIN_PANEL_BACKGROUND}
+            relief={PACardRelief.EMBOSSED}
+        >
             <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                 <div>
-                    <label htmlFor="username-input" className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-next-text mb-2">
-                        {translation.login.username}
+                    <label htmlFor="username-input" className="block text-xs sm:text-sm font-medium text-next-text mb-2">
+                        {translation.login.username.toUpperCase()}
                     </label>
                     <InputGroup size={controlSize}>
                         <InputGroup.Addon>
-                            <BiUserPlus />
+                            <BiUserPlus className="icon-inner-emboss" />
                         </InputGroup.Addon>
                         <Input
                             id="username-input"
@@ -69,12 +76,12 @@ export function LoginFormPartial({
                 </div>
 
                 <div>
-                    <label htmlFor="password-input" className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-next-text mb-2">
-                        {translation.login.password}
+                    <label htmlFor="password-input" className="block text-xs sm:text-sm font-medium text-next-text mb-2">
+                        {translation.login.password.toUpperCase()}
                     </label>
                     <InputGroup size={controlSize}>
                         <InputGroup.Addon>
-                            <BiLock />
+                            <BiLock className="icon-inner-emboss" />
                         </InputGroup.Addon>
                         <Input
                             id="password-input"
@@ -86,19 +93,19 @@ export function LoginFormPartial({
                             autoComplete={isSetup ? "new-password" : "current-password"}
                         />
                         <InputGroup.Button onClick={handlePasswordVisibilityChange}>
-                            {visible ? <BiShow /> : <BiHide />}
+                            {visible ? <BiShow className="icon-inner-emboss" /> : <BiHide className="icon-inner-emboss" />}
                         </InputGroup.Button>
                     </InputGroup>
                 </div>
 
                 {isSetup && setConfirmPassword && (
                     <div>
-                        <label htmlFor="confirm-password-input" className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-next-text mb-2">
-                            {translation.login.confirmPassword}
+                        <label htmlFor="confirm-password-input" className="block text-xs sm:text-sm font-medium text-next-text mb-2">
+                            {translation.login.confirmPassword.toUpperCase()}
                         </label>
                         <InputGroup size={controlSize}>
                             <InputGroup.Addon>
-                                <BiLock />
+                                <BiLock className="icon-inner-emboss" />
                             </InputGroup.Addon>
                             <Input
                                 id="confirm-password-input"
@@ -110,20 +117,21 @@ export function LoginFormPartial({
                                 autoComplete="new-password"
                             />
                             <InputGroup.Button onClick={handlePasswordVisibilityChange}>
-                                {visible ? <BiShow /> : <BiHide />}
+                                {visible ? <BiShow className="icon-inner-emboss" /> : <BiHide className="icon-inner-emboss" />}
                             </InputGroup.Button>
                         </InputGroup>
                     </div>
                 )}
 
-                <PASkeuomorphButton
-                    buttonType={PASkeuomorphButtonType.submit}
+                <PANeomorphButton
+                    buttonType={PANeomorphButtonType.submit}
                     size={PASize.MD}
                     fullWidth
-                    icon={isSetup ? <BiUserPlus size={18} /> : <BiLogInCircle size={18} />}
+                    icon={isSetup ? <BiUserPlus size={18} className="icon-inner-emboss" /> : <BiLogInCircle size={18} className="icon-inner-emboss" />}
                     disabled={importing || loading || !username || !password}
                     className="self-end sm:self-auto"
                     color={username && password && !importing && !loading ? '#fff' : undefined}
+                    baseColor={LOGIN_PANEL_BACKGROUND}
                 >
                     {isSetup ? (
                         <>
@@ -134,7 +142,7 @@ export function LoginFormPartial({
                             {loading ? translation.login.signingIn : translation.login.signIn}
                         </>
                     )}
-                </PASkeuomorphButton>
+                </PANeomorphButton>
             </form>
 
             {isSetup && (
@@ -151,23 +159,24 @@ export function LoginFormPartial({
                                 className="hidden"
                                 id="import-setup-database"
                             />
-                            <PASkeuomorphButton
-                                buttonType={PASkeuomorphButtonType.submit}
+                            <PANeomorphButton
+                                buttonType={PANeomorphButtonType.submit}
                                 size={PASize.MD}
                                 fullWidth
-                                icon={<BiDownload size={18} />}
+                                icon={<BiDownload size={18} className="icon-inner-emboss" />}
                                 disabled={importing || loading}
                                 className="self-end sm:self-auto"
+                                baseColor={LOGIN_PANEL_BACKGROUND}
                             >
                                 {importing ? translation.login.importingDatabase : translation.login.importExistingDatabase}
-                            </PASkeuomorphButton>
+                            </PANeomorphButton>
                         </label>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
+                        <p className="text-xs text-gray-400 mt-2 text-center">
                             {translation.login.importDatabaseHint}
                         </p>
                     </div>
                 </>
             )}
-        </div>
+        </PACard>
     );
 }

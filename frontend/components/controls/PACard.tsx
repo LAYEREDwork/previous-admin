@@ -1,54 +1,54 @@
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
+import { NOISE_TEXTURE } from '../../lib/utils/color';
+
+export enum PACardRelief {
+  EMBOSSED = 'embossed',
+  RECESSED = 'recessed',
+}
 
 interface PACardProps {
-  children: ReactNode;
+  children?: ReactNode;
   className?: string;
+  backgroundColor?: string;
+  relief?: PACardRelief;
 }
 
-export function PACard({ children, className = '' }: PACardProps) {
+const FRAME_WIDTH = 2;
+const SHADOW_BLUR_RADIUS = 2;
+const SHADOW_LIGHT = 'rgba(55, 55, 55, 1)';
+const SHADOW_DARK = '#000';
+const FLOAT_SHADOW_EMBOSSED = '0 10px 20px rgba(0, 0, 0, 0.32)';
+
+/**
+ * PACard - panel-like container with skeuomorphic relief and optional noise texture.
+ */
+export function PACard({
+  children,
+  className = '',
+  backgroundColor = '#1a1a1a',
+  relief = PACardRelief.EMBOSSED,
+}: PACardProps) {
+  const insetShadow = useMemo(() => {
+    const isEmbossed = relief === PACardRelief.EMBOSSED;
+    // Embossed: light on bottom-right, dark on top-left (inverted vs recessed)
+    const light = isEmbossed ? SHADOW_DARK : SHADOW_LIGHT;
+    const dark = isEmbossed ? SHADOW_LIGHT : SHADOW_DARK;
+    return `inset -${FRAME_WIDTH}px -${FRAME_WIDTH}px ${SHADOW_BLUR_RADIUS}px ${light}, inset ${FRAME_WIDTH}px ${FRAME_WIDTH}px ${SHADOW_BLUR_RADIUS}px ${dark}`;
+  }, [relief]);
+
+  const floatShadow = relief === PACardRelief.EMBOSSED ? FLOAT_SHADOW_EMBOSSED : '';
+
   return (
-    <div className={`bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 ${className}`}>
-      {children}
-    </div>
-  );
-}
-
-interface PACardHeaderProps {
-  children: ReactNode;
-  className?: string;
-}
-
-export function PACardHeader({ children, className = '' }: PACardHeaderProps) {
-  return (
-    <div className={`p-4 sm:p-6 ${className}`}>
-      {children}
-    </div>
-  );
-}
-
-interface PACardTitleProps {
-  children: ReactNode;
-  icon?: ReactNode;
-  className?: string;
-}
-
-export function PACardTitle({ children, icon, className = '' }: PACardTitleProps) {
-  return (
-    <h3 className={`text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2 ${className}`}>
-      {icon}
-      {children}
-    </h3>
-  );
-}
-
-interface PACardContentProps {
-  children: ReactNode;
-  className?: string;
-}
-
-export function PACardContent({ children, className = '' }: PACardContentProps) {
-  return (
-    <div className={`p-4 sm:p-6 ${className}`}>
+    <div
+      className={`rounded-lg border border-next-border ${className}`}
+      style={{
+        backgroundColor,
+        backgroundImage: NOISE_TEXTURE,
+        backgroundBlendMode: 'soft-light',
+        backgroundRepeat: 'repeat',
+        boxShadow: `${floatShadow}${floatShadow ? ', ' : ''}${insetShadow}`,
+      }}
+    >
       {children}
     </div>
   );

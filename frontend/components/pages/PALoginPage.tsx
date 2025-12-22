@@ -42,10 +42,14 @@ export function Login() {
         <div className="text-center mb-6 sm:mb-8">
           <div className="inline-flex items-center justify-center mb-3 sm:mb-4">
             <div className="w-20 h-20 sm:w-[100px] sm:h-[100px]">
-              <PANeXTLogo size={100} className="w-full h-full" />
+              <PANeXTLogo
+                size={100}
+                className="w-full h-full"
+                shadow
+              />
             </div>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-next-text mb-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-next-text mb-2 text-inner-emboss">
             {isSetup ? translation.login.setupTitle : translation.login.title}
           </h1>
         </div>

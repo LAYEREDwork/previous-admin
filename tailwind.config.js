@@ -13,10 +13,12 @@ export default {
           panel: '#1a1a1a',
           border: '#2a2a2a',
           hover: '#252525',
-          text: '#d0d0d0',
+          text: '#b4b4b4',
           'text-dim': '#808080',
           accent: '#009a9a',
           'accent-hover': '#008080',
+          'shadow-dark': '#000000',
+          'shadow-light': '#454545',
         },
         primary: {
           50: '#ecfeff',

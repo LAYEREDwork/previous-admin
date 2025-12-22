@@ -1,6 +1,6 @@
 import { IoDocumentText } from 'react-icons/io5';
 import { Input } from 'rsuite';
-import { PASkeuomorphButton } from '../../controls/PASkeuomorphButton';
+import { PANeomorphButton } from '../../controls/PANeomorphButton';
 import { PAModal } from '../../controls/PAModal';
 import { Translations } from '../../../lib/translations';
 
@@ -72,14 +72,14 @@ export function NewConfigModalPartial({
                 </div>
             </PAModal.Body>
             <PAModal.Footer>
-                <PASkeuomorphButton
+                <PANeomorphButton
                     onClick={onClose}
                     containerBg="dark"
                     size={controlSize}
                 >
                     {translation.common.cancel}
-                </PASkeuomorphButton>
-                <PASkeuomorphButton
+                </PANeomorphButton>
+                <PANeomorphButton
                     onClick={onSave}
                     disabled={!name.trim()}
                     active={!!name.trim()}
@@ -87,7 +87,7 @@ export function NewConfigModalPartial({
                     size={controlSize}
                 >
                     {translation.common.save}
-                </PASkeuomorphButton>
+                </PANeomorphButton>
             </PAModal.Footer>
         </PAModal>
     );
