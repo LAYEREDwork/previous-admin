@@ -15,7 +15,7 @@ export function PAConfigListHeaderPartial({
 }: ConfigListHeaderPartialProps) {
     return (
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">
                 {translation.configList.title}
             </h2>
             <PASkeuomorphButton
@@ -24,6 +24,7 @@ export function PAConfigListHeaderPartial({
                 size={controlSize}
                 className="self-end sm:self-auto"
                 color='primary'
+                shape={PASkeuomorphButtonShape.rect}
             >
                 {translation.configList.newConfig}
             </PASkeuomorphButton>

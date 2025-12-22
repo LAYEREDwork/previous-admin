@@ -1,7 +1,6 @@
 // Components
 import { PANeXTLogo } from '../controls/PANeXTLogo';
 import { PALanguageSwitcher } from '../controls/PALanguageSwitcher';
-import { PAThemeSwitcher } from '../controls/PAThemeSwitcher';
 
 // Partials
 import { LoginFormPartial } from '../partials/login/PALoginFormPartial';
@@ -35,9 +34,8 @@ export function Login() {
   } = useLoginLogic();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-next-bg dark:to-next-panel flex items-center justify-center p-3 sm:p-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50/70 to-gray-100/70 dark:from-next-bg/70 dark:to-next-panel/70 flex items-center justify-center p-3 sm:p-4">
       <div className="absolute top-3 sm:top-4 right-3 sm:right-4 flex items-center gap-2">
-        <PAThemeSwitcher />
         <PALanguageSwitcher />
       </div>
       <div className="w-full max-w-md">

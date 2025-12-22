@@ -34,7 +34,7 @@ interface PACardTitleProps {
 
 export function PACardTitle({ children, icon, className = '' }: PACardTitleProps) {
   return (
-    <h3 className={`text-base sm:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2 ${className}`}>
+    <h3 className={`text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2 ${className}`}>
       {icon}
       {children}
     </h3>

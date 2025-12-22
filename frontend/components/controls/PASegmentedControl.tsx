@@ -124,7 +124,7 @@ export function PASegmentedControl<T extends string>({
             onClick={() => onChange(option.value)}
             className={`segment-item relative z-10 flex items-center justify-center gap-2 font-semibold h-full px-3 transition-colors duration-300 rounded-full ${fontSizes[size]
               } ${fullWidth ? 'flex-1' : ''} ${isActive
-                ? 'text-white'
+                ? 'text-gray-100'
                 : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
               }`}
           >

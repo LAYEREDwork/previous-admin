@@ -22,7 +22,7 @@ export function DatabaseImportExportPartial({
     return (
         <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
             <div className="mb-4">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
                     {translation.importExport.databaseTitle}
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400">
@@ -37,7 +37,7 @@ export function DatabaseImportExportPartial({
                         <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
                             <BiData size={20} className="text-blue-600 dark:text-blue-400" />
                         </div>
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                             {translation.importExport.importDatabase}
                         </h3>
                     </div>
@@ -81,7 +81,7 @@ export function DatabaseImportExportPartial({
                         <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
                             <BiData size={20} className="text-blue-600 dark:text-blue-400" />
                         </div>
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                             {translation.importExport.exportDatabase}
                         </h3>
                     </div>

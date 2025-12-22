@@ -32,7 +32,7 @@ export function ConfigImportExportPartial({
                     <div className="w-10 h-10 bg-cyan-100 dark:bg-cyan-900 rounded-lg flex items-center justify-center">
                         <BiDownload size={20} className="text-next-accent" />
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                         {translation.importExport.import}
                     </h3>
                 </div>
@@ -77,7 +77,7 @@ export function ConfigImportExportPartial({
                     <div className="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
                         <BiUpload size={20} className="text-green-600 dark:text-green-400" />
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                         {translation.importExport.export}
                     </h3>
                 </div>

@@ -7,7 +7,7 @@ export function FooterPartial() {
     return (
         <footer className="bg-white dark:bg-next-panel border-t border-gray-200 dark:border-next-border py-8 mt-auto">
             <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 text-center text-sm">
-                <div className="text-gray-900 dark:text-white font-medium mb-4">
+                <div className="text-gray-900 dark:text-gray-100 font-medium mb-4">
                     {translation.footer.copyright}
                 </div>
                 <div className="text-gray-500 dark:text-next-text-dim space-y-0.5 text-xs">

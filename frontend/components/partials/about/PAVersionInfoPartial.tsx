@@ -33,7 +33,7 @@ export function VersionInfoPartial({
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
         <BiInfoCircle size={20} />
         {translation.about.appVersion}
       </h3>
@@ -47,7 +47,7 @@ export function VersionInfoPartial({
           <>
             <div className="flex items-center justify-between">
               <span className="text-gray-600 dark:text-gray-400">{translation.system.currentVersion}:</span>
-              <span className="font-mono font-semibold text-gray-900 dark:text-white">
+              <span className="font-mono font-semibold text-gray-900 dark:text-gray-100">
                 v{versionInfo?.currentVersion || '1.0.0'}
               </span>
             </div>

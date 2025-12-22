@@ -83,7 +83,7 @@ export function PASkeuomorphButton({
   // Default: gray. If active: color with glow, or white with glow if no color.
   const activeColor = color || '#fff';
   const contentClass = active
-    ? (color ? '' : 'text-white')
+    ? (color ? '' : 'text-gray-100')
     : 'text-next-text-dim';
   const contentStyle = active
     ? {
@@ -99,10 +99,11 @@ export function PASkeuomorphButton({
   const buttonColorShadowLight = 'rgba(70, 70, 70, 1)';    // light highlight (top left)
   const frameColorShadowDark   = '#000';                   // dark frame shadow
   const frameColorShadowLight  = 'rgba(45, 45, 45, 1)';    // light frame highlight
+  const shadowBlurRadius       = 2;
 
-  const frameShadow = `inset ${frameWidth}px ${frameWidth}px 1px ${frameColorShadowDark}, inset -${frameWidth}px -${frameWidth}px 1px ${frameColorShadowLight}`;
-  const buttonShadow = `-${buttonBorderWidth}px -${buttonBorderWidth}px 1px ${buttonColorShadowLight}, ${buttonBorderWidth}px ${buttonBorderWidth}px 1px ${buttonColorShadowDark}`;
-  const buttonActiveShadow = `inset -${buttonBorderWidth}px -${buttonBorderWidth}px 1px ${buttonColorShadowLight}, inset ${buttonBorderWidth}px ${buttonBorderWidth}px 1px ${buttonColorShadowDark}`;
+  const frameShadow = `inset ${frameWidth}px ${frameWidth}px ${shadowBlurRadius}px ${frameColorShadowDark}, inset -${frameWidth}px -${frameWidth}px ${shadowBlurRadius}px ${frameColorShadowLight}`;
+  const buttonShadow = `-${buttonBorderWidth}px -${buttonBorderWidth}px ${shadowBlurRadius}px ${buttonColorShadowLight}, ${buttonBorderWidth}px ${buttonBorderWidth}px ${shadowBlurRadius}px ${buttonColorShadowDark}`;
+  const buttonActiveShadow = `inset -${buttonBorderWidth}px -${buttonBorderWidth}px ${shadowBlurRadius}px ${buttonColorShadowLight}, inset ${buttonBorderWidth}px ${buttonBorderWidth}px ${shadowBlurRadius}px ${buttonColorShadowDark}`;
 
   const frameClass = `bg-next-panel transition-all duration-200 ease-in-out`;
   // If color is not set, do not set a background color for the ring, but inherit from parent

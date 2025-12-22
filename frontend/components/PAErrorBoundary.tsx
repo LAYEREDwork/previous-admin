@@ -91,7 +91,7 @@ export class PAErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundary
               </button>
               <button
                 onClick={this.handleReload}
-                className="flex-1 px-4 py-2.5 rounded-md font-medium bg-next-accent hover:bg-next-accent-hover text-white transition-colors"
+                className="flex-1 px-4 py-2.5 rounded-md font-medium bg-next-accent hover:bg-next-accent-hover text-gray-100 transition-colors"
               >
                 Reload Page
               </button>

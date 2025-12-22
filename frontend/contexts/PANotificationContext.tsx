@@ -172,9 +172,9 @@ function AlertDialog({ alert, onRemove }: { alert: Alert; onRemove: (id: string)
   const getButtonStyles = (variant?: string) => {
     switch (variant) {
       case 'primary':
-        return 'bg-next-accent hover:bg-next-accent-hover text-white';
+        return 'bg-next-accent hover:bg-next-accent-hover text-gray-100';
       case 'danger':
-        return 'bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white';
+        return 'bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-gray-100';
       case 'secondary':
       default:
         return 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200';

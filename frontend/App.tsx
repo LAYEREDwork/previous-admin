@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { PAThemeProvider, useTheme } from './contexts/PAThemeContext';
 import { PALanguageProvider } from './contexts/PALanguageContext';
 import { PAAuthProvider, useAuth } from './contexts/PAAuthContext';
 import { PAConfigProvider } from './contexts/PAConfigContext';
@@ -17,7 +16,6 @@ import { Configuration } from './lib/database';
 
 function PAAppContent() {
   const { isAuthenticated, loading } = useAuth();
-  const { actualTheme } = useTheme();
   const [currentTab, setCurrentTab] = useState(() => {
     // Restore last active tab from localStorage
     const savedTab = localStorage.getItem('currentTab');
@@ -56,7 +54,7 @@ function PAAppContent() {
   );
 
   return (
-    <CustomProvider theme={actualTheme}>
+    <CustomProvider theme="dark">
       {content}
     </CustomProvider>
   );
@@ -65,17 +63,15 @@ function PAAppContent() {
 function App() {
   return (
     <PAErrorBoundary>
-      <PAThemeProvider>
-        <PALanguageProvider>
-          <PANotificationProvider>
-            <PAAuthProvider>
-              <PAConfigProvider>
-                <PAAppContent />
-              </PAConfigProvider>
-            </PAAuthProvider>
-          </PANotificationProvider>
-        </PALanguageProvider>
-      </PAThemeProvider>
+      <PALanguageProvider>
+        <PANotificationProvider>
+          <PAAuthProvider>
+            <PAConfigProvider>
+              <PAAppContent />
+            </PAConfigProvider>
+          </PAAuthProvider>
+        </PANotificationProvider>
+      </PALanguageProvider>
     </PAErrorBoundary>
   );
 }

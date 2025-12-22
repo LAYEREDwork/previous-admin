@@ -46,12 +46,12 @@ export function PAButton({
     const getAppearanceClasses = () => {
         if (appearance === 'primary') {
             switch (customColor) {
-                case 'red': return 'bg-red-500 hover:bg-red-600 text-white shadow-sm';
-                case 'green': return 'bg-green-600 hover:bg-green-700 text-white shadow-sm';
-                case 'orange': return 'bg-orange-500 hover:bg-orange-600 text-white shadow-sm';
-                case 'accent': return 'bg-next-accent hover:opacity-90 text-white shadow-sm';
-                case 'cyan': return 'bg-cyan-600 hover:bg-cyan-700 text-white shadow-sm';
-                default: return 'bg-primary-600 hover:bg-primary-700 text-white shadow-sm';
+                case 'red': return 'bg-red-500 hover:bg-red-600 text-gray-100 shadow-sm';
+                case 'green': return 'bg-green-600 hover:bg-green-700 text-gray-100 shadow-sm';
+                case 'orange': return 'bg-orange-500 hover:bg-orange-600 text-gray-100 shadow-sm';
+                case 'accent': return 'bg-next-accent hover:opacity-90 text-gray-100 shadow-sm';
+                case 'cyan': return 'bg-cyan-600 hover:bg-cyan-700 text-gray-100 shadow-sm';
+                default: return 'bg-primary-600 hover:bg-primary-700 text-gray-100 shadow-sm';
             }
         }
 
@@ -64,7 +64,7 @@ export function PAButton({
         }
 
         // Default (matches PASegmentedControl active item background or track)
-        return 'bg-gray-200/50 dark:bg-gray-800/80 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-900 dark:text-white border border-transparent';
+        return 'bg-gray-200/50 dark:bg-gray-800/80 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100 border border-transparent';
     };
 
     const baseClasses = `

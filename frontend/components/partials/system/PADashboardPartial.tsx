@@ -22,7 +22,7 @@ export function DashboardPartial({
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                     Dashboard
                 </h3>
                 <div className="flex items-center gap-3">
@@ -45,7 +45,7 @@ export function DashboardPartial({
                 {/* CPU Load Chart */}
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
                     <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
                             <BiChip size={20} className="text-next-accent" />
                             {translation.system.cpuLoadAverage}
                         </h3>
@@ -106,7 +106,7 @@ export function DashboardPartial({
                 {/* Memory Chart */}
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
                     <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
                             <BiChip size={20} className="text-green-600 dark:text-green-400" />
                             {translation.system.memory}
                         </h3>
@@ -140,7 +140,7 @@ export function DashboardPartial({
 
                 {/* Network Traffic Chart */}
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
                         <BiGlobe size={20} className="text-cyan-600 dark:text-cyan-400" />
                         {translation.system.networkTraffic}
                     </h3>
@@ -177,7 +177,7 @@ export function DashboardPartial({
 
                 {/* Disk IO Chart */}
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
                         <BiHdd size={20} className="text-orange-600 dark:text-orange-400" />
                         Disk I/O
                     </h3>

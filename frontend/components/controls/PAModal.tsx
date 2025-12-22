@@ -60,7 +60,7 @@ PAModal.Header = ({ children, ...props }: React.ComponentProps<typeof Modal.Head
 );
 
 PAModal.Title = ({ children, ...props }: any) => (
-    <Modal.Title {...props} className="text-xl font-bold text-gray-900 dark:text-white">
+    <Modal.Title {...props} className="text-xl font-bold text-gray-900 dark:text-gray-100">
         {children}
     </Modal.Title>
 );
