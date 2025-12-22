@@ -1,13 +1,14 @@
 import { BiUserPlus, BiLock, BiShow, BiHide, BiLogInCircle, BiDownload } from 'react-icons/bi';
-import { Input, InputGroup, Divider } from 'rsuite';
+import { Divider } from 'rsuite';
 import { PANeomorphButton, PANeomorphButtonType } from '../../controls/PANeomorphButton';
 import { PACard, PACardRelief } from '../../controls/PACard';
+import { PAInput } from '../../controls/PAInput';
 import { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
 
 const LOGIN_PANEL_BACKGROUND = '#1a1a1a';
 
-interface LoginFormPartialProps {
+interface PALoginFormPartialProps {
     username: string;
     setUsername: (value: string) => void;
     password: string;
@@ -28,7 +29,10 @@ interface LoginFormPartialProps {
     translation: Translations;
 }
 
-export function LoginFormPartial({
+/**
+ * Rendert das Login- beziehungsweise Setup-Formular mit neomorphem Button und vertieft wirkenden Eingaben.
+ */
+export function PALoginFormPartial({
     username,
     setUsername,
     password,
@@ -47,7 +51,7 @@ export function LoginFormPartial({
     confirmPasswordRef,
     controlSize,
     translation
-}: LoginFormPartialProps) {
+}: PALoginFormPartialProps) {
     return (
         <PACard
             className="rounded-2xl shadow-xl p-5 sm:p-8"
@@ -59,43 +63,36 @@ export function LoginFormPartial({
                     <label htmlFor="username-input" className="block text-xs sm:text-sm font-medium text-next-text mb-2">
                         {translation.login.username.toUpperCase()}
                     </label>
-                    <InputGroup size={controlSize}>
-                        <InputGroup.Addon>
-                            <BiUserPlus className="icon-inner-emboss" />
-                        </InputGroup.Addon>
-                        <Input
-                            id="username-input"
-                            inputRef={usernameRef}
-                            type="text"
-                            value={username}
-                            onChange={(value) => setUsername(value)}
-                            placeholder={translation.login.usernamePlaceholder}
-                            autoComplete="username"
-                        />
-                    </InputGroup>
+                    <PAInput
+                        size={controlSize}
+                        // prefixIcon={<BiUserPlus className="icon-inner-emboss" />}
+                        inputId="username-input"
+                        inputRef={usernameRef}
+                        inputType="text"
+                        value={username}
+                        onChange={(value) => setUsername(value)}
+                        placeholder={translation.login.usernamePlaceholder}
+                        autoComplete="username"
+                    />
                 </div>
 
                 <div>
                     <label htmlFor="password-input" className="block text-xs sm:text-sm font-medium text-next-text mb-2">
                         {translation.login.password.toUpperCase()}
                     </label>
-                    <InputGroup size={controlSize}>
-                        <InputGroup.Addon>
-                            <BiLock className="icon-inner-emboss" />
-                        </InputGroup.Addon>
-                        <Input
-                            id="password-input"
-                            inputRef={passwordRef}
-                            type={visible ? 'text' : 'password'}
-                            value={password}
-                            onChange={(value) => setPassword(value)}
-                            placeholder={translation.login.passwordPlaceholder}
-                            autoComplete={isSetup ? "new-password" : "current-password"}
-                        />
-                        <InputGroup.Button onClick={handlePasswordVisibilityChange}>
-                            {visible ? <BiShow className="icon-inner-emboss" /> : <BiHide className="icon-inner-emboss" />}
-                        </InputGroup.Button>
-                    </InputGroup>
+                    <PAInput
+                        size={controlSize}
+                        // prefixIcon={<BiLock className="icon-inner-emboss" />}
+                        inputId="password-input"
+                        inputRef={passwordRef}
+                        inputType={visible ? 'text' : 'password'}
+                        value={password}
+                        onChange={(value) => setPassword(value)}
+                        placeholder={translation.login.passwordPlaceholder}
+                        autoComplete={isSetup ? "new-password" : "current-password"}
+                        suffixButton={visible ? <BiShow /> : <BiHide />}
+                        onSuffixButtonClick={handlePasswordVisibilityChange}
+                    />
                 </div>
 
                 {isSetup && setConfirmPassword && (
@@ -103,23 +100,19 @@ export function LoginFormPartial({
                         <label htmlFor="confirm-password-input" className="block text-xs sm:text-sm font-medium text-next-text mb-2">
                             {translation.login.confirmPassword.toUpperCase()}
                         </label>
-                        <InputGroup size={controlSize}>
-                            <InputGroup.Addon>
-                                <BiLock className="icon-inner-emboss" />
-                            </InputGroup.Addon>
-                            <Input
-                                id="confirm-password-input"
-                                inputRef={confirmPasswordRef}
-                                type={visible ? 'text' : 'password'}
-                                value={confirmPassword}
-                                onChange={(value) => setConfirmPassword(value)}
-                                placeholder={translation.login.confirmPasswordPlaceholder}
-                                autoComplete="new-password"
-                            />
-                            <InputGroup.Button onClick={handlePasswordVisibilityChange}>
-                                {visible ? <BiShow className="icon-inner-emboss" /> : <BiHide className="icon-inner-emboss" />}
-                            </InputGroup.Button>
-                        </InputGroup>
+                        <PAInput
+                            size={controlSize}
+                            prefixIcon={<BiLock />}
+                            inputId="confirm-password-input"
+                            inputRef={confirmPasswordRef}
+                            inputType={visible ? 'text' : 'password'}
+                            value={confirmPassword ?? ''}
+                            onChange={(value) => setConfirmPassword(value)}
+                            placeholder={translation.login.confirmPasswordPlaceholder}
+                            autoComplete="new-password"
+                            suffixButton={visible ? <BiShow /> : <BiHide />}
+                            onSuffixButtonClick={handlePasswordVisibilityChange}
+                        />
                     </div>
                 )}
 
@@ -127,7 +120,7 @@ export function LoginFormPartial({
                     buttonType={PANeomorphButtonType.submit}
                     size={PASize.MD}
                     fullWidth
-                    icon={isSetup ? <BiUserPlus size={18} className="icon-inner-emboss" /> : <BiLogInCircle size={18} className="icon-inner-emboss" />}
+                    icon={isSetup ? <BiUserPlus size={18} /> : <BiLogInCircle size={18} />}
                     disabled={importing || loading || !username || !password}
                     className="self-end sm:self-auto"
                     color={username && password && !importing && !loading ? '#fff' : undefined}

@@ -3,7 +3,7 @@ import { Configuration } from '../../../lib/database';
 import type { Translations } from '../../../lib/translations';
 import { IconButton } from 'rsuite';
 import { BiCheckCircle, BiCircle, BiMenu } from 'react-icons/bi';
-import { NOISE_TEXTURE } from '../../../lib/utils/color';
+import { PATextures } from '../../../lib/utils/color';
 
 const ITEM_BACKGROUND = '#1A1A1A'; // slightly darker than the site background (#141414) for separation
 const DRAG_BACKGROUND = '#181818';
@@ -61,7 +61,7 @@ export function ConfigListItemPartial({
   const baseBackground = isDragged ? DRAG_BACKGROUND : ITEM_BACKGROUND;
   const backgroundColor = isDarkMode ? baseBackground : undefined;
   const backgroundImage = isDarkMode
-    ? `${isActive ? `linear-gradient(${ACTIVE_OVERLAY}, ${ACTIVE_OVERLAY}), ` : ''}${NOISE_TEXTURE}`
+    ? `${isActive ? `linear-gradient(${ACTIVE_OVERLAY}, ${ACTIVE_OVERLAY}), ` : ''}${PATextures.NOISE}`
     : undefined;
 
   return (

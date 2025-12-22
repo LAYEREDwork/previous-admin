@@ -1,10 +1,8 @@
 export type HslColor = { h: number; s: number; l: number };
 
-/**
- * Reusable subtle noise texture for dark surfaces.
- * Use as CSS backgroundImage value.
- */
-export const NOISE_TEXTURE = "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3cfilter id='n'%3e%3cfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3e%3c/filter%3e%3crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.3'/%3e%3c/svg%3e\")";
+export enum PATextures {
+  NOISE = "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3cfilter id='n'%3e%3cfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3e%3c/filter%3e%3crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.3'/%3e%3c/svg%3e\")",
+}
 
 /**
  * Clamp a numeric value into the provided inclusive range.

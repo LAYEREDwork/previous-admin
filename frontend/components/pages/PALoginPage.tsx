@@ -3,7 +3,7 @@ import { PANeXTLogo } from '../controls/PANeXTLogo';
 import { PALanguageSwitcher } from '../controls/PALanguageSwitcher';
 
 // Partials
-import { LoginFormPartial } from '../partials/login/PALoginFormPartial';
+import { PALoginFormPartial } from '../partials/login/PALoginFormPartial';
 
 // Hooks
 import { useLanguage } from '../../contexts/PALanguageContext';
@@ -54,7 +54,7 @@ export function Login() {
           </h1>
         </div>
 
-        <LoginFormPartial
+        <PALoginFormPartial
           username={username}
           setUsername={setUsername}
           password={password}

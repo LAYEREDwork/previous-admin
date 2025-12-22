@@ -1,5 +1,5 @@
 import { ReactNode, useMemo } from 'react';
-import { NOISE_TEXTURE } from '../../lib/utils/color';
+import { PATextures } from '../../lib/utils/color';
 
 export enum PACardRelief {
   EMBOSSED = 'embossed',
@@ -43,7 +43,7 @@ export function PACard({
       className={`rounded-lg border border-next-border ${className}`}
       style={{
         backgroundColor,
-        backgroundImage: NOISE_TEXTURE,
+        backgroundImage: PATextures.NOISE,
         backgroundBlendMode: 'soft-light',
         backgroundRepeat: 'repeat',
         boxShadow: `${floatShadow}${floatShadow ? ', ' : ''}${insetShadow}`,

@@ -1,6 +1,7 @@
-import { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { PASize, PABasicSize } from '../../lib/types/sizes';
-import { NOISE_TEXTURE, adjustLightness, hslToString, parseColorToHsl } from '../../lib/utils/color';
+import { PATextures, adjustLightness, hslToString, parseColorToHsl } from '../../lib/utils/color';
+import { PANeomorphPalette } from '../../lib/utils/palette';
 
 // Enum for shape, kept for basic configuration
 export const PANeomorphButtonShape = {
@@ -30,6 +31,9 @@ interface PANeomorphButtonProps {
   title?: string;
   color?: string; // Color for ring and active glow
   baseColor?: string; // Optional base background color to derive palette from
+  frameWidth?: number;
+  ringWidth?: number;
+  buttonBorderWidth?: number;
 }
 
 type Palette = {
@@ -40,25 +44,16 @@ type Palette = {
   shadowLight: string;
 };
 
-export enum PANeomorphButtonPaletteDefault {
-  BASE_COLOR = '#1a1a1a',
-  FRAME_BACKGROUND = 'hsl(0, 0%, 6%)',
-  RING_BACKGROUND = 'hsl(0, 0%, 12%)',
-  BUTTON_BACKGROUND = 'hsl(0, 0%, 16%)',
-  SHADOW_DARK = 'hsl(0, 0%, 0%)',
-  SHADOW_LIGHT = 'hsl(0, 0%, 32%)',
-}
-
 function computePalette(baseColor: string): Palette {
-  const baseHsl = parseColorToHsl(baseColor) ?? parseColorToHsl(PANeomorphButtonPaletteDefault.BASE_COLOR);
+  const baseHsl = parseColorToHsl(baseColor) ?? parseColorToHsl(PANeomorphPalette.BASE_COLOR);
 
   if (!baseHsl) {
     return {
-      frameBackground: PANeomorphButtonPaletteDefault.FRAME_BACKGROUND,
-      ringBackground: PANeomorphButtonPaletteDefault.RING_BACKGROUND,
-      buttonBackground: PANeomorphButtonPaletteDefault.BUTTON_BACKGROUND,
-      shadowDark: PANeomorphButtonPaletteDefault.SHADOW_DARK,
-      shadowLight: PANeomorphButtonPaletteDefault.SHADOW_LIGHT,
+      frameBackground: PANeomorphPalette.FRAME_BACKGROUND,
+      ringBackground: PANeomorphPalette.RING_BACKGROUND,
+      buttonBackground: PANeomorphPalette.BUTTON_BACKGROUND,
+      shadowDark: PANeomorphPalette.SHADOW_DARK,
+      shadowLight: PANeomorphPalette.SHADOW_LIGHT,
     };
   }
 
@@ -76,30 +71,28 @@ function computePalette(baseColor: string): Palette {
  * It is seated in a recessed housing and appears embossed, with a matte, textured finish.
  */
 export function PANeomorphButton({
-  children,
-  color,
-  icon,
-  title,
-  baseColor,
-  onClick,
-  fullWidth = false,
   active = false,
-  disabled = false,
-  size = PASize.MD,
-  shape = PANeomorphButtonShape.rect,
+  baseColor,
+  buttonBorderWidth = 2,
   buttonType = PANeomorphButtonType.button,
+  children,
   className = '',
+  color,
+  disabled = false,
+  frameWidth = 2,
+  fullWidth = false,
+  icon,
+  onClick,
+  ringWidth = 2,
+  shape = PANeomorphButtonShape.rect,
+  size = PASize.MD,
+  title,
 }: PANeomorphButtonProps) {
-  const [palette, setPalette] = useState<Palette>(() => computePalette(baseColor || PANeomorphButtonPaletteDefault.BASE_COLOR));
+  const [palette, setPalette] = useState<Palette>(() => computePalette(baseColor || PANeomorphPalette.BASE_COLOR));
 
   useEffect(() => {
-    setPalette(computePalette(baseColor || PANeomorphButtonPaletteDefault.BASE_COLOR));
+    setPalette(computePalette(baseColor || PANeomorphPalette.BASE_COLOR));
   }, [baseColor]);
-
-  // Sizing and border widths
-  const frameWidth = 2;
-  const ringWidth = 2;
-  const buttonBorderWidth = 2;
 
   // Map size to height in px
   const sizeToHeight = {
@@ -126,16 +119,21 @@ export function PANeomorphButton({
 
   // Content styling for icon and text
   // Default: gray. If active: color with glow, or white with glow if no color.
+  // If buttonType is submit and color is set: use color for icon and text.
   const activeColor = color || undefined;
+  const isSubmitWithColor = buttonType === PANeomorphButtonType.submit && color;
   const contentClass = active
     ? (activeColor ? '' : 'text-gray-100')
-    : 'text-next-text-dim';
-  const contentStyle = active
+    : isSubmitWithColor ? '' : PANeomorphPalette.TEXT_COLOR;
+  let contentStyle: React.CSSProperties = active
     ? {
         color: activeColor || undefined,
         textShadow: `0 0 6px ${activeColor}, 0 0 12px ${activeColor}`,
       }
+    : isSubmitWithColor
+    ? { color: color }
     : {};
+
 
   // Shadow colors from theme (CSS custom properties)
   const shadowDark = palette.shadowDark;
@@ -162,35 +160,35 @@ export function PANeomorphButton({
         backgroundColor: palette.frameBackground,
       }}
     >
-      <div
-        className={ringClass}
-        style={{
-          borderRadius: ringCornerRadius,
-          padding: ringWidth,
-          backgroundColor: color ? undefined : palette.ringBackground,
-        }}
-      >
-        <button
-          onClick={onClick}
-          disabled={disabled}
-          title={title}
-          type={buttonType}
-          className={`inline-flex items-center justify-center ${buttonClass} ${sizeClasses[size]}`}
+        <div
+          className={ringClass}
           style={{
-            borderRadius: buttonCornerRadius,
-            borderWidth: buttonBorderWidth,
-            boxShadow: !disabled
-              ? (active ? buttonActiveShadow : buttonShadow)
-              : undefined,
-            backgroundImage: NOISE_TEXTURE,
-            backgroundColor: palette.buttonBackground,
+            borderRadius: ringCornerRadius,
+            padding: ringWidth,
+            backgroundColor: color ? undefined : palette.ringBackground,
           }}
         >
-          <span
-            className={`flex flex-nowrap items-center justify-center gap-2 ${contentClass}`}
-            style={{ ...contentStyle, position: 'relative', top: '-1px' }}
+          <button
+            onClick={onClick}
+            disabled={disabled}
+            title={title}
+            type={buttonType}
+            className={`inline-flex items-center justify-center ${buttonClass} ${sizeClasses[size]}`}
+            style={{
+              borderRadius: buttonCornerRadius,
+              borderWidth: buttonBorderWidth,
+              boxShadow: !disabled
+                ? (active ? buttonActiveShadow : buttonShadow)
+                : undefined,
+              backgroundImage: PATextures.NOISE,
+              backgroundColor: palette.buttonBackground,
+            }}
           >
-            {icon && <span>{icon}</span>}
+            <span
+              className={`flex flex-nowrap items-center justify-center gap-2 ${contentClass}`}
+              style={{ ...contentStyle, position: 'relative', top: '-1px' }}
+            >
+              {icon && <span>{icon}</span>}
             {children && <span className="whitespace-nowrap">{children}</span>}
           </span>
         </button>
