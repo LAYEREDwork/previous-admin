@@ -30,7 +30,7 @@ export enum PAInputType {
   AUDIO = 'audio',
 }
 
-type PAInputSize = Extract<PASize, 'sm' | 'md' | 'lg'>;
+type PAInputSize = Extract<PASize, 'xs' | 'sm' | 'md' | 'lg'>;
 
 interface PAInputProps {
   size: PAInputSize;

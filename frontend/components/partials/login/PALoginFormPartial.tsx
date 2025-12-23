@@ -26,7 +26,7 @@ interface PALoginFormPartialProps {
     passwordRef: React.RefObject<HTMLInputElement>;
     confirmPasswordRef: React.RefObject<HTMLInputElement>;
     importDatabaseRef: React.RefObject<HTMLInputElement>;
-    controlSize: 'sm' | 'md' | 'lg';
+    controlSize: 'xs' | 'sm' | 'md' | 'lg';
     translation: Translations;
 }
 

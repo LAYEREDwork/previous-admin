@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, forwardRef } from 'react';
 import { Button as RSuiteButton, ButtonProps as RSuiteButtonProps } from 'rsuite';
 
 interface PAButtonProps extends Omit<RSuiteButtonProps, 'size' | 'color'> {
@@ -13,7 +13,7 @@ interface PAButtonProps extends Omit<RSuiteButtonProps, 'size' | 'color'> {
  * PAButton - A premium button matching the PASegmentedControl aesthetic.
  * PA prefix for Previous Admin.
  */
-export function PAButton({
+export const PAButton = forwardRef<HTMLButtonElement, PAButtonProps>(({
     children,
     icon,
     size = 'md',
@@ -23,7 +23,7 @@ export function PAButton({
     fullWidth = false,
     block, // RSuite uses block for full width
     ...props
-}: PAButtonProps) {
+}, ref) => {
 
     const isFullWidth = fullWidth || block;
 
@@ -82,6 +82,7 @@ export function PAButton({
 
     return (
         <RSuiteButton
+            ref={ref}
             className={`${baseClasses} ${radiusClass} ${className}`}
             {...props}
         >
@@ -89,4 +90,6 @@ export function PAButton({
             {children}
         </RSuiteButton>
     );
-}
+});
+
+PAButton.displayName = 'PAButton';
