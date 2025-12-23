@@ -29,6 +29,7 @@ export function useLoginLogic() {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
+  const importDatabaseRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     checkSetupRequired().then(required => setIsSetup(required));
@@ -128,5 +129,6 @@ export function useLoginLogic() {
     usernameRef,
     passwordRef,
     confirmPasswordRef,
+    importDatabaseRef,
   };
 }

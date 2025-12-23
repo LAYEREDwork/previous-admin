@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { PASize, PABasicSize } from '../../lib/types/sizes';
 import { PATextures, adjustLightness, hslToString, parseColorToHsl } from '../../lib/utils/color';
 import { PANeomorphPalette } from '../../lib/utils/palette';
+import { useControlSize } from '../../hooks/useControlSize';
 
 // Enum for shape, kept for basic configuration
 export const PANeomorphButtonShape = {
@@ -16,25 +17,6 @@ export const PANeomorphButtonType = {
   submit: 'submit',
 } as const;
 export type PANeomorphButtonType = typeof PANeomorphButtonType[keyof typeof PANeomorphButtonType];
-
-interface PANeomorphButtonProps {
-  children?: ReactNode;
-  icon?: ReactNode;
-  size?: PABasicSize;
-  active?: boolean;
-  disabled?: boolean;
-  shape?: PANeomorphButtonShape;
-  fullWidth?: boolean;
-  buttonType?: PANeomorphButtonType;
-  onClick?: () => void;
-  className?: string;
-  title?: string;
-  color?: string; // Color for ring and active glow
-  baseColor?: string; // Optional base background color to derive palette from
-  frameWidth?: number;
-  ringWidth?: number;
-  buttonBorderWidth?: number;
-}
 
 type Palette = {
   frameBackground: string;
@@ -66,29 +48,67 @@ function computePalette(baseColor: string): Palette {
   return { frameBackground, ringBackground, buttonBackground, shadowDark, shadowLight };
 }
 
+interface PANeomorphButtonProps {
+  // Content
+  children?: ReactNode;
+  icon?: ReactNode;
+
+  // Sizing
+  size?: PABasicSize;
+  shape?: PANeomorphButtonShape;
+  fullWidth?: boolean;
+  frameWidth?: number;
+  ringWidth?: number;
+  buttonBorderWidth?: number;
+
+  // State
+  active?: boolean;
+  disabled?: boolean;
+
+  // Behavior
+  buttonType?: PANeomorphButtonType;
+  onClick?: () => void;
+
+  // Styling
+  className?: string;
+  title?: string;
+  color?: string;                                                   // Color for ring and active glow
+  baseColor?: string;                                               // Optional base background color to derive palette from
+}
+
 /**
  * PASkeuomorphButton - A skeuomorphic button with a high-quality, industrial, dark-UI aesthetic.
  * It is seated in a recessed housing and appears embossed, with a matte, textured finish.
  */
 export function PANeomorphButton({
-  active = false,
-  baseColor,
-  buttonBorderWidth = 2,
-  buttonType = PANeomorphButtonType.button,
+  // Content
   children,
-  className = '',
-  color,
-  disabled = false,
-  frameWidth = 2,
-  fullWidth = false,
   icon,
-  onClick,
-  ringWidth = 2,
-  shape = PANeomorphButtonShape.rect,
+
+  // Sizing
   size = PASize.MD,
+  shape = PANeomorphButtonShape.rect,
+  fullWidth = false,
+  frameWidth = 2,
+  ringWidth = 2,
+  buttonBorderWidth = 2,
+
+  // State
+  active = false,
+  disabled = false,
+
+  // Behavior
+  buttonType = PANeomorphButtonType.button,
+  onClick,
+
+  // Styling
+  className = '',
   title,
+  color,
+  baseColor,
 }: PANeomorphButtonProps) {
   const [palette, setPalette] = useState<Palette>(() => computePalette(baseColor || PANeomorphPalette.BASE_COLOR));
+  const controlSize = useControlSize(size);
 
   useEffect(() => {
     setPalette(computePalette(baseColor || PANeomorphPalette.BASE_COLOR));
@@ -101,7 +121,7 @@ export function PANeomorphButton({
     md: 40,
     lg: 48,
   };
-  const buttonHeight = sizeToHeight[size];
+  const buttonHeight = sizeToHeight[size];                          // Calculate button height based on size
 
   // Calculate corner radii
   const cornerRadius = shape === PANeomorphButtonShape.rect ? buttonHeight / 3 : buttonHeight;
@@ -144,10 +164,10 @@ export function PANeomorphButton({
   const buttonShadow = `-${buttonBorderWidth}px -${buttonBorderWidth}px ${shadowBlurRadius}px ${shadowLight}, ${buttonBorderWidth}px ${buttonBorderWidth}px ${shadowBlurRadius}px ${shadowDark}`;
   const buttonActiveShadow = `inset -${buttonBorderWidth}px -${buttonBorderWidth}px ${shadowBlurRadius}px ${shadowLight}, inset ${buttonBorderWidth}px ${buttonBorderWidth}px ${shadowBlurRadius}px ${shadowDark}`;
 
-  const frameClass = `bg-next-panel transition-all duration-200 ease-in-out`;
+  const frameClass = `bg-next-panel transition-all duration-200 ease-in-out height=${buttonHeight + 2 * frameWidth}px`;
   // If color is not set, do not set a background color for the ring, but inherit from parent
   const ringClass = `${color ? 'bg-next-panel' : ''} transition-all duration-200 ease-in-out${color ? '' : ' border border-next-border'}`;
-  const buttonClass = `w-full h-full font-semibold border-none transition-all duration-200 ease-in-out focus:outline-none bg-next-panel disabled:opacity-70 disabled:shadow-none disabled:bg-next-panel`;
+  const buttonClass = `w-full font-semibold border-none transition-all duration-200 ease-in-out focus:outline-none bg-next-panel disabled:opacity-70 disabled:shadow-none disabled:bg-next-panel`;
 
   // Three-layer hierarchy: Frame > Ring > Button
   return (
@@ -173,7 +193,7 @@ export function PANeomorphButton({
             disabled={disabled}
             title={title}
             type={buttonType}
-            className={`inline-flex items-center justify-center ${buttonClass} ${sizeClasses[size]}`}
+            className={`h-full inline-flex items-center justify-center ${buttonClass} ${sizeClasses[controlSize]}`}
             style={{
               borderRadius: buttonCornerRadius,
               borderWidth: buttonBorderWidth,

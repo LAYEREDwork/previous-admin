@@ -24,3 +24,6 @@ dist-ssr
 .env
 
 PROJECT_ANALYSIS.md
+
+# Auto Claude data directory
+.auto-claude/

@@ -1,5 +1,6 @@
 import { ReactNode, RefObject } from 'react';
 import { Input, InputGroup } from 'rsuite';
+import { BiEditAlt } from 'react-icons/bi';
 import { PASize } from '../../lib/types/sizes';
 
 export enum PAInputType {
@@ -66,15 +67,13 @@ export function PAInput({
   placeholder,
   autoComplete,
 }: PAInputProps) {
-  const combinedClassName = `recessed-input ${className}`.trim();
+  const combinedClassName = `recessed-input noFocusRing ${className}`.trim();
 
   return (
     <InputGroup size={size} className={combinedClassName}>
-      {prefixIcon ? (
-        <InputGroup.Addon>
-          {prefixIcon}
-        </InputGroup.Addon>
-      ) : null}
+      <InputGroup.Addon className="non-recessed text-next-text">
+        {prefixIcon || <BiEditAlt />}
+      </InputGroup.Addon>
       <Input
         id={inputId}
         inputRef={inputRef}
@@ -85,7 +84,7 @@ export function PAInput({
         autoComplete={autoComplete}
       />
       {suffixButton ? (
-        <InputGroup.Button onClick={onSuffixButtonClick} disabled={suffixDisabled}>
+        <InputGroup.Button className="non-recessed" onClick={onSuffixButtonClick} disabled={suffixDisabled}>
           {suffixButton}
         </InputGroup.Button>
       ) : null}

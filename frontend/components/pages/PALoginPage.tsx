@@ -31,6 +31,7 @@ export function Login() {
     usernameRef,
     passwordRef,
     confirmPasswordRef,
+    importDatabaseRef,
   } = useLoginLogic();
 
   return (
@@ -38,7 +39,7 @@ export function Login() {
       <div className="absolute top-3 sm:top-4 right-3 sm:right-4 flex items-center gap-2">
         <PALanguageSwitcher />
       </div>
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-md transform -translate-y-20">
         <div className="text-center mb-6 sm:mb-8">
           <div className="inline-flex items-center justify-center mb-3 sm:mb-4">
             <div className="w-20 h-20 sm:w-[100px] sm:h-[100px]">
@@ -71,6 +72,7 @@ export function Login() {
           usernameRef={usernameRef}
           passwordRef={passwordRef}
           confirmPasswordRef={confirmPasswordRef}
+          importDatabaseRef={importDatabaseRef}
           controlSize={controlSize}
           translation={translation}
         />

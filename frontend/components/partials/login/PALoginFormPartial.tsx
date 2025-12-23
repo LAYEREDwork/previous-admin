@@ -25,6 +25,7 @@ interface PALoginFormPartialProps {
     usernameRef: React.RefObject<HTMLInputElement>;
     passwordRef: React.RefObject<HTMLInputElement>;
     confirmPasswordRef: React.RefObject<HTMLInputElement>;
+    importDatabaseRef: React.RefObject<HTMLInputElement>;
     controlSize: 'sm' | 'md' | 'lg';
     translation: Translations;
 }
@@ -49,6 +50,7 @@ export function PALoginFormPartial({
     usernameRef,
     passwordRef,
     confirmPasswordRef,
+    importDatabaseRef,
     controlSize,
     translation
 }: PALoginFormPartialProps) {
@@ -65,7 +67,7 @@ export function PALoginFormPartial({
                     </label>
                     <PAInput
                         size={controlSize}
-                        // prefixIcon={<BiUserPlus className="icon-inner-emboss" />}
+                        prefixIcon={<BiUserPlus />}
                         inputId="username-input"
                         inputRef={usernameRef}
                         inputType="text"
@@ -82,7 +84,7 @@ export function PALoginFormPartial({
                     </label>
                     <PAInput
                         size={controlSize}
-                        // prefixIcon={<BiLock className="icon-inner-emboss" />}
+                        prefixIcon={<BiLock />}
                         inputId="password-input"
                         inputRef={passwordRef}
                         inputType={visible ? 'text' : 'password'}
@@ -151,6 +153,7 @@ export function PALoginFormPartial({
                                 disabled={importing || loading}
                                 className="hidden"
                                 id="import-setup-database"
+                                ref={importDatabaseRef}
                             />
                             <PANeomorphButton
                                 buttonType={PANeomorphButtonType.submit}
@@ -160,6 +163,7 @@ export function PALoginFormPartial({
                                 disabled={importing || loading}
                                 className="self-end sm:self-auto"
                                 baseColor={LOGIN_PANEL_BACKGROUND}
+                                onClick={() => importDatabaseRef.current?.click()}
                             >
                                 {importing ? translation.login.importingDatabase : translation.login.importExistingDatabase}
                             </PANeomorphButton>

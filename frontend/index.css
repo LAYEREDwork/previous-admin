@@ -248,6 +248,28 @@
     border: none !important;
     box-shadow: inset -2px -2px 2px rgba(55, 55, 55, 1), inset 2px 2px 2px #000 !important;
   }
+
+  /* Fokus-Stile für PAInput */
+.noFocusRing.rs-input:focus,
+.noFocusRing.rs-input:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.noFocusRing.rs-input-group:focus-within {
+  outline: none !important;
+  box-shadow: none !important;
+}
+  .recessed-input:focus-within .rs-input-group-addon {
+    color: #ffffff !important;
+  }
+
+  /* Button und Addon in InputGroup nicht recessed */
+  .recessed-input .rs-input-group-addon.non-recessed,
+  .recessed-input .rs-input-group-btn.non-recessed {
+    box-shadow: none !important;
+    background-color: #252525 !important;
+  }
 }
 
 @layer utilities {
