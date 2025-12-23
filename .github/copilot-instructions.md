@@ -62,3 +62,4 @@
 - **`:dev-setup`**: Gib eine Schritt-für-Schritt-Anleitung zur Einrichtung der Entwicklungsumgebung für das aktuelle Projekt. Ist das Kommando von einem `>`-Symbol und einem Strinf gefolgt, schreibe die Anleitung als Markdown in ein File mit diesem Namen im Projekt Root-Verzeichnis.
 - **`:undo`**: Mach die letzten Änderungen im Code rückgängig und kehre zum vorherigen Zustand zurueck.
 - **`:scan`**: Scanne den Code des aktuellen Projekts und aktualisiere deinen Kontext.
+- **`:badges`**: Fuehre das Script `update_badges.sh` aus.

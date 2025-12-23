@@ -10,6 +10,7 @@ import {
   authenticateUser
 } from '../database';
 import { AuthenticatedRequest } from '../types';
+import { UserSessionData } from '../types';
 
 const router = express.Router();
 
@@ -101,12 +102,12 @@ router.post('/setup', async (
       return res.status(400).json({ error: 'Setup already completed' });
     }
 
+    const authRequest = req as AuthenticatedRequest;
     const { username, password } = req.body;
-
     const user = await createUser({ username, password });
 
-    (req as AuthenticatedRequest).session.username = user.username;
-    (req as AuthenticatedRequest).session.userId = user.id;
+    authRequest.session.username = user.username;
+    authRequest.session.userId = user.id;
 
     res.json({
       success: true,
@@ -144,20 +145,24 @@ router.post('/login', async (
   req: Request<object, LoginResponse | ErrorResponse, LoginRequestBody>,
   res: Response<LoginResponse | ErrorResponse>
 ) => {
-  const { username, password } = req.body;
+  const authRequest = req as AuthenticatedRequest;
+  const { username, password } = authRequest.body;
 
   try {
     const result = await authenticateUser(username, password);
 
     if (!result.success) {
-      return res.status(401).json({ error: result.error });
+      return res.status(401).json({ error: (result as { success: false; error: string }).error });
     }
 
-    (req as AuthenticatedRequest).session.username = result.user.username;
-    (req as AuthenticatedRequest).session.userId = result.user.id;
+    // TypeScript now knows result.success is true
+    const { user } = result as { success: true; user: UserSessionData };
+
+    authRequest.session.username = user.username;
+    authRequest.session.userId = user.userId;
 
     res.json({
-      username: result.user.username
+      username: user.username
     });
   } catch (error) {
     console.error('Login error:', error);
@@ -183,7 +188,8 @@ router.post('/logout', (
   req: Request,
   res: Response<LogoutResponse | ErrorResponse>
 ) => {
-  (req as AuthenticatedRequest).session.destroy((err?: Error) => {
+  const authReq = req as AuthenticatedRequest;
+  authReq.session.destroy((err?: Error) => {
     if (err) {
       return res.status(500).json({ error: 'Logout failed' });
     }

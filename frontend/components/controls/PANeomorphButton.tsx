@@ -145,7 +145,7 @@ export function PANeomorphButton({
   const contentClass = active
     ? (activeColor ? '' : 'text-gray-100')
     : isSubmitWithColor ? '' : PANeomorphPalette.TEXT_COLOR;
-  let contentStyle: React.CSSProperties = active
+  const contentStyle: React.CSSProperties = active
     ? {
         color: activeColor || undefined,
         textShadow: `0 0 6px ${activeColor}, 0 0 12px ${activeColor}`,

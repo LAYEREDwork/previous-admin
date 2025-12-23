@@ -11,7 +11,7 @@ interface GeminiIconProps {
  * <PAGeminiIcon size={24} />
  * <PAGeminiIcon size={32} className="text-blue-500" />
  */
-export function PAGeminiIcon({ size = 24, className = '' }: PAGeminiIconProps) {
+export function PAGeminiIcon({ size = 24, className = '' }: GeminiIconProps) {
   // Originale Dimensionen: 344x127
   const aspectRatio = 344 / 127;
   const width = size * aspectRatio;

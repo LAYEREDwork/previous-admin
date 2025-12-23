@@ -101,3 +101,8 @@ export const ERROR_MESSAGES = {
   UNAUTHORIZED: 'Unauthorized',
   NOT_FOUND: 'Not found',
 };
+
+/**
+ * API base URL for internal requests
+ */
+export const API_BASE_URL = 'http://localhost:3001';

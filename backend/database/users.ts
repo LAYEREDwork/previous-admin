@@ -88,7 +88,10 @@ export async function createUser(request: CreateUserRequest): Promise<User> {
 export async function authenticateUser(
   username: string,
   password: string
-): Promise<{ success: boolean; user?: UserSessionData; error?: string }> {
+): Promise<
+  | { success: true; user: UserSessionData }
+  | { success: false; error: string }
+> {
   if (!username || !password) {
     return { success: false, error: ERROR_MESSAGES.INVALID_CREDENTIALS };
   }

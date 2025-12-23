@@ -7,7 +7,41 @@
  * - macOS: BSD-style system commands (iostat, netstat, vm_stat)
  */
 
-import os from 'os';
+import * as os from 'os';
+
+interface DiskStats {
+  read: number;
+  write: number;
+}
+
+interface NetworkStats {
+  received: number;
+  sent: number;
+}
+
+interface CpuLoadEntry {
+  timestamp: number;
+  oneMin: number;
+  fiveMin: number;
+  fifteenMin: number;
+}
+
+interface MemoryEntry {
+  timestamp: number;
+  value: number;
+}
+
+interface DiskIOEntry {
+  timestamp: number;
+  read: number;
+  write: number;
+}
+
+interface NetworkTrafficEntry {
+  timestamp: number;
+  received: number;
+  sent: number;
+}
 import { exec, execSync } from 'child_process';
 import { promisify } from 'util';
 
@@ -30,14 +64,14 @@ const IS_LINUX = PLATFORM === 'linux';
  */
 
 export const metricsHistory = {
-  cpuLoad: [],
-  memory: [],
-  networkTraffic: [],
-  diskIO: []
+  cpuLoad: [] as CpuLoadEntry[],
+  memory: [] as MemoryEntry[],
+  networkTraffic: [] as NetworkTrafficEntry[],
+  diskIO: [] as DiskIOEntry[]
 };
 
-let lastDiskStats = null;
-let lastNetworkStats = null;
+let lastDiskStats: DiskStats | null = null;
+let lastNetworkStats: NetworkStats | null = null;
 const MAX_HISTORY = 60;
 
 /**
@@ -81,7 +115,7 @@ export async function getCpuLoad() {
       fiveMin: loadavg[1] || 0,
       fifteenMin: loadavg[2] || 0
     };
-  } catch (error) {
+  } catch {
     const loadavg = os.loadavg();
     return {
       oneMin: loadavg[0] || 0,

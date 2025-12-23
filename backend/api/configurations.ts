@@ -201,7 +201,7 @@ router.post('/', requireAuth, (
       return res.status(400).json({ error: 'Name and config_data are required' });
     }
 
-    const config = createConfiguration(authReq.session.userId, {
+    const config = createConfiguration(Number(authReq.session.userId), {
       name,
       description: description || '',
       config_data: typeof config_data === 'string' ? JSON.parse(config_data) : config_data,
@@ -303,7 +303,7 @@ router.post('/:id/activate', requireAuth, (
 ) => {
   try {
     const authReq = req as AuthenticatedRequest;
-    const config = setActiveConfiguration(req.params.id, authReq.session.userId);
+    const config = setActiveConfiguration(req.params.id, Number(authReq.session.userId));
 
     if (!config) {
       return res.status(404).json({ error: 'Configuration not found' });
@@ -370,7 +370,7 @@ router.post('/deactivate-all', requireAuth, (
     if (authReq.session.userId !== undefined) {
       database
         .prepare('UPDATE configurations SET is_active = 0 WHERE created_by = ?')
-        .run(authReq.session.userId);
+        .run(Number(authReq.session.userId));
     } else {
       database.prepare('UPDATE configurations SET is_active = 0').run();
     }

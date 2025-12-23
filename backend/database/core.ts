@@ -8,7 +8,6 @@
  */
 
 import { createRequire } from 'module';
-import { fileURLToPath } from 'url';
 import { join } from 'path';
 import { existsSync, mkdirSync, chmodSync } from 'fs';
 import os from 'os';

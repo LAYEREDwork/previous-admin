@@ -19,11 +19,11 @@ js_percent=$(( (js_lines * 100 + total_lines / 2) / total_lines ))
 sh_percent=$(( (sh_lines * 100 + total_lines / 2) / total_lines ))
 
 # Update README.md using sed
-sed -i.bak \
+sed -i \
     -e "s/TypeScript-[0-9]\+%/TypeScript-${ts_percent}%/g" \
     -e "s/JavaScript-[0-9]\+%/JavaScript-${js_percent}%/g" \
     -e "s/Shell-[0-9]\+%/Shell-${sh_percent}%/g" \
-    -e "s/LOC-[0-9]\+/LOC-${total_lines}/g" \
+    -e "s/LOC-[0-9][0-9]*/LOC-${total_lines}/g" \
     README.md
 
 echo "Badges updated:"

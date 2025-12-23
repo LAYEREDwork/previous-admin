@@ -7,6 +7,17 @@ import express from 'express';
 import { execAsync } from './helpers';
 import { requireAuth } from '../middleware';
 import { ApiEndpoints } from '../../shared/constants';
+import packageJson from '../../package.json';
+import { API_BASE_URL } from '../constants';
+
+interface VersionInfo {
+  currentVersion: string;
+  latestVersion: string | null;
+  updateAvailable: boolean;
+  releaseUrl: string | null;
+  releaseNotes: string | null;
+  currentReleaseNotes: string | null;
+}
 
 const router = express.Router();
 
@@ -54,7 +65,7 @@ router.post('/', requireAuth, async (req: any, res: any) => {
       throw new Error('Failed to fetch version info');
     }
 
-    const versionInfo = await versionResponse.json();
+    const versionInfo = await versionResponse.json() as VersionInfo;
     const latestVersion = versionInfo.latestVersion;
 
     if (!latestVersion) {
@@ -115,12 +126,10 @@ router.post('/', requireAuth, async (req: any, res: any) => {
  */
 router.get('/version', requireAuth, async (req: any, res: any) => {
   const REPO_API_URL = 'https://codeberg.org/api/v1/repos/phranck/previous-admin';
-  const REPO_URL = 'https://codeberg.org/phranck/previous-admin';
 
   try {
     // Read current version from package.json
-    const packageJson = await import('../../package.json', { with: { type: 'json' } });
-    const currentVersion = packageJson.default.version || '1.0.0';
+    const currentVersion = packageJson.version || '1.0.0';
 
     // Fetch releases from Codeberg API
     const releasesResponse = await fetch(`${REPO_API_URL}/releases`, {
@@ -164,10 +173,10 @@ router.get('/version', requireAuth, async (req: any, res: any) => {
     );
 
     // Fetch release notes for latest version
-    let releaseNotes: string | null = latestRelease.body || null;
+    const releaseNotes: string | null = latestRelease.body || null;
 
     // Fetch release notes for current version
-    let currentReleaseNotes: string | null = currentRelease?.body || null;
+    const currentReleaseNotes: string | null = currentRelease?.body || null;
 
     res.json({
       currentVersion,

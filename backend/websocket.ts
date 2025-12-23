@@ -9,9 +9,9 @@
 
 import { WebSocketServer, WebSocket } from 'ws';
 import { IncomingMessage } from 'http';
-import { getMetricsSnapshot, metricsHistory, collectMetrics } from './metrics';
-import { getConfigPath as getUserConfigPath } from './database';
-import type { WebSocketMessage, WebSocketClient } from './types';
+import { getMetricsSnapshot } from './metrics';
+
+import type { WebSocketMessage } from './types';
 
 interface SessionRequest extends IncomingMessage {
   session?: {
@@ -40,7 +40,7 @@ export function setupWebSocket(httpServer: any, sessionMiddleware: any): WebSock
   const websocketServer = new WebSocketServer({ server: httpServer });
 
   websocketServer.on('connection', (socket: WebSocket, request: SessionRequest) => {
-    handleWebSocketConnection(socket, request, sessionMiddleware, websocketServer);
+    handleWebSocketConnection(socket, request, sessionMiddleware);
   });
 
   console.log('✅ WebSocket server initialized');
@@ -61,8 +61,7 @@ export function setupWebSocket(httpServer: any, sessionMiddleware: any): WebSock
 function handleWebSocketConnection(
   socket: WebSocket,
   request: SessionRequest,
-  sessionMiddleware: any,
-  websocketServer: WebSocketServer
+  sessionMiddleware: any
 ): void {
   // Create mock response object for session middleware
   const mockResponse = createMockResponse();

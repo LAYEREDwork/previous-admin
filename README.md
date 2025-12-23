@@ -1,9 +1,11 @@
-[![Mastodon: @phranck](https://img.shields.io/badge/Mastodon-@phranck-6364ff.svg?style=flat)](https://oldbytes.space/@phranck)
 [![Mastodon: @phranck](https://img.shields.io/badge/Mastodon-@LAYERED-6364ff.svg?style=flat)](https://oldbytes.space/@LAYERED)
-[![TypeScript](https://img.shields.io/badge/TypeScript-96%25-blue.svg?style=flat)](https://www.typescriptlang.org/)
-[![JavaScript](https://img.shields.io/badge/JavaScript-1%25-yellow.svg?style=flat)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![Shell](https://img.shields.io/badge/Shell-3%25-green.svg?style=flat)](https://en.wikipedia.org/wiki/Shell_script)
-[![Lines of Code](https://img.shields.io/badge/LOC-13403-orange.svg?style=flat)]()
+![Node.js](https://img.shields.io/badge/Node.js-18+-339933.svg?style=flat&logo=node.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-96%25-blue.svg?style=flat)
+![JavaScript](https://img.shields.io/badge/JavaScript-1%25-yellow.svg?style=flat)
+![Shell](https://img.shields.io/badge/Shell-3%25-green.svg?style=flat)
+![Lines of Code](https://img.shields.io/badge/LOC-15302-orange.svg?style=flat)
+![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg?style=flat)
+![Platforms](https://img.shields.io/badge/Platforms-Linux%20%7C%20macOS-lightgrey.svg?style=flat)
 
 # Previous Admin [WIP]
 
