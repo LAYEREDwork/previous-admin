@@ -1,5 +1,5 @@
 [![Mastodon: @phranck](https://img.shields.io/badge/Mastodon-@LAYERED-6364ff.svg?style=flat)](https://oldbytes.space/@LAYERED)
-![Node.js](https://img.shields.io/badge/Node.js-18+-339933.svg?style=flat&logo=node.js)
+![Node.js](https://img.shields.io/badge/Node.js-22+-339933.svg?style=flat&logo=node.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-96%25-blue.svg?style=flat)
 ![JavaScript](https://img.shields.io/badge/JavaScript-1%25-yellow.svg?style=flat)
 ![Shell](https://img.shields.io/badge/Shell-3%25-green.svg?style=flat)
@@ -71,7 +71,7 @@ sudo ./scripts/setup.sh
 ```
 
 The setup script will automatically:
-- Install Node.js 20+ and required system dependencies
+- Install Node.js 22+ and required system dependencies
 - Create dedicated system user (`next`)
 - Build the application for production
 - Install and configure systemd services
