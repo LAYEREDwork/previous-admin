@@ -1,67 +1,67 @@
 # Copilot Instructions for `previous-admin`
 
-## Allgemeine Richtlinien
-- Never use a single character for variable names, parameters, or any identifiers; use descriptive names instead.
+## General Guidelines
+- Never use a single character for variable names, parameters, or any identifiers; always use descriptive names.
 - Always add comments in code to explain non-trivial parts.
-- Always format code using proper indentation and spacing for better readability.
-- Always add documentation comments for all functions and classes in the code.
-- Never change code by yourself without my explicit request.
--  Always communicate in German when discussing internal logic or UI strings.
+- Always format code with proper indentation and spacing for better readability.
+- Always add documentation comments for all functions and classes.
+- Never change code on your own without my explicit request.
+- Always communicate in German when discussing internal logic or UI strings.
 
-## Architekturüberblick
+## Architecture Overview
 
-- **Frontend**: React 18 + TypeScript, Vite, Tailwind CSS, RSuite UI. Einstiegspunkt: [frontend/App.tsx](frontend/App.tsx). Komponenten, Kontexte und Seiten sind in `frontend/components/`, `frontend/contexts/` und `frontend/pages/` organisiert.
-- **Backend**: Node.js + Express (TypeScript). Einstiegspunkt: [backend/index.ts](backend/index.ts). API-Routen unter `/api/*`, WebSocket-Support, Session-Handling mit express-session.
-- **Datenbank**: SQLite, synchron über `better-sqlite3`. Datenbankdatei liegt im Home-Verzeichnis des Users unter `.previous-admin/previous-admin.db`. Schema-Initialisierung in [backend/database/core.ts](backend/database/core.ts).
-- **Konfigurationsmanagement**: CRUD für Emulator-Konfigurationen, Sortierung, Aktivierung, Import/Export. Siehe [backend/database/configurations.ts](backend/database/configurations.ts) und API-Client [frontend/lib/database.ts](frontend/lib/database.ts).
-- **Authentifizierung**: Eigener Admin-User, Setup-Flow beim ersten Start. Authentifizierung via Session-Cookie, siehe [backend/api/auth.ts](backend/api/auth.ts).
+- **Frontend**: React 18 + TypeScript, Vite, Tailwind CSS, RSuite UI. Entry point: [frontend/App.tsx](frontend/App.tsx). Components, contexts, and pages are organized in `frontend/components/`, `frontend/contexts/`, and `frontend/pages/`.
+- **Backend**: Node.js + Express (TypeScript). Entry point: [backend/index.ts](backend/index.ts). API routes under `/api/*`, WebSocket support, session handling via express-session.
+- **Database**: SQLite, synchronous via `better-sqlite3`. Database file resides in the user’s home directory under `.previous-admin/previous-admin.db`. Schema initialization in [backend/database/core.ts](backend/database/core.ts).
+- **Configuration Management**: CRUD for emulator configurations, sorting, activation, import/export. See [backend/database/configurations.ts](backend/database/configurations.ts) and API client [frontend/lib/database.ts](frontend/lib/database.ts).
+- **Authentication**: Custom admin user, setup flow on first start. Authentication via session cookie, see [backend/api/auth.ts](backend/api/auth.ts).
 
-## Entwickler-Workflows
+## Developer Workflows
 
-- **Entwicklung starten**:
-  - Backend: `npm run backend` (startet Express-Server auf Port 3001)
-  - Frontend: `npm run dev` (startet Vite-Dev-Server auf Port 5173)
-- **Build für Produktion**: `npm run build` (Frontend), dann `npm run backend` (Backend)
-- **Automatisierte Installation**: `sudo ./scripts/setup.sh` installiert Abhängigkeiten, richtet systemd-Services ein und startet alles.
-- **API-Base-URL**: Im Frontend dynamisch: `http://${window.location.hostname}:3001`
-- **Session-Secret**: In Produktion MUSS `SESSION_SECRET` als Umgebungsvariable gesetzt werden.
+- **Start development**:
+  - Backend: `npm run backend` (starts Express server on port 3001)
+  - Frontend: `npm run dev` (starts Vite dev server on port 5173)
+- **Production build**: `npm run build` (frontend), then `npm run backend` (backend)
+- **Automated installation**: `sudo ./scripts/setup.sh` installs dependencies, sets up systemd services, and starts everything.
+- **API base URL**: Dynamic in frontend: `http://${window.location.hostname}:3001`
+- **Session secret**: In production, `SESSION_SECRET` MUST be set as an environment variable.
 
-## Projekt-spezifische Codier-Richtlinien
+## Project-Specific Coding Guidelines
 
-- **Sprache**: Interne Kommunikation und UI-Strings sind mehrsprachig, Standard ist Deutsch. Übersetzungen liegen in [frontend/lib/translations/](frontend/lib/translations/).
-- **Benennung**: Keine einbuchstabigen Variablen/Parameter. Immer sprechende Namen verwenden.
-- **Code-Kommentare**: Alle nicht-trivialen Logikabschnitte und alle Funktionen/Klassen sind zu dokumentieren (siehe `.github/instructions/instructions.instructions.md`).
-- **Keine stillen Codeänderungen**: Änderungen nur auf explizite Anweisung.
-- **UI-Status**: Aktiver Tab wird in `localStorage` gespeichert (`currentTab`).
+- **Language**: Internal communication and UI strings are multilingual, with German as the default. Translations are located in [frontend/lib/translations/](frontend/lib/translations/).
+- **Naming**: No single-letter variables or parameters. Always use descriptive names.
+- **Code comments**: All non-trivial logic sections and all functions/classes must be documented (see `.github/instructions/instructions.instructions.md`).
+- **No silent code changes**: Changes only upon explicit instruction.
+- **UI state**: Active tab is stored in `localStorage` (`currentTab`).
 
-## API- und Datenfluss
+## API and Data Flow
 
-- **Frontend <-> Backend**: Kommunikation ausschließlich über REST-API (`/api/*`). Authentifizierung via Session-Cookie.
-- **Konfigurationsobjekte**: Siehe Typ `PreviousConfig` in [frontend/lib/types.ts](frontend/lib/types.ts) und [backend/types.ts](backend/types.ts).
-- **Konfigurationsänderungen**: Reihenfolgeänderungen werden explizit per API (`/api/configurations/order/update`) übertragen.
-- **Import/Export**: Einzelne Konfigurationen und komplette Datenbank können importiert/exportiert werden (JSON).
+- **Frontend <-> Backend**: Communication exclusively via REST API (`/api/*`). Authentication via session cookie.
+- **Configuration objects**: See type `PreviousConfig` in [frontend/lib/types.ts](frontend/lib/types.ts) and [backend/types.ts](backend/types.ts).
+- **Configuration changes**: Order changes are transmitted explicitly via API (`/api/configurations/order/update`).
+- **Import/Export**: Single configurations and the entire database can be imported/exported (JSON).
 
-## Integration & Besonderheiten
+## Integration & Special Features
 
-- **WebSocket**: Für Live-Systemmetriken (`backend/websocket.ts`).
-- **Systemdienste**: systemd-Units für Backend und Frontend (`systemd/`).
-- **Avahi/Bonjour**: Netzwerk-Discovery via `next.local:2342` nach Setup.
-- **Sicherheit**: Keine Standardpasswörter, Setup erzwingt initiale User-Anlage.
+- **WebSocket**: For live system metrics (`backend/websocket.ts`).
+- **System services**: systemd units for backend and frontend (`systemd/`).
+- **Avahi/Bonjour**: Network discovery via `next.local:2342` after setup.
+- **Security**: No default passwords; setup enforces initial user creation.
 
-## Beispiele & Referenzen
+## Examples & References
 
-- **Backend-API-Client**: [frontend/lib/api.ts](frontend/lib/api.ts)
-- **Konfigurations-CRUD**: [frontend/lib/database.ts](frontend/lib/database.ts), [backend/database/configurations.ts](backend/database/configurations.ts)
-- **Session-Handling**: [backend/index.ts](backend/index.ts), [backend/api/auth.ts](backend/api/auth.ts)
+- **Backend API client**: [frontend/lib/api.ts](frontend/lib/api.ts)
+- **Configuration CRUD**: [frontend/lib/database.ts](frontend/lib/database.ts), [backend/database/configurations.ts](backend/database/configurations.ts)
+- **Session handling**: [backend/index.ts](backend/index.ts), [backend/api/auth.ts](backend/api/auth.ts)
 
-## Benutzerdefinierte Befehle
+## Custom Commands
 
-- **`:cm`**: Erstellt eine kompakte Commit-Message in Englisch, für die Änderungen seit dem letzten Commit. Es sollen nur aktuell geänderte Dateien berücksichtigt werden (`git status`). Die Message soll eine Überschrift (Headline) und eine ungeordnete Liste enthalten und als reiner Text in einer Code-Box formatiert sein.
-- **`:docs <Thema>`**: Generiert eine ausführliche Dokumentation zu dem angegebenen Thema im Kontext des aktuellen Projekts. Die Dokumentation soll in Markdown-Format sein und Code-Beispiele enthalten, wo es sinnvoll ist. Ist das Kommando von einem `>`-Symbol und einem String gefolgt, schreibe die Anleitung als Markdown in ein File mit diesem Namen im Projekt Root-Verzeichnis. Ist kein Thema angegeben, generiere eine umfassende Dokumentation des gesamten Projekts.
-- **`:arch`**: Gibt eine kurze Zusammenfassung der Architektur des aktuellen Projekts. Ist das Kommando von einem `>`-Symbol und einem String gefolgt, schreibe die Anleitung als Markdown in ein File mit diesem Namen im Projekt Root-Verzeichnis.
-- **`:dev-setup`**: Gib eine Schritt-für-Schritt-Anleitung zur Einrichtung der Entwicklungsumgebung für das aktuelle Projekt. Ist das Kommando von einem `>`-Symbol und einem String gefolgt, schreibe die Anleitung als Markdown in ein File mit diesem Namen im Projekt Root-Verzeichnis.
-- **`:undo`**: Mach die letzten Änderungen im Code rückgängig und kehre zum vorherigen Zustand zurueck.
-- **`:scan`**: Scanne den Code des aktuellen Projekts und aktualisiere deinen Kontext.
-- **`:badges`**: Fuehre das Script `scripts/update_badges.sh` aus.
-- **`:ls`**: Gib eine Liste aller Custom Commands als Markdown aus, die mit ":" beginnen.
-- **`desc`**: Gib mir eine vollstaendige funktionale Beschreibung des Projektes, aufgeteilt nach Backend und Frontend, ohne technische Angaben als Markdown. Ist das Kommando von einem `>`-Symbol und einem String gefolgt, schreibe den Text in ein File mit diesem Namen im Projekt Root-Verzeichnis. Hat der Name ein Sprach-Suffix wie `.de.md` oder `.en.md`, schreibe die Beschreibung in der entsprechenden Sprache (Deutsch oder Englisch).
+- **`:arch`**: Provides a brief summary of the architecture of the current project. If the command is followed by a `>` symbol and a string, write the instructions as Markdown to a file with this name in the project root directory.
+- **`:badges`**: Run the script `scripts/update_badges.sh`.
+- **`:cm`**: Creates a compact commit message in English for the changes since the last commit. Only recently changed files should be included (`git status`). The message should contain a headline and an unordered list, formatted as plain text in a code block.
+- **`:dev-setup`**: Provide step-by-step instructions for setting up the development environment for the current project. If the command is followed by a `>` symbol and a string, write the instructions as Markdown to a file with this name in the project root directory.
+- **`:desc`**: Produce a complete functional description of the project, divided into backend and frontend, without technical details, as Markdown. If the command is followed by a `>` symbol and a string, write the text to a file with that name in the project root directory. If the name contains a language suffix such as `.de.md` or `.en.md`, write the description in the corresponding language.
+- **`:docs <topic>`**: Generate detailed documentation on the specified topic in the context of the current project. The documentation must be in Markdown format and include code examples where appropriate. If the command is followed by a `>` symbol and a string, write the instructions as Markdown to a file with this name in the project root directory. If no topic is specified, generate comprehensive documentation for the entire project.
+- **`:ls`**: Output a list of all custom commands that start with ":" as Markdown.
+- **`:scan`**: Scan the project’s code and update your context.
+- **`:undo`**: Undo the last changes in the code and return to the previous state.
