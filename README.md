@@ -1,4 +1,5 @@
 [![Mastodon: @phranck](https://img.shields.io/badge/Mastodon-@LAYERED-6364ff.svg?style=flat)](https://oldbytes.space/@LAYERED)
+![CI](https://github.com/LAYEREDwork/previous-admin/actions/workflows/ci.yml/badge.svg)
 ![Node.js](https://img.shields.io/badge/Node.js-22+-339933.svg?style=flat&logo=node.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-97%25-blue.svg?style=flat)
 ![JavaScript](https://img.shields.io/badge/JavaScript-0%25-yellow.svg?style=flat)
@@ -190,4 +191,4 @@ This is a private project. Therefore I take no responsibility for the correctnes
 
 ## License
 
-This repository has been published under the CC-BY-NC-SA license.
+This repository has been published under the [CC-BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/) license.
