@@ -26,7 +26,7 @@ export function PAConfigListHeaderPartial({
                 color='primary'
                 shape={PANeomorphButtonShape.rect}
             >
-                {translation.configList.newConfig}
+                {translation.configList.createNew}
             </PANeomorphButton>
         </div>
     );

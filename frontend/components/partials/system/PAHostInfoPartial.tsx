@@ -1,5 +1,5 @@
 import { BiHdd, BiChip, BiGlobe, BiDesktop } from 'react-icons/bi';
-import { SystemInfo } from '../../../shared/types';
+import { SystemInfo } from '../../../../shared/types';
 import { Translations } from '../../../lib/translations';
 import { formatUptime } from '../../../lib/utils';
 
@@ -76,7 +76,7 @@ export function HostInfoPartial({ systemInfo, translation }: HostInfoPartialProp
                                 {translation.system.gpu}
                             </h4>
                             <div className="space-y-2">
-                                {systemInfo.gpu.map((gpu, idx) => (
+                                {systemInfo.gpu.map((gpu: string, idx: number) => (
                                     <p key={idx} className="text-sm text-gray-900 dark:text-gray-100 break-words">{gpu}</p>
                                 ))}
                             </div>
@@ -94,7 +94,7 @@ export function HostInfoPartial({ systemInfo, translation }: HostInfoPartialProp
                                     {translation.system.ipAddresses}
                                 </h4>
                                 <div className="flex flex-wrap gap-4">
-                                    {systemInfo.ipAddresses.map((ip, idx) => (
+                                    {systemInfo.ipAddresses.map((ip: { interface: string; address: string }, idx: number) => (
                                         <div key={idx} className="text-sm">
                                             <span className="text-xs text-gray-500 dark:text-gray-400">{ip.interface}:</span>
                                             <p className="text-sm font-mono font-medium text-gray-900 dark:text-gray-100 break-all mt-0.5">{ip.address}</p>

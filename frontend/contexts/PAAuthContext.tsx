@@ -25,7 +25,7 @@ export function PAAuthProvider({ children }: { children: ReactNode }) {
     try {
       const session = await api.getSession();
       if (session.authenticated) {
-        setUsername(session.username);
+        setUsername(session.username || null);
         setIsAuthenticated(true);
       }
     } catch (error) {

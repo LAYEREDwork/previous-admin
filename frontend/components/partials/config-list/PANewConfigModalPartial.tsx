@@ -39,7 +39,7 @@ export function NewConfigModalPartial({
             <PAModal.Header>
                 <PAModal.Title>
                     <IoDocumentText size={32} className="inline-block mr-2 -mt-0.5" />
-                    {translation.configList.newConfig}
+                    {translation.configList.createNew}
                 </PAModal.Title>
             </PAModal.Header>
             <PAModal.Body>

@@ -25,8 +25,8 @@ export function DiskIOChart({ metrics, translation }: DiskIOChartProps) {
         const convertedDiskData = paddedData.map((item, index) => ({
           ...item,
           index,
-          read: item.read !== null ? item.read / diskUnit.divisor : null,
-          write: item.write !== null ? item.write / diskUnit.divisor : null,
+          read: item.read != null ? item.read / diskUnit.divisor : null,
+          write: item.write != null ? item.write / diskUnit.divisor : null,
         }));
         return (
           <ResponsiveContainer width="100%" height={240}>

@@ -1,5 +1,5 @@
 import { BiHdd } from 'react-icons/bi';
-import { SystemInfo } from '../../../shared/types';
+import { SystemInfo } from '../../../../shared/types';
 import { Translations } from '../../../lib/translations';
 
 interface DiskSpacePartialProps {
@@ -18,12 +18,12 @@ export function DiskSpacePartial({ disks, translation }: DiskSpacePartialProps) 
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {disks
-                    .reduce((uniqueDisks: typeof disks, disk) => {
-                        const exists = uniqueDisks.some(d => d.mountpoint === disk.mountpoint);
+                    .reduce((uniqueDisks: typeof disks, disk: typeof disks[0]) => {
+                        const exists = uniqueDisks.some((d: typeof disks[0]) => d.mountpoint === disk.mountpoint);
                         if (!exists) uniqueDisks.push(disk);
                         return uniqueDisks;
                     }, [])
-                    .map((disk, idx) => {
+                    .map((disk: typeof disks[0], idx: number) => {
                         return (
                             <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex flex-col gap-3">
                                 <div className="flex justify-between items-start">

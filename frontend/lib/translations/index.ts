@@ -131,7 +131,7 @@ export interface Translations {
     errorUpdatingOrder: string;
     loading: string;
     move: string;
-    newConfig: string;
+    createNew: string;
     setActive: string;
     export: string;
     title: string;
@@ -278,6 +278,8 @@ export interface Translations {
     upToDate: string;
     updating: string;
     uptime: string;
+    used: string;
+    free: string;
     currentReleaseNotes: string;
     releaseNotes: string;
     updateFrequency: string;

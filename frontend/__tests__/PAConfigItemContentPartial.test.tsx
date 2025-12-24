@@ -11,9 +11,9 @@ const mockConfig: Configuration = {
   config_data: {
     system: { cpu_type: '68040', cpu_frequency: 25, memory_size: 32, turbo: false, fpu: true },
     display: { type: 'color', width: 640, height: 480, color_depth: 8, frameskip: 0 },
-    scsi: {},
-    network: { enabled: false },
-    sound: { enabled: false },
+    scsi: { hd0: '', hd1: '', hd2: '', hd3: '', hd4: '', hd5: '', hd6: '', cd: '' },
+    network: { enabled: false, type: 'ethernet' },
+    sound: { enabled: false, output: 'sdl' },
     boot: { rom_file: '', scsi_id: 0 },
     keyboard: { type: 'us' },
     mouse: { enabled: false }

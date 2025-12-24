@@ -25,8 +25,8 @@ export function NetworkTrafficChart({ metrics, translation }: NetworkTrafficChar
         const convertedNetworkData = paddedData.map((item, index) => ({
           ...item,
           index,
-          received: item.received !== null ? item.received / networkUnit.divisor : null,
-          sent: item.sent !== null ? item.sent / networkUnit.divisor : null,
+          received: item.received != null ? item.received / networkUnit.divisor : null,
+          sent: item.sent != null ? item.sent / networkUnit.divisor : null,
         }));
         return (
           <ResponsiveContainer width="100%" height={240}>

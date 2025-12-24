@@ -1,7 +1,7 @@
 import { BiChip } from 'react-icons/bi';
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import { Metrics } from '../../../hooks/useSystemMetrics';
-import { Translations } from '../../../lib/translations';
+import { Metrics } from '../../../../hooks/useSystemMetrics';
+import { Translations } from '../../../../lib/translations';
 import { padDataToWindow } from '../../../../lib/utils';
 
 interface CpuLoadChartProps {
@@ -32,7 +32,7 @@ export function CpuLoadChart({ metrics, translation }: CpuLoadChartProps) {
       </div>
       {metrics && metrics.cpuLoad.history.length >= 1 ? (() => {
         const paddedData = padDataToWindow(metrics.cpuLoad.history, 60, { oneMin: undefined, fiveMin: undefined, fifteenMin: undefined });
-        const indexedData = paddedData.map((item, index) => ({ ...item, index }));
+        const indexedData = paddedData.map((item: any, index: number) => ({ ...item, index }));
         return (
           <ResponsiveContainer width="100%" height={240}>
             <LineChart data={indexedData}>

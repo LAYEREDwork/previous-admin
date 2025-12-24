@@ -20,7 +20,6 @@ const mockMetrics: Metrics = {
     },
     history: [
       {
-        timestamp: new Date(),
         oneMin: 1.5,
         fiveMin: 1.2,
         fifteenMin: 1.8,
