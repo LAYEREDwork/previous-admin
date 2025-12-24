@@ -9,40 +9,8 @@ import { useSystemMetrics } from './useSystemMetrics';
 // Utilities
 import { API_BASE_URL, DEFAULT_METRICS_UPDATE_FREQUENCY } from '../lib/constants';
 
-export interface SystemInfo {
-  os: string;
-  hostname: string;
-  hostModel: { name: string };
-  kernel: string;
-  uptime: number;
-  cpu: {
-    model: string;
-    cores: number;
-    speed: number;
-  };
-  memory: {
-    total: number;
-    free: number;
-    used: number;
-  };
-  gpu: string[];
-  ipAddresses: Array<{ interface: string; address: string }>;
-  disks: Array<{
-    filesystem: string;
-    size: string;
-    used: string;
-    available: string;
-    usePercent: string;
-    mountpoint: string;
-  }>;
-  platform: string;
-  arch: string;
-  monitorResolution?: {
-    width: number;
-    height: number;
-    source: string;
-  };
-}
+// Shared Types
+import type { SystemInfo } from '../../../shared/types';
 
 /**
  * Hook to manage system information and orchestration of metrics.

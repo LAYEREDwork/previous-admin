@@ -11,7 +11,7 @@
 
 ![Previous Admin Banner](.github/assets/banner.png)
 
-You can watch more screenshots [here](SCREENSHOTS.md).
+You can watch more screenshots [here](docs/SCREENSHOTS.md).
 
 ## About
 
@@ -66,7 +66,7 @@ git clone https://codeberg.org/phranck/previous-admin.git
 cd previous-admin
 
 # Run the automated setup script (requires root)
-sudo ./setup.sh
+sudo ./scripts/setup.sh
 ```
 
 The setup script will automatically:
@@ -89,7 +89,7 @@ To completely remove Previous Admin from your system:
 
 ```bash
 # Run the uninstall script (requires root)
-sudo ./uninstall.sh
+sudo ./scripts/uninstall.sh
 ```
 
 The uninstall script offers:

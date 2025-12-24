@@ -22,7 +22,7 @@
   - Backend: `npm run backend` (startet Express-Server auf Port 3001)
   - Frontend: `npm run dev` (startet Vite-Dev-Server auf Port 5173)
 - **Build für Produktion**: `npm run build` (Frontend), dann `npm run backend` (Backend)
-- **Automatisierte Installation**: `sudo ./setup.sh` installiert Abhängigkeiten, richtet systemd-Services ein und startet alles.
+- **Automatisierte Installation**: `sudo ./scripts/setup.sh` installiert Abhängigkeiten, richtet systemd-Services ein und startet alles.
 - **API-Base-URL**: Im Frontend dynamisch: `http://${window.location.hostname}:3001`
 - **Session-Secret**: In Produktion MUSS `SESSION_SECRET` als Umgebungsvariable gesetzt werden.
 
@@ -62,6 +62,6 @@
 - **`:dev-setup`**: Gib eine Schritt-für-Schritt-Anleitung zur Einrichtung der Entwicklungsumgebung für das aktuelle Projekt. Ist das Kommando von einem `>`-Symbol und einem String gefolgt, schreibe die Anleitung als Markdown in ein File mit diesem Namen im Projekt Root-Verzeichnis.
 - **`:undo`**: Mach die letzten Änderungen im Code rückgängig und kehre zum vorherigen Zustand zurueck.
 - **`:scan`**: Scanne den Code des aktuellen Projekts und aktualisiere deinen Kontext.
-- **`:badges`**: Fuehre das Script `update_badges.sh` aus.
+- **`:badges`**: Fuehre das Script `scripts/update_badges.sh` aus.
 - **`:ls`**: Gib eine Liste aller Custom Commands als Markdown aus, die mit ":" beginnen.
 - **`desc`**: Gib mir eine vollstaendige funktionale Beschreibung des Projektes, aufgeteilt nach Backend und Frontend, ohne technische Angaben als Markdown. Ist das Kommando von einem `>`-Symbol und einem String gefolgt, schreibe den Text in ein File mit diesem Namen im Projekt Root-Verzeichnis. Hat der Name ein Sprach-Suffix wie `.de.md` oder `.en.md`, schreibe die Beschreibung in der entsprechenden Sprache (Deutsch oder Englisch).

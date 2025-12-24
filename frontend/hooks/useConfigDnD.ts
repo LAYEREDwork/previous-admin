@@ -1,29 +1,33 @@
-import { useState } from 'react';
 import { database, Configuration } from '../lib/database';
 import { useNotification } from '../contexts/PANotificationContext';
 import { useLanguage } from '../contexts/PALanguageContext';
+import { useDragState } from './useDragState';
 
 /**
  * Hook to handle drag and drop logic for configurations.
+ * Uses the generic useDragState hook and adds configuration-specific logic.
  */
 export function useConfigDnD(configs: Configuration[], onRefresh: () => Promise<void>) {
-  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
-  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const { showError } = useNotification();
   const { translation } = useLanguage();
 
-  function handleDragStart(index: number) {
-    setDraggedIndex(index);
-  }
+  const {
+    draggedIndex,
+    dragOverIndex,
+    handleDragStart,
+    handleDragOver,
+    handleDragEnd: baseHandleDragEnd,
+    handleDragLeave,
+  } = useDragState();
 
-  function handleDragOver(e: React.DragEvent, index: number) {
-    e.preventDefault();
-    if (draggedIndex === null) return;
-    setDragOverIndex(index);
-  }
-
+  /**
+   * Handles the end of a drag operation with configuration-specific logic
+   */
   async function handleDragEnd() {
-    if (draggedIndex === null || dragOverIndex === null) return;
+    if (draggedIndex === null || dragOverIndex === null) {
+      baseHandleDragEnd();
+      return;
+    }
 
     try {
       const newConfigs = [...configs];
@@ -39,13 +43,8 @@ export function useConfigDnD(configs: Configuration[], onRefresh: () => Promise<
       showError(translation.configList.errorUpdatingOrder);
       await onRefresh();
     } finally {
-      setDraggedIndex(null);
-      setDragOverIndex(null);
+      baseHandleDragEnd();
     }
-  }
-
-  function handleDragLeave() {
-    setDragOverIndex(null);
   }
 
   return {
