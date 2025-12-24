@@ -17,7 +17,6 @@ import {
   updateConfigurationsOrder as dbUpdateConfigurationsOrder,
   getActiveConfiguration as dbGetActiveConfiguration,
 } from '../database/configurations';
-import { getConfigManager } from '../config/index';
 import type {
   Configuration,
   CreateConfigurationRequest,
@@ -68,14 +67,12 @@ export function createConfiguration(
  *
  * @param id - Configuration ID
  * @param request - Update request
- * @param userId - User ID updating the configuration
  * @returns Updated configuration
  * @throws Error if validation fails or not found
  */
 export function updateConfiguration(
   id: string,
-  request: UpdateConfigurationRequest,
-  userId: number
+  request: UpdateConfigurationRequest
 ): Configuration {
   // Validate if configuration exists
   const existing = dbGetConfiguration(id);
@@ -142,8 +139,7 @@ export function setActiveConfiguration(id: string, userId: number): void {
  * @param userId - User ID
  */
 export function updateConfigurationOrder(
-  orderedIds: string[],
-  userId: number
+  orderedIds: string[]
 ): void {
   dbUpdateConfigurationsOrder(orderedIds);
 }

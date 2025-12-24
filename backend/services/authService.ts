@@ -7,7 +7,6 @@
  * @module backend/services/authService
  */
 
-import bcrypt from 'bcrypt';
 import { hasAnyUsers, createUser, authenticateUser } from '../database/users';
 import type { User, CreateUserRequest, UserSessionData } from '../types';
 

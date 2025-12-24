@@ -47,4 +47,4 @@ interface ExecResult {
  * // With options
  * const { stdout } = await execAsync('git pull', { cwd: '/path/to/repo' });
  */
-export const execAsync = promisify(exec) as (command: string, options?: any) => Promise<ExecResult>;
+export const execAsync = promisify(exec) as (command: string, options?: unknown) => Promise<ExecResult>;

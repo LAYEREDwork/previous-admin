@@ -18,7 +18,7 @@ import {
   getActiveConfiguration,
   updateConfigurationOrder
 } from '../services/configurationService';
-import { ApiPaths } from '../../../shared/constants';
+import { ApiPaths } from '../../shared/constants';
 import { requireAuth } from '../middleware';
 import { AuthenticatedRequest, Configuration, PreviousConfig, UpdateConfigurationRequest } from '../types';
 
@@ -243,7 +243,7 @@ router.put(ApiPaths.Configuration.update.relative, requireAuth, (
       updates.config = typeof req.body.config_data === 'string' ? JSON.parse(req.body.config_data) : req.body.config_data;
     }
 
-    const config = updateConfiguration(id, updates, parseInt(authReq.session.userId));
+    const config = updateConfiguration(id, updates);
 
     if (!config) {
       return res.status(404).json({ error: 'Configuration not found' });
@@ -334,18 +334,12 @@ router.put(ApiPaths.Configuration.update.relative_ORDER, requireAuth, (
 ) => {
   try {
     const { orderedIds } = req.body;
-    const authReq = req as AuthenticatedRequest;
 
     if (!Array.isArray(orderedIds)) {
       return res.status(400).json({ error: 'orderedIds must be an array' });
     }
 
-    const updates = orderedIds.map((id, index) => ({
-      id,
-      sort_order: index
-    }));
-
-    updateConfigurationOrder(orderedIds, parseInt(authReq.session.userId));
+    updateConfigurationOrder(orderedIds);
 
     res.json({ success: true });
   } catch (error) {

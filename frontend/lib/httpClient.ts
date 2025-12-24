@@ -8,7 +8,6 @@
  */
 
 import { API_BASE_URL } from './constants';
-import { ApiPaths } from '../../shared/constants';
 
 /**
  * Custom API error with status code

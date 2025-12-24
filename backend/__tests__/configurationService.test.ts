@@ -4,7 +4,7 @@
  * Tests business logic in configurationService.ts
  */
 
-import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
+import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 import {
   getConfigurations,
   getConfigurationById,
@@ -15,7 +15,7 @@ import {
   updateConfigurationOrder,
   getActiveConfiguration,
 } from '../services/configurationService';
-import type { Configuration, CreateConfigurationRequest, UpdateConfigurationRequest } from '../types';
+import type { Configuration, CreateConfigurationRequest, UpdateConfigurationRequest, PreviousConfig } from '../types';
 
 // Mock the database functions
 jest.mock('../database/configurations', () => ({
@@ -76,7 +76,7 @@ describe('ConfigurationService', () => {
           system: { cpu_type: '68040', cpu_frequency: 25, memory_size: 32, turbo: false, fpu: true },
           display: { type: 'color', width: 640, height: 480, color_depth: 8, frameskip: 0 },
           scsi: { hd0: '', hd1: '', hd2: '', hd3: '', hd4: '', hd5: '', hd6: '' }
-        } as any
+        } as PreviousConfig
       };
       const mockConfig: Configuration = { id: '1', name: 'Test Config' } as Configuration;
       (dbCreateConfiguration as jest.MockedFunction<typeof dbCreateConfiguration>).mockReturnValue(mockConfig);
@@ -90,7 +90,7 @@ describe('ConfigurationService', () => {
       const request: CreateConfigurationRequest = {
         name: 'Test Config',
         description: 'Test description',
-        config_data: {} as any
+        config_data: {} as Partial<PreviousConfig>
       };
 
       expect(() => createConfiguration(request, 1)).toThrow('Invalid CPU configuration');
@@ -104,7 +104,7 @@ describe('ConfigurationService', () => {
       (dbGetConfiguration as jest.MockedFunction<typeof dbGetConfiguration>).mockReturnValue(mockConfig);
       (dbUpdateConfiguration as jest.MockedFunction<typeof dbUpdateConfiguration>).mockReturnValue(mockConfig);
 
-      const result = updateConfiguration('1', request, 1);
+      const result = updateConfiguration('1', request);
       expect(result).toEqual(mockConfig);
       expect(dbUpdateConfiguration).toHaveBeenCalledWith('1', request);
     });
@@ -112,7 +112,7 @@ describe('ConfigurationService', () => {
     it('should throw error if configuration not found', () => {
       (dbGetConfiguration as jest.MockedFunction<typeof dbGetConfiguration>).mockReturnValue(undefined);
 
-      expect(() => updateConfiguration('1', { name: 'Test' }, 1)).toThrow('Configuration not found');
+      expect(() => updateConfiguration('1', { name: 'Test' })).toThrow('Configuration not found');
     });
   });
 

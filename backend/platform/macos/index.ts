@@ -69,9 +69,9 @@ const macosModule: PlatformModule = {
           info=$(diskutil info "$v" 2>/dev/null) || continue
           uuid=$(echo "$info" | grep -E "Volume UUID|Disk / Partition UUID" | head -1 | awk -F': *' '{print $2}')
           dev=$(echo "$info" | grep "Device Node" | awk -F': *' '{print $2}')
-          key="\${uuid:-\$dev}"
+          key="\${uuid:-\$dev}" // eslint-disable-line no-useless-escape
           [ -z "$key" ] && continue
-          [[ " \${seen[@]} " == *" \$key "* ]] && continue
+          [[ " \${seen[@]} " == *" \$key "* ]] && continue // eslint-disable-line no-useless-escape
           seen+=("$key")
           echo "$info"
           echo "---DISK_END---"

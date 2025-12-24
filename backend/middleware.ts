@@ -2,14 +2,12 @@
  * Authentication and common middleware
  */
 
-import { Request, Response, NextFunction } from 'express';
+import 'express-session';
 
-declare global {
-  namespace Express {
-    interface Session {
-      username?: string;
-      userId?: number;
-    }
+declare module 'express-session' {
+  interface SessionData {
+    username?: string;
+    userId?: number;
   }
 }
 

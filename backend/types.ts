@@ -1,16 +1,9 @@
 import 'express-session';
-import { Request, Response } from 'express';
-import { Session, SessionData } from 'express-session';
 
-/**
- * Extend Express session data with custom properties
- */
-declare global {
-  namespace Express {
-    interface SessionData {
-      userId?: string;
-      username?: string;
-    }
+declare module 'express-session' {
+  interface SessionData {
+    userId?: string;
+    username?: string;
   }
 }
 
@@ -156,6 +149,6 @@ export interface WebSocketMessage {
  */
 export interface WebSocketClient {
   id: string;
-  ws: any;
+  ws: WebSocket;
   userId?: string;
 }

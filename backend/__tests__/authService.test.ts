@@ -4,7 +4,7 @@
  * Tests business logic in authService.ts
  */
 
-import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
+import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 import {
   isSetupRequired,
   performSetup,
@@ -30,21 +30,21 @@ describe('AuthService', () => {
 
   describe('isSetupRequired', () => {
     it('should return true when no users exist', () => {
-      (hasAnyUsers as any).mockReturnValue(false);
+      (hasAnyUsers as jest.MockedFunction<typeof hasAnyUsers>).mockReturnValue(false);
       expect(isSetupRequired()).toBe(true);
     });
 
     it('should return false when users exist', () => {
-      (hasAnyUsers as any).mockReturnValue(true);
+      (hasAnyUsers as jest.MockedFunction<typeof hasAnyUsers>).mockReturnValue(true);
       expect(isSetupRequired()).toBe(false);
     });
   });
 
   describe('performSetup', () => {
     it('should create user when setup is required', async () => {
-      (hasAnyUsers as any).mockReturnValue(false);
+      (hasAnyUsers as jest.MockedFunction<typeof hasAnyUsers>).mockReturnValue(false);
       const mockUser = { id: 1, username: 'testuser' };
-      (createUser as any).mockResolvedValue(mockUser);
+      (createUser as jest.MockedFunction<typeof createUser>).mockResolvedValue(mockUser);
 
       const result = await performSetup({ username: 'testuser', password: 'password' });
       expect(result).toEqual(mockUser);
@@ -52,7 +52,7 @@ describe('AuthService', () => {
     });
 
     it('should throw error when setup is not required', async () => {
-      (hasAnyUsers as any).mockReturnValue(true);
+      (hasAnyUsers as jest.MockedFunction<typeof hasAnyUsers>).mockReturnValue(true);
 
       await expect(performSetup({ username: 'testuser', password: 'password' }))
         .rejects.toThrow('Setup already completed');
@@ -65,7 +65,7 @@ describe('AuthService', () => {
         userId: '1',
         username: 'testuser'
       };
-      (authenticateUser as any).mockResolvedValue({ success: true, user: mockSessionData });
+      (authenticateUser as jest.MockedFunction<typeof authenticateUser>).mockResolvedValue({ success: true, user: mockSessionData });
 
       const result = await loginUser('testuser', 'password');
       expect(result).toEqual(mockSessionData);
@@ -73,7 +73,7 @@ describe('AuthService', () => {
     });
 
     it('should throw error on authentication failure', async () => {
-      (authenticateUser as any).mockResolvedValue({ success: false, error: 'Invalid credentials' });
+      (authenticateUser as jest.MockedFunction<typeof authenticateUser>).mockResolvedValue({ success: false, error: 'Invalid credentials' });
 
       await expect(loginUser('testuser', 'wrongpassword'))
         .rejects.toThrow('Invalid credentials');
@@ -89,7 +89,7 @@ describe('AuthService', () => {
 
   describe('getSessionInfo', () => {
     it('should return setup required when no users exist', () => {
-      (hasAnyUsers as any).mockReturnValue(false);
+      (hasAnyUsers as jest.MockedFunction<typeof hasAnyUsers>).mockReturnValue(false);
 
       const result = getSessionInfo();
       expect(result).toEqual({
@@ -99,7 +99,7 @@ describe('AuthService', () => {
     });
 
     it('should return authenticated when session exists', () => {
-      (hasAnyUsers as any).mockReturnValue(true);
+      (hasAnyUsers as jest.MockedFunction<typeof hasAnyUsers>).mockReturnValue(true);
       const sessionData: UserSessionData = { userId: '1', username: 'testuser' };
 
       const result = getSessionInfo(sessionData);
@@ -111,7 +111,7 @@ describe('AuthService', () => {
     });
 
     it('should return not authenticated when no session', () => {
-      (hasAnyUsers as any).mockReturnValue(true);
+      (hasAnyUsers as jest.MockedFunction<typeof hasAnyUsers>).mockReturnValue(true);
 
       const result = getSessionInfo();
       expect(result).toEqual({

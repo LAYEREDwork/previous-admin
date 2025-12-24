@@ -35,15 +35,13 @@ export interface PreviousConfig {
     enabled: boolean;
     type: string;
   };
-  ethernet: {
-    // Add ethernet specific fields if needed
-  };
+  ethernet: Record<string, never>;
 }
 
 /**
  * API response structure
  */
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   error?: string;

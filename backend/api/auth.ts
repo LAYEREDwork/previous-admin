@@ -8,7 +8,6 @@ import {
   isSetupRequired,
   performSetup,
   loginUser,
-  logoutUser,
   getSessionInfo
 } from '../services/authService';
 import { ApiPaths } from '../../shared/constants';
