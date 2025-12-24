@@ -27,15 +27,15 @@ type Palette = {
 };
 
 function computePalette(baseColor: string): Palette {
-  const baseHsl = parseColorToHsl(baseColor) ?? parseColorToHsl(PANeomorphPalette.BASE_COLOR);
+  const baseHsl = parseColorToHsl(baseColor) ?? parseColorToHsl(PANeomorphPalette.baseColor);
 
   if (!baseHsl) {
     return {
-      frameBackground: PANeomorphPalette.FRAME_BACKGROUND,
-      ringBackground: PANeomorphPalette.RING_BACKGROUND,
-      buttonBackground: PANeomorphPalette.BUTTON_BACKGROUND,
-      shadowDark: PANeomorphPalette.SHADOW_DARK,
-      shadowLight: PANeomorphPalette.SHADOW_LIGHT,
+      frameBackground: PANeomorphPalette.frameBackground,
+      ringBackground: PANeomorphPalette.ringBackground,
+      buttonBackground: PANeomorphPalette.buttonBackground,
+      shadowDark: PANeomorphPalette.shadowDark,
+      shadowLight: PANeomorphPalette.shadowLight,
     };
   }
 
@@ -86,7 +86,7 @@ export function PANeomorphButton({
   icon,
 
   // Sizing
-  size = PASize.MD,
+  size = PASize.md,
   shape = PANeomorphButtonShape.rect,
   fullWidth = false,
   frameWidth = 2,
@@ -107,11 +107,11 @@ export function PANeomorphButton({
   color,
   baseColor,
 }: PANeomorphButtonProps) {
-  const [palette, setPalette] = useState<Palette>(() => computePalette(baseColor || PANeomorphPalette.BASE_COLOR));
+  const [palette, setPalette] = useState<Palette>(() => computePalette(baseColor || PANeomorphPalette.baseColor));
   const controlSize = useControlSize(size);
 
   useEffect(() => {
-    setPalette(computePalette(baseColor || PANeomorphPalette.BASE_COLOR));
+    setPalette(computePalette(baseColor || PANeomorphPalette.baseColor));
   }, [baseColor]);
 
   // Map size to height in px
@@ -144,7 +144,7 @@ export function PANeomorphButton({
   const isSubmitWithColor = buttonType === PANeomorphButtonType.submit && color;
   const contentClass = active
     ? (activeColor ? '' : 'text-gray-100')
-    : isSubmitWithColor ? '' : PANeomorphPalette.TEXT_COLOR;
+    : isSubmitWithColor ? '' : PANeomorphPalette.textColor;
   const contentStyle: React.CSSProperties = active
     ? {
         color: activeColor || undefined,

@@ -2,7 +2,7 @@ import { Configuration, database } from '../lib/database';
 import { useNotification } from '../contexts/PANotificationContext';
 import { useLanguage } from '../contexts/PALanguageContext';
 import { useConfig } from '../contexts/PAConfigContext';
-import { DEFAULT_CONFIG } from '../lib/constants';
+import { defaultConfig } from '../lib/constants';
 import { downloadFile, generateConfigFilename } from '../lib/utils';
 
 /**
@@ -16,7 +16,7 @@ export function useConfigActions(onRefreshList: () => Promise<void>) {
   async function createConfig(name: string, description: string, isFirst: boolean) {
     if (!name.trim()) return;
     try {
-      await database.createConfiguration(name, description, DEFAULT_CONFIG, isFirst);
+      await database.createConfiguration(name, description, defaultConfig, isFirst);
       await onRefreshList();
       await refreshConfig();
       return true;

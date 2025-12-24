@@ -9,7 +9,7 @@
 
 import type { PreviousConfig } from './types';
 import { http, ApiError } from './httpClient';
-import { ApiPaths } from '../../shared/constants';
+import { apiPaths } from '../../shared/constants';
 import { wsUrl } from './constants';
 
 // Re-export ApiError for consumers
@@ -64,7 +64,7 @@ interface UpdateConfigResponse {
  */
 export async function checkSetupRequired(): Promise<boolean> {
   try {
-    const data = await http.get<SetupRequiredResponse>(ApiPaths.Auth.setupRequired.full);
+    const data = await http.get<SetupRequiredResponse>(apiPaths.Auth.setupRequired.full);
     return data.setupRequired;
   } catch {
     return false;
@@ -91,7 +91,7 @@ export const api = {
    * @throws {ApiError} On setup failure
    */
   async setup(username: string, password: string): Promise<SetupResponse> {
-    return http.post<SetupResponse>(ApiPaths.Auth.setup.full, { username, password });
+    return http.post<SetupResponse>(apiPaths.Auth.setup.full, { username, password });
   },
 
   /**
@@ -105,7 +105,7 @@ export const api = {
    * @throws {ApiError} On authentication failure
    */
   async login(username: string, password: string): Promise<LoginResponse> {
-    return http.post<LoginResponse>(ApiPaths.Auth.login.full, { username, password });
+    return http.post<LoginResponse>(apiPaths.Auth.login.full, { username, password });
   },
 
   /**
@@ -117,7 +117,7 @@ export const api = {
    * @throws {ApiError} On logout failure
    */
   async logout(): Promise<LogoutResponse> {
-    return http.post<LogoutResponse>(ApiPaths.Auth.logout.full);
+    return http.post<LogoutResponse>(apiPaths.Auth.logout.full);
   },
 
   /**
@@ -130,7 +130,7 @@ export const api = {
    * @throws {ApiError} On network failure
    */
   async getSession(): Promise<SessionResponse> {
-    return http.get<SessionResponse>(ApiPaths.Auth.session.full);
+    return http.get<SessionResponse>(apiPaths.Auth.session.full);
   },
 
   /**
@@ -143,7 +143,7 @@ export const api = {
    * @throws {ApiError} If not authenticated or retrieval fails
    */
   async getConfig(): Promise<ConfigResponse> {
-    return http.get<ConfigResponse>(ApiPaths.Config.get.full);
+    return http.get<ConfigResponse>(apiPaths.Config.get.full);
   },
 
   /**
@@ -157,7 +157,7 @@ export const api = {
    * @throws {ApiError} If not authenticated or update fails
    */
   async updateConfig(config: PreviousConfig): Promise<UpdateConfigResponse> {
-    return http.put<UpdateConfigResponse>(ApiPaths.Config.get.full, { config });
+    return http.put<UpdateConfigResponse>(apiPaths.Config.get.full, { config });
   },
 };
 

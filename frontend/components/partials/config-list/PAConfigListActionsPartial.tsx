@@ -29,7 +29,7 @@ export function ConfigListActionsPartial({
   translation
 }: ConfigListActionsPartialProps) {
   const iconSize = isMobile ? 20 : 24;
-  const buttonSize = isMobile ? PASize.XS : PASize.SM;
+  const buttonSize = isMobile ? PASize.xs : PASize.sm;
 
   return (
     <div className="flex items-center justify-end gap-2 mt-2 sm:mt-0">
