@@ -116,6 +116,11 @@ console.log(`✅ Database initialized: ${DATABASE_PATH}`);
  * Get database connection instance
  */
 export function getDatabase(): any {
+  // Check if database file exists, if not reinitialize
+  if (!existsSync(DATABASE_PATH)) {
+    console.log('Database file missing, reinitializing...');
+    reinitializeDatabase();
+  }
   return databaseConnection;
 }
 

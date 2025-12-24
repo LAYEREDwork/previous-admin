@@ -10,7 +10,7 @@ import {
   loginUser,
   getSessionInfo
 } from '../services/authService';
-import { ApiPaths } from '../../shared/constants';
+import { apiPaths } from '../../shared/constants';
 import { AuthenticatedRequest } from '../types';
 import { UserSessionData } from '../types';
 
@@ -67,7 +67,7 @@ interface ErrorResponse {
  * const res = await fetch('/api/auth/setup-required');
  * const { setupRequired } = await res.json();
  */
-router.get(ApiPaths.Auth.setupRequired.relative, (_req: Request, res: Response<SetupRequiredResponse>) => {
+router.get(apiPaths.Auth.setupRequired.relative, (_req: Request, res: Response<SetupRequiredResponse>) => {
   res.json({ setupRequired: isSetupRequired() });
 });
 
@@ -95,7 +95,7 @@ router.get(ApiPaths.Auth.setupRequired.relative, (_req: Request, res: Response<S
  *   body: JSON.stringify({ username: 'admin', password: 'secure123' })
  * });
  */
-router.post(ApiPaths.Auth.setup.relative, async (
+router.post(apiPaths.Auth.setup.relative, async (
   req: Request<object, SetupResponse | ErrorResponse, SetupRequestBody>,
   res: Response<SetupResponse | ErrorResponse>
 ) => {
@@ -143,7 +143,7 @@ router.post(ApiPaths.Auth.setup.relative, async (
  *   body: JSON.stringify({ username: 'admin', password: 'password' })
  * });
  */
-router.post(ApiPaths.Auth.login.relative, async (
+router.post(apiPaths.Auth.login.relative, async (
   req: Request<object, LoginResponse | ErrorResponse, LoginRequestBody>,
   res: Response<LoginResponse | ErrorResponse>
 ) => {
@@ -179,7 +179,7 @@ router.post(ApiPaths.Auth.login.relative, async (
  * @example
  * const res = await fetch('/api/auth/logout', { method: 'POST' });
  */
-router.post(ApiPaths.Auth.logout.relative, (
+router.post(apiPaths.Auth.logout.relative, (
   req: Request,
   res: Response<LogoutResponse | ErrorResponse>
 ) => {
@@ -209,7 +209,7 @@ router.post(ApiPaths.Auth.logout.relative, (
  * const res = await fetch('/api/auth/session');
  * const { authenticated, username, setupRequired } = await res.json();
  */
-router.get(ApiPaths.Auth.session.relative, (
+router.get(apiPaths.Auth.session.relative, (
   req: Request,
   res: Response<SessionResponse>
 ) => {

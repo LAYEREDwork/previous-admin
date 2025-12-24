@@ -10,7 +10,7 @@
 import bcrypt from 'bcrypt';
 import { PASSWORD_CONFIG, VALIDATION_PATTERNS, ERROR_MESSAGES } from '../constants';
 import type { User, CreateUserRequest, UserSessionData } from '../types';
-import { getDatabase } from './core';
+import { getDatabase, reinitializeDatabase } from './core';
 
 /**
  * Check if any users exist in database
@@ -18,9 +18,18 @@ import { getDatabase } from './core';
  * @returns true if at least one user exists
  */
 export function hasAnyUsers(): boolean {
-  const database = getDatabase();
-  const result = database.prepare('SELECT COUNT(*) as count FROM users').get();
-  return (result as { count: number }).count > 0;
+  try {
+    const database = getDatabase();
+    const result = database.prepare('SELECT COUNT(*) as count FROM users').get();
+    return (result as { count: number }).count > 0;
+  } catch (error) {
+    console.warn('Database query failed, reinitializing database:', error);
+    reinitializeDatabase();
+    // Try again with fresh connection
+    const database = getDatabase();
+    const result = database.prepare('SELECT COUNT(*) as count FROM users').get();
+    return (result as { count: number }).count > 0;
+  }
 }
 
 /**

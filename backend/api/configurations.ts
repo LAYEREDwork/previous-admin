@@ -18,7 +18,7 @@ import {
   getActiveConfiguration,
   updateConfigurationOrder
 } from '../services/configurationService';
-import { ApiPaths } from '../../shared/constants';
+import { apiPaths } from '../../shared/constants';
 import { requireAuth } from '../middleware';
 import { AuthenticatedRequest, Configuration, PreviousConfig, UpdateConfigurationRequest } from '../types';
 
@@ -78,7 +78,7 @@ interface UpdateOrderBody {
  * @authentication required
  * @returns {Array} Array of configuration objects
  */
-router.get(ApiPaths.Configuration.list.relative, requireAuth, (
+router.get(apiPaths.Configuration.list.relative, requireAuth, (
   _req: Request,
   res: Response<ConfigurationsListResponse | ErrorResponse>
 ) => {
@@ -111,7 +111,7 @@ router.get(ApiPaths.Configuration.list.relative, requireAuth, (
  * @authentication required
  * @returns {Object|null} Active configuration or null
  */
-router.get(ApiPaths.Configuration.getActive.relative, requireAuth, (
+router.get(apiPaths.Configuration.getActive.relative, requireAuth, (
   _req: Request,
   res: Response<ConfigurationResponse | ErrorResponse>
 ) => {
@@ -150,7 +150,7 @@ router.get(ApiPaths.Configuration.getActive.relative, requireAuth, (
  * @param {string} id - Configuration ID
  * @returns {Object} Configuration object
  */
-router.get(ApiPaths.Configuration.getById.relative, requireAuth, (
+router.get(apiPaths.Configuration.getById.relative, requireAuth, (
   req: Request<{ id: string }>,
   res: Response<ConfigurationResponse | ErrorResponse>
 ) => {
@@ -188,7 +188,7 @@ router.get(ApiPaths.Configuration.getById.relative, requireAuth, (
  * @body {Object} data - Configuration data
  * @returns {Object} Created configuration
  */
-router.post(ApiPaths.Configuration.create.relative, requireAuth, (
+router.post(apiPaths.Configuration.create.relative, requireAuth, (
   req: Request<object, ConfigurationResponse | ErrorResponse, CreateConfigurationBody>,
   res: Response<ConfigurationResponse | ErrorResponse>
 ) => {
@@ -228,7 +228,7 @@ router.post(ApiPaths.Configuration.create.relative, requireAuth, (
  * @body {Object} updates - Fields to update
  * @returns {Object} Updated configuration
  */
-router.put(ApiPaths.Configuration.update.relative, requireAuth, (
+router.put(apiPaths.Configuration.update.relative, requireAuth, (
   req: Request<{ id: string }, ConfigurationResponse | ErrorResponse, UpdateConfigurationBody>,
   res: Response<ConfigurationResponse | ErrorResponse>
 ) => {
@@ -270,7 +270,7 @@ router.put(ApiPaths.Configuration.update.relative, requireAuth, (
  * @param {string} id - Configuration ID
  * @returns {Object} Success message
  */
-router.delete(ApiPaths.Configuration.delete.relative, requireAuth, (
+router.delete(apiPaths.Configuration.delete.relative, requireAuth, (
   req: Request<{ id: string }>,
   res: Response<SuccessResponse | ErrorResponse>
 ) => {
@@ -293,7 +293,7 @@ router.delete(ApiPaths.Configuration.delete.relative, requireAuth, (
  * @param {string} id - Configuration ID
  * @returns {Object} Activated configuration
  */
-router.post(ApiPaths.Configuration.activate.relative, requireAuth, (
+router.post(apiPaths.Configuration.activate.relative, requireAuth, (
   req: Request<{ id: string }>,
   res: Response<ConfigurationResponse | ErrorResponse>
 ) => {
@@ -328,7 +328,7 @@ router.post(ApiPaths.Configuration.activate.relative, requireAuth, (
  * @body {Array<string>} orderedIds - Configuration IDs in desired order
  * @returns {Object} Success message
  */
-router.put(ApiPaths.Configuration.update.relative_ORDER, requireAuth, (
+router.put(apiPaths.Configuration.updateOrder.relative, requireAuth, (
   req: Request<object, SuccessResponse | ErrorResponse, UpdateOrderBody>,
   res: Response<SuccessResponse | ErrorResponse>
 ) => {
@@ -355,7 +355,7 @@ router.put(ApiPaths.Configuration.update.relative_ORDER, requireAuth, (
  * @authentication required
  * @returns {Object} Success message
  */
-router.post(ApiPaths.Configuration.deactivateAll.relative, requireAuth, (
+router.post(apiPaths.Configuration.deactivateAll.relative, requireAuth, (
   req: Request,
   res: Response<SuccessResponse | ErrorResponse>
 ) => {

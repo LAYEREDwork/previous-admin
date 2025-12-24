@@ -15,7 +15,7 @@
 
 import express from 'express';
 import { getConfigManager, getDefaultConfig, PreviousConfig } from '../config/index';
-import { ApiPaths } from '../../../shared/constants';
+import { apiPaths } from '../../shared/constants';
 import { requireAuth } from '../middleware';
 import { AuthenticatedRequest, TypedResponse } from '../types';
 
@@ -45,7 +45,7 @@ const configManager = getConfigManager();
  * });
  * const { config } = await res.json();
  */
-router.get(ApiPaths.Config.get.relative, requireAuth, async (req: AuthenticatedRequest, res: TypedResponse<{ config: PreviousConfig }>) => {
+router.get(apiPaths.Config.get.relative, requireAuth, async (req: AuthenticatedRequest, res: TypedResponse<{ config: PreviousConfig }>) => {
   try {
     let config = await configManager.readConfig();
 
@@ -89,7 +89,7 @@ router.get(ApiPaths.Config.get.relative, requireAuth, async (req: AuthenticatedR
  * });
  * const { success, config } = await res.json();
  */
-router.put(ApiPaths.Config.put.relative, requireAuth, async (req: AuthenticatedRequest, res: TypedResponse<{ success: boolean; config: PreviousConfig }>) => {
+router.put(apiPaths.Config.put.relative, requireAuth, async (req: AuthenticatedRequest, res: TypedResponse<{ success: boolean; config: PreviousConfig }>) => {
   try {
     const { config }: { config: PreviousConfig } = req.body;
 

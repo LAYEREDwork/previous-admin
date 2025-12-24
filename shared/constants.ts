@@ -48,6 +48,11 @@ export const apiPaths = {
 } as const;
 
 /**
+ * Alias for backward compatibility
+ */
+export const ApiPaths = apiPaths;
+
+/**
  * Type definitions for endpoint paths
  */
 export type AuthEndpoint = typeof apiPaths.Auth[keyof typeof apiPaths.Auth]['relative'];

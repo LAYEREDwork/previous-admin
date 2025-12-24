@@ -10,7 +10,7 @@
 import express from 'express';
 import { exportDatabase, importDatabase, getDatabaseStatistics, hasAnyUsers } from '../database';
 import { reinitializeDatabase } from '../database/core';
-import { ApiPaths } from '../../../shared/constants';
+import { apiPaths } from '../../shared/constants';
 import { requireAuth } from '../middleware';
 import { AuthenticatedRequest, TypedResponse } from '../types';
 
@@ -23,7 +23,7 @@ const router = express.Router();
  * @authentication required
  * @returns {Object} Complete database dump
  */
-router.get(ApiPaths.Database.export.relative, requireAuth, (req: AuthenticatedRequest, res: TypedResponse<any>) => {
+router.get(apiPaths.Database.export.relative, requireAuth, (req: AuthenticatedRequest, res: TypedResponse<any>) => {
   try {
     const dump = exportDatabase();
     res.json(dump);
@@ -42,7 +42,7 @@ router.get(ApiPaths.Database.export.relative, requireAuth, (req: AuthenticatedRe
  * @body {boolean} merge - If true, merge with existing data; if false, replace
  * @returns {Object} Import statistics
  */
-router.post(ApiPaths.Database.import.relative, requireAuth, (req: AuthenticatedRequest, res: TypedResponse<{ success: boolean }>) => {
+router.post(apiPaths.Database.import.relative, requireAuth, (req: AuthenticatedRequest, res: TypedResponse<{ success: boolean }>) => {
   try {
     const { dump, merge = false } = req.body;
 
@@ -79,7 +79,7 @@ router.post(ApiPaths.Database.import.relative, requireAuth, (req: AuthenticatedR
  * @authentication required
  * @returns {Object} Database statistics
  */
-router.get(ApiPaths.Database.stats.relative, requireAuth, (req: AuthenticatedRequest, res: TypedResponse<any>) => {
+router.get(apiPaths.Database.stats.relative, requireAuth, (req: AuthenticatedRequest, res: TypedResponse<any>) => {
   try {
     const stats = getDatabaseStatistics();
     res.json(stats);
@@ -99,7 +99,7 @@ router.get(ApiPaths.Database.stats.relative, requireAuth, (req: AuthenticatedReq
  * @body {Object} dump - Database dump object
  * @returns {Object} Import statistics
  */
-router.post(ApiPaths.Database.setupImport.relative, (req: express.Request, res: express.Response) => {
+router.post(apiPaths.Database.setupImport.relative, (req: express.Request, res: express.Response) => {
   try {
     if (hasAnyUsers()) {
       return res.status(400).json({
