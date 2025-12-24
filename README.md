@@ -23,22 +23,22 @@ The application runs as a self-contained web service on your system (Linux or ma
 
 ## Features
 
-### 🔐 **Secure Authentication**
+### Secure Authentication
 On first launch, you'll be prompted to create an admin account. This admin user is used to securely access and manage all configurations.
 
-### ⚙️ **Configuration Management**
+### Configuration Management
 - Create and organize multiple emulator configurations
 - Edit configurations with a user-friendly interface
 - Set active configuration for the Previous emulator
 - Drag-and-drop reordering of configurations
 
-### 📤 **Import/Export**
+### Import/Export
 - Export individual configurations or complete database backups
 - Import configurations from JSON files
 - Sync configurations directly with the Previous emulator config file
 - Backup and restore your entire configuration database
 
-### 🌍 **Multi-Language Support**
+### Multi-Language Support
 Full internationalization support for:
 - Deutsch (German)
 - English
@@ -46,11 +46,11 @@ Full internationalization support for:
 - Français (French)
 - Italiano (Italian)
 
-### 🎨 **Modern UI/UX**
+### Modern UI/UX
 - Clean, responsive design optimized for desktop and mobile
 - Dark mode support with NeXT-inspired aesthetics
 
-### 📊 **System Information**
+### System Information
 - Real-time system monitoring (CPU, memory, disk usage)
 - Network interface information
 - System uptime and kernel details
@@ -148,7 +148,7 @@ npm run test       # Run all tests (frontend + backend)
 
 ### Project Structure
 
-```
+```text
 previous-admin/
 ├── backend/                    # Express TypeScript server
 │   ├── api/                    # REST API endpoints
