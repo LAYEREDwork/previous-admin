@@ -11,7 +11,7 @@ import {
   logoutUser,
   getSessionInfo
 } from '../services/authService';
-import { Endpoints } from '../../../shared/constants';
+import { ApiPaths } from '../../../shared/constants';
 import { AuthenticatedRequest } from '../types';
 import { UserSessionData } from '../types';
 
@@ -68,7 +68,7 @@ interface ErrorResponse {
  * const res = await fetch('/api/auth/setup-required');
  * const { setupRequired } = await res.json();
  */
-router.get(Endpoints.Auth.setupRequired, (_req: Request, res: Response<SetupRequiredResponse>) => {
+router.get(ApiPaths.Auth.setupRequired.relative, (_req: Request, res: Response<SetupRequiredResponse>) => {
   res.json({ setupRequired: isSetupRequired() });
 });
 
@@ -96,7 +96,7 @@ router.get(Endpoints.Auth.setupRequired, (_req: Request, res: Response<SetupRequ
  *   body: JSON.stringify({ username: 'admin', password: 'secure123' })
  * });
  */
-router.post(Endpoints.Auth.setup, async (
+router.post(ApiPaths.Auth.setup.relative, async (
   req: Request<object, SetupResponse | ErrorResponse, SetupRequestBody>,
   res: Response<SetupResponse | ErrorResponse>
 ) => {
@@ -144,7 +144,7 @@ router.post(Endpoints.Auth.setup, async (
  *   body: JSON.stringify({ username: 'admin', password: 'password' })
  * });
  */
-router.post(Endpoints.Auth.login, async (
+router.post(ApiPaths.Auth.login.relative, async (
   req: Request<object, LoginResponse | ErrorResponse, LoginRequestBody>,
   res: Response<LoginResponse | ErrorResponse>
 ) => {
@@ -180,7 +180,7 @@ router.post(Endpoints.Auth.login, async (
  * @example
  * const res = await fetch('/api/auth/logout', { method: 'POST' });
  */
-router.post(Endpoints.Auth.logout, (
+router.post(ApiPaths.Auth.logout.relative, (
   req: Request,
   res: Response<LogoutResponse | ErrorResponse>
 ) => {
@@ -210,7 +210,7 @@ router.post(Endpoints.Auth.logout, (
  * const res = await fetch('/api/auth/session');
  * const { authenticated, username, setupRequired } = await res.json();
  */
-router.get(Endpoints.Auth.session, (
+router.get(ApiPaths.Auth.session.relative, (
   req: Request,
   res: Response<SessionResponse>
 ) => {

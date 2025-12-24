@@ -15,7 +15,7 @@
 
 import express from 'express';
 import { getConfigManager, getDefaultConfig, PreviousConfig } from '../config/index';
-import { Endpoints } from '../../../shared/constants';
+import { ApiPaths } from '../../../shared/constants';
 import { requireAuth } from '../middleware';
 
 const router = express.Router();
@@ -44,7 +44,7 @@ const configManager = getConfigManager();
  * });
  * const { config } = await res.json();
  */
-router.get(Endpoints.Config.get, requireAuth, async (req: any, res: any) => {
+router.get(ApiPaths.Config.get.relative, requireAuth, async (req: any, res: any) => {
   try {
     let config = await configManager.readConfig();
 
@@ -88,7 +88,7 @@ router.get(Endpoints.Config.get, requireAuth, async (req: any, res: any) => {
  * });
  * const { success, config } = await res.json();
  */
-router.put(Endpoints.Config.put, requireAuth, async (req: any, res: any) => {
+router.put(ApiPaths.Config.put.relative, requireAuth, async (req: any, res: any) => {
   try {
     const { config }: { config: PreviousConfig } = req.body;
 

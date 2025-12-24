@@ -8,7 +8,7 @@
  */
 
 import { API_BASE_URL } from './constants';
-import { ApiEndpoints } from '../../shared/constants';
+import { ApiPaths } from '../../shared/constants';
 
 /**
  * Custom API error with status code
@@ -65,10 +65,10 @@ function getErrorType(statusCode: number): ApiError['type'] {
  *
  * @example
  * // GET request
- * const data = await request(ApiEndpoints.AUTH_SESSION);
+ * const data = await request(ApiPaths.Auth.session.full);
  *
  * // POST request with body
- * const result = await request(ApiEndpoints.AUTH_LOGIN, {
+ * const result = await request(ApiPaths.Auth.login.full, {
  *   method: 'POST',
  *   body: { username: 'admin', password: 'secret' }
  * });

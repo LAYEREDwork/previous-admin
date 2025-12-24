@@ -10,7 +10,7 @@
 import express from 'express';
 import { exportDatabase, importDatabase, getDatabaseStatistics, hasAnyUsers } from '../database';
 import { reinitializeDatabase } from '../database/core';
-import { Endpoints } from '../../../shared/constants';
+import { ApiPaths } from '../../../shared/constants';
 import { requireAuth } from '../middleware';
 
 const router = express.Router();
@@ -22,7 +22,7 @@ const router = express.Router();
  * @authentication required
  * @returns {Object} Complete database dump
  */
-router.get(Endpoints.Database.export, requireAuth, (req: any, res: any) => {
+router.get(ApiPaths.Database.export.relative, requireAuth, (req: any, res: any) => {
   try {
     const dump = exportDatabase();
     res.json(dump);
@@ -41,7 +41,7 @@ router.get(Endpoints.Database.export, requireAuth, (req: any, res: any) => {
  * @body {boolean} merge - If true, merge with existing data; if false, replace
  * @returns {Object} Import statistics
  */
-router.post(Endpoints.Database.import, requireAuth, (req: any, res: any) => {
+router.post(ApiPaths.Database.import.relative, requireAuth, (req: any, res: any) => {
   try {
     const { dump, merge = false } = req.body;
 
@@ -78,7 +78,7 @@ router.post(Endpoints.Database.import, requireAuth, (req: any, res: any) => {
  * @authentication required
  * @returns {Object} Database statistics
  */
-router.get(Endpoints.Database.stats, requireAuth, (req: any, res: any) => {
+router.get(ApiPaths.Database.stats.relative, requireAuth, (req: any, res: any) => {
   try {
     const stats = getDatabaseStatistics();
     res.json(stats);
@@ -98,7 +98,7 @@ router.get(Endpoints.Database.stats, requireAuth, (req: any, res: any) => {
  * @body {Object} dump - Database dump object
  * @returns {Object} Import statistics
  */
-router.post(Endpoints.Database.setupImport, (req: any, res: any) => {
+router.post(ApiPaths.Database.setupImport.relative, (req: any, res: any) => {
   try {
     if (hasAnyUsers()) {
       return res.status(400).json({
