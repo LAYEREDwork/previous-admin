@@ -43,7 +43,7 @@ describe('AuthService', () => {
   describe('performSetup', () => {
     it('should create user when setup is required', async () => {
       (hasAnyUsers as jest.MockedFunction<typeof hasAnyUsers>).mockReturnValue(false);
-      const mockUser = { id: 1, username: 'testuser' };
+      const mockUser = { id: '1', username: 'testuser', password_hash: 'hash', email: null, created_at: '2023-01-01', last_login: null };
       (createUser as jest.MockedFunction<typeof createUser>).mockResolvedValue(mockUser);
 
       const result = await performSetup({ username: 'testuser', password: 'password' });

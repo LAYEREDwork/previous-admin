@@ -90,7 +90,16 @@ describe('ConfigurationService', () => {
       const request: CreateConfigurationRequest = {
         name: 'Test Config',
         description: 'Test description',
-        config_data: {} as Partial<PreviousConfig>
+        config_data: {
+          system: { cpu_type: '', cpu_frequency: 0, memory_size: 0, turbo: false, fpu: false },
+          display: { type: '', width: 0, height: 0, color_depth: 0, frameskip: 0 },
+          scsi: { hd0: '', hd1: '', hd2: '', hd3: '', hd4: '', hd5: '', hd6: '', cd: '' },
+          network: { enabled: false, type: '' },
+          sound: { enabled: false, output: '' },
+          boot: { rom_file: '', scsi_id: 0 },
+          keyboard: { type: '' },
+          mouse: { enabled: false }
+        }
       };
 
       expect(() => createConfiguration(request, 1)).toThrow('Invalid CPU configuration');
@@ -154,7 +163,7 @@ describe('ConfigurationService', () => {
   describe('updateConfigurationOrder', () => {
     it('should update configuration order', () => {
       const orderedIds = ['1', '2'];
-      updateConfigurationOrder(orderedIds, 1);
+      updateConfigurationOrder(orderedIds);
       expect(dbUpdateConfigurationsOrder).toHaveBeenCalledWith(orderedIds);
     });
   });
