@@ -52,7 +52,7 @@ export function ConfigListItemPartial({
   // Skeuomorphic shadow effects for frame only
   const frameShadow = getFrameShadow();
   const isDarkMode = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
-  const backgroundStyles = getConfigItemBackground(isDragged, isActive, isDarkMode);
+  const backgroundStyles = getConfigItemBackground(isDragged, isActive ?? false, isDarkMode);
 
   return (
     <div
@@ -62,8 +62,8 @@ export function ConfigListItemPartial({
           : 'border-gray-200 dark:border-next-border hover:border-gray-300 dark:hover:border-gray-500'
       } ${isDragOver ? 'border-primary-500' : ''}`}
       style={{
-        boxShadow: getConfigItemBoxShadow(isActive, frameShadow),
-        transition: getConfigItemTransition(isActive),
+        boxShadow: getConfigItemBoxShadow(isActive ?? false, frameShadow),
+        transition: getConfigItemTransition(isActive ?? false),
         ...backgroundStyles,
         // Ensure slight contrast to site background when not active/dragged
         ...(backgroundStyles.backgroundColor ? { color: 'inherit' } : {}),

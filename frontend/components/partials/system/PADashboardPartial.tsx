@@ -1,6 +1,6 @@
 import { PASegmentedControl } from '../../controls/PASegmentedControl';
 import { METRICS_UPDATE_FREQUENCIES } from '../../../lib/constants';
-import { Metrics } from '../../../hooks/useSystem';
+import { Metrics } from '../../../hooks/useSystemMetrics';
 import { Translations } from '../../../lib/translations';
 import { CpuLoadChart } from './charts/PACpuLoadChart';
 import { MemoryChart } from './charts/PAMemoryChart';

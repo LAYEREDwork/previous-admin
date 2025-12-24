@@ -10,7 +10,7 @@ interface ConfigImportExportPartialProps {
     importConfig: (e: React.ChangeEvent<HTMLInputElement>) => void;
     exportConfig: () => void;
     exportAllConfigs: () => void;
-    controlSize: 'sm' | 'md' | 'lg';
+    controlSize: 'xs' | 'sm' | 'md' | 'lg';
     translation: Translations;
 }
 

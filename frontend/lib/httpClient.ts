@@ -8,6 +8,7 @@
  */
 
 import { API_BASE_URL } from './constants';
+import { ApiPaths } from '../../shared/constants';
 
 /**
  * Custom API error with status code
@@ -57,7 +58,7 @@ function getErrorType(statusCode: number): ApiError['type'] {
 /**
  * Make an HTTP request to the API
  *
- * @param endpoint - API endpoint from ApiEndpoints enum
+ * @param endpoint - API endpoint from ApiPaths object
  * @param options - Request options (method, body, headers)
  * @returns Promise resolving to parsed JSON response
  * @throws {ApiError} On non-OK response or network failure
@@ -73,7 +74,7 @@ function getErrorType(statusCode: number): ApiError['type'] {
  * });
  */
 export async function request<TResponse, TBody = unknown>(
-  endpoint: ApiEndpoints | string,
+  endpoint: ApiPaths | string,
   options: RequestOptions<TBody> = {}
 ): Promise<TResponse> {
   const { method = 'GET', body, headers = {} } = options;
@@ -129,35 +130,35 @@ export const http = {
   /**
    * Make a GET request
    */
-  get<T>(endpoint: ApiEndpoints | string): Promise<T> {
+  get<T>(endpoint: ApiPaths | string): Promise<T> {
     return request<T>(endpoint, { method: 'GET' });
   },
 
   /**
    * Make a POST request
    */
-  post<T, B = unknown>(endpoint: ApiEndpoints | string, body?: B): Promise<T> {
+  post<T, B = unknown>(endpoint: ApiPaths | string, body?: B): Promise<T> {
     return request<T, B>(endpoint, { method: 'POST', body });
   },
 
   /**
    * Make a PUT request
    */
-  put<T, B = unknown>(endpoint: ApiEndpoints | string, body?: B): Promise<T> {
+  put<T, B = unknown>(endpoint: ApiPaths | string, body?: B): Promise<T> {
     return request<T, B>(endpoint, { method: 'PUT', body });
   },
 
   /**
    * Make a DELETE request
    */
-  delete<T>(endpoint: ApiEndpoints | string): Promise<T> {
+  delete<T>(endpoint: ApiPaths | string): Promise<T> {
     return request<T>(endpoint, { method: 'DELETE' });
   },
 
   /**
    * Make a PATCH request
    */
-  patch<T, B = unknown>(endpoint: ApiEndpoints | string, body?: B): Promise<T> {
+  patch<T, B = unknown>(endpoint: ApiPaths | string, body?: B): Promise<T> {
     return request<T, B>(endpoint, { method: 'PATCH', body });
   },
 };

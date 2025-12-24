@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { PAButton } from './PAButton';
 import { ButtonProps as RSuiteButtonProps } from 'rsuite';
 

@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { ConfigItemControls } from '../components/partials/config-list/PAConfigItemControlsPartial';
-import type { Translations } from '../../../lib/translations';
+import type { Translations } from '../lib/translations';
 
 const mockTranslation: Translations = {
   configList: {

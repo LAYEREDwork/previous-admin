@@ -46,13 +46,13 @@ export function NewConfigModalPartial({
                 <div className="space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            {translation.configEditor.configName}
+                            {translation.configEditor.configurationNameLabel}
                         </label>
                         <Input
                             inputRef={nameRef}
                             value={name}
                             onChange={setName}
-                            placeholder={translation.configEditor.configNamePlaceholder}
+                            placeholder={translation.configEditor.configurationNamePlaceholder}
                             size={controlSize}
                         />
                     </div>
@@ -74,7 +74,6 @@ export function NewConfigModalPartial({
             <PAModal.Footer>
                 <PANeomorphButton
                     onClick={onClose}
-                    containerBg="dark"
                     size={controlSize}
                 >
                     {translation.common.cancel}
@@ -83,7 +82,6 @@ export function NewConfigModalPartial({
                     onClick={onSave}
                     disabled={!name.trim()}
                     active={!!name.trim()}
-                    containerBg="dark"
                     size={controlSize}
                 >
                     {translation.common.save}

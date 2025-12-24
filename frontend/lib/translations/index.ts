@@ -251,6 +251,7 @@ export interface Translations {
     gpu: string;
     host: string;
     hostInfo: string;
+    hardwareInfo: string;
     hours: string;
     ipAddresses: string;
     kernel: string;

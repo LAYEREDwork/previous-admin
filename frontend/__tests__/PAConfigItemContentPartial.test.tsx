@@ -8,9 +8,21 @@ const mockConfig: Configuration = {
   id: 'test-id',
   name: 'Test Configuration',
   description: 'Test Description',
-  config: {},
-  createdAt: new Date(),
-  updatedAt: new Date(),
+  config_data: {
+    system: { cpu_type: '68040', cpu_frequency: 25, memory_size: 32, turbo: false, fpu: true },
+    display: { type: 'color', width: 640, height: 480, color_depth: 8, frameskip: 0 },
+    scsi: {},
+    network: { enabled: false },
+    sound: { enabled: false },
+    boot: { rom_file: '', scsi_id: 0 },
+    keyboard: { type: 'us' },
+    mouse: { enabled: false }
+  },
+  is_active: false,
+  sort_order: 1,
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString(),
+  created_by: null,
 };
 
 const mockTranslation: Translations = {

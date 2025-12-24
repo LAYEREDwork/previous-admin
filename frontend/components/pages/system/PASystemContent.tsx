@@ -16,7 +16,7 @@ interface SystemContentProps {
   handleReset: () => void;
   updateFrequency: number;
   setUpdateFrequency: (freq: number) => void;
-  controlSize: string;
+  controlSize: 'xs' | 'sm' | 'md' | 'lg';
   translation: Translations;
 }
 

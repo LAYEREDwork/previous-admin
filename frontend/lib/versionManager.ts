@@ -30,7 +30,7 @@ export async function getCurrentVersion(): Promise<string> {
  */
 export async function checkForUpdates(): Promise<VersionInfo> {
   try {
-    const response = await fetch(`${API_BASE_URL}${ApiPaths.Update.update.full_VERSION}`, {
+    const response = await fetch(`${API_BASE_URL}${ApiPaths.Update.version.full}`, {
       headers: {
         'Accept': 'application/json',
       },

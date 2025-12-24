@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import { CpuLoadChart } from '../components/partials/system/charts/PACpuLoadChart';
-import { Metrics } from '../../../hooks/useSystem';
-import type { Translations } from '../../../lib/translations';
+import { Metrics } from '../hooks/useSystemMetrics';
+import type { Translations } from '../lib/translations';
 
 const mockTranslation: Translations = {
   system: {

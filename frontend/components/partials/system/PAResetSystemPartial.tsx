@@ -4,7 +4,7 @@ import { Translations } from '../../../lib/translations';
 interface ResetSystemPartialProps {
     onResetClick: () => void;
     isResetting: boolean;
-    controlSize: 'sm' | 'md' | 'lg';
+    controlSize: 'xs' | 'sm' | 'md' | 'lg';
     translation: Translations;
 }
 

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import { DiskIOChart } from '../components/partials/system/charts/PADiskIOChart';
-import { Metrics } from '../hooks/useSystem';
+import { Metrics } from '../hooks/useSystemMetrics';
 import type { Translations } from '../lib/translations';
 
 const mockTranslation: Translations = {
@@ -31,7 +31,7 @@ const mockMetrics: Metrics = {
   diskIO: {
     history: [
       {
-        timestamp: new Date(),
+        timestamp: Date.now(),
         read: 1000000,
         write: 500000,
       },

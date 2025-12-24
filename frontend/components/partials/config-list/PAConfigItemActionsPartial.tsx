@@ -31,7 +31,7 @@ export function ConfigItemActions({
       <ConfigListActionsPartial
         config={config}
         isMobile={isMobile}
-        baseColor={STYLING_DEFAULTS[StylingKey.BUTTON_BASE_COLOR]}
+        baseColor={STYLING_DEFAULTS[StylingKey.buttonBaseColor]}
         exportSingleConfig={exportSingleConfig}
         duplicateConfig={duplicateConfig}
         onEdit={onEdit}

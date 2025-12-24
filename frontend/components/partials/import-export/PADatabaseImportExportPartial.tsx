@@ -7,7 +7,7 @@ interface DatabaseImportExportPartialProps {
     databaseExporting: boolean;
     importDatabaseDump: (e: React.ChangeEvent<HTMLInputElement>) => void;
     exportDatabaseDump: () => void;
-    controlSize: 'sm' | 'md' | 'lg';
+    controlSize: 'xs' | 'sm' | 'md' | 'lg';
     translation: Translations;
 }
 

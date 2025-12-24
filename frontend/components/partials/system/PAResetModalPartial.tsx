@@ -7,7 +7,7 @@ interface ResetModalPartialProps {
     onClose: () => void;
     onConfirm: () => void;
     isResetting: boolean;
-    controlSize: 'sm' | 'md' | 'lg';
+    controlSize: 'xs' | 'sm' | 'md' | 'lg';
     translation: Translations;
 }
 

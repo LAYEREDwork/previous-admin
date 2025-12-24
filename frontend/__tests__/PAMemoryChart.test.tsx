@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import { MemoryChart } from '../components/partials/system/charts/PAMemoryChart';
-import { Metrics } from '../hooks/useSystem';
+import { Metrics } from '../hooks/useSystemMetrics';
 import type { Translations } from '../lib/translations';
 
 const mockTranslation: Translations = {
@@ -26,7 +26,7 @@ const mockMetrics: Metrics = {
     total: 2000000000,
     history: [
       {
-        timestamp: new Date(),
+        timestamp: Date.now(),
         value: 65,
       },
     ],

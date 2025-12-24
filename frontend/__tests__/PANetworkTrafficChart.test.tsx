@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import { NetworkTrafficChart } from '../components/partials/system/charts/PANetworkTrafficChart';
-import { Metrics } from '../hooks/useSystem';
+import { Metrics } from '../hooks/useSystemMetrics';
 import type { Translations } from '../lib/translations';
 
 const mockTranslation: Translations = {
@@ -29,7 +29,7 @@ const mockMetrics: Metrics = {
   networkTraffic: {
     history: [
       {
-        timestamp: new Date(),
+        timestamp: Date.now(),
         received: 1000000,
         sent: 500000,
       },

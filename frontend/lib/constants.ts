@@ -21,14 +21,14 @@ export const APP_NAME = 'Previous Admin';
  */
 export const DEFAULT_CONFIG: PreviousConfig = {
   system: {
-    cpu_type: CpuType.CPU_68040,
+    cpu_type: CpuType.cpu68040,
     cpu_frequency: 25,
     memory_size: 32,
     turbo: false,
     fpu: true,
   },
   display: {
-    type: DisplayType.COLOR,
+    type: DisplayType.color,
     width: 1120,
     height: 832,
     color_depth: 24,
@@ -46,26 +46,26 @@ export const DEFAULT_CONFIG: PreviousConfig = {
   },
   network: {
     enabled: false,
-    type: NetworkType.ETHERNET,
+    type: NetworkType.ethernet,
   },
   ethernet: {
     enabled: false,
-    type: NetworkType.ETHERNET,
+    type: NetworkType.ethernet,
   },
   sound: {
     enabled: true,
-    output: SoundOutput.SDL,
+    output: SoundOutput.sdl,
   },
   printer: {
     enabled: false,
-    type: PrinterType.PARALLEL,
+    type: PrinterType.parallel,
   },
   boot: {
     rom_file: '',
     scsi_id: 0,
   },
   keyboard: {
-    type: KeyboardType.US,
+    type: KeyboardType.us,
   },
   mouse: {
     enabled: true,

@@ -9,12 +9,12 @@ import { StylingKey } from '../../../shared/enums';
  * Default styling values
  */
 export const STYLING_DEFAULTS = {
-  [StylingKey.ITEM_BACKGROUND]: '#1A1A1A',
-  [StylingKey.DRAG_BACKGROUND]: '#181818',
-  [StylingKey.ACTIVE_OVERLAY]: 'rgba(6, 182, 212, 0.12)',
-  [StylingKey.BUTTON_BASE_COLOR]: '#0d0d0d',
-  [StylingKey.FRAME_SHADOW_LIGHT]: 'rgba(55, 55, 55, 1)',
-  [StylingKey.FRAME_SHADOW_DARK]: '#000',
+  [StylingKey.itemBackground]: '#1A1A1A',
+  [StylingKey.dragBackground]: '#181818',
+  [StylingKey.activeOverlay]: 'rgba(6, 182, 212, 0.12)',
+  [StylingKey.buttonBaseColor]: '#0d0d0d',
+  [StylingKey.frameShadowLight]: 'rgba(55, 55, 55, 1)',
+  [StylingKey.frameShadowDark]: '#000',
 } as const;
 
 /**
@@ -38,8 +38,8 @@ export const ACTIVE_GLOW_CONFIG = {
  * Calculate frame shadow for skeuomorphic effects
  */
 export function getFrameShadow(
-  lightColor: string = STYLING_DEFAULTS[StylingKey.FRAME_SHADOW_LIGHT],
-  darkColor: string = STYLING_DEFAULTS[StylingKey.FRAME_SHADOW_DARK],
+  lightColor: string = STYLING_DEFAULTS[StylingKey.frameShadowLight],
+  darkColor: string = STYLING_DEFAULTS[StylingKey.frameShadowDark],
   frameWidth: number = SHADOW_CONFIG.frameWidth,
   blurRadius: number = SHADOW_CONFIG.shadowBlurRadius
 ): string {
@@ -77,10 +77,10 @@ export function getConfigItemBackground(
   }
 
   const baseBackground = isDragged
-    ? STYLING_DEFAULTS[StylingKey.DRAG_BACKGROUND]
-    : STYLING_DEFAULTS[StylingKey.ITEM_BACKGROUND];
+    ? STYLING_DEFAULTS[StylingKey.dragBackground]
+    : STYLING_DEFAULTS[StylingKey.itemBackground];
 
-  const overlay = isActive ? `linear-gradient(${STYLING_DEFAULTS[StylingKey.ACTIVE_OVERLAY]}, ${STYLING_DEFAULTS[StylingKey.ACTIVE_OVERLAY]}), ` : '';
+  const overlay = isActive ? `linear-gradient(${STYLING_DEFAULTS[StylingKey.activeOverlay]}, ${STYLING_DEFAULTS[StylingKey.activeOverlay]}), ` : '';
 
   return {
     backgroundColor: baseBackground,

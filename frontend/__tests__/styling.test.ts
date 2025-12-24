@@ -14,19 +14,19 @@ import { StylingKey } from '../../shared/enums';
 describe('Styling Utilities', () => {
   describe('STYLING_DEFAULTS', () => {
     it('should contain all required styling keys', () => {
-      expect(STYLING_DEFAULTS).toHaveProperty(StylingKey.ITEM_BACKGROUND);
-      expect(STYLING_DEFAULTS).toHaveProperty(StylingKey.DRAG_BACKGROUND);
-      expect(STYLING_DEFAULTS).toHaveProperty(StylingKey.ACTIVE_OVERLAY);
-      expect(STYLING_DEFAULTS).toHaveProperty(StylingKey.BUTTON_BASE_COLOR);
-      expect(STYLING_DEFAULTS).toHaveProperty(StylingKey.FRAME_SHADOW_LIGHT);
-      expect(STYLING_DEFAULTS).toHaveProperty(StylingKey.FRAME_SHADOW_DARK);
+      expect(STYLING_DEFAULTS).toHaveProperty(StylingKey.itemBackground);
+      expect(STYLING_DEFAULTS).toHaveProperty(StylingKey.dragBackground);
+      expect(STYLING_DEFAULTS).toHaveProperty(StylingKey.activeOverlay);
+      expect(STYLING_DEFAULTS).toHaveProperty(StylingKey.buttonBaseColor);
+      expect(STYLING_DEFAULTS).toHaveProperty(StylingKey.frameShadowLight);
+      expect(STYLING_DEFAULTS).toHaveProperty(StylingKey.frameShadowDark);
     });
 
     it('should have correct default values', () => {
-      expect(STYLING_DEFAULTS[StylingKey.ITEM_BACKGROUND]).toBe('#1A1A1A');
-      expect(STYLING_DEFAULTS[StylingKey.DRAG_BACKGROUND]).toBe('#181818');
-      expect(STYLING_DEFAULTS[StylingKey.ACTIVE_OVERLAY]).toBe('rgba(6, 182, 212, 0.12)');
-      expect(STYLING_DEFAULTS[StylingKey.BUTTON_BASE_COLOR]).toBe('#0d0d0d');
+      expect(STYLING_DEFAULTS[StylingKey.itemBackground]).toBe('#1A1A1A');
+      expect(STYLING_DEFAULTS[StylingKey.dragBackground]).toBe('#181818');
+      expect(STYLING_DEFAULTS[StylingKey.activeOverlay]).toBe('rgba(6, 182, 212, 0.12)');
+      expect(STYLING_DEFAULTS[StylingKey.buttonBaseColor]).toBe('#0d0d0d');
     });
   });
 
@@ -34,8 +34,8 @@ describe('Styling Utilities', () => {
     it('should generate correct frame shadow with defaults', () => {
       const shadow = getFrameShadow();
       expect(shadow).toContain('inset');
-      expect(shadow).toContain(STYLING_DEFAULTS[StylingKey.FRAME_SHADOW_LIGHT]);
-      expect(shadow).toContain(STYLING_DEFAULTS[StylingKey.FRAME_SHADOW_DARK]);
+      expect(shadow).toContain(STYLING_DEFAULTS[StylingKey.frameShadowLight]);
+      expect(shadow).toContain(STYLING_DEFAULTS[StylingKey.frameShadowDark]);
     });
 
     it('should use custom parameters', () => {
@@ -69,18 +69,18 @@ describe('Styling Utilities', () => {
       const result = getConfigItemBackground(false, false, true);
       expect(result).toHaveProperty('backgroundColor');
       expect(result).toHaveProperty('backgroundImage');
-      expect(result.backgroundColor).toBe(STYLING_DEFAULTS[StylingKey.ITEM_BACKGROUND]);
+      expect(result.backgroundColor).toBe(STYLING_DEFAULTS[StylingKey.itemBackground]);
     });
 
     it('should use drag background when dragged', () => {
       const result = getConfigItemBackground(true, false, true);
-      expect(result.backgroundColor).toBe(STYLING_DEFAULTS[StylingKey.DRAG_BACKGROUND]);
+      expect(result.backgroundColor).toBe(STYLING_DEFAULTS[StylingKey.dragBackground]);
     });
 
     it('should include active overlay when active', () => {
       const result = getConfigItemBackground(false, true, true);
       expect(result.backgroundImage).toContain('linear-gradient');
-      expect(result.backgroundImage).toContain(STYLING_DEFAULTS[StylingKey.ACTIVE_OVERLAY]);
+      expect(result.backgroundImage).toContain(STYLING_DEFAULTS[StylingKey.activeOverlay]);
     });
   });
 

@@ -13,10 +13,10 @@ export interface Metrics {
     history: Array<{ timestamp: number; value: number }>;
   };
   diskIO: {
-    history: Array<{ timestamp: number; read: number; write: number }>;
+    history: Array<{ timestamp: number; read?: number; write?: number }>;
   };
   networkTraffic: {
-    history: Array<{ timestamp: number; received: number; sent: number }>;
+    history: Array<{ timestamp: number; received?: number; sent?: number }>;
   };
 }
 
