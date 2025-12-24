@@ -180,7 +180,7 @@ export const database = {
    * @throws {Error} If API request fails
    */
   async getActiveConfiguration(): Promise<Configuration | null> {
-    const response = await fetch(`${API_BASE_URL}${ApiPaths.Configuration.list.full_ACTIVE}`, {
+    const response = await fetch(`${API_BASE_URL}${ApiPaths.Configuration.getActive.full}`, {
       credentials: 'include',
     });
 
@@ -200,7 +200,7 @@ export const database = {
    * @throws {Error} If API request fails
    */
   async updateConfigurationsOrder(orderedIds: string[]): Promise<void> {
-    const response = await fetch(`${API_BASE_URL}${ApiPaths.Configuration.list.full_ORDER_UPDATE}`, {
+    const response = await fetch(`${API_BASE_URL}${ApiPaths.Configuration.updateOrder.full}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

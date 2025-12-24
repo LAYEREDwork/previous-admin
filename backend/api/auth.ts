@@ -11,7 +11,7 @@ import {
   logoutUser,
   getSessionInfo
 } from '../services/authService';
-import { ApiPaths } from '../../../shared/constants';
+import { ApiPaths } from '../../shared/constants';
 import { AuthenticatedRequest } from '../types';
 import { UserSessionData } from '../types';
 
@@ -215,7 +215,10 @@ router.get(ApiPaths.Auth.session.relative, (
   res: Response<SessionResponse>
 ) => {
   const authReq = req as AuthenticatedRequest;
-  const sessionInfo = getSessionInfo(authReq.session.user);
+  const sessionData: UserSessionData | undefined = authReq.session.userId && authReq.session.username
+    ? { userId: authReq.session.userId, username: authReq.session.username }
+    : undefined;
+  const sessionInfo = getSessionInfo(sessionData);
   res.json(sessionInfo);
 });
 
