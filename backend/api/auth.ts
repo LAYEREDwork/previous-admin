@@ -5,10 +5,12 @@
 
 import express, { Request, Response } from 'express';
 import {
-  hasAnyUsers,
-  createUser,
-  authenticateUser
-} from '../database';
+  isSetupRequired,
+  performSetup,
+  loginUser,
+  logoutUser,
+  getSessionInfo
+} from '../services/authService';
 import { AuthenticatedRequest } from '../types';
 import { UserSessionData } from '../types';
 
@@ -66,7 +68,7 @@ interface ErrorResponse {
  * const { setupRequired } = await res.json();
  */
 router.get('/setup-required', (_req: Request, res: Response<SetupRequiredResponse>) => {
-  res.json({ setupRequired: !hasAnyUsers() });
+  res.json({ setupRequired: isSetupRequired() });
 });
 
 /**
@@ -98,13 +100,13 @@ router.post('/setup', async (
   res: Response<SetupResponse | ErrorResponse>
 ) => {
   try {
-    if (hasAnyUsers()) {
+    if (!isSetupRequired()) {
       return res.status(400).json({ error: 'Setup already completed' });
     }
 
     const authRequest = req as AuthenticatedRequest;
     const { username, password } = req.body;
-    const user = await createUser({ username, password });
+    const user = await performSetup({ username, password });
 
     authRequest.session.username = user.username;
     authRequest.session.userId = user.id;
@@ -149,20 +151,13 @@ router.post('/login', async (
   const { username, password } = authRequest.body;
 
   try {
-    const result = await authenticateUser(username, password);
+    const sessionData = await loginUser(username, password);
 
-    if (!result.success) {
-      return res.status(401).json({ error: (result as { success: false; error: string }).error });
-    }
-
-    // TypeScript now knows result.success is true
-    const { user } = result as { success: true; user: UserSessionData };
-
-    authRequest.session.username = user.username;
-    authRequest.session.userId = user.userId;
+    authRequest.session.username = sessionData.username;
+    authRequest.session.userId = sessionData.userId;
 
     res.json({
-      username: user.username
+      username: sessionData.username
     });
   } catch (error) {
     console.error('Login error:', error);
@@ -219,18 +214,8 @@ router.get('/session', (
   res: Response<SessionResponse>
 ) => {
   const authReq = req as AuthenticatedRequest;
-  if (authReq.session.username) {
-    res.json({
-      authenticated: true,
-      username: authReq.session.username,
-      setupRequired: false
-    });
-  } else {
-    res.json({
-      authenticated: false,
-      setupRequired: !hasAnyUsers()
-    });
-  }
+  const sessionInfo = getSessionInfo(authReq.session.user);
+  res.json(sessionInfo);
 });
 
 export default router;
