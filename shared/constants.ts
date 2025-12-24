@@ -57,22 +57,3 @@ export type DatabaseEndpoint = typeof ApiPaths.Database[keyof typeof ApiPaths.Da
 export type SystemEndpoint = typeof ApiPaths.System[keyof typeof ApiPaths.System]['relative'];
 export type UpdateEndpoint = typeof ApiPaths.Update[keyof typeof ApiPaths.Update]['relative'];
 export type HealthEndpoint = typeof ApiPaths.Health[keyof typeof ApiPaths.Health]['relative'];
-
-/**
- * Default configuration values
- * Used to avoid magic numbers and strings in default configurations
- */
-export const DEFAULT_CONFIG_VALUES = {
-  CPU_TYPE: '68040',
-  CPU_FREQUENCY: 25,
-  MEMORY_SIZE: 32,
-  TURBO: false,
-  FPU: true,
-  DISPLAY_TYPE: 'color',
-  DISPLAY_WIDTH: 1120,
-  DISPLAY_HEIGHT: 832,
-  COLOR_DEPTH: 24,
-  FRAMESKIP: 0,
-  NETWORK_ENABLED: false,
-  NETWORK_TYPE: 'ethernet',
-} as const;
