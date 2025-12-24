@@ -32,10 +32,13 @@ jobs:
         run: npm run typecheck
 
       - name: Run frontend tests
-        run: npm run test:frontend -- --testTimeout=30000
+        run: npm run test:frontend -- --testTimeout=30000 --forceExit
 
   backend-test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
