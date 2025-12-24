@@ -3,7 +3,7 @@
  * Provides centralized styling logic and consistent theming
  */
 
-import { StylingKey } from '~shared/enums';
+import { StylingKey } from '../../../shared/enums';
 
 /**
  * Default styling values

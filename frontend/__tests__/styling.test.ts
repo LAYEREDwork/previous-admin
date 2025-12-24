@@ -9,7 +9,7 @@ import {
   SHADOW_CONFIG,
   ACTIVE_GLOW_CONFIG
 } from '../lib/utils/styling';
-import { StylingKey } from '~shared/enums';
+import { StylingKey } from '../../shared/enums';
 
 describe('Styling Utilities', () => {
   describe('STYLING_DEFAULTS', () => {

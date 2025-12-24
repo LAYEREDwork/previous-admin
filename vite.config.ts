@@ -18,5 +18,8 @@ export default defineConfig({
   },
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.json'],
+    alias: {
+      '~shared': './shared',
+    },
   },
 });
