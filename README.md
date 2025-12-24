@@ -120,19 +120,29 @@ For detailed manual installation instructions, platform-specific setup guides, a
 npm install
 
 # Start development servers
-npm run dev  # Starts both frontend (port 2342) and backend (port 3001)
-
-# Or run separately:
-npm run backend  # Backend only (port 3001)
-# Frontend only: npm run dev (port 2342)
+# Run backend and frontend separately (in different terminals)
+npm run backend  # Starts backend server on port 3001
+npm run dev      # Starts frontend dev server on port 5173
 
 # Build for production
 npm run build
 
 # Code quality checks
-npm run lint    # ESLint
+npm run lint       # ESLint
 npm run typecheck  # TypeScript compilation check
+npm run test       # Run all tests (frontend + backend)
 ```
+
+### Development Notes
+
+- **Frontend**: Runs on `http://localhost:5173` with hot reload
+- **Backend**: Runs on `http://localhost:3001` with API endpoints at `/api/*`
+- **Database**: SQLite file stored in `~/.previous-admin/previous-admin.db`
+- **Production**: Built frontend served via backend on port 2342
+- **API Base URL**: Dynamic in frontend: `http://${window.location.hostname}:3001`
+- **Session Secret**: In production, `SESSION_SECRET` must be set as an environment variable
+- **Testing**: Frontend tests with Vitest, backend tests with Jest
+- **Build Process**: `npm run build` creates production frontend build, served by backend
 
 ### Project Structure
 
@@ -142,20 +152,22 @@ previous-admin/
 │   ├── api/                    # REST API endpoints
 │   ├── config/                 # Configuration file management
 │   ├── database/               # SQLite database operations
-│   └── platform/               # Platform-specific utilities
-│       ├── linux/              # Linux-specific implementations
-│       └── macos/              # macOS-specific implementations
+│   ├── platform/               # Platform-specific utilities
+│   │   ├── linux/              # Linux-specific implementations
+│   │   └── macos/              # macOS-specific implementations
+│   └── services/               # Business logic services
 ├── frontend/                   # React TypeScript application
 │   ├── components/             # UI components
 │   │   ├── controls/           # Reusable UI controls
 │   │   ├── pages/              # Main application pages
 │   │   └── partials/           # Reusable UI partials
-│   │       └── about/          # About page partials
 │   ├── contexts/               # React contexts for state management
-│   ├── hooks/                  # Page business logic
+│   ├── hooks/                  # Custom React hooks
 │   └── lib/                    # Utilities and shared code
 │       └── translations/       # Internationalization files
+├── docs/                       # Documentation
 ├── public/                     # Static assets
+├── scripts/                    # Setup and utility scripts
 ├── shared/                     # Shared constants and types
 └── systemd/                    # Systemd service files
 ```
