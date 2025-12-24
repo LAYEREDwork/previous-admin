@@ -8,7 +8,7 @@ import { StylingKey } from '../../../shared/enums';
 /**
  * Default styling values
  */
-export const STYLING_DEFAULTS = {
+export const stylingDefaults = {
   [StylingKey.itemBackground]: '#1A1A1A',
   [StylingKey.dragBackground]: '#181818',
   [StylingKey.activeOverlay]: 'rgba(6, 182, 212, 0.12)',
@@ -20,7 +20,7 @@ export const STYLING_DEFAULTS = {
 /**
  * Shadow configuration
  */
-export const SHADOW_CONFIG = {
+export const shadowConfig = {
   frameWidth: 2,
   shadowBlurRadius: 2,
 } as const;
@@ -28,7 +28,7 @@ export const SHADOW_CONFIG = {
 /**
  * Active glow configuration
  */
-export const ACTIVE_GLOW_CONFIG = {
+export const activeGlowConfig = {
   blurRadius: 12,
   color: 'rgba(6, 182, 212, 0.6)',
   transitionDuration: 0.4,
@@ -38,10 +38,10 @@ export const ACTIVE_GLOW_CONFIG = {
  * Calculate frame shadow for skeuomorphic effects
  */
 export function getFrameShadow(
-  lightColor: string = STYLING_DEFAULTS[StylingKey.frameShadowLight],
-  darkColor: string = STYLING_DEFAULTS[StylingKey.frameShadowDark],
-  frameWidth: number = SHADOW_CONFIG.frameWidth,
-  blurRadius: number = SHADOW_CONFIG.shadowBlurRadius
+  lightColor: string = stylingDefaults[StylingKey.frameShadowLight],
+  darkColor: string = stylingDefaults[StylingKey.frameShadowDark],
+  frameWidth: number = shadowConfig.frameWidth,
+  blurRadius: number = shadowConfig.shadowBlurRadius
 ): string {
   return `inset ${frameWidth}px ${frameWidth}px ${blurRadius}px ${darkColor}, inset -${frameWidth}px -${frameWidth}px ${blurRadius}px ${lightColor}`;
 }
@@ -50,8 +50,8 @@ export function getFrameShadow(
  * Calculate active glow shadow
  */
 export function getActiveGlowShadow(
-  color: string = ACTIVE_GLOW_CONFIG.color,
-  blurRadius: number = ACTIVE_GLOW_CONFIG.blurRadius
+  color: string = activeGlowConfig.color,
+  blurRadius: number = activeGlowConfig.blurRadius
 ): string {
   return `0 0 ${blurRadius}px ${color}`;
 }
@@ -77,10 +77,10 @@ export function getConfigItemBackground(
   }
 
   const baseBackground = isDragged
-    ? STYLING_DEFAULTS[StylingKey.dragBackground]
-    : STYLING_DEFAULTS[StylingKey.itemBackground];
+    ? stylingDefaults[StylingKey.dragBackground]
+    : stylingDefaults[StylingKey.itemBackground];
 
-  const overlay = isActive ? `linear-gradient(${STYLING_DEFAULTS[StylingKey.activeOverlay]}, ${STYLING_DEFAULTS[StylingKey.activeOverlay]}), ` : '';
+  const overlay = isActive ? `linear-gradient(${stylingDefaults[StylingKey.activeOverlay]}, ${stylingDefaults[StylingKey.activeOverlay]}), ` : '';
 
   return {
     backgroundColor: baseBackground,
@@ -108,6 +108,6 @@ export function getConfigItemBoxShadow(
  * Get transition styles for config list items
  */
 export function getConfigItemTransition(isActive: boolean): string {
-  const duration = isActive ? ACTIVE_GLOW_CONFIG.transitionDuration : 0.2;
+  const duration = isActive ? activeGlowConfig.transitionDuration : 0.2;
   return `box-shadow ${duration}s ease-in-out, border-color ${duration}s ease-in-out`;
 }

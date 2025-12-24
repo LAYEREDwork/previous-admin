@@ -6,7 +6,7 @@ import { useAuth } from './PAAuthContext';
 // Utilities
 import { api } from '../lib/api';
 import { database } from '../lib/database';
-import { DEFAULT_CONFIG } from '../lib/constants';
+import { defaultConfig } from '../lib/constants';
 
 // Types
 import type { PreviousConfig } from '../lib/types';
@@ -30,52 +30,52 @@ const ConfigContext = createContext<ConfigContextType | undefined>(undefined);
  */
 function mergeWithDefaults(loadedConfig: Partial<PreviousConfig> | null): PreviousConfig {
   if (!loadedConfig) {
-    return DEFAULT_CONFIG;
+    return defaultConfig;
   }
 
   return {
     system: {
-      ...DEFAULT_CONFIG.system,
+      ...defaultConfig.system,
       ...loadedConfig.system,
     },
     display: {
-      ...DEFAULT_CONFIG.display,
+      ...defaultConfig.display,
       ...loadedConfig.display,
     },
     scsi: {
-      ...DEFAULT_CONFIG.scsi,
+      ...defaultConfig.scsi,
       ...loadedConfig.scsi,
     },
     network: {
-      ...DEFAULT_CONFIG.network,
+      ...defaultConfig.network,
       ...loadedConfig.network,
     },
     ethernet: {
       enabled: false,
       type: 'ethernet',
-      ...DEFAULT_CONFIG.ethernet,
+      ...defaultConfig.ethernet,
       ...loadedConfig.ethernet,
     },
     sound: {
-      ...DEFAULT_CONFIG.sound,
+      ...defaultConfig.sound,
       ...loadedConfig.sound,
     },
     printer: {
       enabled: false,
       type: 'parallel',
-      ...DEFAULT_CONFIG.printer,
+      ...defaultConfig.printer,
       ...loadedConfig.printer,
     },
     boot: {
-      ...DEFAULT_CONFIG.boot,
+      ...defaultConfig.boot,
       ...loadedConfig.boot,
     },
     keyboard: {
-      ...DEFAULT_CONFIG.keyboard,
+      ...defaultConfig.keyboard,
       ...loadedConfig.keyboard,
     },
     mouse: {
-      ...DEFAULT_CONFIG.mouse,
+      ...defaultConfig.mouse,
       ...loadedConfig.mouse,
     },
   };
@@ -106,14 +106,14 @@ export function PAConfigProvider({ children }: { children: ReactNode }) {
         setConfigDescription(activeConfig.description);
         setCurrentConfigId(activeConfig.id);
       } else {
-        setConfig(DEFAULT_CONFIG);
+        setConfig(defaultConfig);
         setConfigName(null);
         setConfigDescription(null);
         setCurrentConfigId(null);
       }
     } catch (err) {
       console.error('Error loading config from database:', err);
-      setConfig(DEFAULT_CONFIG);
+      setConfig(defaultConfig);
     } finally {
       setLoading(false);
     }

@@ -2,7 +2,7 @@
  * API endpoint paths - single source of truth
  * Contains both full URLs (for frontend) and relative paths (for backend routers)
  */
-export const ApiPaths = {
+export const apiPaths = {
   Auth: {
     setupRequired: { full: '/api/auth/setup-required', relative: 'setup-required' },
     setup: { full: '/api/auth/setup', relative: 'setup' },
@@ -50,10 +50,10 @@ export const ApiPaths = {
 /**
  * Type definitions for endpoint paths
  */
-export type AuthEndpoint = typeof ApiPaths.Auth[keyof typeof ApiPaths.Auth]['relative'];
-export type ConfigurationEndpoint = typeof ApiPaths.Configuration[keyof typeof ApiPaths.Configuration]['relative'];
-export type ConfigEndpoint = typeof ApiPaths.Config[keyof typeof ApiPaths.Config]['relative'];
-export type DatabaseEndpoint = typeof ApiPaths.Database[keyof typeof ApiPaths.Database]['relative'];
-export type SystemEndpoint = typeof ApiPaths.System[keyof typeof ApiPaths.System]['relative'];
-export type UpdateEndpoint = typeof ApiPaths.Update[keyof typeof ApiPaths.Update]['relative'];
-export type HealthEndpoint = typeof ApiPaths.Health[keyof typeof ApiPaths.Health]['relative'];
+export type AuthEndpoint = typeof apiPaths.Auth[keyof typeof apiPaths.Auth]['relative'];
+export type ConfigurationEndpoint = typeof apiPaths.Configuration[keyof typeof apiPaths.Configuration]['relative'];
+export type ConfigEndpoint = typeof apiPaths.Config[keyof typeof apiPaths.Config]['relative'];
+export type DatabaseEndpoint = typeof apiPaths.Database[keyof typeof apiPaths.Database]['relative'];
+export type SystemEndpoint = typeof apiPaths.System[keyof typeof apiPaths.System]['relative'];
+export type UpdateEndpoint = typeof apiPaths.Update[keyof typeof apiPaths.Update]['relative'];
+export type HealthEndpoint = typeof apiPaths.Health[keyof typeof apiPaths.Health]['relative'];

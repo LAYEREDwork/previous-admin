@@ -1,9 +1,9 @@
-import { APP_NAME } from '../constants';
+import { appName } from '../constants';
 import { Translations } from '.';
 
 export const it: Translations = {
   about: {
-    appVersion: `Versione di ${APP_NAME}`,
+    appVersion: `Versione di ${appName}`,
     generalResources: 'Risorse Generali',
     layeredCodeberg: 'phranck aka LAYERED su Codeberg',
     layeredMastodon: 'LAYERED su Mastodon',
@@ -14,7 +14,7 @@ export const it: Translations = {
     previousSite: 'Sito Ufficiale Previous Emulator',
     previousSourceforge: 'Previous su SourceForge',
     subtitle: 'Gestore di configurazione NeXT Computer',
-    title: `Informazioni su ${APP_NAME}`,
+    title: `Informazioni su ${appName}`,
   },
   common: {
     cancel: 'Annulla',
@@ -120,14 +120,14 @@ export const it: Translations = {
     madeIn: 'fatto con ❤️ e',
   },
   login: {
-    title: APP_NAME,
+    title: appName,
     username: 'Nome utente',
     usernamePlaceholder: 'Scegli un nome utente (min. 3 caratteri)',
     password: 'Password',
     passwordPlaceholder: 'Scegli una password (min. 6 caratteri)',
     signIn: 'Accedi',
     signingIn: 'Accesso in corso...',
-    setupTitle: `Benvenuto in ${APP_NAME}`,
+    setupTitle: `Benvenuto in ${appName}`,
     confirmPassword: 'Conferma password',
     confirmPasswordPlaceholder: 'Inserisci nuovamente la password',
     createAccount: 'Crea account',
@@ -142,7 +142,7 @@ export const it: Translations = {
     importDatabaseHint: 'Ripristina da un file di backup del database esportato in precedenza',
   },
   layout: {
-    title: APP_NAME,
+    title: appName,
     subtitle: 'Gestore di configurazione NeXT Computer',
     signOut: 'Esci',
   },

@@ -200,7 +200,7 @@ export function PANeomorphButton({
               boxShadow: !disabled
                 ? (active ? buttonActiveShadow : buttonShadow)
                 : undefined,
-              backgroundImage: PATextures.NOISE,
+              backgroundImage: PATextures.noise,
               backgroundColor: palette.buttonBackground,
             }}
           >

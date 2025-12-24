@@ -10,7 +10,7 @@
 import type { PreviousConfig } from './types';
 import { http, ApiError } from './httpClient';
 import { ApiPaths } from '../../shared/constants';
-import { WS_URL } from './constants';
+import { wsUrl } from './constants';
 
 // Re-export ApiError for consumers
 export { ApiError };
@@ -164,11 +164,11 @@ export const api = {
 /**
  * Construct WebSocket URL for current connection
  *
- * Uses the centralized WS_URL constant for consistency.
+ * Uses the centralized wsUrl constant for consistency.
  *
  * @returns {string} WebSocket URL
- * @deprecated Use WS_URL constant from './constants' instead
+ * @deprecated Use wsUrl constant from './constants' instead
  */
 export function getWebSocketUrl(): string {
-  return WS_URL;
+  return wsUrl;
 }

@@ -43,7 +43,7 @@ export function PACard({
       className={`rounded-lg border border-next-border ${className}`}
       style={{
         backgroundColor,
-        backgroundImage: PATextures.NOISE,
+        backgroundImage: PATextures.noise,
         backgroundBlendMode: 'soft-light',
         backgroundRepeat: 'repeat',
         boxShadow: `${floatShadow}${floatShadow ? ', ' : ''}${insetShadow}`,

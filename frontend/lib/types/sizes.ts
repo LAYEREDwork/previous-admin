@@ -5,25 +5,25 @@
 
 // Size Enum (xs, sm, md, lg, xl)
 export const PASize = {
-  XS: 'xs',
-  SM: 'sm',
-  MD: 'md',
-  LG: 'lg',
-  XL: 'xl',
+  xs: 'xs',
+  sm: 'sm',
+  md: 'md',
+  lg: 'lg',
+  xl: 'xl',
 } as const;
 
 // Typography Size Enum (xs through 6xl)
 export const PATypographySize = {
-  XS: 'xs',
-  SM: 'sm',
-  MD: 'md',
-  LG: 'lg',
-  XL: 'xl',
-  XL2: '2xl',
-  XL3: '3xl',
-  XL4: '4xl',
-  XL5: '5xl',
-  XL6: '6xl',
+  xs: 'xs',
+  sm: 'sm',
+  md: 'md',
+  lg: 'lg',
+  xl: 'xl',
+  xl2: '2xl',
+  xl3: '3xl',
+  xl4: '4xl',
+  xl5: '5xl',
+  xl6: '6xl',
 } as const;
 
 // Size type derived from enum

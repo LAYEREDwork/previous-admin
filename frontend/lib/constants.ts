@@ -4,7 +4,7 @@ import { CpuType, DisplayType, NetworkType, SoundOutput, PrinterType, KeyboardTy
 /**
  * Application name
  */
-export const APP_NAME = 'Previous Admin';
+export const appName = 'Previous Admin';
 
 /**
  * Default system configuration
@@ -16,10 +16,10 @@ export const APP_NAME = 'Previous Admin';
  * @type {PreviousConfig}
  *
  * @example
- * const config = structuredClone(DEFAULT_CONFIG);
+ * const config = structuredClone(defaultConfig);
  * config.system.memory_size = 64; // Upgrade memory to 64MB
  */
-export const DEFAULT_CONFIG: PreviousConfig = {
+export const defaultConfig: PreviousConfig = {
   system: {
     cpu_type: CpuType.cpu68040,
     cpu_frequency: 25,
@@ -80,25 +80,25 @@ export const DEFAULT_CONFIG: PreviousConfig = {
  *
  * @type {number}
  */
-export const BACKEND_PORT = 3001;
+export const backendPort = 3001;
 
 /**
  * Base URL for API requests
  *
  * Dynamically constructs API endpoint based on current hostname.
- * Backend server must be running on the configured BACKEND_PORT.
+ * Backend server must be running on the configured backendPort.
  * Uses HTTP protocol (browser may upgrade to HTTPS automatically).
  *
  * @type {string}
  *
  * @example
  * // If accessing from 'example.com':
- * // API_BASE_URL = 'http://example.com:3001'
+ * // apiBaseUrl = 'http://example.com:3001'
  *
  * // If accessing from 'localhost':
- * // API_BASE_URL = 'http://localhost:3001'
+ * // apiBaseUrl = 'http://localhost:3001'
  */
-export const API_BASE_URL = `http://${window.location.hostname}:${BACKEND_PORT}`;
+export const apiBaseUrl = `http://${window.location.hostname}:${backendPort}`;
 
 /**
  * WebSocket URL for real-time metrics
@@ -108,7 +108,7 @@ export const API_BASE_URL = `http://${window.location.hostname}:${BACKEND_PORT}`
  *
  * @type {string}
  */
-export const WS_URL = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.hostname}:${BACKEND_PORT}`;
+export const wsUrl = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.hostname}:${backendPort}`;
 
 /**
  * Available metrics update frequencies (in seconds)
@@ -119,9 +119,9 @@ export const WS_URL = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}
  * @type {number[]}
  *
  * @example
- * METRICS_UPDATE_FREQUENCIES // [0.5, 0.75, 1.0, 1.5, 2.0]
+ * metricsUpdateFrequencies // [0.5, 0.75, 1.0, 1.5, 2.0]
  */
-export const METRICS_UPDATE_FREQUENCIES = [0.25, 0.5, 1.0, 1.5, 1.75];
+export const metricsUpdateFrequencies = [0.25, 0.5, 1.0, 1.5, 1.75];
 
 /**
  * Default metrics update frequency (in seconds)
@@ -131,4 +131,4 @@ export const METRICS_UPDATE_FREQUENCIES = [0.25, 0.5, 1.0, 1.5, 1.75];
  *
  * @type {number}
  */
-export const DEFAULT_METRICS_UPDATE_FREQUENCY = 0.5;
+export const defaultMetricsUpdateFrequency = 0.5;

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { WS_URL } from '../lib/constants';
+import { wsUrl } from '../lib/constants';
 
 export interface Metrics {
   cpuLoad: {
@@ -32,7 +32,7 @@ export function useSystemMetrics(isActive: boolean, updateFrequency: number) {
     let socket: WebSocket | null = null;
 
     try {
-      socket = new WebSocket(WS_URL);
+      socket = new WebSocket(wsUrl);
 
       socket.onopen = () => {
         if (socket && socket.readyState === WebSocket.OPEN) {

@@ -1,9 +1,9 @@
-import { APP_NAME } from '../constants';
+import { appName } from '../constants';
 import { Translations } from '.';
 
 export const es: Translations = {
   about: {
-    appVersion: `Versión de ${APP_NAME}`,
+    appVersion: `Versión de ${appName}`,
     generalResources: 'Recursos Generales',
     layeredCodeberg: 'phranck alias LAYERED en Codeberg',
     layeredMastodon: 'LAYERED en Mastodon',
@@ -14,7 +14,7 @@ export const es: Translations = {
     previousSite: 'Sitio Oficial de Previous Emulator',
     previousSourceforge: 'Previous en SourceForge',
     subtitle: 'Gestor de configuración de NeXT Computer',
-    title: `Acerca de ${APP_NAME}`,
+    title: `Acerca de ${appName}`,
   },
   common: {
     cancel: 'Cancelar',
@@ -134,15 +134,15 @@ export const es: Translations = {
     password: 'Contraseña',
     passwordMismatch: 'Las contraseñas no coinciden',
     passwordPlaceholder: 'Elige una contraseña (mín. 6 caracteres)',
-    setupTitle: `Bienvenido a ${APP_NAME}`,
+    setupTitle: `Bienvenido a ${appName}`,
     signIn: 'Iniciar sesión',
     signingIn: 'Iniciando sesión...',
-    title: APP_NAME,
+    title: appName,
     username: 'Nombre de usuario',
     usernamePlaceholder: 'Elige un nombre de usuario (mín. 3 caracteres)',
   },
   layout: {
-    title: APP_NAME,
+    title: appName,
     subtitle: 'Gestor de configuración de NeXT Computer',
     signOut: 'Cerrar sesión',
   },

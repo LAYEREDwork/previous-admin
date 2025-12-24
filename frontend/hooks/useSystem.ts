@@ -7,7 +7,7 @@ import { useNotification } from '../contexts/PANotificationContext';
 import { useSystemMetrics } from './useSystemMetrics';
 
 // Utilities
-import { API_BASE_URL, DEFAULT_METRICS_UPDATE_FREQUENCY } from '../lib/constants';
+import { apiBaseUrl, defaultMetricsUpdateFrequency } from '../lib/constants';
 
 // Shared Types
 import type { SystemInfo } from '../../shared/types';
@@ -26,7 +26,7 @@ export function useSystem() {
   const [isSystemTabActive, setIsSystemTabActive] = useState(true);
   const [showResetModal, setShowResetModal] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
-  const [updateFrequency, setUpdateFrequency] = useState(DEFAULT_METRICS_UPDATE_FREQUENCY);
+  const [updateFrequency, setUpdateFrequency] = useState(defaultMetricsUpdateFrequency);
 
   const metrics = useSystemMetrics(isSystemTabActive, updateFrequency);
 
@@ -36,7 +36,7 @@ export function useSystem() {
       setLoadingSystemInfo(true);
       setSystemInfoError(false);
       try {
-        const response = await fetch(`${API_BASE_URL}/api/system/system-info`, {
+        const response = await fetch(`${apiBaseUrl}/api/system/system-info`, {
           credentials: 'include',
         });
         if (!response.ok) throw new Error('Failed to load system info');
@@ -62,7 +62,7 @@ export function useSystem() {
   const handleReset = async () => {
     setIsResetting(true);
     try {
-      const response = await fetch(`${API_BASE_URL}/api/system/reset`, {
+      const response = await fetch(`${apiBaseUrl}/api/system/reset`, {
         method: 'POST',
         credentials: 'include',
       });

@@ -1,9 +1,9 @@
-import { APP_NAME } from '../constants';
+import { appName } from '../constants';
 import { Translations } from '.';
 
 export const de: Translations = {
   about: {
-    appVersion: `${APP_NAME} Version`,
+    appVersion: `${appName} Version`,
     generalResources: 'Allgemeine Ressourcen',
     layeredCodeberg: 'phranck aka LAYERED auf Codeberg',
     layeredMastodon: 'LAYERED auf Mastodon',
@@ -14,7 +14,7 @@ export const de: Translations = {
     previousSite: 'Previous Emulator Offizielle Website',
     previousSourceforge: 'Previous auf SourceForge',
     subtitle: 'NeXT Computer Konfigurationsverwaltung',
-    title: `Über ${APP_NAME}`,
+    title: `Über ${appName}`,
   },
   common: {
     cancel: 'Abbrechen',
@@ -188,17 +188,17 @@ export const de: Translations = {
   layout: {
     signOut: 'Abmelden',
     subtitle: 'Previous Emulator Konfigurationsverwaltung',
-    title: APP_NAME,
+    title: appName,
   },
   login: {
-    title: APP_NAME,
+    title: appName,
     username: 'Benutzername',
     usernamePlaceholder: 'Wählen Sie einen Benutzernamen (mind. 3 Zeichen)',
     password: 'Passwort',
     passwordPlaceholder: 'Wählen Sie ein Passwort (mind. 6 Zeichen)',
     signIn: 'Anmelden',
     signingIn: 'Anmeldung läuft...',
-    setupTitle: `Willkommen bei ${APP_NAME}`,
+    setupTitle: `Willkommen bei ${appName}`,
     confirmPassword: 'Passwort bestätigen',
     confirmPasswordPlaceholder: 'Passwort erneut eingeben',
     createAccount: 'Konto erstellen',

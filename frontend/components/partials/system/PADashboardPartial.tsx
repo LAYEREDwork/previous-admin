@@ -1,5 +1,5 @@
 import { PASegmentedControl } from '../../controls/PASegmentedControl';
-import { METRICS_UPDATE_FREQUENCIES } from '../../../lib/constants';
+import { metricsUpdateFrequencies } from '../../../lib/constants';
 import { Metrics } from '../../../hooks/useSystemMetrics';
 import { Translations } from '../../../lib/translations';
 import { CpuLoadChart } from './charts/PACpuLoadChart';
@@ -31,7 +31,7 @@ export function DashboardPartial({
                         {translation.system.updateFrequency}
                     </span>
                     <PASegmentedControl
-                        options={METRICS_UPDATE_FREQUENCIES.map(freq => ({
+                        options={metricsUpdateFrequencies.map(freq => ({
                             value: freq.toString(),
                             label: `${freq}s`
                         }))}

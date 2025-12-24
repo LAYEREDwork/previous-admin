@@ -1,9 +1,9 @@
-import { APP_NAME } from '../constants';
+import { appName } from '../constants';
 import { Translations } from '.';
 
 export const en: Translations = {
   about: {
-    appVersion: `${APP_NAME} Version`,
+    appVersion: `${appName} Version`,
     generalResources: 'General Resources',
     layeredCodeberg: 'phranck aka LAYERED on Codeberg',
     layeredMastodon: 'LAYERED on Mastodon',
@@ -14,7 +14,7 @@ export const en: Translations = {
     previousSite: 'Previous Emulator Official Site',
     previousSourceforge: 'Previous on SourceForge',
     subtitle: 'Previous Emulator Configuration Manager',
-    title: `About ${APP_NAME}`,
+    title: `About ${appName}`,
   },
   common: {
     cancel: 'Cancel',
@@ -120,14 +120,14 @@ export const en: Translations = {
     madeIn: 'made with ❤️ and',
   },
   login: {
-    title: APP_NAME,
+    title: appName,
     username: 'Username',
     usernamePlaceholder: 'Choose a username (min. 3 characters)',
     password: 'Password',
     passwordPlaceholder: 'Choose a password (min. 6 characters)',
     signIn: 'Sign In',
     signingIn: 'Signing in...',
-    setupTitle: `Welcome to ${APP_NAME}`,
+    setupTitle: `Welcome to ${appName}`,
     confirmPassword: 'Confirm Password',
     confirmPasswordPlaceholder: 'Enter password again',
     createAccount: 'Create Account',
@@ -142,7 +142,7 @@ export const en: Translations = {
     importDatabaseHint: 'Restore a previously exported database backup',
   },
   layout: {
-    title: APP_NAME,
+    title: appName,
     subtitle: 'Previous Emulator Configuration Manager',
     signOut: 'Sign Out',
   },

@@ -7,8 +7,8 @@
  * @module frontend/lib/httpClient
  */
 
-import { API_BASE_URL } from './constants';
-import { ApiPaths } from '../../shared/constants';
+import { apiBaseUrl } from './constants';
+import { apiPaths } from '../../shared/constants';
 
 /**
  * Custom API error with status code
@@ -74,7 +74,7 @@ function getErrorType(statusCode: number): ApiError['type'] {
  * });
  */
 export async function request<TResponse, TBody = unknown>(
-  endpoint: keyof typeof ApiPaths | string,
+  endpoint: keyof typeof apiPaths | string,
   options: RequestOptions<TBody> = {}
 ): Promise<TResponse> {
   const { method = 'GET', body, headers = {} } = options;
@@ -89,7 +89,7 @@ export async function request<TResponse, TBody = unknown>(
   }
 
   try {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    const response = await fetch(`${apiBaseUrl}${endpoint}`, {
       method,
       headers: requestHeaders,
       credentials: 'include',
@@ -130,35 +130,35 @@ export const http = {
   /**
    * Make a GET request
    */
-  get<T>(endpoint: keyof typeof ApiPaths | string): Promise<T> {
+  get<T>(endpoint: keyof typeof apiPaths | string): Promise<T> {
     return request<T>(endpoint, { method: 'GET' });
   },
 
   /**
    * Make a POST request
    */
-  post<T, B = unknown>(endpoint: keyof typeof ApiPaths | string, body?: B): Promise<T> {
+  post<T, B = unknown>(endpoint: keyof typeof apiPaths | string, body?: B): Promise<T> {
     return request<T, B>(endpoint, { method: 'POST', body });
   },
 
   /**
    * Make a PUT request
    */
-  put<T, B = unknown>(endpoint: keyof typeof ApiPaths | string, body?: B): Promise<T> {
+  put<T, B = unknown>(endpoint: keyof typeof apiPaths | string, body?: B): Promise<T> {
     return request<T, B>(endpoint, { method: 'PUT', body });
   },
 
   /**
    * Make a DELETE request
    */
-  delete<T>(endpoint: keyof typeof ApiPaths | string): Promise<T> {
+  delete<T>(endpoint: keyof typeof apiPaths | string): Promise<T> {
     return request<T>(endpoint, { method: 'DELETE' });
   },
 
   /**
    * Make a PATCH request
    */
-  patch<T, B = unknown>(endpoint: keyof typeof ApiPaths | string, body?: B): Promise<T> {
+  patch<T, B = unknown>(endpoint: keyof typeof apiPaths | string, body?: B): Promise<T> {
     return request<T, B>(endpoint, { method: 'PATCH', body });
   },
 };
