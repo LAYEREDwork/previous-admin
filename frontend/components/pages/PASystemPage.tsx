@@ -1,11 +1,8 @@
-import { BiRefresh, BiError } from 'react-icons/bi';
-
-// Partials
-import { HostInfoPartial } from '../partials/system/PAHostInfoPartial';
-import { DashboardPartial } from '../partials/system/PADashboardPartial';
-import { DiskSpacePartial } from '../partials/system/PADiskSpacePartial';
-import { ResetSystemPartial } from '../partials/system/PAResetSystemPartial';
-import { ResetModalPartial } from '../partials/system/PAResetModalPartial';
+import { SystemPageHeader } from './system/PASystemPageHeader';
+import { SystemLoadingState } from './system/PASystemLoadingState';
+import { SystemErrorState } from './system/PASystemErrorState';
+import { SystemContent } from './system/PASystemContent';
+import { SystemEmptyState } from './system/PASystemEmptyState';
 
 // Hooks
 import { useLanguage } from '../../contexts/PALanguageContext';
@@ -30,75 +27,27 @@ export function PASystem() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-          {translation.system.title}
-        </h2>
-        <p className="text-gray-600 dark:text-gray-400">
-          {translation.system.subtitle}
-        </p>
-      </div>
+      <SystemPageHeader translation={translation} />
 
       {loadingSystemInfo ? (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-          <div className="flex items-center gap-2 text-next-accent">
-            <BiRefresh size={16} className="animate-spin" />
-            <span className="text-sm">{translation.system.loading}</span>
-          </div>
-        </div>
+        <SystemLoadingState translation={translation} />
       ) : systemInfoError ? (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-          <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
-            <BiError size={16} />
-            <span className="text-sm">{translation.system.errorLoading}</span>
-          </div>
-        </div>
+        <SystemErrorState translation={translation} />
       ) : systemInfo ? (
-        <div className="space-y-6">
-          {/* Host Information */}
-          <HostInfoPartial
-            systemInfo={systemInfo}
-            translation={translation}
-          />
-
-          {/* Server Dashboard */}
-          <DashboardPartial
-            metrics={metrics}
-            updateFrequency={updateFrequency}
-            setUpdateFrequency={setUpdateFrequency}
-            translation={translation}
-          />
-
-          {/* Disk Space */}
-          <DiskSpacePartial
-            disks={systemInfo.disks}
-            translation={translation}
-          />
-
-          {/* Reset System Section */}
-          <ResetSystemPartial
-            onResetClick={() => setShowResetModal(true)}
-            isResetting={isResetting}
-            controlSize={controlSize}
-            translation={translation}
-          />
-
-          {/* Reset Confirmation Modal */}
-          <ResetModalPartial
-            open={showResetModal}
-            onClose={() => setShowResetModal(false)}
-            onConfirm={handleReset}
-            isResetting={isResetting}
-            controlSize={controlSize}
-            translation={translation}
-          />
-        </div>
+        <SystemContent
+          systemInfo={systemInfo}
+          metrics={metrics}
+          showResetModal={showResetModal}
+          setShowResetModal={setShowResetModal}
+          isResetting={isResetting}
+          handleReset={handleReset}
+          updateFrequency={updateFrequency}
+          setUpdateFrequency={setUpdateFrequency}
+          controlSize={controlSize}
+          translation={translation}
+        />
       ) : (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-          <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-            <span className="text-sm">Unable to load system information</span>
-          </div>
-        </div>
+        <SystemEmptyState />
       )}
     </div>
   );
