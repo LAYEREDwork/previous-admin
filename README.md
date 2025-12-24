@@ -15,13 +15,13 @@
 
 You can watch more screenshots [here](docs/SCREENSHOTS.md).
 
-## About
+## ℹ️ About
 
 Previous Admin is a modern web-based configuration management tool designed specifically for the [Previous NeXT Computer Emulator](http://previous.alternative-system.com/). It provides an intuitive interface for managing emulator configurations with security and ease of use in mind.
 
 The application runs as a self-contained web service on your system (Linux or macOS) and allows you to create, edit, import, export, and organize multiple emulator configurations through a clean, responsive user interface.
 
-## Features
+## ✨ Features
 
 ### Secure Authentication
 On first launch, you'll be prompted to create an admin account. This admin user is used to securely access and manage all configurations.
@@ -56,7 +56,7 @@ Full internationalization support for:
 - System uptime and kernel details
 - Hardware information display
 
-## Installation
+## 📦 Installation
 
 ### Automated Installation
 
@@ -104,7 +104,7 @@ The uninstall script offers:
 
 For detailed manual installation instructions, platform-specific setup guides, and advanced configuration options, please refer to [DEPLOYMENT.md](DEPLOYMENT.md).
 
-## Technology Stack
+## 🛠️ Technology Stack
 
 - **Frontend**: React 18 + TypeScript, Vite, Tailwind CSS, RSuite UI
 - **Backend**: Node.js + Express (TypeScript), SQLite via better-sqlite3
@@ -115,7 +115,7 @@ For detailed manual installation instructions, platform-specific setup guides, a
 - **Build**: Vite für Frontend, TypeScript-Compiler für Backend
 - **Code Quality**: ESLint mit TypeScript-Regeln, vollständige Typ-Sicherheit
 
-## Development
+## 👨‍💻 Development
 
 ```bash
 # Install dependencies
@@ -185,10 +185,10 @@ This project follows modern TypeScript best practices with:
 - **Security**: Session-based authentication with secure password hashing
 - **Real-time Updates**: WebSocket integration for live system monitoring
 
-## Disclaimer
+## ⚠️ Disclaimer
 
 This is a private project. Therefore I take no responsibility for the correctness and completeness (if there is any). If you find any mistakes, please use the issue function to report them. Or even better: correct the issue immediately and submit a pull request.
 
-## License
+## 📄 License
 
 This repository has been published under the [CC-BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/) license.
