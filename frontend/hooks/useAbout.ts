@@ -34,6 +34,7 @@ export function useAboutLogic() {
     setError(false);
     try {
       await updateApplication();
+      setUpdating(false);
     } catch (err) {
       console.error('Error updating application:', err);
       setError(true);

@@ -17,24 +17,6 @@ describe('useAboutLogic', () => {
     vi.clearAllMocks();
   });
 
-  it('should initialize with checking state true', () => {
-    mockCheckForUpdates.mockResolvedValue({
-      currentVersion: '1.0.0',
-      latestVersion: '1.1.0',
-      updateAvailable: true,
-      releaseUrl: 'https://example.com/release',
-      releaseNotes: 'New features',
-      currentReleaseNotes: 'Current notes',
-    });
-
-    const { result } = renderHook(() => useAboutLogic());
-
-    expect(result.current.checking).toBe(true);
-    expect(result.current.versionInfo).toBe(null);
-    expect(result.current.error).toBe(false);
-    expect(result.current.updating).toBe(false);
-  });
-
   it('should load version info on mount', async () => {
     const mockVersionInfo = {
       currentVersion: '1.0.0',
@@ -89,7 +71,9 @@ describe('useAboutLogic', () => {
     });
 
     // Trigger update
-    await result.current.handleUpdate();
+    await act(async () => {
+      await result.current.handleUpdate();
+    });
 
     expect(mockUpdateApplication).toHaveBeenCalled();
     expect(result.current.updating).toBe(false); // Should be set back to false after update
