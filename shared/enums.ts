@@ -75,6 +75,26 @@ export enum PrinterType {
 }
 
 /**
+ * Styling keys for consistent theming
+ */
+export enum StylingKey {
+  ITEM_BACKGROUND = 'itemBackground',
+  DRAG_BACKGROUND = 'dragBackground',
+  ACTIVE_OVERLAY = 'activeOverlay',
+  BUTTON_BASE_COLOR = 'buttonBaseColor',
+  FRAME_SHADOW_LIGHT = 'frameShadowLight',
+  FRAME_SHADOW_DARK = 'frameShadowDark',
+}
+
+/**
+ * Shadow effect types
+ */
+export enum ShadowType {
+  FRAME_INSET = 'frameInset',
+  ACTIVE_GLOW = 'activeGlow',
+}
+
+/**
  * Keyboard types
  */
 export enum KeyboardType {
