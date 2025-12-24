@@ -9,16 +9,15 @@
 
 import express, { Request, Response } from 'express';
 import {
-  getDatabase,
   getConfigurations,
-  getConfiguration,
+  getConfigurationById,
   createConfiguration,
   updateConfiguration,
   deleteConfiguration,
   setActiveConfiguration,
   getActiveConfiguration,
-  updateConfigurationsOrder
-} from '../database';
+  updateConfigurationOrder
+} from '../services/configurationService';
 import { requireAuth } from '../middleware';
 import { AuthenticatedRequest, Configuration, PreviousConfig, UpdateConfigurationRequest } from '../types';
 
@@ -116,7 +115,8 @@ router.get('/active', requireAuth, (
   res: Response<ConfigurationResponse | ErrorResponse>
 ) => {
   try {
-    const config = getActiveConfiguration();
+    const authReq = _req as AuthenticatedRequest;
+    const config = getActiveConfiguration(parseInt(authReq.session.userId));
 
     if (!config) {
       return res.json({ configuration: null });
@@ -154,7 +154,7 @@ router.get('/:id', requireAuth, (
   res: Response<ConfigurationResponse | ErrorResponse>
 ) => {
   try {
-    const config = getConfiguration(req.params.id);
+    const config = getConfigurationById(req.params.id);
 
     if (!config) {
       return res.status(404).json({ error: 'Configuration not found' });
@@ -201,12 +201,11 @@ router.post('/', requireAuth, (
       return res.status(400).json({ error: 'Name and config_data are required' });
     }
 
-    const config = createConfiguration(Number(authReq.session.userId), {
+    const config = createConfiguration({
       name,
       description: description || '',
-      config_data: typeof config_data === 'string' ? JSON.parse(config_data) : config_data,
-      is_active: Boolean(is_active)
-    });
+      config: typeof config_data === 'string' ? JSON.parse(config_data) : config_data
+    }, parseInt(authReq.session.userId));
 
     console.log('API created config:', config.name, 'is_active:', config.is_active);
 
@@ -240,11 +239,10 @@ router.put('/:id', requireAuth, (
     if (req.body.name !== undefined) updates.name = req.body.name;
     if (req.body.description !== undefined) updates.description = req.body.description;
     if (req.body.config_data !== undefined) {
-      updates.config_data = typeof req.body.config_data === 'string' ? JSON.parse(req.body.config_data) : req.body.config_data;
+      updates.config = typeof req.body.config_data === 'string' ? JSON.parse(req.body.config_data) : req.body.config_data;
     }
-    if (req.body.is_active !== undefined) updates.is_active = req.body.is_active;
 
-    const config = updateConfiguration(id, updates);
+    const config = updateConfiguration(id, updates, parseInt(authReq.session.userId));
 
     if (!config) {
       return res.status(404).json({ error: 'Configuration not found' });
@@ -276,11 +274,8 @@ router.delete('/:id', requireAuth, (
   res: Response<SuccessResponse | ErrorResponse>
 ) => {
   try {
-    const deleted = deleteConfiguration(req.params.id);
-
-    if (!deleted) {
-      return res.status(404).json({ error: 'Configuration not found' });
-    }
+    const authReq = req as AuthenticatedRequest;
+    deleteConfiguration(req.params.id, parseInt(authReq.session.userId));
 
     res.json({ success: true, message: 'Configuration deleted' });
   } catch (error) {
@@ -303,7 +298,9 @@ router.post('/:id/activate', requireAuth, (
 ) => {
   try {
     const authReq = req as AuthenticatedRequest;
-    const config = setActiveConfiguration(req.params.id, Number(authReq.session.userId));
+    setActiveConfiguration(req.params.id, parseInt(authReq.session.userId));
+
+    const config = getConfigurationById(req.params.id);
 
     if (!config) {
       return res.status(404).json({ error: 'Configuration not found' });
@@ -336,12 +333,18 @@ router.put('/order/update', requireAuth, (
 ) => {
   try {
     const { orderedIds } = req.body;
+    const authReq = req as AuthenticatedRequest;
 
     if (!Array.isArray(orderedIds)) {
       return res.status(400).json({ error: 'orderedIds must be an array' });
     }
 
-    updateConfigurationsOrder(orderedIds);
+    const updates = orderedIds.map((id, index) => ({
+      id,
+      sort_order: index
+    }));
+
+    updateConfigurationOrder(orderedIds, parseInt(authReq.session.userId));
 
     res.json({ success: true });
   } catch (error) {
