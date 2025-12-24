@@ -1,4 +1,5 @@
 import type { PreviousConfig } from './types';
+import { CpuType, DisplayType, NetworkType, SoundOutput, PrinterType, KeyboardType } from '../../../shared/enums';
 
 /**
  * Application name
@@ -20,14 +21,14 @@ export const APP_NAME = 'Previous Admin';
  */
 export const DEFAULT_CONFIG: PreviousConfig = {
   system: {
-    cpu_type: '68040',
+    cpu_type: CpuType.CPU_68040,
     cpu_frequency: 25,
     memory_size: 32,
     turbo: false,
     fpu: true,
   },
   display: {
-    type: 'color',
+    type: DisplayType.COLOR,
     width: 1120,
     height: 832,
     color_depth: 24,
@@ -45,26 +46,26 @@ export const DEFAULT_CONFIG: PreviousConfig = {
   },
   network: {
     enabled: false,
-    type: 'ethernet',
+    type: NetworkType.ETHERNET,
   },
   ethernet: {
     enabled: false,
-    type: 'ethernet',
+    type: NetworkType.ETHERNET,
   },
   sound: {
     enabled: true,
-    output: 'sdl',
+    output: SoundOutput.SDL,
   },
   printer: {
     enabled: false,
-    type: 'parallel',
+    type: PrinterType.PARALLEL,
   },
   boot: {
     rom_file: '',
     scsi_id: 0,
   },
   keyboard: {
-    type: 'us',
+    type: KeyboardType.US,
   },
   mouse: {
     enabled: true,

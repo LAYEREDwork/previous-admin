@@ -39,3 +39,22 @@ export enum ApiEndpoints {
   // Health endpoint
   HEALTH = '/api/health',
 }
+
+/**
+ * Default configuration values
+ * Used to avoid magic numbers and strings in default configurations
+ */
+export const DEFAULT_CONFIG_VALUES = {
+  CPU_TYPE: '68040',
+  CPU_FREQUENCY: 25,
+  MEMORY_SIZE: 32,
+  TURBO: false,
+  FPU: true,
+  DISPLAY_TYPE: 'color',
+  DISPLAY_WIDTH: 1120,
+  DISPLAY_HEIGHT: 832,
+  COLOR_DEPTH: 24,
+  FRAMESKIP: 0,
+  NETWORK_ENABLED: false,
+  NETWORK_TYPE: 'ethernet',
+} as const;
