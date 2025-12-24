@@ -1,5 +1,5 @@
 import type { PreviousConfig } from './types';
-import { CpuType, DisplayType, NetworkType, SoundOutput, PrinterType, KeyboardType } from '../../../shared/enums';
+import { CpuType, DisplayType, NetworkType, SoundOutput, PrinterType, KeyboardType } from '~shared/enums';
 
 /**
  * Application name
