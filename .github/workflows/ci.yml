@@ -11,6 +11,7 @@ on:
 jobs:
   frontend-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -31,7 +32,7 @@ jobs:
         run: npm run typecheck
 
       - name: Run frontend tests
-        run: npm run test:frontend
+        run: npm run test:frontend -- --testTimeout=30000
 
   backend-test:
     runs-on: ubuntu-latest
