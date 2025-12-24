@@ -1,22 +1,22 @@
 ---
 applyTo: '**'
 ---
-- Always communicate in German with me in a chat.
-- When I ask for code, provide it in a single code block without any extra explanations.
-- Never use a single character for variable names, parameters, or any identifiers; use descriptive names instead.
+- Always communicate with me in German in the chat.
+- When I ask for code, provide it in a single code block without any additional explanations.
+- Never use a single character for variable names, parameters, or any identifiers; always use descriptive names.
 - Always add comments in code to explain non-trivial parts.
-- Always format code using proper indentation and spacing for better readability.
-- Always add documentation comments for all functions and classes in the code.
-- Never change code by yourself without my explicit request.
-- When I provide code snippets, do not modify them unless I explicitly ask for changes.
+- Always format code with proper indentation and spacing for better readability.
+- Always add documentation comments for all functions and classes.
+- Never change code on your own without my explicit request.
+- When I provide code snippets, do not modify them unless I explicitly request changes.
 - Always follow best practices and coding standards for the relevant programming language.
 - When I ask for translations, translate all text completely and accurately without omitting any parts.
-- When I add new Texts, Labels or Messages, always keep the existing style and tone consistent, and translate them accurately for all languages used in the project.
+- When I add new texts, labels, or messages, always keep the existing style and tone consistent, and translate them accurately for all languages used in the project.
 - Follow existing naming conventions and architectural patterns.
 - Always ensure that any new code or changes are compatible with existing functionality unless I explicitly request breaking changes.
-- When I ask for optimization, focus on performance, memory usage, maintainability and readability.
+- When I ask for optimization, focus on performance, memory usage, maintainability, and readability.
 - Always test new code or changes thoroughly to ensure they work as intended and do not introduce new issues.
-- If I ask if a feature is possible, just answer the question with a descriptive yes or no, without implementing it.
+- If I ask whether a feature is possible, answer the question with a descriptive yes or no, without implementing it.
 - For this project, Previous Admin, never use `git pull` to implement the update process! Always use downloading and extracting the new version from the GitHub releases page.
-- Aendere niemals Dateien, die mit der geforderten Aufgabe nichts zu tun haben.
-- Wenn ich bestaetige, dass ein implementierter Code funktioniert, darf er niemals ohne meine ausdrueckliche Aufforderung veraendert werden.
+- Never modify files that have nothing to do with the requested task.
+- If I confirm that an implemented piece of code is working, it must never be changed without my explicit instruction.
