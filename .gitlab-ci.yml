@@ -1,0 +1,28 @@
+stages:
+  - test
+
+test:frontend:
+  image: node:18
+  script:
+    - npm ci
+    - npm run lint
+    - npm run typecheck
+    - npm run test:frontend
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
+
+test:backend:
+  image: node:18
+  script:
+    - npm ci
+    - npm run lint
+    - npm run typecheck
+    - npm run test:backend
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
