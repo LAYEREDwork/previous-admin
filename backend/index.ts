@@ -24,12 +24,12 @@ import { API_CONFIG, SESSION_CONFIG } from './constants';
 import * as database from './database';
 
 // Import route handlers
-import authRoutes from './api/auth.js';
-import configRoutes from './api/config.js';
-import configurationsRoutes from './api/configurations.js';
-import databaseRoutes from './api/database.js';
-import systemRoutes from './api/system.js';
-import updateRoutes from './api/update.js';
+import authRoutes from './api/auth';
+import configRoutes from './api/config';
+import configurationsRoutes from './api/configurations';
+import databaseRoutes from './api/database';
+import systemRoutes from './api/system';
+import updateRoutes from './api/update';
 
 // Import utilities
 import { setupWebSocket } from './websocket.js';

@@ -4,11 +4,11 @@
  */
 export const apiPaths = {
   Auth: {
-    setupRequired: { full: '/api/auth/setup-required', relative: 'setup-required' },
-    setup: { full: '/api/auth/setup', relative: 'setup' },
-    login: { full: '/api/auth/login', relative: 'login' },
-    logout: { full: '/api/auth/logout', relative: 'logout' },
-    session: { full: '/api/auth/session', relative: 'session' },
+    setupRequired: { full: '/api/auth/setup-required', relative: '/setup-required' },
+    setup: { full: '/api/auth/setup', relative: '/setup' },
+    login: { full: '/api/auth/login', relative: '/login' },
+    logout: { full: '/api/auth/logout', relative: '/logout' },
+    session: { full: '/api/auth/session', relative: '/session' },
   },
   Configuration: {
     list: { full: '/api/configurations', relative: '' },

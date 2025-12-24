@@ -15,8 +15,6 @@ import { AuthenticatedRequest } from '../types';
 import { UserSessionData } from '../types';
 
 const router = express.Router();
-
-// Request body types
 interface SetupRequestBody {
   username: string;
   password: string;
@@ -69,6 +67,10 @@ interface ErrorResponse {
  */
 router.get(apiPaths.Auth.setupRequired.relative, (_req: Request, res: Response<SetupRequiredResponse>) => {
   res.json({ setupRequired: isSetupRequired() });
+});
+
+router.get('/test', (_req: Request, res: Response) => {
+  res.json({ test: 'ok' });
 });
 
 /**
