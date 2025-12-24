@@ -95,6 +95,16 @@ export enum ShadowType {
 }
 
 /**
+ * Chart types for system monitoring
+ */
+export enum ChartType {
+  CPU_LOAD = 'cpuLoad',
+  MEMORY = 'memory',
+  NETWORK_TRAFFIC = 'networkTraffic',
+  DISK_IO = 'diskIO',
+}
+
+/**
  * Keyboard types
  */
 export enum KeyboardType {
