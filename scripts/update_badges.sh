@@ -18,13 +18,24 @@ ts_percent=$(( (ts_lines * 100 + total_lines / 2) / total_lines ))
 js_percent=$(( (js_lines * 100 + total_lines / 2) / total_lines ))
 sh_percent=$(( (sh_lines * 100 + total_lines / 2) / total_lines ))
 
-# Update README.md using sed (macOS compatible)
-sed -i '' \
-    -e "s/TypeScript-[0-9]\+%/TypeScript-${ts_percent}%/g" \
-    -e "s/JavaScript-[0-9]\+%/JavaScript-${js_percent}%/g" \
-    -e "s/Shell-[0-9]\+%/Shell-${sh_percent}%/g" \
-    -e "s/LOC-[0-9][0-9]*/LOC-${total_lines}/g" \
-    README.md
+# Update README.md using sed (cross-platform)
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS
+    sed -i '' \
+        -e "s/TypeScript-[0-9]\+%/TypeScript-${ts_percent}%/g" \
+        -e "s/JavaScript-[0-9]\+%/JavaScript-${js_percent}%/g" \
+        -e "s/Shell-[0-9]\+%/Shell-${sh_percent}%/g" \
+        -e "s/LOC-[0-9][0-9]*/LOC-${total_lines}/g" \
+        README.md
+else
+    # Linux
+    sed -i \
+        -e "s/TypeScript-[0-9]\+%/TypeScript-${ts_percent}%/g" \
+        -e "s/JavaScript-[0-9]\+%/JavaScript-${js_percent}%/g" \
+        -e "s/Shell-[0-9]\+%/Shell-${sh_percent}%/g" \
+        -e "s/LOC-[0-9][0-9]*/LOC-${total_lines}/g" \
+        README.md
+fi
 
 echo "Badges updated:"
 echo "TypeScript: ${ts_percent}% (${ts_lines} lines)"
