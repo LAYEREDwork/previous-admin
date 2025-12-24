@@ -6,7 +6,7 @@
 import express from 'express';
 import { execAsync } from './helpers';
 import { requireAuth } from '../middleware';
-import { ApiEndpoints } from '../../shared/constants';
+import { Endpoints } from '../../../shared/constants';
 import packageJson from '../../package.json';
 import { API_BASE_URL } from '../constants';
 
@@ -49,12 +49,12 @@ const router = express.Router();
  * const { success, message } = await res.json();
  * // Application will restart automatically
  */
-router.post('/', requireAuth, async (req: any, res: any) => {
+router.post(Endpoints.Update.update, requireAuth, async (req: any, res: any) => {
   try {
     const adminDir = process.cwd();
 
     // Get latest version info
-    const versionResponse = await fetch(`${API_BASE_URL}${ApiEndpoints.UPDATE_VERSION}`, {
+    const versionResponse = await fetch(`${API_BASE_URL}${ApiEndpoints.update_VERSION}`, {
       headers: {
         'Accept': 'application/json',
       },
@@ -124,7 +124,7 @@ router.post('/', requireAuth, async (req: any, res: any) => {
  *   - releaseNotes {string|null}: Release notes for latest version
  *   - currentReleaseNotes {string|null}: Release notes for current version
  */
-router.get('/version', requireAuth, async (req: any, res: any) => {
+router.get(Endpoints.Update.version, requireAuth, async (req: any, res: any) => {
   const REPO_API_URL = 'https://codeberg.org/api/v1/repos/phranck/previous-admin';
 
   try {

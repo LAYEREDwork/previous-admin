@@ -18,6 +18,7 @@ import {
   getActiveConfiguration,
   updateConfigurationOrder
 } from '../services/configurationService';
+import { Endpoints } from '../../../shared/constants';
 import { requireAuth } from '../middleware';
 import { AuthenticatedRequest, Configuration, PreviousConfig, UpdateConfigurationRequest } from '../types';
 
@@ -77,7 +78,7 @@ interface UpdateOrderBody {
  * @authentication required
  * @returns {Array} Array of configuration objects
  */
-router.get('/', requireAuth, (
+router.get(Endpoints.Configuration.list, requireAuth, (
   _req: Request,
   res: Response<ConfigurationsListResponse | ErrorResponse>
 ) => {
@@ -110,7 +111,7 @@ router.get('/', requireAuth, (
  * @authentication required
  * @returns {Object|null} Active configuration or null
  */
-router.get('/active', requireAuth, (
+router.get(Endpoints.Configuration.getActive, requireAuth, (
   _req: Request,
   res: Response<ConfigurationResponse | ErrorResponse>
 ) => {
@@ -149,7 +150,7 @@ router.get('/active', requireAuth, (
  * @param {string} id - Configuration ID
  * @returns {Object} Configuration object
  */
-router.get('/:id', requireAuth, (
+router.get(Endpoints.Configuration.getById, requireAuth, (
   req: Request<{ id: string }>,
   res: Response<ConfigurationResponse | ErrorResponse>
 ) => {
@@ -187,7 +188,7 @@ router.get('/:id', requireAuth, (
  * @body {Object} data - Configuration data
  * @returns {Object} Created configuration
  */
-router.post('/', requireAuth, (
+router.post(Endpoints.Configuration.create, requireAuth, (
   req: Request<object, ConfigurationResponse | ErrorResponse, CreateConfigurationBody>,
   res: Response<ConfigurationResponse | ErrorResponse>
 ) => {
@@ -227,7 +228,7 @@ router.post('/', requireAuth, (
  * @body {Object} updates - Fields to update
  * @returns {Object} Updated configuration
  */
-router.put('/:id', requireAuth, (
+router.put(Endpoints.Configuration.update, requireAuth, (
   req: Request<{ id: string }, ConfigurationResponse | ErrorResponse, UpdateConfigurationBody>,
   res: Response<ConfigurationResponse | ErrorResponse>
 ) => {
@@ -269,7 +270,7 @@ router.put('/:id', requireAuth, (
  * @param {string} id - Configuration ID
  * @returns {Object} Success message
  */
-router.delete('/:id', requireAuth, (
+router.delete(Endpoints.Configuration.delete, requireAuth, (
   req: Request<{ id: string }>,
   res: Response<SuccessResponse | ErrorResponse>
 ) => {
@@ -292,7 +293,7 @@ router.delete('/:id', requireAuth, (
  * @param {string} id - Configuration ID
  * @returns {Object} Activated configuration
  */
-router.post('/:id/activate', requireAuth, (
+router.post(Endpoints.Configuration.activate, requireAuth, (
   req: Request<{ id: string }>,
   res: Response<ConfigurationResponse | ErrorResponse>
 ) => {
@@ -327,7 +328,7 @@ router.post('/:id/activate', requireAuth, (
  * @body {Array<string>} orderedIds - Configuration IDs in desired order
  * @returns {Object} Success message
  */
-router.put('/order/update', requireAuth, (
+router.put(Endpoints.Configuration.update_ORDER, requireAuth, (
   req: Request<object, SuccessResponse | ErrorResponse, UpdateOrderBody>,
   res: Response<SuccessResponse | ErrorResponse>
 ) => {
@@ -360,7 +361,7 @@ router.put('/order/update', requireAuth, (
  * @authentication required
  * @returns {Object} Success message
  */
-router.post('/deactivate-all', requireAuth, (
+router.post(Endpoints.Configuration.deactivateAll, requireAuth, (
   req: Request,
   res: Response<SuccessResponse | ErrorResponse>
 ) => {

@@ -6,39 +6,95 @@
  */
 export enum ApiEndpoints {
   // Auth endpoints
-  AUTH_SETUP_REQUIRED = '/api/auth/setup-required',
-  AUTH_SETUP = '/api/auth/setup',
-  AUTH_LOGIN = '/api/auth/login',
-  AUTH_LOGOUT = '/api/auth/logout',
-  AUTH_SESSION = '/api/auth/session',
+  authSetupRequired = '/api/auth/setup-required',
+  authSetup = '/api/auth/setup',
+  authLogin = '/api/auth/login',
+  authLogout = '/api/auth/logout',
+  authSession = '/api/auth/session',
 
   // Configuration endpoints
-  CONFIGURATIONS = '/api/configurations',
-  CONFIGURATIONS_ACTIVE = '/api/configurations/active',
-  CONFIGURATIONS_ORDER_UPDATE = '/api/configurations/order/update',
+  configurations = '/api/configurations',
+  configurationsActive = '/api/configurations/active',
+  configurationsOrderUpdate = '/api/configurations/order/update',
 
   // Config endpoints
-  CONFIG = '/api/config',
+  config = '/api/config',
 
   // Database endpoints
-  DATABASE_EXPORT = '/api/database/export',
-  DATABASE_IMPORT = '/api/database/import',
-  DATABASE_STATS = '/api/database/stats',
-  DATABASE_SETUP_IMPORT = '/api/database/setup-import',
+  databaseExport = '/api/database/export',
+  databaseImport = '/api/database/import',
+  databaseStats = '/api/database/stats',
+  databaseSetupImport = '/api/database/setup-import',
 
   // System endpoints
-  SYSTEM_HEALTH = '/api/system/health',
-  SYSTEM_SYSTEM_INFO = '/api/system/system-info',
-  SYSTEM_METRICS = '/api/system/metrics',
-  SYSTEM_RESET = '/api/system/reset',
+  systemHealth = '/api/system/health',
+  systemSystemInfo = '/api/system/system-info',
+  systemMetrics = '/api/system/metrics',
+  systemReset = '/api/system/reset',
 
   // Update endpoints
-  UPDATE = '/api/update',
-  UPDATE_VERSION = '/api/update/version',
+  update = '/api/update',
+  updateVersion = '/api/update/version',
 
   // Health endpoint
-  HEALTH = '/api/health',
+  health = '/api/health',
 }
+
+/**
+ * Relative API endpoint paths for router definitions
+ * These are the paths used in Express routers, without the base API prefix
+ */
+export const Endpoints = {
+  Auth: {
+    setupRequired: 'setup-required',
+    setup: 'setup',
+    login: 'login',
+    logout: 'logout',
+    session: 'session',
+  },
+  Configuration: {
+    list: '',
+    getById: '/:id',
+    create: '',
+    update: '/:id',
+    delete: '/:id',
+    setActive: '/:id/active',
+    getActive: '/active',
+    updateOrder: '/order/update',
+    activate: '/:id/activate',
+    deactivateAll: '/deactivate-all',
+  },
+  Config: {
+    get: '',
+    put: '',
+  },
+  Database: {
+    export: '/export',
+    import: '/import',
+    stats: '/stats',
+    setupImport: '/setup-import',
+  },
+  System: {
+    health: '/health',
+    systemInfo: '/system-info',
+    metrics: '/metrics',
+    reset: '/reset',
+  },
+  Update: {
+    update: '',
+    version: '/version',
+  },
+} as const;
+
+/**
+ * Type definitions for endpoint paths
+ */
+export type AuthEndpoint = typeof Endpoints.Auth[keyof typeof Endpoints.Auth];
+export type ConfigurationEndpoint = typeof Endpoints.Configuration[keyof typeof Endpoints.Configuration];
+export type ConfigEndpoint = typeof Endpoints.Config[keyof typeof Endpoints.Config];
+export type DatabaseEndpoint = typeof Endpoints.Database[keyof typeof Endpoints.Database];
+export type SystemEndpoint = typeof Endpoints.System[keyof typeof Endpoints.System];
+export type UpdateEndpoint = typeof Endpoints.Update[keyof typeof Endpoints.Update];
 
 /**
  * Default configuration values

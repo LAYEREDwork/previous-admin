@@ -11,6 +11,7 @@ import {
   logoutUser,
   getSessionInfo
 } from '../services/authService';
+import { Endpoints } from '../../../shared/constants';
 import { AuthenticatedRequest } from '../types';
 import { UserSessionData } from '../types';
 
@@ -67,7 +68,7 @@ interface ErrorResponse {
  * const res = await fetch('/api/auth/setup-required');
  * const { setupRequired } = await res.json();
  */
-router.get('/setup-required', (_req: Request, res: Response<SetupRequiredResponse>) => {
+router.get(Endpoints.Auth.setupRequired, (_req: Request, res: Response<SetupRequiredResponse>) => {
   res.json({ setupRequired: isSetupRequired() });
 });
 
@@ -95,7 +96,7 @@ router.get('/setup-required', (_req: Request, res: Response<SetupRequiredRespons
  *   body: JSON.stringify({ username: 'admin', password: 'secure123' })
  * });
  */
-router.post('/setup', async (
+router.post(Endpoints.Auth.setup, async (
   req: Request<object, SetupResponse | ErrorResponse, SetupRequestBody>,
   res: Response<SetupResponse | ErrorResponse>
 ) => {
@@ -143,7 +144,7 @@ router.post('/setup', async (
  *   body: JSON.stringify({ username: 'admin', password: 'password' })
  * });
  */
-router.post('/login', async (
+router.post(Endpoints.Auth.login, async (
   req: Request<object, LoginResponse | ErrorResponse, LoginRequestBody>,
   res: Response<LoginResponse | ErrorResponse>
 ) => {
@@ -179,7 +180,7 @@ router.post('/login', async (
  * @example
  * const res = await fetch('/api/auth/logout', { method: 'POST' });
  */
-router.post('/logout', (
+router.post(Endpoints.Auth.logout, (
   req: Request,
   res: Response<LogoutResponse | ErrorResponse>
 ) => {
@@ -209,7 +210,7 @@ router.post('/logout', (
  * const res = await fetch('/api/auth/session');
  * const { authenticated, username, setupRequired } = await res.json();
  */
-router.get('/session', (
+router.get(Endpoints.Auth.session, (
   req: Request,
   res: Response<SessionResponse>
 ) => {

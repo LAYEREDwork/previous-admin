@@ -18,6 +18,7 @@ import { existsSync, unlinkSync } from 'fs';
 
 import { getSystemInfo } from '../platform/system-info';
 import { getMetricsSnapshot } from '../metrics';
+import { Endpoints } from '../../../shared/constants';
 import { requireAuth } from '../middleware';
 import { DATABASE_PATH } from '../database/core';
 import { closeDatabase, reinitializeDatabase } from '../database';
@@ -35,7 +36,7 @@ const SYSTEM_ROUTER = express.Router();
  * @param response - Express response object
  * @returns JSON with status 'ok'
  */
-SYSTEM_ROUTER.get('/health', (_request: Request, response: Response) => {
+SYSTEM_ROUTER.get(Endpoints.System.health, (_request: Request, response: Response) => {
   response.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
@@ -59,7 +60,7 @@ SYSTEM_ROUTER.get('/health', (_request: Request, response: Response) => {
  * @returns System information object
  * @throws 500 if unable to gather system information
  */
-SYSTEM_ROUTER.get('/system-info', requireAuth, async (request: Request, response: Response) => {
+SYSTEM_ROUTER.get(Endpoints.System.systemInfo, requireAuth, async (request: Request, response: Response) => {
   try {
     const systemInfo = await getSystemInfo();
     response.json(systemInfo);
@@ -88,7 +89,7 @@ SYSTEM_ROUTER.get('/system-info', requireAuth, async (request: Request, response
  * @returns Metrics snapshot object
  * @throws 500 if unable to collect metrics
  */
-SYSTEM_ROUTER.get('/metrics', requireAuth, async (request: Request, response: Response) => {
+SYSTEM_ROUTER.get(Endpoints.System.metrics, requireAuth, async (request: Request, response: Response) => {
   try {
     const metricsSnapshot = await getMetricsSnapshot();
     response.json(metricsSnapshot);
@@ -120,7 +121,7 @@ SYSTEM_ROUTER.get('/metrics', requireAuth, async (request: Request, response: Re
  * @returns Success confirmation
  * @throws 500 if reset operation fails
  */
-SYSTEM_ROUTER.post('/reset', requireAuth, (request: Request, response: Response) => {
+SYSTEM_ROUTER.post(Endpoints.System.reset, requireAuth, (request: Request, response: Response) => {
   try {
     // Step 1: Close database connection
     closeDatabase();
