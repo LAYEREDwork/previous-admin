@@ -51,7 +51,7 @@ jobs:
         run: npm ci
 
       - name: Run frontend tests
-        run: npm run test:frontend -- --testTimeout=30000
+        run: npm run test:frontend -- --testTimeout=30000 --bail=false
 
   backend-test:
     runs-on: ${{ matrix.os }}
