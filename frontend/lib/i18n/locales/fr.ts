@@ -116,8 +116,7 @@ export const fr: Translations = {
     atLakeConstance: 'au bord du lac de Constance',
     austria: 'Autriche',
     copyright: '© LAYERED.work',
-    inBregenz: 'à Bregenz',
-    madeIn: 'fait avec ❤️ et',
+    madeIn: 'fait avec ❤️ à Bregenz',
   },
   login: {
     title: appName,

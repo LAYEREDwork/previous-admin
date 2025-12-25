@@ -1,7 +1,7 @@
 import React from 'react';
 import { Whisper, Popover, WhisperInstance } from 'rsuite';
 import type { Placement } from 'rsuite/esm/internals/types';
-import { PATextures } from '../../lib/utils/color';
+import { PATexture } from '../../lib/utils/color';
 
 interface DropdownItemProps {
   children: React.ReactNode;
@@ -72,7 +72,7 @@ const PANeomorphDropdown = ({
             {...rest}
           >
             <div
-              style={{ backgroundImage: PATextures.noise }}
+              style={{ backgroundImage: PATexture.noise }}
               className="rounded-lg border border-gray-700/90 bg-gray-800/90 shadow-lg overflow-hidden backdrop-blur-sm"
             >
               {menuItems}

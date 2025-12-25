@@ -140,7 +140,6 @@ export interface Translations {
     atLakeConstance: string;
     austria: string;
     copyright: string;
-    inBregenz: string;
     madeIn: string;
   };
   importExport: {

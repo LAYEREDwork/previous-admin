@@ -1,7 +1,8 @@
 export type HslColor = { h: number; s: number; l: number };
 
-export enum PATextures {
-  noise = "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3cfilter id='n'%3e%3cfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3e%3c/filter%3e%3crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.3'/%3e%3c/svg%3e\")",
+export enum PATexture {
+  noise = "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3e%3cfilter id='n'%3e%3cfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3e%3c/filter%3e%3crect width='200%25' height='200%25' filter='url(%23n)' opacity='0.3'/%3e%3c/svg%3e\")",
+  fineNoise = "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3e%3cfilter id='fn'%3e%3cfeTurbulence type='fractalNoise' baseFrequency='2.0' numOctaves='4' stitchTiles='stitch'/%3e%3c/filter%3e%3crect width='200%25' height='200%25' filter='url(%23fn)' opacity='0.3'/%3e%3c/svg%3e\")",
 }
 
 /**

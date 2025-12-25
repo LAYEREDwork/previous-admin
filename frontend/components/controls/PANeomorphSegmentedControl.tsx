@@ -1,6 +1,8 @@
 import React, { ReactNode, useRef, useEffect, useState } from 'react';
-import { computePalette, PANeomorphPalette } from '../../lib/utils/palette';
-import { adjustLightness, hslToString, parseColorToHsl, PATextures } from '../../lib/utils/color';
+import { PANeomorphPalette, computePalette } from '../../lib/utils/palette';
+import { PANeomorphControlShape, containerHeightsPixel, containerHeightsCSS, iconSizesPixel, fontSizesCSS } from '../../lib/utils/styling';
+import { adjustLightness, hslToString, parseColorToHsl, PATexture } from '../../lib/utils/color';
+import { PASize } from '../../lib/types/sizes';
 
 interface SegmentOption<T extends string> {
   value: T;
@@ -8,22 +10,15 @@ interface SegmentOption<T extends string> {
   icon?: React.ComponentType<any> | ReactNode;
 }
 
-// Enum for shape, kept for basic configuration
-export const PANeomorphSegmentedControlShape = {
-  pill: 'pill',
-  rect: 'rect',
-} as const;
-export type PANeomorphSegmentedControlShape = typeof PANeomorphSegmentedControlShape[keyof typeof PANeomorphSegmentedControlShape];
-
 interface PANeomorphSegmentedControlProps<T extends string> {
   options: SegmentOption<T>[];
   value: T;
   onChange: (value: T) => void;
-  size?: 'xs' | 'sm' | 'md' | 'lg';
+  size: PASize;
   iconOnly?: boolean;
   fullWidth?: boolean;
   baseColor?: string;
-  shape?: PANeomorphSegmentedControlShape;
+  shape?: PANeomorphControlShape;
   className?: string;
 }
 
@@ -36,15 +31,18 @@ export function PANeomorphSegmentedControl<T extends string>({
   options,
   value,
   onChange,
-  size = 'sm',
+  size = PASize.sm,
   iconOnly = false,
   fullWidth = false,
   baseColor,
-  shape = PANeomorphSegmentedControlShape.pill,
+  shape = PANeomorphControlShape.pill,
   className = '',
 }: PANeomorphSegmentedControlProps<T>) {
   const palette = computePalette(baseColor || PANeomorphPalette.baseColor);
-  const inactiveTextColor = hslToString(adjustLightness(parseColorToHsl(palette.text)!, -30)); // 50% of full brightness
+  const inactiveTextColor = hslToString(adjustLightness(parseColorToHsl(palette.textColor)!, -40)); // 40% darker
+  const backgroundColor = hslToString(adjustLightness(parseColorToHsl(palette.frameBackground)!, 1));
+  const hoverBackgroundColor = hslToString(adjustLightness(parseColorToHsl(palette.frameBackground)!, 16));
+  const frameShadowLightColor = hslToString(adjustLightness(parseColorToHsl(palette.frameShadowLight)!, 10));
 
   const activeIndex = options.findIndex((opt) => opt.value === value);
   const [sliderStyle, setSliderStyle] = useState<React.CSSProperties>({ opacity: 0 });
@@ -80,50 +78,39 @@ export function PANeomorphSegmentedControl<T extends string>({
     };
   }, [activeIndex, options, isReady]);
 
-  // Precise height mapping (+4px to match user request)
-  const containerHeights = {
-    xs: 'h-7',      // 28px
-    sm: 'h-[34px]', // 34px
-    md: 'h-10',     // 40px
-    lg: 'h-[46px]', // 46px
-  };
-
-  const fontSizes = {
-    xs: 'text-[10px]',
-    sm: 'text-xs',
-    md: 'text-sm',
-    lg: 'text-base',
-  };
-
-  const iconSizes = {
-    xs: 12,
-    sm: 14,
-    md: 16,
-    lg: 18,
-  };
-
-  const containerBorderRadius = shape === PANeomorphSegmentedControlShape.pill ? 'rounded-full' : 'rounded-lg';
-  const sliderBorderRadius = shape === PANeomorphSegmentedControlShape.pill ? 'rounded-full' : 'rounded-lg';
+  const outerCornerRadius = shape === PANeomorphControlShape.pill ? containerHeightsPixel[size] / 2 : Math.min(containerHeightsPixel[size] / 4, 8); // Für rect max 8px wie rounded-lg
+  const innerCornerRadius = Math.max(outerCornerRadius - 4, 0); // 4px padding (p-1)
 
   return (
-    <div
-      ref={containerRef}
-      className={`relative flex p-1 select-none ${containerHeights[size]} ${containerBorderRadius}
+    <>
+      <style>
+        {`
+          .inactive-segment:hover {
+            background-color: ${hoverBackgroundColor} !important;
+            border-radius: 3px !important;
+          }
+        `}
+      </style>
+      <div
+        ref={containerRef}
+        className={`relative flex p-1 select-none ${containerHeightsCSS[size]}
         } ${fullWidth ? 'w-full' : 'w-fit'} ${className}`}
-      style={{
-        backgroundImage: PATextures.noise,
-        backgroundColor: palette.frameBackground,
-        boxShadow: `inset 1px 1px 2px ${palette.frameShadowDark}, inset -1px -1px 2px ${palette.frameShadowLight}`,
-      }}
-    >
+        style={{
+          backgroundImage: PATexture.noise,
+          backgroundColor: backgroundColor,
+          boxShadow: `inset 1px 1px 2px ${palette.frameShadowDark}, inset -1px -1px 2px ${frameShadowLightColor}`,
+          borderRadius: outerCornerRadius,
+        }}
+      >
       {/* Sliding Active Tile (Active Segment Background) - Embossed */}
       <div
-        className={`absolute top-1 bottom-1 pointer-events-none z-0 transition-all ${sliderBorderRadius}`}
+        className={`absolute top-1 bottom-1 pointer-events-none z-0 transition-all`}
         style={{
           ...sliderStyle,
-          backgroundImage: PATextures.noise,
+          backgroundImage: PATexture.noise,
           backgroundColor: palette.buttonBackground,
           boxShadow: `-1px -1px 2px ${palette.buttonShadowLight}, 1px 1px 2px ${palette.buttonShadowDark}`,
+          borderRadius: innerCornerRadius,
         }}
       />
 
@@ -140,7 +127,7 @@ export function PANeomorphSegmentedControl<T extends string>({
 
           if (typeof option.icon === 'function') {
             const IconComponent = option.icon as React.ComponentType<any>;
-            return <IconComponent size={iconSizes[size]} />;
+            return <IconComponent size={iconSizesPixel[size]} />;
           }
 
           return option.icon;
@@ -151,10 +138,11 @@ export function PANeomorphSegmentedControl<T extends string>({
             key={option.value}
             type="button"
             onClick={() => onChange(option.value)}
-            className={`segment-item relative z-10 flex items-center justify-center gap-2 font-semibold h-full px-3 transition-colors duration-300 ${sliderBorderRadius} ${fontSizes[size]
-              } ${fullWidth ? 'flex-1' : ''}`}
+            className={`segment-item relative z-10 flex items-center justify-center gap-2 font-semibold h-full px-3 transition-colors duration-300 ${fontSizesCSS[size]
+              } ${fullWidth ? 'flex-1' : ''} ${!isActive ? 'inactive-segment' : ''}`}
             style={{
               color: isActive ? 'white' : inactiveTextColor,
+              borderRadius: innerCornerRadius,
             }}
           >
             {option.icon && renderIcon() && (
@@ -169,5 +157,6 @@ export function PANeomorphSegmentedControl<T extends string>({
         );
       })}
     </div>
+    </>
   );
 }

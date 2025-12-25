@@ -116,8 +116,7 @@ export const de: Translations = {
     atLakeConstance: 'am Bodensee',
     austria: 'Österreich',
     copyright: '© LAYERED.work',
-    inBregenz: 'in Bregenz',
-    madeIn: 'erstellt mit ❤️ und',
+    madeIn: 'erstellt mit ❤️ in Bregenz',
   },
   importExport: {
     title: 'Import/Export',

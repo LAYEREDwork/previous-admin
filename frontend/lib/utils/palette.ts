@@ -2,6 +2,7 @@ import { adjustLightness, hslToString, parseColorToHsl } from './color';
 
 export enum PANeomorphPalette {
   baseColor = '#1a1a1a',
+  backgroundColor = '#0a0a0a',
   frameBackground = 'hsl(0, 0%, 6%)',
   ringBackground = 'hsl(0, 0%, 12%)',
   buttonBackground = 'hsl(0, 0%, 16%)',
@@ -24,29 +25,13 @@ export interface Palette {
   frameShadowLight: string;
   buttonShadowDark: string;
   buttonShadowLight: string;
-  base: string;
-  text: string;
+  baseColor: string;
+  textColor: string;
 }
 
 export function computePalette(baseColor: string): Palette {
-  const baseHsl = parseColorToHsl(baseColor) ?? parseColorToHsl(PANeomorphPalette.baseColor);
-
-  if (!baseHsl) {
-    const fallbackBaseHsl = parseColorToHsl(PANeomorphPalette.baseColor)!;
-    return {
-      frameBackground: PANeomorphPalette.frameBackground,
-      ringBackground: PANeomorphPalette.ringBackground,
-      buttonBackground: PANeomorphPalette.buttonBackground,
-      shadowDark: PANeomorphPalette.shadowDark,
-      shadowLight: PANeomorphPalette.shadowLight,
-      frameShadowDark: PANeomorphPalette.frameShadowDark,
-      frameShadowLight: PANeomorphPalette.frameShadowLight,
-      buttonShadowDark: PANeomorphPalette.buttonShadowDark,
-      buttonShadowLight: PANeomorphPalette.buttonShadowLight,
-      base: PANeomorphPalette.baseColor,
-      text: hslToString(adjustLightness(fallbackBaseHsl, 80)),
-    };
-  }
+  const _baseColor = baseColor || PANeomorphPalette.baseColor;
+  const baseHsl = parseColorToHsl(_baseColor)!;
 
   const frameBackground = hslToString(adjustLightness(baseHsl, -4));
   const ringBackground = hslToString(adjustLightness(baseHsl, 2));
@@ -60,5 +45,17 @@ export function computePalette(baseColor: string): Palette {
   const base = hslToString(baseHsl);
   const text = hslToString(adjustLightness(baseHsl, 80)); // Assuming light text
 
-  return { frameBackground, ringBackground, buttonBackground, shadowDark, shadowLight, frameShadowDark, frameShadowLight, buttonShadowDark, buttonShadowLight, base, text };
+  return {
+    frameBackground, 
+    ringBackground, 
+    buttonBackground, 
+    shadowDark, 
+    shadowLight, 
+    frameShadowDark, 
+    frameShadowLight, 
+    buttonShadowDark, 
+    buttonShadowLight, 
+    baseColor: base, 
+    textColor: text
+  };
 }

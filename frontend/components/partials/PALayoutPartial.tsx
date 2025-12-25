@@ -9,6 +9,7 @@ import { useLanguage } from '../../contexts/PALanguageContext';
 import { getCurrentVersion } from '../../lib/version';
 import { PANeomorphButton } from '../controls/PANeomorphButton';
 import { useControlSize } from '../../hooks/useControlSize';
+import { PATexture } from '../../lib/utils/color';
 
 interface LayoutProps {
   children: ReactNode;
@@ -30,11 +31,11 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
   return (
     <div className="min-h-screen bg-gray-50/70 dark:bg-next-bg/70 transition-colors flex flex-col">
       {/* Mobile Header - kompakter */}
-      <div className="md:hidden sticky top-0 z-50 bg-white/75 dark:bg-next-panel/75 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-next-panel/60 border-b border-gray-200 dark:border-next-border px-4 py-3 transition-colors duration-200">
+      <div className="md:hidden sticky top-0 z-50 border-b border-gray-200 dark:border-next-border px-4 py-3 transition-colors duration-200" style={{ backgroundImage: PATexture.fineNoise, backgroundColor: '#0a0a0a' }}>
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <div className="w-13 h-13 flex-shrink-0">
-              <PANeXTLogo size={52} className="w-full h-full" />
+              <PANeXTLogo size={52} className="w-full h-full" shadow />
             </div>
             <div className="flex flex-col items-end gap-0.5">
               <h1 className="text-lg font-bold text-gray-900 dark:text-gray-100">
@@ -62,7 +63,7 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
         </div>
       </div>
 
-      <div className="hidden md:block md:sticky md:top-0 z-50 bg-white/75 dark:bg-next-panel/75 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-next-panel/60 border-b border-gray-200 dark:border-next-border shadow-md transition-colors duration-200">
+      <div className="hidden md:block md:sticky md:top-0 z-50 border-b border-gray-200 dark:border-next-border shadow-md transition-colors duration-200" style={{ backgroundImage: PATexture.fineNoise, backgroundColor: '#0a0a0a' }}>
         <header>
           <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-3 sm:py-6 gap-3 sm:gap-0">

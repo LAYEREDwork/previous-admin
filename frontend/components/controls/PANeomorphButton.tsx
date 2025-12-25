@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { PASize, PABasicSize } from '../../lib/types/sizes';
-import { PATextures, adjustLightness, hslToString, parseColorToHsl } from '../../lib/utils/color';
-import { PANeomorphPalette } from '../../lib/utils/palette';
+import { PATexture } from '../../lib/utils/color';
+import { PANeomorphPalette, Palette, computePalette} from '../../lib/utils/palette';
 import { useControlSize } from '../../hooks/useControlSize';
 
 // Enum for shape, kept for basic configuration
@@ -17,48 +17,6 @@ export const PANeomorphButtonType = {
   submit: 'submit',
 } as const;
 export type PANeomorphButtonType = typeof PANeomorphButtonType[keyof typeof PANeomorphButtonType];
-
-type Palette = {
-  frameBackground: string;
-  ringBackground: string;
-  buttonBackground: string;
-  shadowDark: string;
-  shadowLight: string;
-  frameShadowDark: string;
-  frameShadowLight: string;
-  buttonShadowDark: string;
-  buttonShadowLight: string;
-};
-
-function computePalette(baseColor: string): Palette {
-  const baseHsl = parseColorToHsl(baseColor) ?? parseColorToHsl(PANeomorphPalette.baseColor);
-
-  if (!baseHsl) {
-    return {
-      frameBackground: PANeomorphPalette.frameBackground,
-      ringBackground: PANeomorphPalette.ringBackground,
-      buttonBackground: PANeomorphPalette.buttonBackground,
-      shadowDark: PANeomorphPalette.shadowDark,
-      shadowLight: PANeomorphPalette.shadowLight,
-      frameShadowDark: PANeomorphPalette.frameShadowDark,
-      frameShadowLight: PANeomorphPalette.frameShadowLight,
-      buttonShadowDark: PANeomorphPalette.buttonShadowDark,
-      buttonShadowLight: PANeomorphPalette.buttonShadowLight,
-    };
-  }
-
-  const frameBackground = hslToString(adjustLightness(baseHsl, -4));
-  const ringBackground = hslToString(adjustLightness(baseHsl, 2));
-  const buttonBackground = hslToString(adjustLightness(baseHsl, 6));
-  const shadowDark = hslToString(adjustLightness(baseHsl, -24));
-  const shadowLight = hslToString(adjustLightness(baseHsl, 20));
-  const frameShadowDark = hslToString(adjustLightness(baseHsl, -30));
-  const frameShadowLight = hslToString(adjustLightness(baseHsl, 20));
-  const buttonShadowDark = hslToString(adjustLightness(baseHsl, -20));
-  const buttonShadowLight = hslToString(adjustLightness(baseHsl, 30));
-
-  return { frameBackground, ringBackground, buttonBackground, shadowDark, shadowLight, frameShadowDark, frameShadowLight, buttonShadowDark, buttonShadowLight };
-}
 
 interface PANeomorphButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type' | 'color'> {
   // Content
@@ -221,7 +179,7 @@ export const PANeomorphButton = React.forwardRef<HTMLButtonElement, PANeomorphBu
               borderRadius: buttonCornerRadius,
               borderWidth: buttonBorderWidth,
               boxShadow: !disabled ? (active ? buttonActiveShadow : buttonShadow) : undefined,
-              backgroundImage: PATextures.noise,
+              backgroundImage: PATexture.noise,
               backgroundColor: palette.buttonBackground,
               height: buttonHeight,
             }}

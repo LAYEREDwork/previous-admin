@@ -2,7 +2,8 @@ import React from 'react';
 import { BiHdd, BiFile, BiInfoCircle, BiCog } from 'react-icons/bi';
 import { IoDocumentOutline } from 'react-icons/io5';
 import { useLanguage } from '../../contexts/PALanguageContext';
-import { PANeomorphSegmentedControl, PANeomorphSegmentedControlShape } from '../controls/PANeomorphSegmentedControl';
+import { PANeomorphSegmentedControl } from '../controls/PANeomorphSegmentedControl';
+import { PANeomorphControlShape } from '../../lib/utils/styling';
 
 interface MainMenuProps {
     currentTab: string;
@@ -11,6 +12,9 @@ interface MainMenuProps {
 
 export function MainMenuPartial({ currentTab, onTabChange }: MainMenuProps) {
     const { translation } = useLanguage();
+
+    // Lokale Konstante für die Hintergrundfarbe des Menüs
+    const menuBackgroundColor = '#0a0a0a';
 
     const tabs = [
         { value: 'configs', label: translation.tabs.savedConfigs, icon: <IoDocumentOutline size={18} /> },
@@ -31,7 +35,8 @@ export function MainMenuPartial({ currentTab, onTabChange }: MainMenuProps) {
                         onChange={onTabChange}
                         fullWidth
                         size="md"
-                        shape={PANeomorphSegmentedControlShape.rect}
+                        shape={PANeomorphControlShape.rect}
+                        baseColor={menuBackgroundColor}
                     />
                 </div>
             </nav>
@@ -45,6 +50,7 @@ export function MainMenuPartial({ currentTab, onTabChange }: MainMenuProps) {
                     fullWidth
                     size="lg"
                     iconOnly
+                    baseColor={menuBackgroundColor}
                 />
             </nav>
         </>

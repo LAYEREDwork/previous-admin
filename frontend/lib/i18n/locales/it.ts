@@ -116,8 +116,7 @@ export const it: Translations = {
     atLakeConstance: 'sul Lago di Costanza',
     austria: 'Austria',
     copyright: '© LAYERED.work',
-    inBregenz: 'a Bregenz',
-    madeIn: 'fatto con ❤️ e',
+    madeIn: 'fatto con ❤️ a Bregenz',
   },
   login: {
     title: appName,

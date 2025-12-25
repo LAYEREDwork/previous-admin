@@ -116,8 +116,7 @@ export const es: Translations = {
     atLakeConstance: 'en el Lago de Constanza',
     austria: 'Austria',
     copyright: '© LAYERED.work',
-    inBregenz: 'en Bregenz',
-    madeIn: 'hecho con ❤️ y',
+    madeIn: 'hecho con ❤️ en Bregenz',
   },
   login: {
     confirmPassword: 'Confirmar contraseña',
