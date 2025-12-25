@@ -25,15 +25,6 @@ const languageFlags: Record<Language, string> = {
   fr: '🇫🇷',
 };
 
-const RecessedFlag = ({ flag }: { flag: string }) => (
-  <div
-    className="flex items-center justify-center w-6 h-6 rounded-full bg-black/20"
-    style={{ boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.5)' }}
-  >
-    <span className="text-lg">{flag}</span>
-  </div>
-);
-
 
 /**
  * Language Switcher Component
@@ -43,7 +34,7 @@ const RecessedFlag = ({ flag }: { flag: string }) => (
  */
 export function PALanguageSwitcher() {
   const { language, setLanguage } = useLanguage();
-  const controlSize = useControlSize('sm');
+  const controlSize = useControlSize('xs');
 
   const sortedLanguages = (Object.keys(languageNames) as Language[]).sort((a, b) =>
     languageNames[a].localeCompare(languageNames[b])
@@ -67,14 +58,15 @@ export function PALanguageSwitcher() {
         <PANeomorphDropdown.Item
           key={lang}
           onClick={() => setLanguage(lang)}
+          className={language === lang ? 'bg-black/30' : ''}
         >
           <div className="flex items-center justify-between gap-3 min-w-[140px]">
             <div className="flex items-center gap-2">
-              <RecessedFlag flag={languageFlags[lang]} />
+              <span className="text-lg">{languageFlags[lang]}</span>
               <span>{languageNames[lang]}</span>
             </div>
             {language === lang && (
-              <FaCheck className="text-blue-500" size={12} />
+              <FaCheck className="text-white" size={12} />
             )}
           </div>
         </PANeomorphDropdown.Item>

@@ -24,6 +24,10 @@ type Palette = {
   buttonBackground: string;
   shadowDark: string;
   shadowLight: string;
+  frameShadowDark: string;
+  frameShadowLight: string;
+  buttonShadowDark: string;
+  buttonShadowLight: string;
 };
 
 function computePalette(baseColor: string): Palette {
@@ -36,6 +40,10 @@ function computePalette(baseColor: string): Palette {
       buttonBackground: PANeomorphPalette.buttonBackground,
       shadowDark: PANeomorphPalette.shadowDark,
       shadowLight: PANeomorphPalette.shadowLight,
+      frameShadowDark: PANeomorphPalette.frameShadowDark,
+      frameShadowLight: PANeomorphPalette.frameShadowLight,
+      buttonShadowDark: PANeomorphPalette.buttonShadowDark,
+      buttonShadowLight: PANeomorphPalette.buttonShadowLight,
     };
   }
 
@@ -43,9 +51,13 @@ function computePalette(baseColor: string): Palette {
   const ringBackground = hslToString(adjustLightness(baseHsl, 2));
   const buttonBackground = hslToString(adjustLightness(baseHsl, 6));
   const shadowDark = hslToString(adjustLightness(baseHsl, -24));
-  const shadowLight = hslToString(adjustLightness(baseHsl, 22));
+  const shadowLight = hslToString(adjustLightness(baseHsl, 20));
+  const frameShadowDark = hslToString(adjustLightness(baseHsl, -30));
+  const frameShadowLight = hslToString(adjustLightness(baseHsl, 20));
+  const buttonShadowDark = hslToString(adjustLightness(baseHsl, -20));
+  const buttonShadowLight = hslToString(adjustLightness(baseHsl, 30));
 
-  return { frameBackground, ringBackground, buttonBackground, shadowDark, shadowLight };
+  return { frameBackground, ringBackground, buttonBackground, shadowDark, shadowLight, frameShadowDark, frameShadowLight, buttonShadowDark, buttonShadowLight };
 }
 
 interface PANeomorphButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type' | 'color'> {
@@ -87,8 +99,8 @@ export const PANeomorphButton = React.forwardRef<HTMLButtonElement, PANeomorphBu
       size = PASize.md,
       shape = PANeomorphButtonShape.rect,
       fullWidth = false,
-      frameWidth = 2,
-      ringWidth = 2,
+      frameWidth = 1,
+      ringWidth = 1,
       buttonBorderWidth = 2,
 
       // State
@@ -115,25 +127,25 @@ export const PANeomorphButton = React.forwardRef<HTMLButtonElement, PANeomorphBu
 
     // Map size to height in px
     const sizeToHeight = {
-      xs: 24,
+      xs: 28,
       sm: 32,
-      md: 40,
-      lg: 48,
+      md: 38,
+      lg: 44,
     };
     const buttonHeight = sizeToHeight[size]; // Calculate button height based on size
 
     // Calculate corner radii
-    const cornerRadius = shape === PANeomorphButtonShape.rect ? buttonHeight / 3 : buttonHeight;
+    const cornerRadius = shape === PANeomorphButtonShape.rect ? buttonHeight / 4 : buttonHeight;
     const frameCornerRadius = cornerRadius;
     const ringCornerRadius = Math.max(frameCornerRadius - frameWidth, 0);
     const buttonCornerRadius = Math.max(ringCornerRadius - ringWidth, 0);
 
     // Size classes for padding and font size
     const sizeClasses = {
-      xs: 'px-2 py-1 text-xs',
-      sm: 'px-3 py-1.5 text-sm',
-      md: 'px-5 py-2 text-base',
-      lg: 'px-6 py-3 text-lg',
+      xs: 'px-2 py-0.2 text-xs',
+      sm: 'px-3 py-0.7 text-sm',
+      md: 'px-5 py-1.2 text-base',
+      lg: 'px-6 py-1.7 text-lg',
     };
 
     // Content styling for icon and text
@@ -158,13 +170,15 @@ export const PANeomorphButton = React.forwardRef<HTMLButtonElement, PANeomorphBu
       : {};
 
     // Shadow colors from theme (CSS custom properties)
-    const shadowDark = palette.shadowDark;
-    const shadowLight = palette.shadowLight;
+    const frameShadowDark = palette.frameShadowDark;
+    const frameShadowLight = palette.frameShadowLight;
+    const buttonShadowDark = palette.buttonShadowDark;
+    const buttonShadowLight = palette.buttonShadowLight;
     const shadowBlurRadius = 2;
 
-    const frameShadow = `inset ${frameWidth}px ${frameWidth}px ${shadowBlurRadius}px ${shadowDark}, inset -${frameWidth}px -${frameWidth}px ${shadowBlurRadius}px ${shadowLight}`;
-    const buttonShadow = `-${buttonBorderWidth}px -${buttonBorderWidth}px ${shadowBlurRadius}px ${shadowLight}, ${buttonBorderWidth}px ${buttonBorderWidth}px ${shadowBlurRadius}px ${shadowDark}`;
-    const buttonActiveShadow = `inset -${buttonBorderWidth}px -${buttonBorderWidth}px ${shadowBlurRadius}px ${shadowLight}, inset ${buttonBorderWidth}px ${buttonBorderWidth}px ${shadowBlurRadius}px ${shadowDark}`;
+    const frameShadow = `inset ${frameWidth}px ${frameWidth}px ${shadowBlurRadius}px ${frameShadowDark}, inset -${frameWidth}px -${frameWidth}px ${shadowBlurRadius}px ${frameShadowLight}`;
+    const buttonShadow = `-${buttonBorderWidth}px -${buttonBorderWidth}px ${shadowBlurRadius}px ${buttonShadowLight}, ${buttonBorderWidth}px ${buttonBorderWidth}px ${shadowBlurRadius}px ${buttonShadowDark}`;
+    const buttonActiveShadow = `inset -${buttonBorderWidth}px -${buttonBorderWidth}px ${shadowBlurRadius}px ${buttonShadowLight}, inset ${buttonBorderWidth}px ${buttonBorderWidth}px ${shadowBlurRadius}px ${buttonShadowDark}`;
 
     const frameClass = `bg-next-panel transition-all duration-200 ease-in-out height=${
       buttonHeight + 2 * frameWidth
@@ -173,7 +187,7 @@ export const PANeomorphButton = React.forwardRef<HTMLButtonElement, PANeomorphBu
     const ringClass = `${color ? 'bg-next-panel' : ''} transition-all duration-200 ease-in-out${
       color ? '' : ' border border-next-border'
     }`;
-    const buttonClass = `w-full font-semibold border-none transition-all duration-200 ease-in-out focus:outline-none bg-next-panel disabled:opacity-70 disabled:shadow-none disabled:bg-next-panel`;
+    const buttonClass = `w-full h-full font-semibold border-none transition-all duration-200 ease-in-out focus:outline-none bg-next-panel disabled:opacity-70 disabled:shadow-none disabled:bg-next-panel`;
 
     // Three-layer hierarchy: Frame > Ring > Button
     return (
@@ -186,6 +200,7 @@ export const PANeomorphButton = React.forwardRef<HTMLButtonElement, PANeomorphBu
           padding: frameWidth,
           boxShadow: frameShadow,
           backgroundColor: palette.frameBackground,
+          height: buttonHeight + 2 * frameWidth + 2 * ringWidth,
         }}
       >
         <div
@@ -194,19 +209,21 @@ export const PANeomorphButton = React.forwardRef<HTMLButtonElement, PANeomorphBu
             borderRadius: ringCornerRadius,
             padding: ringWidth,
             backgroundColor: color ? undefined : palette.ringBackground,
+            height: buttonHeight + 2 * ringWidth,
           }}
         >
           <button
             ref={ref}
             type={type}
             disabled={disabled}
-            className={`h-full inline-flex items-center justify-center ${buttonClass} ${sizeClasses[controlSize]}`}
+            className={`w-full inline-flex items-center justify-center ${buttonClass} ${sizeClasses[controlSize]}`}
             style={{
               borderRadius: buttonCornerRadius,
               borderWidth: buttonBorderWidth,
               boxShadow: !disabled ? (active ? buttonActiveShadow : buttonShadow) : undefined,
               backgroundImage: PATextures.noise,
               backgroundColor: palette.buttonBackground,
+              height: buttonHeight,
             }}
             {...rest}
           >
