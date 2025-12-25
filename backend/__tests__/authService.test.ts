@@ -62,7 +62,7 @@ describe('AuthService', () => {
   describe('loginUser', () => {
     it('should authenticate user successfully', async () => {
       const mockSessionData: UserSessionData = {
-        userId: '1',
+        userId: 1,
         username: 'testuser'
       };
       (authenticateUser as jest.MockedFunction<typeof authenticateUser>).mockResolvedValue({ success: true, user: mockSessionData });
@@ -100,7 +100,7 @@ describe('AuthService', () => {
 
     it('should return authenticated when session exists', () => {
       (hasAnyUsers as jest.MockedFunction<typeof hasAnyUsers>).mockReturnValue(true);
-      const sessionData: UserSessionData = { userId: '1', username: 'testuser' };
+      const sessionData: UserSessionData = { userId: 1, username: 'testuser' };
 
       const result = getSessionInfo(sessionData);
       expect(result).toEqual({

@@ -73,7 +73,7 @@ const PANeomorphDropdown = ({
           >
             <div
               style={{ backgroundImage: PATextures.noise }}
-              className="rounded-lg border border-gray-700/50 bg-gray-800/50 shadow-lg overflow-hidden backdrop-blur-sm"
+              className="rounded-lg border border-gray-700/90 bg-gray-800/90 shadow-lg overflow-hidden backdrop-blur-sm"
             >
               {menuItems}
             </div>

@@ -93,6 +93,15 @@ export function parseColorToHsl(color: string): HslColor | null {
     const rgb = hexToRgb(color);
     return rgb ? rgbToHsl(rgb) : null;
   }
+  if (color.startsWith('hsl(')) {
+    const match = color.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/);
+    if (match) {
+      const h = parseInt(match[1], 10);
+      const s = parseInt(match[2], 10);
+      const l = parseInt(match[3], 10);
+      return { h, s, l };
+    }
+  }
   return null;
 }
 

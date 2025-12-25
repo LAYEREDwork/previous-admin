@@ -264,7 +264,7 @@ export const fr: Translations = {
     about: 'À propos',
     configEditor: 'Éditeur de Configuration',
     importExport: 'Importer/Exporter',
-    savedConfigs: 'Configurations Sauvegardées',
+    savedConfigs: 'Configurations',
     system: 'Système',
   },
 };

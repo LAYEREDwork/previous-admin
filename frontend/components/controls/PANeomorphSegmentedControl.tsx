@@ -1,11 +1,19 @@
 import React, { ReactNode, useRef, useEffect, useState } from 'react';
 import { computePalette, PANeomorphPalette } from '../../lib/utils/palette';
+import { adjustLightness, hslToString, parseColorToHsl, PATextures } from '../../lib/utils/color';
 
 interface SegmentOption<T extends string> {
   value: T;
   label?: string;
   icon?: React.ComponentType<any> | ReactNode;
 }
+
+// Enum for shape, kept for basic configuration
+export const PANeomorphSegmentedControlShape = {
+  pill: 'pill',
+  rect: 'rect',
+} as const;
+export type PANeomorphSegmentedControlShape = typeof PANeomorphSegmentedControlShape[keyof typeof PANeomorphSegmentedControlShape];
 
 interface PANeomorphSegmentedControlProps<T extends string> {
   options: SegmentOption<T>[];
@@ -14,6 +22,8 @@ interface PANeomorphSegmentedControlProps<T extends string> {
   size?: 'xs' | 'sm' | 'md' | 'lg';
   iconOnly?: boolean;
   fullWidth?: boolean;
+  baseColor?: string;
+  shape?: PANeomorphSegmentedControlShape;
   className?: string;
 }
 
@@ -29,9 +39,12 @@ export function PANeomorphSegmentedControl<T extends string>({
   size = 'sm',
   iconOnly = false,
   fullWidth = false,
+  baseColor,
+  shape = PANeomorphSegmentedControlShape.pill,
   className = '',
 }: PANeomorphSegmentedControlProps<T>) {
-  const palette = computePalette(PANeomorphPalette.baseColor);
+  const palette = computePalette(baseColor || PANeomorphPalette.baseColor);
+  const inactiveTextColor = hslToString(adjustLightness(parseColorToHsl(palette.text)!, -30)); // 50% of full brightness
 
   const activeIndex = options.findIndex((opt) => opt.value === value);
   const [sliderStyle, setSliderStyle] = useState<React.CSSProperties>({ opacity: 0 });
@@ -89,23 +102,28 @@ export function PANeomorphSegmentedControl<T extends string>({
     lg: 18,
   };
 
+  const containerBorderRadius = shape === PANeomorphSegmentedControlShape.pill ? 'rounded-full' : 'rounded-lg';
+  const sliderBorderRadius = shape === PANeomorphSegmentedControlShape.pill ? 'rounded-full' : 'rounded-lg';
+
   return (
     <div
       ref={containerRef}
-      className={`relative flex p-1 rounded-full select-none ${containerHeights[size]
+      className={`relative flex p-1 select-none ${containerHeights[size]} ${containerBorderRadius}
         } ${fullWidth ? 'w-full' : 'w-fit'} ${className}`}
       style={{
-        backgroundColor: palette.base,
-        boxShadow: palette.frameShadowDark,
+        backgroundImage: PATextures.noise,
+        backgroundColor: palette.frameBackground,
+        boxShadow: `inset 1px 1px 2px ${palette.frameShadowDark}, inset -1px -1px 2px ${palette.frameShadowLight}`,
       }}
     >
       {/* Sliding Active Tile (Active Segment Background) - Embossed */}
       <div
-        className="absolute top-1 bottom-1 rounded-full pointer-events-none z-0 transition-all"
+        className={`absolute top-1 bottom-1 pointer-events-none z-0 transition-all ${sliderBorderRadius}`}
         style={{
           ...sliderStyle,
-          backgroundColor: palette.base,
-          boxShadow: palette.buttonShadowLight,
+          backgroundImage: PATextures.noise,
+          backgroundColor: palette.buttonBackground,
+          boxShadow: `-1px -1px 2px ${palette.buttonShadowLight}, 1px 1px 2px ${palette.buttonShadowDark}`,
         }}
       />
 
@@ -133,10 +151,10 @@ export function PANeomorphSegmentedControl<T extends string>({
             key={option.value}
             type="button"
             onClick={() => onChange(option.value)}
-            className={`segment-item relative z-10 flex items-center justify-center gap-2 font-semibold h-full px-3 transition-colors duration-300 rounded-full ${fontSizes[size]
+            className={`segment-item relative z-10 flex items-center justify-center gap-2 font-semibold h-full px-3 transition-colors duration-300 ${sliderBorderRadius} ${fontSizes[size]
               } ${fullWidth ? 'flex-1' : ''}`}
             style={{
-              color: palette.text,
+              color: isActive ? 'white' : inactiveTextColor,
             }}
           >
             {option.icon && renderIcon() && (

@@ -2,7 +2,7 @@ import React from 'react';
 import { BiHdd, BiFile, BiInfoCircle, BiCog } from 'react-icons/bi';
 import { IoDocumentOutline } from 'react-icons/io5';
 import { useLanguage } from '../../contexts/PALanguageContext';
-import { PASegmentedControl } from '../controls/PASegmentedControl';
+import { PANeomorphSegmentedControl, PANeomorphSegmentedControlShape } from '../controls/PANeomorphSegmentedControl';
 
 interface MainMenuProps {
     currentTab: string;
@@ -25,19 +25,20 @@ export function MainMenuPartial({ currentTab, onTabChange }: MainMenuProps) {
             {/* Desktop Navigation - oben */}
             <nav className="hidden md:block">
                 <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-4">
-                    <PASegmentedControl
+                    <PANeomorphSegmentedControl
                         options={tabs}
                         value={currentTab}
                         onChange={onTabChange}
                         fullWidth
                         size="md"
+                        shape={PANeomorphSegmentedControlShape.rect}
                     />
                 </div>
             </nav>
 
             {/* Mobile Bottom Tabbar */}
             <nav className="md:hidden fixed bottom-3 left-3 right-3 z-50 drop-shadow-2xl">
-                <PASegmentedControl
+                <PANeomorphSegmentedControl
                     options={tabs.map(tab => ({ ...tab, icon: React.cloneElement(tab.icon as React.ReactElement, { size: 22 }) }))}
                     value={currentTab}
                     onChange={onTabChange}

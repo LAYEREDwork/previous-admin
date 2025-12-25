@@ -32,6 +32,7 @@ export function computePalette(baseColor: string): Palette {
   const baseHsl = parseColorToHsl(baseColor) ?? parseColorToHsl(PANeomorphPalette.baseColor);
 
   if (!baseHsl) {
+    const fallbackBaseHsl = parseColorToHsl(PANeomorphPalette.baseColor)!;
     return {
       frameBackground: PANeomorphPalette.frameBackground,
       ringBackground: PANeomorphPalette.ringBackground,
@@ -43,7 +44,7 @@ export function computePalette(baseColor: string): Palette {
       buttonShadowDark: PANeomorphPalette.buttonShadowDark,
       buttonShadowLight: PANeomorphPalette.buttonShadowLight,
       base: PANeomorphPalette.baseColor,
-      text: PANeomorphPalette.textColor,
+      text: hslToString(adjustLightness(fallbackBaseHsl, 80)),
     };
   }
 
