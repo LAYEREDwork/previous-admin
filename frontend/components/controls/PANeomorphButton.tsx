@@ -99,7 +99,7 @@ export const PANeomorphButton = React.forwardRef<HTMLButtonElement, PANeomorphBu
       size = PASize.md,
       shape = PANeomorphButtonShape.rect,
       fullWidth = false,
-      frameWidth = 1,
+      frameWidth = 2,
       ringWidth = 1,
       buttonBorderWidth = 2,
 
@@ -127,10 +127,10 @@ export const PANeomorphButton = React.forwardRef<HTMLButtonElement, PANeomorphBu
 
     // Map size to height in px
     const sizeToHeight = {
-      xs: 28,
-      sm: 32,
-      md: 38,
-      lg: 44,
+      xs: 30,
+      sm: 34,
+      md: 40,
+      lg: 46,
     };
     const buttonHeight = sizeToHeight[size]; // Calculate button height based on size
 

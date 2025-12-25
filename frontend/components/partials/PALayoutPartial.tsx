@@ -7,7 +7,7 @@ import { MainMenuPartial } from './PAMainMenuPartial';
 import { useAuth } from '../../contexts/PAAuthContext';
 import { useLanguage } from '../../contexts/PALanguageContext';
 import { getCurrentVersion } from '../../lib/version';
-import { PAButton } from '../controls/PAButton';
+import { PANeomorphButton } from '../controls/PANeomorphButton';
 import { useControlSize } from '../../hooks/useControlSize';
 
 interface LayoutProps {
@@ -21,7 +21,7 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
   const { translation } = useLanguage();
   const [version, setVersion] = useState<string>('');
 
-  const controlSize = useControlSize('sm');
+  const controlSize = useControlSize('xs');
 
   useEffect(() => {
     getCurrentVersion().then(setVersion);
@@ -51,14 +51,13 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
             <div className="flex items-center gap-2">
               <PALanguageSwitcher />
             </div>
-            <PAButton
+            <PANeomorphButton
               onClick={logout}
-              appearance="default"
-              size="sm"
+              size="xs"
+              icon={<BiLogOut size={14} />}
               title={translation.layout.signOut}
-            >
-              <BiLogOut size={16} />
-            </PAButton>
+              className="min-w-[44px]"
+            />
           </div>
         </div>
       </div>
@@ -90,15 +89,14 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
               <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
                 <div className="flex items-center gap-1.5 sm:gap-2">
                   <PALanguageSwitcher />
-                  <PAButton
+                  <PANeomorphButton
                     onClick={logout}
-                    appearance="default"
                     size={controlSize}
-                    title={translation.layout.signOut}
+                    icon={<BiLogOut size={16} />}
+                    className="min-w-[44px]"
                   >
-                    <BiLogOut size={16} className="inline-block mr-2" />
-                    <span className="hidden md:inline">{translation.layout.signOut}</span>
-                  </PAButton>
+                    {translation.layout.signOut}
+                  </PANeomorphButton>
                 </div>
               </div>
             </div>
