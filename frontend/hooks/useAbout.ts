@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { checkForUpdates, updateApplication, type VersionInfo } from '../lib/versionManager';
+import { checkForUpdates, updateApplication, type VersionInfo } from '../lib/version';
 
 /**
  * Custom hook to handle about page business logic.

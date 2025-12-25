@@ -1,16 +1,14 @@
 /**
- * API client for backend communication
+ * Authentication API client
  *
- * Provides methods for authentication, configuration management, and session handling.
- * Uses the centralized httpClient for all requests.
+ * Provides methods for user authentication, session management, and setup.
+ * Uses the centralized HTTP client for all requests.
  *
- * @module frontend/lib/api
+ * @module frontend/lib/api/auth
  */
 
-import type { PreviousConfig } from './types';
-import { http, ApiError } from './httpClient';
-import { apiPaths } from '../../shared/constants';
-import { wsUrl } from './constants';
+import { http, ApiError } from '../http/client';
+import { apiPaths } from '../../../shared/constants';
 
 // Re-export ApiError for consumers
 export { ApiError };
@@ -39,15 +37,6 @@ interface SetupRequiredResponse {
   setupRequired: boolean;
 }
 
-interface ConfigResponse {
-  config: PreviousConfig;
-}
-
-interface UpdateConfigResponse {
-  success: boolean;
-  config: PreviousConfig;
-}
-
 /**
  * Check if system setup is required
  *
@@ -72,13 +61,13 @@ export async function checkSetupRequired(): Promise<boolean> {
 }
 
 /**
- * API client for backend communication
+ * Authentication API client
  *
- * Provides methods for authentication, configuration management, and session handling.
+ * Provides methods for user authentication and session management.
  * All methods include credentials and handle JSON responses automatically.
  * Throws ApiError on non-OK HTTP status or network errors.
  */
-export const api = {
+export const authApi = {
   /**
    * Initialize admin user account (setup)
    *
@@ -132,43 +121,4 @@ export const api = {
   async getSession(): Promise<SessionResponse> {
     return http.get<SessionResponse>(apiPaths.Auth.session.full);
   },
-
-  /**
-   * Retrieve user configuration
-   *
-   * Gets the current user's configuration file.
-   * Requires authentication.
-   *
-   * @returns {Promise<ConfigResponse>} User configuration object
-   * @throws {ApiError} If not authenticated or retrieval fails
-   */
-  async getConfig(): Promise<ConfigResponse> {
-    return http.get<ConfigResponse>(apiPaths.Config.get.full);
-  },
-
-  /**
-   * Update user configuration
-   *
-   * Persists configuration changes to server and broadcasts to other clients.
-   * Requires authentication.
-   *
-   * @param {PreviousConfig} config - Complete configuration object
-   * @returns {Promise<UpdateConfigResponse>} Update confirmation
-   * @throws {ApiError} If not authenticated or update fails
-   */
-  async updateConfig(config: PreviousConfig): Promise<UpdateConfigResponse> {
-    return http.put<UpdateConfigResponse>(apiPaths.Config.get.full, { config });
-  },
 };
-
-/**
- * Construct WebSocket URL for current connection
- *
- * Uses the centralized wsUrl constant for consistency.
- *
- * @returns {string} WebSocket URL
- * @deprecated Use wsUrl constant from './constants' instead
- */
-export function getWebSocketUrl(): string {
-  return wsUrl;
-}

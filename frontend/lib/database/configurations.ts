@@ -1,15 +1,15 @@
 /**
- * Database API Client
+ * Configuration Database API Client
  *
- * Provides client-side interface for configuration management via Backend API.
+ * Provides client-side interface for configuration CRUD operations via Backend API.
  * All operations communicate with the server database.
  *
- * @module src/lib/database
+ * @module frontend/lib/database/configurations
  */
 
-import type { Configuration, PreviousConfig } from './types';
-import { apiBaseUrl } from './constants';
-import { apiPaths } from '../../shared/constants';
+import type { Configuration, PreviousConfig } from '../types/config';
+import { apiBaseUrl } from '../api/constants';
+import { apiPaths } from '../../../shared/constants';
 
 export { type Configuration, type PreviousConfig };
 
@@ -19,7 +19,7 @@ export { type Configuration, type PreviousConfig };
  * Provides methods for CRUD operations on configurations.
  * All methods communicate with backend API and handle authentication automatically.
  */
-export const database = {
+export const configurations = {
   /**
    * Retrieve all configurations
    *
@@ -68,9 +68,8 @@ export const database = {
    *
    * @param {string} name - Configuration name
    * @param {string} description - Configuration description
-   * @param {PreviousConfig} config_data - System configuration object
+ * @param {PreviousConfig} config_data - System configuration object
    * @param {boolean} is_active - Set as active configuration
-   * @param {number | null} created_by - Creator user ID (optional, handled by server)
    * @returns {Promise<Configuration>} Created configuration with assigned ID
    * @throws {Error} If API request fails
    */
@@ -213,105 +212,5 @@ export const database = {
       const error = await response.json();
       throw new Error(error.error || 'Failed to update configurations order');
     }
-  },
-
-  /**
-   * Export entire database
-   *
-   * @returns {Promise<Object>} Complete database dump
-   * @throws {Error} If API request fails
-   */
-  async exportDatabase() {
-    const response = await fetch(`${apiBaseUrl}/api/database/export`, {
-      credentials: 'include',
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to export database');
-    }
-
-    return response.json();
-  },
-
-  /**
-   * Import database dump
-   *
-   * @param {Object} dump - Database dump object
-   * @param {boolean} merge - If true, merge with existing data; if false, replace
-   * @returns {Promise<Object>} Import statistics
-   * @throws {Error} If API request fails
-   */
-  async importDatabase(dump: unknown, merge: boolean = false) {
-    const response = await fetch(`${apiBaseUrl}/api/database/import`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({ dump, merge }),
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || error.error || 'Failed to import database');
-    }
-
-    return response.json();
-  },
-
-  /**
-   * Get database statistics
-   *
-   * @returns {Promise<Object>} Database statistics
-   * @throws {Error} If API request fails
-   */
-  async getDatabaseStats() {
-    const response = await fetch(`${apiBaseUrl}/api/database/stats`, {
-      credentials: 'include',
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch database statistics');
-    }
-
-    return response.json();
-  },
-
-  /**
-   * Import database during initial setup (no authentication required)
-   *
-   * @param {Object} dump - Database dump object
-   * @returns {Promise<Object>} Import statistics
-   * @throws {Error} If API request fails or setup already completed
-   */
-  async setupImportDatabase(dump: unknown) {
-    const response = await fetch(`${apiBaseUrl}/api/database/setup-import`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({ dump }),
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || error.error || 'Failed to import database');
-    }
-
-    return response.json();
-  },
-
-  /**
-   * Legacy method for authentication (deprecated, moved to AuthContext)
-   *
-   * @deprecated Use AuthContext instead
-   * @param {string} username - Username
-   * @param {string} password - Password (plaintext)
-   * @returns {Promise<Object | null>} User object or null
-   */
-  async authenticate(/* username: string, password: string */): Promise<{ id: string; username: string } | null> {
-    console.warn('database.authenticate() is deprecated. Use AuthContext instead.');
-    return null;
   },
 };
