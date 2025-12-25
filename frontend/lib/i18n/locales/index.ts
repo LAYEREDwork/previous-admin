@@ -29,7 +29,7 @@ export interface Translations {
   about: {
     appVersion: string;
     generalResources: string;
-    layeredCodeberg: string;
+    layeredGitRepo: string;
     layeredMastodon: string;
     layeredOfficialWebsite: string;
     layeredResources: string;

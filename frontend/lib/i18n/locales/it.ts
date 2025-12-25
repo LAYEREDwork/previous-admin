@@ -5,7 +5,7 @@ export const it: Translations = {
   about: {
     appVersion: `Versione di ${appName}`,
     generalResources: 'Risorse Generali',
-    layeredCodeberg: 'phranck aka LAYERED su Codeberg',
+    layeredGitRepo: 'phranck aka LAYERED su GitHub',
     layeredMastodon: 'LAYERED su Mastodon',
     layeredOfficialWebsite: 'Sito Ufficiale LAYERED',
     layeredResources: 'Risorse LAYERED',

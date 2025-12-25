@@ -50,18 +50,18 @@ export function LayeredResourcesPartial() {
           />
         </a>
         <a
-          href="https://codeberg.org/phranck"
+          href="https://github.com/LAYEREDwork/previous-admin"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors group"
         >
           <span className="flex items-center gap-3 text-gray-700 dark:text-gray-300">
             <img
-              src="https://www.google.com/s2/favicons?sz=32&domain=codeberg.org"
+              src="https://www.google.com/s2/favicons?sz=32&domain=github.com"
               alt=""
               className="w-4 h-4"
             />
-            {translation.about.layeredCodeberg}
+            {translation.about.layeredGitRepo}
           </span>
           <BiLinkExternal
             size={18}
