@@ -2,7 +2,7 @@ import { Configuration, database } from '../lib/database';
 import { useNotification } from '../contexts/PANotificationContext';
 import { useLanguage } from '../contexts/PALanguageContext';
 import { useConfig } from '../contexts/PAConfigContext';
-import { defaultConfig } from '../lib/constants';
+import { defaultConfig } from '../lib/config';
 import { downloadFile, generateConfigFilename } from '../lib/utils';
 
 /**

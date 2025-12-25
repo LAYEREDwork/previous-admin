@@ -84,6 +84,7 @@ function configureMiddleware(app: Express, sessionSecret: string): void {
       secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
       maxAge: SESSION_CONFIG.MAX_AGE_MS,
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     },
   } as SessionOptions);
 

@@ -7,8 +7,8 @@
  * @module frontend/lib/httpClient
  */
 
-import { apiBaseUrl } from './constants';
-import { apiPaths } from '../../shared/constants';
+import { apiBaseUrl } from '../constants';
+import { apiPaths } from '~shared/constants';
 
 /**
  * Custom API error with status code
@@ -89,7 +89,7 @@ export async function request<TResponse, TBody = unknown>(
   }
 
   try {
-    const response = await fetch(`${apiBaseUrl}${endpoint}`, {
+    const response = await fetch(`${apiBaseUrl}${String(endpoint)}`, {
       method,
       headers: requestHeaders,
       credentials: 'include',

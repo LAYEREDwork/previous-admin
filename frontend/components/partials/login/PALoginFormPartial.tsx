@@ -119,7 +119,7 @@ export function PALoginFormPartial({
                 )}
 
                 <PANeomorphButton
-                    buttonType={PANeomorphButtonType.submit}
+                    type={PANeomorphButtonType.submit}
                     size={PASize.md}
                     fullWidth
                     icon={isSetup ? <BiUserPlus size={18} /> : <BiLogInCircle size={18} />}
@@ -156,7 +156,7 @@ export function PALoginFormPartial({
                                 ref={importDatabaseRef}
                             />
                             <PANeomorphButton
-                                buttonType={PANeomorphButtonType.submit}
+                                type={PANeomorphButtonType.submit}
                                 size={PASize.md}
                                 fullWidth
                                 icon={<BiDownload size={18} className="icon-inner-emboss" />}

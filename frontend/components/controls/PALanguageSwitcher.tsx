@@ -1,6 +1,6 @@
 import { FaCheck } from 'react-icons/fa';
-import { Dropdown } from 'rsuite';
-import { PAButton } from './PAButton';
+import { PANeomorphDropdown } from './PANeomorphDropdown';
+import { PANeomorphButton } from './PANeomorphButton';
 
 // Hooks
 import { useLanguage } from '../../contexts/PALanguageContext';
@@ -25,6 +25,16 @@ const languageFlags: Record<Language, string> = {
   fr: '🇫🇷',
 };
 
+const RecessedFlag = ({ flag }: { flag: string }) => (
+  <div
+    className="flex items-center justify-center w-6 h-6 rounded-full bg-black/20"
+    style={{ boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.5)' }}
+  >
+    <span className="text-lg">{flag}</span>
+  </div>
+);
+
+
 /**
  * Language Switcher Component
  * PA prefix for Previous Admin
@@ -40,37 +50,35 @@ export function PALanguageSwitcher() {
   );
 
   return (
-    <Dropdown
+    <PANeomorphDropdown
       placement="bottomEnd"
       renderToggle={(props, ref) => (
-        <PAButton
+        <PANeomorphButton
           {...props}
-          ref={ref as any}
-          appearance="default"
+          ref={ref as React.Ref<HTMLButtonElement>}
           size={controlSize}
           className={`${props.className || ''} min-w-[44px]`}
         >
           <span className="text-lg">{languageFlags[language]}</span>
-        </PAButton>
+        </PANeomorphButton>
       )}
     >
       {sortedLanguages.map((lang) => (
-        <Dropdown.Item
+        <PANeomorphDropdown.Item
           key={lang}
-          onSelect={() => setLanguage(lang)}
-          active={language === lang}
+          onClick={() => setLanguage(lang)}
         >
           <div className="flex items-center justify-between gap-3 min-w-[140px]">
             <div className="flex items-center gap-2">
-              <span className="text-lg">{languageFlags[lang]}</span>
+              <RecessedFlag flag={languageFlags[lang]} />
               <span>{languageNames[lang]}</span>
             </div>
             {language === lang && (
               <FaCheck className="text-blue-500" size={12} />
             )}
           </div>
-        </Dropdown.Item>
+        </PANeomorphDropdown.Item>
       ))}
-    </Dropdown>
+    </PANeomorphDropdown>
   );
 }

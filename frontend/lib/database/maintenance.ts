@@ -7,7 +7,7 @@
  * @module frontend/lib/database/maintenance
  */
 
-import { apiBaseUrl } from '../api/constants';
+import { apiBaseUrl } from '../constants';
 
 /**
  * API client for database maintenance operations

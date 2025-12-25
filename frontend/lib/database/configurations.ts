@@ -8,7 +8,7 @@
  */
 
 import type { Configuration, PreviousConfig } from '../types/config';
-import { apiBaseUrl } from '../api/constants';
+import { apiBaseUrl } from '../constants';
 import { apiPaths } from '../../../shared/constants';
 
 export { type Configuration, type PreviousConfig };

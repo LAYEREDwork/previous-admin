@@ -6,7 +6,7 @@ import { FooterPartial } from './PAFooterPartial';
 import { MainMenuPartial } from './PAMainMenuPartial';
 import { useAuth } from '../../contexts/PAAuthContext';
 import { useLanguage } from '../../contexts/PALanguageContext';
-import { getCurrentVersion } from '../../lib/versionManager';
+import { getCurrentVersion } from '../../lib/version';
 import { PAButton } from '../controls/PAButton';
 import { useControlSize } from '../../hooks/useControlSize';
 

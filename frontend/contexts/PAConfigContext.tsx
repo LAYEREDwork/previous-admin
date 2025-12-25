@@ -6,7 +6,7 @@ import { useAuth } from './PAAuthContext';
 // Utilities
 import { api } from '../lib/api';
 import { database } from '../lib/database';
-import { defaultConfig } from '../lib/constants';
+import { defaultConfig } from '../lib/config';
 
 // Types
 import type { PreviousConfig } from '../lib/types';

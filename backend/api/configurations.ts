@@ -83,7 +83,9 @@ router.get(apiPaths.Configuration.list.relative, requireAuth, (
   res: Response<ConfigurationsListResponse | ErrorResponse>
 ) => {
   try {
-    const configurations = getConfigurations();
+    const authReq = _req as AuthenticatedRequest;
+    console.log('Session userId:', authReq.session.userId, 'username:', authReq.session.username);
+    const configurations = getConfigurations(authReq.session.userId!);
 
     const parsed = configurations.map(config => ({
       id: config.id,
@@ -117,7 +119,7 @@ router.get(apiPaths.Configuration.getActive.relative, requireAuth, (
 ) => {
   try {
     const authReq = _req as AuthenticatedRequest;
-    const config = getActiveConfiguration(parseInt(authReq.session.userId));
+    const config = getActiveConfiguration(authReq.session.userId!);
 
     if (!config) {
       return res.json({ configuration: null });
@@ -206,7 +208,7 @@ router.post(apiPaths.Configuration.create.relative, requireAuth, (
       name,
       description: description || '',
       config: typeof config_data === 'string' ? JSON.parse(config_data) : config_data
-    }, parseInt(authReq.session.userId));
+    }, authReq.session.userId!);
 
     console.log('API created config:', config.name, 'is_active:', config.is_active);
 

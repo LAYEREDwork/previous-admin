@@ -3,7 +3,7 @@ import { BiInfoCircle, BiRefresh, BiCheck, BiError, BiFile, BiChevronUp, BiChevr
 import { PAButton } from '../../controls/PAButton';
 import { useLanguage } from '../../../contexts/PALanguageContext';
 import { useControlSize } from '../../../hooks/useControlSize';
-import { type VersionInfo } from '../../../lib/versionManager';
+import { type VersionInfo } from '../../../lib/version';
 import ReactMarkdown from 'react-markdown';
 
 interface VersionInfoPartialProps {

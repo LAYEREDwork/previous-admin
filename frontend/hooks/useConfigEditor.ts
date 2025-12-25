@@ -12,7 +12,7 @@ import type { PreviousConfig } from '../lib/types';
 
 // Database & Utils
 import { database } from '../lib/database';
-import { convertToConfigFile } from '../lib/configConverter';
+import { convertToConfigFile } from '../lib/config';
 
 /**
  * Custom hook to handle configuration editor business logic.

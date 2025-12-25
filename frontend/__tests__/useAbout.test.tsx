@@ -3,7 +3,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { useAboutLogic } from '../hooks/useAbout';
 import { checkForUpdates, updateApplication } from '../lib/version';
 
-// Mock the versionManager functions
+// Mock the version functions
 vi.mock('../lib/version', () => ({
   checkForUpdates: vi.fn(),
   updateApplication: vi.fn(),

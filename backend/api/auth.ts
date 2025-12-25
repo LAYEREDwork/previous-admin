@@ -157,6 +157,12 @@ router.post(apiPaths.Auth.login.relative, async (
 
     authRequest.session.username = sessionData.username;
     authRequest.session.userId = sessionData.userId;
+    console.log('Login successful, session set:', authRequest.session.username, authRequest.session.userId);
+
+    // Force session save
+    authRequest.session.save((err) => {
+      if (err) console.error('Session save error:', err);
+    });
 
     res.json({
       username: sessionData.username
@@ -216,6 +222,7 @@ router.get(apiPaths.Auth.session.relative, (
   res: Response<SessionResponse>
 ) => {
   const authReq = req as AuthenticatedRequest;
+  console.log('Session check - username:', authReq.session.username, 'userId:', authReq.session.userId);
   const sessionData: UserSessionData | undefined = authReq.session.userId && authReq.session.username
     ? { userId: authReq.session.userId, username: authReq.session.username }
     : undefined;

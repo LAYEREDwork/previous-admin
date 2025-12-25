@@ -2,7 +2,7 @@ import 'express-session';
 
 declare module 'express-session' {
   interface SessionData {
-    userId?: string;
+    userId?: number;
     username?: string;
   }
 }
@@ -12,7 +12,7 @@ declare module 'express-session' {
  */
 export interface AuthenticatedRequest extends Request {
   session: Session & Partial<SessionData> & {
-    userId?: string;
+    userId?: number;
     username?: string;
     destroy: (callback: (err?: Error) => void) => void;
   };
@@ -111,8 +111,9 @@ export interface CreateUserRequest {
  * User session data stored in session store
  */
 export interface UserSessionData {
-  userId: string;
+  userId: number;
   username: string;
+  loginTime?: number;
 }
 
 /**
