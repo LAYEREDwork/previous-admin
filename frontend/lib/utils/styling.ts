@@ -6,6 +6,7 @@
 import { StylingKey } from '../../../shared/enums';
 import { PASize } from '../types';
 import { PATexture } from './color';
+import { computePalette, Palette } from './palette';
 
 /**
  * Calculate active glow shadow
@@ -164,3 +165,92 @@ export const stylingDefaults = {
   [StylingKey.frameShadowLight]: 'rgba(55, 55, 55, 1)',
   [StylingKey.frameShadowDark]: '#000',
 } as const;
+
+/**
+ * Interface für die berechneten Styles eines neomorphen Controls.
+ * Enthält die Styles für Frame, Ring, Button und die verwendete Palette.
+ */
+export interface PANeomorphControlStyle {
+  frame: React.CSSProperties;  // Styles für den äußeren recessed Container
+  ring: React.CSSProperties;   // Styles für den Ring
+  button: React.CSSProperties; // Styles für den inneren embossed Bereich
+  palette: Palette;            // Die berechnete Farb-Palette
+}
+
+/**
+ * Berechnet die Styles für ein neomorphes Control basierend auf den gegebenen Parametern.
+ * Diese Funktion zentralisiert die Logik für Schatten, Farben, Höhen und Texturen,
+ * um Konsistenz über alle neomorphen Components zu gewährleisten.
+ *
+ * @param size - Die Größe des Controls, bestimmt die Gesamthöhe.
+ * @param shape - Die Form des Controls: 'rect' oder 'pill'.
+ * @param baseColor - Optionale Basis-Farbe; falls nicht angegeben, wird die Website-Hintergrundfarbe verwendet.
+ * @param color - Optionale Farbe für den Ring; default ist palette.frameBackground.
+ * @param frameWidth - Breite des äußeren Frames (default: 2px).
+ * @param ringWidth - Breite des Rings (default: 1px).
+ * @param buttonBorderWidth - Breite des inneren Buttons/Rands (default: 2px).
+ * @returns Ein Objekt mit den berechneten Styles für frame, ring, button und palette.
+ */
+export function computeNeomorphControlStyle(
+  size: PASize,
+  shape: PANeomorphControlShape,
+  baseColor?: string,
+  color?: string,
+  frameWidth: number = 2,
+  ringWidth: number = 1,
+  buttonBorderWidth: number = 2
+): PANeomorphControlStyle {
+  // Palette berechnen (fallback: Website-Hintergrundfarbe, hier angenommen als '#0a0a0a' oder ähnlich)
+  const websiteBackgroundColor = '#0a0a0a'; // TODO: Aus Config holen
+  const palette = computePalette(baseColor || websiteBackgroundColor);
+
+  // Höhe und Corner-Radii berechnen
+  const height = containerHeightsPixel[size];
+  const cornerRadius = shape === PANeomorphControlShape.pill ? height / 2 : height / 4;
+
+  // Schatten-Blur (festgelegt auf 4px für Konsistenz)
+  const shadowBlur = 4;
+
+  // Frame-Styles (recessed)
+  const frame: React.CSSProperties = {
+    height: `${height}px`,
+    borderRadius: `${cornerRadius}px`,
+    backgroundColor: palette.frameBackground,
+    backgroundImage: PATexture.fineNoise,
+    backgroundSize: '100% 100%',
+    backgroundRepeat: 'no-repeat',
+    backgroundBlendMode: 'overlay',
+    boxShadow: `
+      inset ${frameWidth}px ${frameWidth}px ${shadowBlur}px ${palette.frameShadowDark},
+      inset -${frameWidth}px -${frameWidth}px ${shadowBlur}px ${palette.frameShadowLight}
+    `,
+  };
+
+  // Ring-Styles
+  const ring: React.CSSProperties = {
+    backgroundColor: color || palette.frameBackground,
+    borderRadius: `${cornerRadius}px`,
+  };
+
+  // Button-Styles (embossed)
+  const button: React.CSSProperties = {
+    height: `${height - 2 * ringWidth}px`, // Höhe minus Ring-Breite oben und unten
+    borderRadius: `${cornerRadius - ringWidth}px`,
+    backgroundColor: palette.buttonBackground,
+    backgroundImage: PATexture.fineNoise,
+    backgroundSize: '100% 100%',
+    backgroundRepeat: 'no-repeat',
+    backgroundBlendMode: 'overlay',
+    boxShadow: `
+      -${buttonBorderWidth}px -${buttonBorderWidth}px ${shadowBlur}px ${palette.buttonShadowLight},
+      ${buttonBorderWidth}px ${buttonBorderWidth}px ${shadowBlur}px ${palette.buttonShadowDark}
+    `,
+  };
+
+  return {
+    frame,
+    ring,
+    button,
+    palette,
+  };
+}
