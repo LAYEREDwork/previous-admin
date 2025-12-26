@@ -4,7 +4,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-97%25-blue.svg?style=flat)
 ![JavaScript](https://img.shields.io/badge/JavaScript-0%25-yellow.svg?style=flat)
 ![Shell](https://img.shields.io/badge/Shell-2%25-green.svg?style=flat)
-![Lines of Code](https://img.shields.io/badge/LOC-17639-orange.svg?style=flat)
+![Lines of Code](https://img.shields.io/badge/LOC-18079-orange.svg?style=flat)
 ![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg?style=flat)
 ![Platforms](https://img.shields.io/badge/Platforms-Linux%20%7C%20macOS-lightgrey.svg?style=flat)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
