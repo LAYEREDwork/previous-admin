@@ -11,6 +11,13 @@ export const PANeomorphButtonType = {
 } as const;
 export type PANeomorphButtonType = typeof PANeomorphButtonType[keyof typeof PANeomorphButtonType];
 
+export interface CornerRadiusOverrides {
+  topLeft?: number;
+  topRight?: number;
+  bottomLeft?: number;
+  bottomRight?: number;
+}
+
 interface PANeomorphButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type' | 'color'> {
   // Content
   children?: ReactNode;
@@ -33,6 +40,9 @@ interface PANeomorphButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButt
   // Styling
   color?: string; // Color for ring and active glow
   baseColor?: string; // Optional base background color to derive palette from
+
+  // Corner radius overrides (for dropdown integration)
+  cornerRadiusOverrides?: CornerRadiusOverrides;
 }
 
 /**
@@ -65,6 +75,7 @@ export const PANeomorphButton = React.forwardRef<HTMLButtonElement, PANeomorphBu
       className = '',
       color,
       baseColor,
+      cornerRadiusOverrides,
       ...rest
     },
     ref
@@ -76,6 +87,36 @@ export const PANeomorphButton = React.forwardRef<HTMLButtonElement, PANeomorphBu
     const frameCornerRadius = cornerRadius;
     const ringCornerRadius = Math.max(frameCornerRadius - frameWidth, 0);
     const buttonCornerRadius = Math.max(ringCornerRadius - ringWidth, 0);
+
+    // Helper functions for corner radius overrides
+    const computeBorderRadius = (
+      defaultRadius: number,
+      overrides?: CornerRadiusOverrides
+    ): string => {
+      if (!overrides) return `${defaultRadius}px`;
+      const tl = overrides.topLeft ?? defaultRadius;
+      const tr = overrides.topRight ?? defaultRadius;
+      const br = overrides.bottomRight ?? defaultRadius;
+      const bl = overrides.bottomLeft ?? defaultRadius;
+      return `${tl}px ${tr}px ${br}px ${bl}px`;
+    };
+
+    const computeLayerOverrides = (
+      overrides: CornerRadiusOverrides | undefined,
+      offset: number
+    ): CornerRadiusOverrides | undefined => {
+      if (!overrides) return undefined;
+      return {
+        topLeft: overrides.topLeft !== undefined ? Math.max(overrides.topLeft - offset, 0) : undefined,
+        topRight: overrides.topRight !== undefined ? Math.max(overrides.topRight - offset, 0) : undefined,
+        bottomRight: overrides.bottomRight !== undefined ? Math.max(overrides.bottomRight - offset, 0) : undefined,
+        bottomLeft: overrides.bottomLeft !== undefined ? Math.max(overrides.bottomLeft - offset, 0) : undefined,
+      };
+    };
+
+    const frameOverrides = cornerRadiusOverrides;
+    const ringOverrides = computeLayerOverrides(cornerRadiusOverrides, frameWidth);
+    const buttonOverrides = computeLayerOverrides(cornerRadiusOverrides, frameWidth + ringWidth);
 
     // Size classes for padding and font size
     const sizeClasses = {
@@ -133,7 +174,7 @@ export const PANeomorphButton = React.forwardRef<HTMLButtonElement, PANeomorphBu
           disabled ? 'opacity-50 cursor-not-allowed' : ''
         } ${className}`}
         style={{
-          borderRadius: frameCornerRadius,
+          borderRadius: computeBorderRadius(frameCornerRadius, frameOverrides),
           padding: frameWidth,
           boxShadow: frameShadow,
           backgroundColor: palette.frameBackground,
@@ -143,8 +184,9 @@ export const PANeomorphButton = React.forwardRef<HTMLButtonElement, PANeomorphBu
         <div
           className={ringClass}
           style={{
-            borderRadius: ringCornerRadius,
+            borderRadius: computeBorderRadius(ringCornerRadius, ringOverrides),
             padding: ringWidth,
+            overflow: 'hidden',
             backgroundColor: color ? undefined : palette.ringBackground,
             height: buttonHeight + 2 * ringWidth,
           }}
@@ -155,7 +197,7 @@ export const PANeomorphButton = React.forwardRef<HTMLButtonElement, PANeomorphBu
             disabled={disabled}
             className={`w-full inline-flex items-center justify-center ${buttonClass} ${buttonSizeClass}`}
             style={{
-              borderRadius: buttonCornerRadius,
+              borderRadius: computeBorderRadius(buttonCornerRadius, buttonOverrides),
               borderWidth: buttonBorderWidth,
               boxShadow: !disabled ? (active ? buttonActiveShadow : buttonShadow) : undefined,
               backgroundImage: PATexture.noise,

@@ -43,12 +43,13 @@ export function PALanguageSwitcher() {
   return (
     <PANeomorphDropdown
       placement="bottomEnd"
-      renderToggle={(props, ref) => (
+      renderToggle={(props, ref, isOpen) => (
         <PANeomorphButton
           {...props}
           ref={ref as React.Ref<HTMLButtonElement>}
           size={controlSize}
           className={`${props.className || ''} min-w-[44px]`}
+          cornerRadiusOverrides={isOpen ? { bottomLeft: 0, bottomRight: 0 } : undefined}
         >
           <span className="text-lg">{languageFlags[language]}</span>
         </PANeomorphButton>

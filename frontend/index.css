@@ -385,6 +385,12 @@
   .dark .rs-panel-btn:focus {
     background-color: rgb(50, 51, 52) !important;
   }
+
+  /* Prevent dropdown flash at (0,0) before positioning */
+  .rs-popover:not([style*="--rs-position-x"]) {
+    left: -9999px !important;
+    top: -9999px !important;
+  }
 }
 
 /* Website background noise texture - darker version for dark theme */
