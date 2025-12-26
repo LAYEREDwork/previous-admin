@@ -3,6 +3,7 @@ import { Input } from 'rsuite';
 import { PANeomorphButton } from '../../controls/PANeomorphButton';
 import { PAModal } from '../../controls/PAModal';
 import { Translations } from '../../../lib/translations';
+import { PASize } from '../../../lib/types/sizes';
 
 interface NewConfigModalPartialProps {
     open: boolean;
@@ -13,7 +14,7 @@ interface NewConfigModalPartialProps {
     description: string;
     setDescription: (desc: string) => void;
     nameRef: React.RefObject<HTMLInputElement>;
-    controlSize: 'xs' |'sm' | 'md' | 'lg';
+    controlSize: PASize;
     translation: Translations;
 }
 

@@ -2,6 +2,7 @@ import { BiDownload, BiUpload, BiFile } from 'react-icons/bi';
 import { PAButton } from '../../controls/PAButton';
 import { Translations } from '../../../lib/translations';
 import { Configuration } from '../../../lib/database';
+import { PASize } from '../../../lib/types/sizes';
 
 interface ConfigImportExportPartialProps {
     importing: boolean;
@@ -10,7 +11,7 @@ interface ConfigImportExportPartialProps {
     importConfig: (e: React.ChangeEvent<HTMLInputElement>) => void;
     exportConfig: () => void;
     exportAllConfigs: () => void;
-    controlSize: 'xs' | 'sm' | 'md' | 'lg';
+    controlSize: PASize;
     translation: Translations;
 }
 

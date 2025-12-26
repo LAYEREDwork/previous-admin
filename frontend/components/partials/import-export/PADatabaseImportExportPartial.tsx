@@ -1,13 +1,14 @@
 import { BiDownload, BiUpload, BiData } from 'react-icons/bi';
 import { PAButton } from '../../controls/PAButton';
 import { Translations } from '../../../lib/translations';
+import { PASize } from '../../../lib/types/sizes';
 
 interface DatabaseImportExportPartialProps {
     databaseImporting: boolean;
     databaseExporting: boolean;
     importDatabaseDump: (e: React.ChangeEvent<HTMLInputElement>) => void;
     exportDatabaseDump: () => void;
-    controlSize: 'xs' | 'sm' | 'md' | 'lg';
+    controlSize: PASize;
     translation: Translations;
 }
 

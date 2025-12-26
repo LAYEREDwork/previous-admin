@@ -4,7 +4,7 @@ import { PANeomorphButton } from './PANeomorphButton';
 
 // Hooks
 import { useLanguage } from '../../contexts/PALanguageContext';
-import { useControlSize } from '../../hooks/useControlSize';
+import { usePASize } from '../../hooks/useControlSize';
 
 // Types/Utilities
 import { Language } from '../../lib/translations';
@@ -34,7 +34,7 @@ const languageFlags: Record<Language, string> = {
  */
 export function PALanguageSwitcher() {
   const { language, setLanguage } = useLanguage();
-  const controlSize = useControlSize('xs');
+  const controlSize = usePASize('xs');
 
   const sortedLanguages = (Object.keys(languageNames) as Language[]).sort((a, b) =>
     languageNames[a].localeCompare(languageNames[b])

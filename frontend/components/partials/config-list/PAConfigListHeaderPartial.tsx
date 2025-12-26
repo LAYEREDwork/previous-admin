@@ -1,10 +1,12 @@
 import { BiPlus } from 'react-icons/bi';
-import { PANeomorphButton, PANeomorphButtonShape } from '../../controls/PANeomorphButton';
+import { PANeomorphButton } from '../../controls/PANeomorphButton';
+import { PANeomorphControlShape } from '../../../lib/utils/styling';
 import { Translations } from '../../../lib/translations';
+import { PASize } from '../../../lib/types/sizes';
 
 interface ConfigListHeaderPartialProps {
     onNewConfigClick: () => void;
-    controlSize: 'xs' | 'sm' | 'md' | 'lg';
+    controlSize: PASize;
     translation: Translations;
 }
 
@@ -24,7 +26,7 @@ export function PAConfigListHeaderPartial({
                 size={controlSize}
                 className="self-end sm:self-auto"
                 color='primary'
-                shape={PANeomorphButtonShape.rect}
+                shape={PANeomorphControlShape.rect}
             >
                 {translation.configList.createNew}
             </PANeomorphButton>

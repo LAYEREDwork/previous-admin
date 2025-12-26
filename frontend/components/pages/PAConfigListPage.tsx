@@ -11,7 +11,7 @@ import { NewConfigModalPartial } from '../partials/config-list/PANewConfigModalP
 
 // Hooks
 import { useLanguage } from '../../contexts/PALanguageContext';
-import { useControlSize } from '../../hooks/useControlSize';
+import { usePASize } from '../../hooks/useControlSize';
 import { useConfigListLogic } from '../../hooks/useConfigList';
 
 // Types
@@ -23,7 +23,7 @@ interface ConfigListProps {
 
 export function PAConfigList({ onEdit }: ConfigListProps) {
   const { translation } = useLanguage();
-  const controlSize = useControlSize('md');
+  const controlSize = usePASize('md');
 
   const {
     configs,
@@ -116,6 +116,7 @@ export function PAConfigList({ onEdit }: ConfigListProps) {
           description={translation.configList.emptyStateDescription}
           actionText={translation.configList.createNew}
           onAction={() => setShowNewConfig(true)}
+          buttonSize={controlSize}
         />
       )}
     </div>

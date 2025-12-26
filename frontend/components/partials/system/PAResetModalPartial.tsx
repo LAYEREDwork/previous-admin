@@ -1,13 +1,14 @@
 import { PAButton } from '../../controls/PAButton';
 import { PAModal } from '../../controls/PAModal';
 import { Translations } from '../../../lib/translations';
+import { PASize } from '../../../lib/types/sizes';
 
 interface ResetModalPartialProps {
     open: boolean;
     onClose: () => void;
     onConfirm: () => void;
     isResetting: boolean;
-    controlSize: 'xs' | 'sm' | 'md' | 'lg';
+    controlSize: PASize;
     translation: Translations;
 }
 

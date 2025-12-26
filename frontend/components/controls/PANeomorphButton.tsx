@@ -1,15 +1,8 @@
-import React, { ReactNode, useEffect, useState } from 'react';
-import { PASize, PABasicSize } from '../../lib/types/sizes';
+import React, { ReactNode } from 'react';
+import { PASize } from '../../lib/types/sizes';
 import { PATexture } from '../../lib/utils/color';
-import { PANeomorphPalette, Palette, computePalette} from '../../lib/utils/palette';
-import { useControlSize } from '../../hooks/useControlSize';
-
-// Enum for shape, kept for basic configuration
-export const PANeomorphButtonShape = {
-  pill: 'pill',
-  rect: 'rect',
-} as const;
-export type PANeomorphButtonShape = typeof PANeomorphButtonShape[keyof typeof PANeomorphButtonShape];
+import { PANeomorphPalette, computePalette} from '../../lib/utils/palette';
+import { containerHeightsPixel, PANeomorphControlShape } from '../../lib/utils/styling';
 
 export const PANeomorphButtonType = {
   button: 'button',
@@ -24,8 +17,8 @@ interface PANeomorphButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButt
   icon?: ReactNode;
 
   // Sizing
-  size?: PABasicSize;
-  shape?: PANeomorphButtonShape;
+  size: PASize;
+  shape?: PANeomorphControlShape;
   fullWidth?: boolean;
   frameWidth?: number;
   ringWidth?: number;
@@ -55,7 +48,7 @@ export const PANeomorphButton = React.forwardRef<HTMLButtonElement, PANeomorphBu
 
       // Sizing
       size = PASize.md,
-      shape = PANeomorphButtonShape.rect,
+      shape = PANeomorphControlShape.rect,
       fullWidth = false,
       frameWidth = 2,
       ringWidth = 1,
@@ -76,24 +69,10 @@ export const PANeomorphButton = React.forwardRef<HTMLButtonElement, PANeomorphBu
     },
     ref
   ) => {
-    const [palette, setPalette] = useState<Palette>(() => computePalette(baseColor || PANeomorphPalette.baseColor));
-    const controlSize = useControlSize(size);
-
-    useEffect(() => {
-      setPalette(computePalette(baseColor || PANeomorphPalette.baseColor));
-    }, [baseColor]);
-
-    // Map size to height in px
-    const sizeToHeight = {
-      xs: 30,
-      sm: 34,
-      md: 40,
-      lg: 46,
-    };
-    const buttonHeight = sizeToHeight[size]; // Calculate button height based on size
-
-    // Calculate corner radii
-    const cornerRadius = shape === PANeomorphButtonShape.rect ? buttonHeight / 4 : buttonHeight;
+    const palette = computePalette(baseColor || PANeomorphPalette.baseColor);
+    
+    const buttonHeight = containerHeightsPixel[size]; // Calculate button height based on size
+    const cornerRadius = shape === PANeomorphControlShape.rect ? buttonHeight / 4 : buttonHeight;
     const frameCornerRadius = cornerRadius;
     const ringCornerRadius = Math.max(frameCornerRadius - frameWidth, 0);
     const buttonCornerRadius = Math.max(ringCornerRadius - ringWidth, 0);
@@ -104,6 +83,7 @@ export const PANeomorphButton = React.forwardRef<HTMLButtonElement, PANeomorphBu
       sm: 'px-3 py-0.7 text-sm',
       md: 'px-5 py-1.2 text-base',
       lg: 'px-6 py-1.7 text-lg',
+      xl: 'px-8 py-2.5 text-xl',
     };
 
     // Content styling for icon and text
@@ -138,14 +118,13 @@ export const PANeomorphButton = React.forwardRef<HTMLButtonElement, PANeomorphBu
     const buttonShadow = `-${buttonBorderWidth}px -${buttonBorderWidth}px ${shadowBlurRadius}px ${buttonShadowLight}, ${buttonBorderWidth}px ${buttonBorderWidth}px ${shadowBlurRadius}px ${buttonShadowDark}`;
     const buttonActiveShadow = `inset -${buttonBorderWidth}px -${buttonBorderWidth}px ${shadowBlurRadius}px ${buttonShadowLight}, inset ${buttonBorderWidth}px ${buttonBorderWidth}px ${shadowBlurRadius}px ${buttonShadowDark}`;
 
-    const frameClass = `bg-next-panel transition-all duration-200 ease-in-out height=${
-      buttonHeight + 2 * frameWidth
-    }px`;
+    const frameClass = `bg-next-panel transition-all duration-200 ease-in-out`;
     // If color is not set, do not set a background color for the ring, but inherit from parent
     const ringClass = `${color ? 'bg-next-panel' : ''} transition-all duration-200 ease-in-out${
       color ? '' : ' border border-next-border'
     }`;
     const buttonClass = `w-full h-full font-semibold border-none transition-all duration-200 ease-in-out focus:outline-none bg-next-panel disabled:opacity-70 disabled:shadow-none disabled:bg-next-panel`;
+    const buttonSizeClass = sizeClasses[size] as string;
 
     // Three-layer hierarchy: Frame > Ring > Button
     return (
@@ -174,7 +153,7 @@ export const PANeomorphButton = React.forwardRef<HTMLButtonElement, PANeomorphBu
             ref={ref}
             type={type}
             disabled={disabled}
-            className={`w-full inline-flex items-center justify-center ${buttonClass} ${sizeClasses[controlSize]}`}
+            className={`w-full inline-flex items-center justify-center ${buttonClass} ${buttonSizeClass}`}
             style={{
               borderRadius: buttonCornerRadius,
               borderWidth: buttonBorderWidth,

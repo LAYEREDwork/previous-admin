@@ -30,8 +30,7 @@ export interface Palette {
 }
 
 export function computePalette(baseColor: string): Palette {
-  const _baseColor = baseColor || PANeomorphPalette.baseColor;
-  const baseHsl = parseColorToHsl(_baseColor)!;
+  const baseHsl = parseColorToHsl(baseColor)!;
 
   const frameBackground = hslToString(adjustLightness(baseHsl, -4));
   const ringBackground = hslToString(adjustLightness(baseHsl, 2));

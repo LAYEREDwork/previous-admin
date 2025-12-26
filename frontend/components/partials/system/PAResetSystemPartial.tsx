@@ -1,10 +1,11 @@
 import { PAButton } from '../../controls/PAButton';
 import { Translations } from '../../../lib/translations';
+import { PASize } from '../../../lib/types/sizes';
 
 interface ResetSystemPartialProps {
     onResetClick: () => void;
     isResetting: boolean;
-    controlSize: 'xs' | 'sm' | 'md' | 'lg';
+    controlSize: PASize;
     translation: Translations;
 }
 

@@ -1,4 +1,6 @@
-import { PAButton } from './PAButton';
+import { PASize } from '../../lib/types/sizes';
+import { PANeomorphButton } from './PANeomorphButton';
+import { PANeomorphControlShape } from '../../lib/utils/styling';
 import { IconType } from 'react-icons';
 
 /**
@@ -22,7 +24,7 @@ interface PAEmptyViewProps {
   /** Die Größe des Button-Icons */
   actionIconSize?: number;
   /** Die Größe des Buttons (optional, standardmäßig 'md') */
-  buttonSize?: 'xs' | 'sm' | 'md' | 'lg';
+  buttonSize: PASize;
   /** Zusätzliche CSS-Klassen für den Container */
   className?: string;
 }
@@ -41,7 +43,7 @@ export const PAEmptyView: React.FC<PAEmptyViewProps> = ({
   onAction,
   actionIcon: ActionIcon,
   actionIconSize = 18,
-  buttonSize = 'md',
+  buttonSize = PASize.md,
   className = '',
 }) => {
   return (
@@ -55,15 +57,16 @@ export const PAEmptyView: React.FC<PAEmptyViewProps> = ({
       <p className="text-gray-500 dark:text-gray-400 mb-6 text-center max-w-sm" style={{ maxWidth: '400px' }}>
         {description}
       </p>
-      <PAButton
+      <PANeomorphButton
         onClick={onAction}
-        appearance="primary"
+        icon={ActionIcon ? <ActionIcon size={actionIconSize} /> : undefined}
         size={buttonSize}
+        color='primary'
+        shape={PANeomorphControlShape.rect}
         className="flex items-center gap-2"
       >
-        {ActionIcon && <ActionIcon size={actionIconSize} />}
         {actionText}
-      </PAButton>
+      </PANeomorphButton>
     </div>
   );
 };

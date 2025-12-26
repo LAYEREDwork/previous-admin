@@ -6,6 +6,7 @@ import { ResetModalPartial } from '../../partials/system/PAResetModalPartial';
 import { Metrics } from '../../../hooks/useSystemMetrics';
 import { SystemInfo } from '../../../../shared/types';
 import type { Translations } from '../../../lib/translations';
+import { PASize } from '../../../lib/types/sizes';
 
 interface SystemContentProps {
   systemInfo: SystemInfo;
@@ -16,7 +17,7 @@ interface SystemContentProps {
   handleReset: () => void;
   updateFrequency: number;
   setUpdateFrequency: (freq: number) => void;
-  controlSize: 'xs' | 'sm' | 'md' | 'lg';
+  controlSize: PASize;
   translation: Translations;
 }
 

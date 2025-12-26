@@ -1,6 +1,7 @@
 import { BiTrash, BiEdit, BiUpload, BiCopy } from 'react-icons/bi';
 import { PASize } from '../../../lib/types/sizes';
-import { PANeomorphButton, PANeomorphButtonShape } from '../../controls/PANeomorphButton';
+import { PANeomorphButton } from '../../controls/PANeomorphButton';
+import { PANeomorphControlShape } from '../../../lib/utils/styling';
 import { Configuration } from '../../../lib/database';
 import { Translations } from '../../../lib/translations';
 
@@ -37,7 +38,7 @@ export function ConfigListActionsPartial({
         icon={<BiUpload size={iconSize} />}
         size={buttonSize}
         baseColor={baseColor}
-        shape={PANeomorphButtonShape.rect}
+        shape={PANeomorphControlShape.rect}
         title={translation.configList.export}
         onClick={() => exportSingleConfig(config)}
       />
@@ -45,7 +46,7 @@ export function ConfigListActionsPartial({
         icon={<BiCopy size={iconSize} />}
         size={buttonSize}
         baseColor={baseColor}
-        shape={PANeomorphButtonShape.rect}
+        shape={PANeomorphControlShape.rect}
         title={translation.configList.duplicate}
         onClick={() => duplicateConfig(config)}
       />
@@ -53,7 +54,7 @@ export function ConfigListActionsPartial({
         icon={<BiEdit size={iconSize} />}
         size={buttonSize}
         baseColor={baseColor}
-        shape={PANeomorphButtonShape.rect}
+        shape={PANeomorphControlShape.rect}
         title={translation.configList.edit}
         onClick={() => onEdit(config)}
       />
@@ -61,7 +62,7 @@ export function ConfigListActionsPartial({
         icon={<BiTrash size={iconSize} />}
         size={buttonSize}
         baseColor={baseColor}
-        shape={PANeomorphButtonShape.rect}
+        shape={PANeomorphControlShape.rect}
         title={translation.configList.delete}
         onClick={() => deleteConfig(config.id)}
         color="#e53935"

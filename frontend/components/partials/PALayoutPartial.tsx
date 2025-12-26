@@ -8,7 +8,7 @@ import { useAuth } from '../../contexts/PAAuthContext';
 import { useLanguage } from '../../contexts/PALanguageContext';
 import { getCurrentVersion } from '../../lib/version';
 import { PANeomorphButton } from '../controls/PANeomorphButton';
-import { useControlSize } from '../../hooks/useControlSize';
+import { usePASize } from '../../hooks/useControlSize';
 import { PATexture } from '../../lib/utils/color';
 
 interface LayoutProps {
@@ -22,7 +22,7 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
   const { translation } = useLanguage();
   const [version, setVersion] = useState<string>('');
 
-  const controlSize = useControlSize('xs');
+  const controlSize = usePASize('xs');
 
   useEffect(() => {
     getCurrentVersion().then(setVersion);
@@ -69,7 +69,7 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-3 sm:py-6 gap-3 sm:gap-0">
               <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
                 <div className="w-16 h-16 sm:w-[72px] sm:h-[72px] flex-shrink-0">
-                  <PANeXTLogo size={72} className="w-full h-full" />
+                  <PANeXTLogo size={72} className="w-full h-full" shadow={true} />
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">

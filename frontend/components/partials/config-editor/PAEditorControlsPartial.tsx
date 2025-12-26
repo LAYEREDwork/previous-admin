@@ -2,6 +2,7 @@ import { BiSave, BiChevronUp, BiChevronDown } from 'react-icons/bi';
 import { PAButton } from '../../controls/PAButton';
 import { PASegmentedControl } from '../../controls/PASegmentedControl';
 import { Translations } from '../../../lib/translations';
+import { PASize } from '../../../lib/types/sizes';
 
 interface EditorControlsPartialProps {
     viewMode: 'editor' | 'raw';
@@ -10,7 +11,7 @@ interface EditorControlsPartialProps {
     handleSave: () => void;
     expandedSections: Record<string, boolean>;
     toggleAllSections: () => void;
-    controlSize: 'xs' | 'sm' | 'md' | 'lg';
+    controlSize: PASize;
     translation: Translations;
 }
 

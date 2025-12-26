@@ -6,12 +6,12 @@ import { SystemEmptyState } from './system/PASystemEmptyState';
 
 // Hooks
 import { useLanguage } from '../../contexts/PALanguageContext';
-import { useControlSize } from '../../hooks/useControlSize';
+import { usePASize } from '../../hooks/useControlSize';
 import { useSystem } from '../../hooks/useSystem';
 
 export function PASystem() {
   const { translation } = useLanguage();
-  const controlSize = useControlSize();
+  const controlSize = usePASize();
   const {
     systemInfo,
     loadingSystemInfo,

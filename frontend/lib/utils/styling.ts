@@ -4,6 +4,7 @@
  */
 
 import { StylingKey } from '../../../shared/enums';
+import { PASize } from '../types';
 import { PATexture } from './color';
 
 /**
@@ -113,35 +114,43 @@ export const shadowConfig = {
 };
 
 export const containerHeightsCSS = {
-  xs: 'h-7',      // 28px
-  sm: 'h-[34px]', // 34px
-  md: 'h-10',     // 40px
-  lg: 'h-[46px]', // 46px
-  xl: 'h-[50px]', // 50px
+  [PASize.xs]: 'h-7',      // 28px
+  [PASize.sm]: 'h-[34px]', // 34px
+  [PASize.md]: 'h-10',     // 40px
+  [PASize.lg]: 'h-[46px]', // 46px
+  [PASize.xl]: 'h-[50px]', // 50px
 };
 
 export const fontSizesCSS = {
-  xs: 'text-[10px]',
-  sm: 'text-xs',
-  md: 'text-sm',
-  lg: 'text-base',
-  xl: 'text-lg',
+  [PASize.xs]: 'text-[10px]',
+  [PASize.sm]: 'text-xs',
+  [PASize.md]: 'text-sm',
+  [PASize.lg]: 'text-base',
+  [PASize.xl]: 'text-lg',
 };
 
 export const iconSizesPixel = {
-  xs: 12,
-  sm: 14,
-  md: 16,
-  lg: 18,
-  xl: 20,
+  [PASize.xs]: 12,
+  [PASize.sm]: 14,
+  [PASize.md]: 16,
+  [PASize.lg]: 18,
+  [PASize.xl]: 20,
 };
 
 export const containerHeightsPixel = {
-  xs: 28,
-  sm: 34,
-  md: 40,
-  lg: 46,
-  xl: 50,
+  [PASize.xs]: 28,
+  [PASize.sm]: 34,
+  [PASize.md]: 40,
+  [PASize.lg]: 46,
+  [PASize.xl]: 50,
+};
+
+export const buttonRadii = {
+    [PASize.xs]: 14,
+    [PASize.sm]: 17,
+    [PASize.md]: 20,
+    [PASize.lg]: 23,
+    [PASize.xl]: 26,
 };
 
 /**

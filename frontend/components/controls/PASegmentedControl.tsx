@@ -1,3 +1,4 @@
+import { PASize } from '../../lib/types/sizes';
 import React, { ReactNode, useRef, useEffect, useState } from 'react';
 
 interface SegmentOption<T extends string> {
@@ -10,7 +11,7 @@ interface PASegmentedControlProps<T extends string> {
   options: SegmentOption<T>[];
   value: T;
   onChange: (value: T) => void;
-  size?: 'xs' | 'sm' | 'md' | 'lg';
+  size: PASize;
   iconOnly?: boolean;
   fullWidth?: boolean;
   className?: string;
@@ -25,7 +26,7 @@ export function PASegmentedControl<T extends string>({
   options,
   value,
   onChange,
-  size = 'sm',
+  size = PASize.sm,
   iconOnly = false,
   fullWidth = false,
   className = '',
@@ -70,6 +71,7 @@ export function PASegmentedControl<T extends string>({
     sm: 'h-[34px]', // 34px
     md: 'h-10',     // 40px
     lg: 'h-[46px]', // 46px
+    xl: 'h-[52px]', // 52px
   };
 
   const fontSizes = {
@@ -77,6 +79,7 @@ export function PASegmentedControl<T extends string>({
     sm: 'text-xs',
     md: 'text-sm',
     lg: 'text-base',
+    xl: 'text-lg',
   };
 
   const iconSizes = {
@@ -84,6 +87,7 @@ export function PASegmentedControl<T extends string>({
     sm: 14,
     md: 16,
     lg: 18,
+    xl: 20,
   };
 
   return (

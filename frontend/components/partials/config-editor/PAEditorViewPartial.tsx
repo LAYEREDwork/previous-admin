@@ -1,7 +1,7 @@
 import { SelectPicker, Input, Toggle } from 'rsuite';
 import { EditorSectionPartial } from './PAEditorSectionPartial';
 import { EditorFieldPartial } from './PAEditorFieldPartial';
-import { PreviousConfig } from '../../../lib/types';
+import { PASize, PreviousConfig } from '../../../lib/types';
 import { Translations } from '../../../lib/translations';
 
 interface EditorViewPartialProps {
@@ -9,7 +9,7 @@ interface EditorViewPartialProps {
     updateConfigField: (path: string[], value: string | number | boolean) => void;
     expandedSections: Record<string, boolean>;
     setExpandedSections: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
-    controlSize: 'xs' | 'sm' | 'md' | 'lg';
+    controlSize: PASize;
     translation: Translations;
 }
 
@@ -21,7 +21,7 @@ export function EditorViewPartial({
     controlSize,
     translation
 }: EditorViewPartialProps) {
-    const rsuiteSize = controlSize === 'xs' ? 'sm' : controlSize;
+    const rsuiteSize = controlSize === 'xs' ? 'sm' : controlSize === 'xl' ? 'lg' : controlSize;
 
     return (
         <div className="grid gap-4">

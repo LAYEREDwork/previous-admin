@@ -12,7 +12,7 @@ import { EditorViewPartial } from '../partials/config-editor/PAEditorViewPartial
 import { RawViewPartial } from '../partials/config-editor/PARawViewPartial';
 
 // Hooks
-import { useControlSize } from '../../hooks/useControlSize';
+import { usePASize } from '../../hooks/useControlSize';
 import { useConfigEditor } from '../../hooks/useConfigEditor';
 
 export function PAConfigEditor({ configId, onTabChange }: { configId?: string | null; onTabChange?: (tab: string) => void }) {
@@ -43,7 +43,7 @@ export function PAConfigEditor({ configId, onTabChange }: { configId?: string | 
     translation,
   } = useConfigEditor(configId);
 
-  const controlSize = useControlSize('md');
+  const controlSize = usePASize('md');
 
   // 1. Loading state must come first
   if (loading) {
@@ -85,6 +85,7 @@ export function PAConfigEditor({ configId, onTabChange }: { configId?: string | 
           description={translation.configEditor.noSavedConfigsDescription}
           actionText={translation.configEditor.createFirstConfig}
           onAction={() => onTabChange?.('configs')}
+          buttonSize={controlSize}
         />
       );
     }
@@ -97,6 +98,7 @@ export function PAConfigEditor({ configId, onTabChange }: { configId?: string | 
           description={translation.configEditor.noConfigSelectedDescription}
           actionText={translation.configEditor.goToSavedConfigs}
           onAction={() => onTabChange?.('configs')}
+          buttonSize={controlSize}
         />
       );
     }

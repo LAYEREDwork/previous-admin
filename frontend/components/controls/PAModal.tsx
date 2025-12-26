@@ -1,5 +1,7 @@
 import { Modal, ModalProps } from 'rsuite';
 import { ReactNode } from 'react';
+import { PASize } from '../../lib/types/sizes';
+import { buttonRadii } from '../../../frontend/lib/utils/styling';
 
 /**
  * PAModal - A luxury modal component with calculated corner radius.
@@ -13,25 +15,17 @@ import { ReactNode } from 'react';
 interface PAModalProps extends Omit<ModalProps, 'centered' | 'dialogStyle'> {
     children: ReactNode;
     /** The size of buttons used inside the modal to calculate corner radius */
-    controlSize?: 'xs' | 'sm' | 'md' | 'lg';
+    controlSize?: PASize;
     /** The distance from modal edge to content (padding) in pixels. Default is 8. */
     padding?: number;
 }
 
 export function PAModal({
     children,
-    controlSize = 'md',
+    controlSize = PASize.md,
     padding = 6,
     ...props
 }: PAModalProps) {
-
-    const buttonRadii = {
-        xs: 14,
-        sm: 17,
-        md: 20,
-        lg: 23,
-    };
-
     const buttonRadius = buttonRadii[controlSize];
     const modalRadius = buttonRadius + padding;
 

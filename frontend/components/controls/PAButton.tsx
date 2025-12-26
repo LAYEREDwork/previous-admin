@@ -1,10 +1,11 @@
+import { PASize } from '../../lib/types/sizes';
 import { ReactNode, forwardRef } from 'react';
 import { Button as RSuiteButton, ButtonProps as RSuiteButtonProps } from 'rsuite';
 
 interface PAButtonProps extends Omit<RSuiteButtonProps, 'size' | 'color'> {
     children?: ReactNode;
     icon?: ReactNode;
-    size?: 'xs' | 'sm' | 'md' | 'lg';
+    size: PASize;
     color?: 'blue' | 'red' | 'green' | 'orange' | 'cyan' | 'indigo' | 'accent';
     fullWidth?: boolean;
 }
@@ -16,7 +17,7 @@ interface PAButtonProps extends Omit<RSuiteButtonProps, 'size' | 'color'> {
 export const PAButton = forwardRef<HTMLButtonElement, PAButtonProps>(({
     children,
     icon,
-    size = 'md',
+    size = PASize.md,
     appearance = 'default',
     color: customColor,
     className = '',

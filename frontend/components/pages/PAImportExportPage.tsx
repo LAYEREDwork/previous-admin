@@ -8,7 +8,7 @@ import { ImportExportNotesPartial } from '../partials/import-export/PAImportExpo
 
 // Hooks
 import { useLanguage } from '../../contexts/PALanguageContext';
-import { useControlSize } from '../../hooks/useControlSize';
+import { usePASize } from '../../hooks/useControlSize';
 import { useImportExport } from '../../hooks/useImportExport';
 
 /**
@@ -29,7 +29,7 @@ export function PAImportExport() {
     importDatabaseDump,
   } = useImportExport();
 
-  const controlSize = useControlSize('lg');
+  const controlSize = usePASize('lg');
 
   return (
     <div className="space-y-6">
