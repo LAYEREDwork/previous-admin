@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { BiCheckCircle, BiXCircle, BiError, BiInfoCircle, BiX } from 'react-icons/bi';
 import { useLanguage } from './PALanguageContext';

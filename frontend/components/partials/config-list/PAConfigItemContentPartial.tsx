@@ -1,8 +1,6 @@
 import { ConfigListActionsPartial } from './PAConfigListActionsPartial';
 import { Configuration } from '../../../lib/database';
 import type { Translations } from '../../../lib/translations';
-import { stylingDefaults } from '../../../lib/utils/styling';
-import { StylingKey } from '../../../../shared/enums';
 
 interface ConfigItemContentProps {
   config: Configuration;
@@ -40,7 +38,6 @@ export function ConfigItemContent({
         <ConfigListActionsPartial
           config={config}
           isMobile={isMobile}
-          baseColor={stylingDefaults[StylingKey.buttonBaseColor]}
           exportSingleConfig={exportSingleConfig}
           duplicateConfig={duplicateConfig}
           onEdit={onEdit}

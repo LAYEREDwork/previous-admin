@@ -3,7 +3,7 @@ import { BiRefresh, BiUpload, BiDownload, BiCheck, BiInfoCircle } from 'react-ic
 import { database, Configuration } from '../../lib/database';
 import { useLanguage } from '../../contexts/PALanguageContext';
 import { PAButton } from '../controls/PAButton';
-import { usePASize } from '../../hooks/useControlSize';
+import { useResponsiveControlSize } from '../../hooks/useResponsiveControlSize';
 
 export function ConfigFileSyncPartial() {
   const { translation } = useLanguage();
@@ -13,7 +13,7 @@ export function ConfigFileSyncPartial() {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(
     null
   );
-  const controlSize = usePASize('lg');
+  const controlSize = useResponsiveControlSize('lg');
 
   useEffect(() => {
     database.getConfigurations().then(setConfigs);

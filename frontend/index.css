@@ -125,6 +125,10 @@
     font-family: "Barlow", sans-serif;
   }
 
+  body {
+    background-color: var(--rs-body);
+  }
+
   .dark {
     --tw-bg-opacity: 1;
     color-scheme: dark;
@@ -393,9 +397,22 @@
   }
 }
 
-/* Website background noise texture - darker version for dark theme */
-body {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3cfilter id='n'%3e%3cfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3e%3c/filter%3e%3crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3e%3c/svg%3e");
-  background-repeat: repeat;
-  background-size: 200px 200px;
+/* Previous Admin 3D Design System Variables */
+:root {
+  /* Colors */
+  --bg-embossed: #505050;
+  --bg-recessed: #2a2a2a;
+  --bg-thumb: #7b7b7b;
+  --bg-thumb-active: #333333;
+  --accent-color: #007bff;
+  --text-color: #ffffff;
+  --placeholder-color: #888888;
+
+  /* Shadows */
+  --shadow-embossed-inset-light: rgba(255, 255, 255, 0.1);
+  --shadow-embossed-inset-dark-strong: rgba(0, 0, 0, 0.5);
+  --shadow-embossed-inset-dark: rgba(0, 0, 0, 0.3);
+  --shadow-recessed: 1px 1px 0px rgba(0, 0, 0, 0.5) inset, -1px -1px 0px rgba(255, 255, 255, 0.1) inset;
 }
+
+/* DEPRECATED STYLES - Migrated to RSuite Components */

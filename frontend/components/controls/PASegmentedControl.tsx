@@ -1,5 +1,6 @@
 import { PASize } from '../../lib/types/sizes';
-import React, { ReactNode, useRef, useEffect, useState } from 'react';
+import React, { ReactNode } from 'react';
+import { ButtonGroup, Button } from 'rsuite';
 
 interface SegmentOption<T extends string> {
   value: T;
@@ -14,13 +15,12 @@ interface PASegmentedControlProps<T extends string> {
   size: PASize;
   iconOnly?: boolean;
   fullWidth?: boolean;
+  justified?: boolean;
   className?: string;
 }
 
 /**
- * A premium segmented control with a sliding transition.
- * Designed to match the modern "Design Systems Surf" anatomy.
- * PA prefix for Previous Admin.
+ * PASegmentedControl - RSuite ButtonGroup with segmented appearance
  */
 export function PASegmentedControl<T extends string>({
   options,
@@ -29,59 +29,13 @@ export function PASegmentedControl<T extends string>({
   size = PASize.sm,
   iconOnly = false,
   fullWidth = false,
+  justified = false,
   className = '',
 }: PASegmentedControlProps<T>) {
-  const activeIndex = options.findIndex((opt) => opt.value === value);
-  const [sliderStyle, setSliderStyle] = useState<React.CSSProperties>({ opacity: 0 });
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isReady, setIsReady] = useState(false);
+  // Map PASize to RSuite size
+  const rsuiteSize = size === PASize.xs ? 'xs' : size === PASize.sm ? 'sm' : size === PASize.lg ? 'lg' : 'md';
 
-  // Update slider position when value or options change
-  useEffect(() => {
-    const updateSlider = () => {
-      if (containerRef.current && activeIndex !== -1) {
-        const segments = containerRef.current.querySelectorAll('.segment-item');
-        const activeElement = segments[activeIndex] as HTMLElement;
-        if (activeElement) {
-          setSliderStyle({
-            left: activeElement.offsetLeft,
-            width: activeElement.offsetWidth,
-            height: activeElement.offsetHeight,
-            opacity: 1,
-            transition: isReady ? 'all 0.3s cubic-bezier(0.34, 1.2, 0.64, 1)' : 'none',
-          });
-          if (!isReady) setIsReady(true);
-        }
-      }
-    };
-
-    // Small delay to ensure layout is ready
-    const timer = setTimeout(updateSlider, 50);
-
-    window.addEventListener('resize', updateSlider);
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('resize', updateSlider);
-    };
-  }, [activeIndex, options, isReady]);
-
-  // Precise height mapping (+4px to match user request)
-  const containerHeights = {
-    xs: 'h-7',      // 28px
-    sm: 'h-[34px]', // 34px
-    md: 'h-10',     // 40px
-    lg: 'h-[46px]', // 46px
-    xl: 'h-[52px]', // 52px
-  };
-
-  const fontSizes = {
-    xs: 'text-[10px]',
-    sm: 'text-xs',
-    md: 'text-sm',
-    lg: 'text-base',
-    xl: 'text-lg',
-  };
-
+  // Precise height mapping
   const iconSizes = {
     xs: 12,
     sm: 14,
@@ -91,17 +45,11 @@ export function PASegmentedControl<T extends string>({
   };
 
   return (
-    <div
-      ref={containerRef}
-      className={`relative flex bg-gray-100 dark:bg-gray-700 p-1 rounded-full select-none ${containerHeights[size]
-        } ${fullWidth ? 'w-full' : 'w-fit'} ${className}`}
+    <ButtonGroup
+      className={className}
+      style={fullWidth ? { width: '100%' } : undefined}
+      justified={justified}
     >
-      {/* Sliding Active Tile (Active Segment Background) */}
-      <div
-        className="absolute top-1 bottom-1 bg-primary-500 shadow-sm rounded-full pointer-events-none z-0 transition-all"
-        style={sliderStyle}
-      />
-
       {options.map((option) => {
         const isActive = value === option.value;
 
@@ -122,27 +70,20 @@ export function PASegmentedControl<T extends string>({
         };
 
         return (
-          <button
+          <Button
             key={option.value}
-            type="button"
+            size={rsuiteSize}
+            appearance={isActive ? 'primary' : 'default'}
             onClick={() => onChange(option.value)}
-            className={`segment-item relative z-10 flex items-center justify-center gap-2 font-semibold h-full px-3 transition-colors duration-300 rounded-full ${fontSizes[size]
-              } ${fullWidth ? 'flex-1' : ''} ${isActive
-                ? 'text-gray-100'
-                : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
-              }`}
+            style={fullWidth ? { flex: 1 } : undefined}
           >
-            {option.icon && renderIcon() && (
-              <span className={`flex items-center justify-center transition-transform duration-300 ${isActive ? 'scale-110' : ''}`}>
-                {renderIcon()}
-              </span>
-            )}
+            {option.icon && renderIcon()}
             {!iconOnly && option.label && (
-              <span className="truncate">{option.label}</span>
+              <span className="ml-1">{option.label}</span>
             )}
-          </button>
+          </Button>
         );
       })}
-    </div>
+    </ButtonGroup>
   );
 }

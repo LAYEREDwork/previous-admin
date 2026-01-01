@@ -1,10 +1,8 @@
 import { FaCheck } from 'react-icons/fa';
-import { PANeomorphDropdown } from './PANeomorphDropdown';
-import { PANeomorphButton } from './PANeomorphButton';
+import { Dropdown, Button } from 'rsuite';
 
 // Hooks
 import { useLanguage } from '../../contexts/PALanguageContext';
-import { usePASize } from '../../hooks/useControlSize';
 
 // Types/Utilities
 import { Language } from '../../lib/translations';
@@ -25,41 +23,39 @@ const languageFlags: Record<Language, string> = {
   fr: '🇫🇷',
 };
 
-
 /**
  * Language Switcher Component
- * PA prefix for Previous Admin
- *
- * Renders a dropdown menu that allows users to switch between available application languages.
+ * Now using RSuite Dropdown.
  */
 export function PALanguageSwitcher() {
   const { language, setLanguage } = useLanguage();
-  const controlSize = usePASize('xs');
 
   const sortedLanguages = (Object.keys(languageNames) as Language[]).sort((a, b) =>
     languageNames[a].localeCompare(languageNames[b])
   );
 
   return (
-    <PANeomorphDropdown
+    <Dropdown
       placement="bottomEnd"
-      renderToggle={(props, ref, isOpen) => (
-        <PANeomorphButton
+      renderToggle={(props, ref) => (
+        <Button
           {...props}
-          ref={ref as React.Ref<HTMLButtonElement>}
-          size={controlSize}
-          className={`${props.className || ''} min-w-[44px]`}
-          cornerRadiusOverrides={isOpen ? { bottomLeft: 0, bottomRight: 0 } : undefined}
+          ref={ref}
+          appearance="default"
+          size="sm"
         >
-          <span className="text-lg">{languageFlags[language]}</span>
-        </PANeomorphButton>
+          <div className="flex items-center gap-2">
+            <span className="text-lg">{languageFlags[language]}</span>
+            <span className="text-sm">{languageNames[language]}</span>
+          </div>
+        </Button>
       )}
     >
       {sortedLanguages.map((lang) => (
-        <PANeomorphDropdown.Item
+        <Dropdown.Item
           key={lang}
           onClick={() => setLanguage(lang)}
-          className={language === lang ? 'bg-black/30' : ''}
+          active={language === lang}
         >
           <div className="flex items-center justify-between gap-3 min-w-[140px]">
             <div className="flex items-center gap-2">
@@ -67,11 +63,11 @@ export function PALanguageSwitcher() {
               <span>{languageNames[lang]}</span>
             </div>
             {language === lang && (
-              <FaCheck className="text-white" size={12} />
+              <FaCheck size={12} />
             )}
           </div>
-        </PANeomorphDropdown.Item>
+        </Dropdown.Item>
       ))}
-    </PANeomorphDropdown>
+    </Dropdown>
   );
 }

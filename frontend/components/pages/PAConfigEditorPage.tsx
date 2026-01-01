@@ -12,7 +12,7 @@ import { EditorViewPartial } from '../partials/config-editor/PAEditorViewPartial
 import { RawViewPartial } from '../partials/config-editor/PARawViewPartial';
 
 // Hooks
-import { usePASize } from '../../hooks/useControlSize';
+import { useResponsiveControlSize } from '../../hooks/useResponsiveControlSize';
 import { useConfigEditor } from '../../hooks/useConfigEditor';
 
 export function PAConfigEditor({ configId, onTabChange }: { configId?: string | null; onTabChange?: (tab: string) => void }) {
@@ -43,7 +43,7 @@ export function PAConfigEditor({ configId, onTabChange }: { configId?: string | 
     translation,
   } = useConfigEditor(configId);
 
-  const controlSize = usePASize('md');
+  const controlSize = useResponsiveControlSize('md');
 
   // 1. Loading state must come first
   if (loading) {

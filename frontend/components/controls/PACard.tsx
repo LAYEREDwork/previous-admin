@@ -1,55 +1,23 @@
-import { ReactNode, useMemo } from 'react';
-import { PATexture } from '../../lib/utils/color';
-
-export enum PACardRelief {
-  EMBOSSED = 'embossed',
-  RECESSED = 'recessed',
-}
+import { ReactNode } from 'react';
+import { Panel } from 'rsuite';
 
 interface PACardProps {
   children?: ReactNode;
   className?: string;
-  backgroundColor?: string;
-  relief?: PACardRelief;
+  header?: ReactNode;
 }
 
-const FRAME_WIDTH = 2;
-const SHADOW_BLUR_RADIUS = 2;
-const SHADOW_LIGHT = 'rgba(55, 55, 55, 1)';
-const SHADOW_DARK = '#000';
-const FLOAT_SHADOW_EMBOSSED = '0 10px 20px rgba(0, 0, 0, 0.32)';
-
 /**
- * PACard - panel-like container with skeuomorphic relief and optional noise texture.
+ * PACard - RSuite Panel with consistent styling
  */
-export function PACard({
-  children,
-  className = '',
-  backgroundColor = '#1a1a1a',
-  relief = PACardRelief.EMBOSSED,
-}: PACardProps) {
-  const insetShadow = useMemo(() => {
-    const isEmbossed = relief === PACardRelief.EMBOSSED;
-    // Embossed: light on bottom-right, dark on top-left (inverted vs recessed)
-    const light = isEmbossed ? SHADOW_DARK : SHADOW_LIGHT;
-    const dark = isEmbossed ? SHADOW_LIGHT : SHADOW_DARK;
-    return `inset -${FRAME_WIDTH}px -${FRAME_WIDTH}px ${SHADOW_BLUR_RADIUS}px ${light}, inset ${FRAME_WIDTH}px ${FRAME_WIDTH}px ${SHADOW_BLUR_RADIUS}px ${dark}`;
-  }, [relief]);
-
-  const floatShadow = relief === PACardRelief.EMBOSSED ? FLOAT_SHADOW_EMBOSSED : '';
-
+export function PACard({ children, className = '', header }: PACardProps) {
   return (
-    <div
-      className={`rounded-lg border border-next-border ${className}`}
-      style={{
-        backgroundColor,
-        backgroundImage: PATexture.noise,
-        backgroundBlendMode: 'soft-light',
-        backgroundRepeat: 'repeat',
-        boxShadow: `${floatShadow}${floatShadow ? ', ' : ''}${insetShadow}`,
-      }}
+    <Panel
+      header={header}
+      className={className}
+      bordered
     >
       {children}
-    </div>
+    </Panel>
   );
 }

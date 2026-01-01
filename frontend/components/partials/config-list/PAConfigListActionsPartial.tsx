@@ -1,14 +1,12 @@
 import { BiTrash, BiEdit, BiUpload, BiCopy } from 'react-icons/bi';
 import { PASize } from '../../../lib/types/sizes';
-import { PANeomorphButton } from '../../controls/PANeomorphButton';
-import { PANeomorphControlShape } from '../../../lib/utils/styling';
+import { PAButton } from '../../controls/PAButton';
 import { Configuration } from '../../../lib/database';
 import { Translations } from '../../../lib/translations';
 
 interface ConfigListActionsPartialProps {
   config: Configuration;
   isMobile: boolean;
-  baseColor?: string;
   exportSingleConfig: (config: Configuration) => void;
   duplicateConfig: (config: Configuration) => void;
   onEdit: (config: Configuration) => void;
@@ -22,7 +20,6 @@ interface ConfigListActionsPartialProps {
 export function ConfigListActionsPartial({
   config,
   isMobile,
-  baseColor,
   exportSingleConfig,
   duplicateConfig,
   onEdit,
@@ -33,39 +30,35 @@ export function ConfigListActionsPartial({
   const buttonSize = isMobile ? PASize.xs : PASize.sm;
 
   return (
-    <div className="flex items-center justify-end gap-2 mt-2 sm:mt-0">
-      <PANeomorphButton
+    <div className="flex items-center justify-end gap-3 mt-2 sm:mt-0">
+      <PAButton
         icon={<BiUpload size={iconSize} />}
         size={buttonSize}
-        baseColor={baseColor}
-        shape={PANeomorphControlShape.rect}
         title={translation.configList.export}
         onClick={() => exportSingleConfig(config)}
+        className="flex items-center justify-center"
       />
-      <PANeomorphButton
+      <PAButton
         icon={<BiCopy size={iconSize} />}
         size={buttonSize}
-        baseColor={baseColor}
-        shape={PANeomorphControlShape.rect}
         title={translation.configList.duplicate}
         onClick={() => duplicateConfig(config)}
+        className="flex items-center justify-center"
       />
-      <PANeomorphButton
+      <PAButton
         icon={<BiEdit size={iconSize} />}
         size={buttonSize}
-        baseColor={baseColor}
-        shape={PANeomorphControlShape.rect}
         title={translation.configList.edit}
         onClick={() => onEdit(config)}
+        className="flex items-center justify-center"
       />
-      <PANeomorphButton
+      <PAButton
         icon={<BiTrash size={iconSize} />}
         size={buttonSize}
-        baseColor={baseColor}
-        shape={PANeomorphControlShape.rect}
         title={translation.configList.delete}
         onClick={() => deleteConfig(config.id)}
         color="#e53935"
+        className="flex items-center justify-center"
       />
     </div>
   );

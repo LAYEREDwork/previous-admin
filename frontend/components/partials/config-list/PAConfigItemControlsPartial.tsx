@@ -1,5 +1,5 @@
 import { IconButton } from 'rsuite';
-import { BiCheckCircle, BiCircle, BiMenu } from 'react-icons/bi';
+import { BiCheckCircle, BiCircle } from 'react-icons/bi';
 import type { Translations } from '../../../lib/translations';
 
 interface ConfigItemControlsProps {
@@ -22,7 +22,7 @@ export function ConfigItemControls({
   translation,
 }: ConfigItemControlsProps) {
   return (
-    <div className="flex flex-col justify-between items-center w-10 sm:w-12">
+    <div className="flex flex-col justify-center items-center w-10 sm:w-12">
       <IconButton
         icon={isActive ? <BiCheckCircle size={28} /> : <BiCircle size={28} />}
         appearance="subtle"
@@ -37,17 +37,6 @@ export function ConfigItemControls({
         disabled={isActive}
         size="lg"
       />
-      {hasMultipleConfigs && (
-        <IconButton
-          icon={<BiMenu size={28} />}
-          appearance="subtle"
-          className="flex-shrink-0 cursor-grab text-gray-500 hover:text-gray-700"
-          style={{ backgroundColor: 'transparent' }}
-          title={translation.configList.move}
-          size="lg"
-          onClick={onDragStart}
-        />
-      )}
     </div>
   );
 }

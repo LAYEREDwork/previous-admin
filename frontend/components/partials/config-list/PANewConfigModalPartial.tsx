@@ -1,6 +1,6 @@
 import { IoDocumentText } from 'react-icons/io5';
 import { Input } from 'rsuite';
-import { PANeomorphButton } from '../../controls/PANeomorphButton';
+import { PAButton } from '../../controls/PAButton';
 import { PAModal } from '../../controls/PAModal';
 import { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
@@ -36,8 +36,9 @@ export function NewConfigModalPartial({
             onClose={onClose}
             size="sm"
             controlSize={controlSize as any}
+            style={{ minHeight: '400px' }}
         >
-            <PAModal.Header>
+            <PAModal.Header closeButton={false}>
                 <PAModal.Title>
                     <IoDocumentText size={32} className="inline-block mr-2 -mt-0.5" />
                     {translation.configList.createNew}
@@ -73,20 +74,20 @@ export function NewConfigModalPartial({
                 </div>
             </PAModal.Body>
             <PAModal.Footer>
-                <PANeomorphButton
+                <PAButton
                     onClick={onClose}
                     size={controlSize}
                 >
                     {translation.common.cancel}
-                </PANeomorphButton>
-                <PANeomorphButton
+                </PAButton>
+                <PAButton
                     onClick={onSave}
                     disabled={!name.trim()}
-                    active={!!name.trim()}
                     size={controlSize}
+                    appearance={name.trim() ? "primary" : "default"}
                 >
                     {translation.common.save}
-                </PANeomorphButton>
+                </PAButton>
             </PAModal.Footer>
         </PAModal>
     );

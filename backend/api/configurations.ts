@@ -207,7 +207,8 @@ router.post(apiPaths.Configuration.create.relative, requireAuth, (
     const config = createConfiguration({
       name,
       description: description || '',
-      config: typeof config_data === 'string' ? JSON.parse(config_data) : config_data
+      config_data: typeof config_data === 'string' ? JSON.parse(config_data) : config_data,
+      is_active: is_active || false,
     }, authReq.session.userId!);
 
     console.log('API created config:', config.name, 'is_active:', config.is_active);

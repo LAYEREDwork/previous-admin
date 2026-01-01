@@ -13,9 +13,11 @@ import { PAAbout } from './components/pages/PAAboutPage';
 import { Login } from './components/pages/PALoginPage';
 import { CustomProvider } from 'rsuite';
 import { Configuration } from './lib/database';
+import { ThemeProvider, useTheme } from './contexts/PAThemeContext';
 
 function PAAppContent() {
   const { isAuthenticated, loading } = useAuth();
+  const { actualTheme } = useTheme();
   const [currentTab, setCurrentTab] = useState(() => {
     // Restore last active tab from localStorage
     const savedTab = localStorage.getItem('currentTab');
@@ -54,7 +56,7 @@ function PAAppContent() {
   );
 
   return (
-    <CustomProvider theme="dark">
+    <CustomProvider theme={actualTheme}>
       {content}
     </CustomProvider>
   );
@@ -67,7 +69,9 @@ function App() {
         <PANotificationProvider>
           <PAAuthProvider>
             <PAConfigProvider>
-              <PAAppContent />
+              <ThemeProvider>
+                <PAAppContent />
+              </ThemeProvider>
             </PAConfigProvider>
           </PAAuthProvider>
         </PANotificationProvider>

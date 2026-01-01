@@ -1,12 +1,11 @@
 import { ReactElement } from 'react';
 import { PAButton } from './PAButton';
 import { ButtonProps as RSuiteButtonProps } from 'rsuite';
-import { PASize } from 'frontend/lib/types/sizes';
+import { PASize } from '../../lib/types/sizes';
 
 interface PAIconButtonProps extends Omit<RSuiteButtonProps, 'size' | 'color' | 'children'> {
     icon: ReactElement;
     size?: PASize;
-    color?: 'blue' | 'red' | 'green' | 'orange' | 'cyan' | 'indigo' | 'accent';
     className?: string;
     circle?: boolean;
 }

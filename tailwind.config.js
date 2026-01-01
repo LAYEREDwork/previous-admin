@@ -32,6 +32,33 @@ export default {
           800: '#155e75',
           900: '#164e63',
         },
+        // Embossed/recessed Flächen und Rahmen
+        embossed: {
+          light: '#232323',
+          dark: '#101010',
+        },
+        recessed: {
+          light: '#232323',
+          dark: '#101010',
+        },
+        border: {
+          default: '#232323',
+          strong: '#353535',
+        },
+      },
+      boxShadow: {
+        'neo-recessed': 'inset 2px 2px 4px #000, inset -2px -2px 4px #353535',
+        'neo-embossed': '-2px -2px 4px #232323, 2px 2px 4px #101010',
+        'neo-embossed-strong': '-2px -2px 8px #232323, 2px 2px 8px #101010',
+        'neo-recessed-strong': 'inset 2px 2px 8px #000, inset -2px -2px 8px #353535',
+      },
+      borderRadius: {
+        'neo-pill': '9999px',
+        'neo-rect': '12px',
+      },
+      borderWidth: {
+        'neo': '2px',
+        'neo-strong': '3px',
       },
     },
   },

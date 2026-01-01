@@ -1,93 +1,37 @@
-import { ReactNode, RefObject } from 'react';
-import { Input, InputGroup } from 'rsuite';
-import { BiEditAlt } from 'react-icons/bi';
+import { forwardRef } from 'react';
+import { Input } from 'rsuite';
 import { PASize } from '../../lib/types/sizes';
 
-export enum PAInputType {
-  TEXT = 'text',
-  PASSWORD = 'password',
-  EMAIL = 'email',
-  NUMBER = 'number',
-  DATE = 'date',
-  DATETIME_LOCAL = 'datetime-local',
-  TIME = 'time',
-  COLOR = 'color',
-  SEARCH = 'search',
-  TEL = 'tel',
-  URL = 'url',
-  WEEK = 'week',
-  MONTH = 'month',
-  DATETIME = 'datetime',
-  RANGE = 'range',
-  FILE = 'file',
-  CHECKBOX = 'checkbox',
-  RADIO = 'radio',
-  SUBMIT = 'submit',
-  RESET = 'reset',
-  BUTTON = 'button',
-  IMAGE = 'image',
-  VIDEO = 'video',
-  AUDIO = 'audio',
-}
-
-type PAInputSize = Extract<PASize, 'xs' | 'sm' | 'md' | 'lg' | 'xl'>;
-
-interface PAInputProps {
-  size: PAInputSize;
-  value: string;
-  onChange: (nextValue: string) => void;
-  prefixIcon?: ReactNode;
-  suffixButton?: ReactNode;
-  onSuffixButtonClick?: () => void;
-  suffixDisabled?: boolean;
-  className?: string;
-  inputId?: string;
-  inputRef?: RefObject<HTMLInputElement>;
-  inputType?: string;
-  placeholder?: string;
-  autoComplete?: string;
+export interface PAInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'onChange'> {
+    size?: PASize;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 /**
- * PAInput kapselt ein RSuite InputGroup mit optionalem Addon und Button,
- * um den vertieften Neumorph-Look als Drop-in Replacement bereitzustellen.
+ * PAInput - RSuite Input with consistent sizing
  */
-export function PAInput({
-  size,
-  value,
-  onChange,
-  prefixIcon,
-  suffixButton,
-  onSuffixButtonClick: onSuffixButtonClick,
-  suffixDisabled,
-  className = '',
-  inputId,
-  inputRef,
-  inputType = PAInputType.TEXT,
-  placeholder,
-  autoComplete,
-}: PAInputProps) {
-  const combinedClassName = `recessed-input noFocusRing ${className}`.trim();
+export const PAInput = forwardRef<HTMLInputElement, PAInputProps>(
+    ({ size = PASize.md, className = '', onChange, ...rest }, ref) => {
+        // Map PASize to RSuite size
+        const rsuiteSize = size === PASize.xs ? 'xs' : size === PASize.sm ? 'sm' : size === PASize.lg ? 'lg' : 'md';
 
-  return (
-    <InputGroup size={size} className={combinedClassName}>
-      <InputGroup.Addon className="non-recessed text-next-text">
-        {prefixIcon || <BiEditAlt />}
-      </InputGroup.Addon>
-      <Input
-        id={inputId}
-        inputRef={inputRef}
-        type={inputType}
-        value={value}
-        onChange={(nextValue) => onChange(nextValue)}
-        placeholder={placeholder}
-        autoComplete={autoComplete}
-      />
-      {suffixButton ? (
-        <InputGroup.Button className="non-recessed" onClick={onSuffixButtonClick} disabled={suffixDisabled}>
-          {suffixButton}
-        </InputGroup.Button>
-      ) : null}
-    </InputGroup>
-  );
-}
+        // Handle onChange compatibility
+        const handleChange = (_value: string, event: React.ChangeEvent<HTMLInputElement>) => {
+            if (onChange) {
+                onChange(event);
+            }
+        };
+
+        return (
+            <Input
+                ref={ref}
+                size={rsuiteSize}
+                className={className}
+                onChange={handleChange}
+                {...rest}
+            />
+        );
+    }
+);
+
+PAInput.displayName = 'PAInput';

@@ -1,11 +1,10 @@
 import { useLanguage } from '../../contexts/PALanguageContext';
-import { PATexture } from '../../lib/utils/color';
 
 export function FooterPartial() {
     const { translation } = useLanguage();
 
     return (
-        <footer className="border-t-2 py-8 mt-auto" style={{ backgroundImage: PATexture.fineNoise, backgroundColor: '#0a0a0a', borderTopColor: '#2a2a2a' }}>
+        <footer className="border-t-2 py-8 mt-auto dark:border-next-border" style={{ backgroundColor: 'var(--rs-gray-800)' }}>
             <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 text-center text-sm">
                 <div className="text-gray-900 dark:text-gray-100 font-medium mb-4">
                     {translation.footer.copyright}

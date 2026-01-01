@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { BiInfoCircle, BiRefresh, BiCheck, BiError, BiFile, BiChevronUp, BiChevronDown } from 'react-icons/bi';
 import { PAButton } from '../../controls/PAButton';
 import { useLanguage } from '../../../contexts/PALanguageContext';
-import { usePASize } from '../../../hooks/useControlSize';
+import { useResponsiveControlSize } from '../../../hooks/useResponsiveControlSize';
 import { type VersionInfo } from '../../../lib/version';
 import ReactMarkdown from 'react-markdown';
 
@@ -27,7 +27,7 @@ export function VersionInfoPartial({
   handleUpdate,
 }: VersionInfoPartialProps) {
   const { translation } = useLanguage();
-  const controlSize = usePASize();
+  const controlSize = useResponsiveControlSize();
 
   const [newExpanded, setNewExpanded] = useState(false);
 

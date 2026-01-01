@@ -290,6 +290,12 @@ export interface Translations {
     savedConfigs: string;
     system: string;
   };
+  theme: {
+    light: string;
+    dark: string;
+    system: string;
+    select: string;
+  };
 }
 
 export const translations: Record<Language, Translations> = {

@@ -1,12 +1,10 @@
-import { BiUserPlus, BiLock, BiShow, BiHide, BiLogInCircle, BiDownload } from 'react-icons/bi';
+import { BiUserPlus, BiLogInCircle, BiDownload } from 'react-icons/bi';
 import { Divider } from 'rsuite';
-import { PANeomorphButton, PANeomorphButtonType } from '../../controls/PANeomorphButton';
-import { PACard, PACardRelief } from '../../controls/PACard';
+import { PAButton } from '../../controls/PAButton';
+import { PACard } from '../../controls/PACard';
 import { PAInput } from '../../controls/PAInput';
 import { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
-
-const LOGIN_PANEL_BACKGROUND = '#1a1a1a';
 
 interface PALoginFormPartialProps {
     username: string;
@@ -44,7 +42,6 @@ export function PALoginFormPartial({
     importing,
     isSetup,
     visible,
-    handlePasswordVisibilityChange,
     handleSubmit,
     handleDatabaseImport,
     usernameRef,
@@ -57,8 +54,6 @@ export function PALoginFormPartial({
     return (
         <PACard
             className="rounded-2xl shadow-xl p-5 sm:p-8"
-            backgroundColor={LOGIN_PANEL_BACKGROUND}
-            relief={PACardRelief.EMBOSSED}
         >
             <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                 <div>
@@ -67,12 +62,11 @@ export function PALoginFormPartial({
                     </label>
                     <PAInput
                         size={controlSize}
-                        prefixIcon={<BiUserPlus />}
-                        inputId="username-input"
-                        inputRef={usernameRef}
-                        inputType="text"
+                        id="username-input"
+                        ref={usernameRef}
+                        type="text"
                         value={username}
-                        onChange={(value) => setUsername(value)}
+                        onChange={(e) => setUsername(e.target.value)}
                         placeholder={translation.login.usernamePlaceholder}
                         autoComplete="username"
                     />
@@ -84,16 +78,13 @@ export function PALoginFormPartial({
                     </label>
                     <PAInput
                         size={controlSize}
-                        prefixIcon={<BiLock />}
-                        inputId="password-input"
-                        inputRef={passwordRef}
-                        inputType={visible ? 'text' : 'password'}
+                        id="password-input"
+                        ref={passwordRef}
+                        type={visible ? 'text' : 'password'}
                         value={password}
-                        onChange={(value) => setPassword(value)}
+                        onChange={(e) => setPassword(e.target.value)}
                         placeholder={translation.login.passwordPlaceholder}
                         autoComplete={isSetup ? "new-password" : "current-password"}
-                        suffixButton={visible ? <BiShow /> : <BiHide />}
-                        onSuffixButtonClick={handlePasswordVisibilityChange}
                     />
                 </div>
 
@@ -104,29 +95,25 @@ export function PALoginFormPartial({
                         </label>
                         <PAInput
                             size={controlSize}
-                            prefixIcon={<BiLock />}
-                            inputId="confirm-password-input"
-                            inputRef={confirmPasswordRef}
-                            inputType={visible ? 'text' : 'password'}
+                            id="confirm-password-input"
+                            ref={confirmPasswordRef}
+                            type={visible ? 'text' : 'password'}
                             value={confirmPassword ?? ''}
-                            onChange={(value) => setConfirmPassword(value)}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                             placeholder={translation.login.confirmPasswordPlaceholder}
                             autoComplete="new-password"
-                            suffixButton={visible ? <BiShow /> : <BiHide />}
-                            onSuffixButtonClick={handlePasswordVisibilityChange}
                         />
                     </div>
                 )}
 
-                <PANeomorphButton
-                    type={PANeomorphButtonType.submit}
+                <PAButton
+                    type="submit"
                     size={PASize.md}
-                    fullWidth
+                    block
                     icon={isSetup ? <BiUserPlus size={18} /> : <BiLogInCircle size={18} />}
                     disabled={importing || loading || !username || !password}
                     className="self-end sm:self-auto"
-                    color={username && password && !importing && !loading ? '#fff' : undefined}
-                    baseColor={LOGIN_PANEL_BACKGROUND}
+                    appearance={username && password && !importing && !loading ? 'primary' : 'default'}
                 >
                     {isSetup ? (
                         <>
@@ -137,7 +124,7 @@ export function PALoginFormPartial({
                             {loading ? translation.login.signingIn : translation.login.signIn}
                         </>
                     )}
-                </PANeomorphButton>
+                </PAButton>
             </form>
 
             {isSetup && (
@@ -155,18 +142,17 @@ export function PALoginFormPartial({
                                 id="import-setup-database"
                                 ref={importDatabaseRef}
                             />
-                            <PANeomorphButton
-                                type={PANeomorphButtonType.submit}
+                            <PAButton
+                                type="submit"
                                 size={PASize.md}
-                                fullWidth
-                                icon={<BiDownload size={18} className="icon-inner-emboss" />}
+                                block
+                                icon={<BiDownload size={18} />}
                                 disabled={importing || loading}
                                 className="self-end sm:self-auto"
-                                baseColor={LOGIN_PANEL_BACKGROUND}
                                 onClick={() => importDatabaseRef.current?.click()}
                             >
                                 {importing ? translation.login.importingDatabase : translation.login.importExistingDatabase}
-                            </PANeomorphButton>
+                            </PAButton>
                         </label>
                         <p className="text-xs text-gray-400 mt-2 text-center">
                             {translation.login.importDatabaseHint}

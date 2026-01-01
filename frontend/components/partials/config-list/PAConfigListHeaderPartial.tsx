@@ -1,6 +1,5 @@
 import { BiPlus } from 'react-icons/bi';
-import { PANeomorphButton } from '../../controls/PANeomorphButton';
-import { PANeomorphControlShape } from '../../../lib/utils/styling';
+import { PAButton } from '../../controls/PAButton';
 import { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
 
@@ -20,16 +19,15 @@ export function PAConfigListHeaderPartial({
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">
                 {translation.configList.title}
             </h2>
-            <PANeomorphButton
+            <PAButton
                 onClick={onNewConfigClick}
                 icon={<BiPlus size={18} />}
                 size={controlSize}
+                appearance="primary"
                 className="self-end sm:self-auto"
-                color='primary'
-                shape={PANeomorphControlShape.rect}
             >
                 {translation.configList.createNew}
-            </PANeomorphButton>
+            </PAButton>
         </div>
     );
 }

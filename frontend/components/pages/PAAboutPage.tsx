@@ -23,17 +23,19 @@ export function PAAbout() {
             </p>
          </div>
 
-         <VersionInfoPartial
-            versionInfo={versionInfo}
-            checking={checking}
-            updating={updating}
-            error={error}
-            handleCheckForUpdates={handleCheckForUpdates}
-            handleUpdate={handleUpdate}
-         />
-         <PreviousResourcesPartial />
-         <LayeredResourcesPartial />
-         <GeneralResourcesPartial />
+         <div className="flex flex-col w-full gap-6">
+            <VersionInfoPartial
+               versionInfo={versionInfo}
+               checking={checking}
+               updating={updating}
+               error={error}
+               handleCheckForUpdates={handleCheckForUpdates}
+               handleUpdate={handleUpdate}
+            />
+            <PreviousResourcesPartial />
+            <LayeredResourcesPartial />
+            <GeneralResourcesPartial />
+         </div>
       </div>
    );
 }

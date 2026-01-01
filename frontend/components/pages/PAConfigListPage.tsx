@@ -11,7 +11,7 @@ import { NewConfigModalPartial } from '../partials/config-list/PANewConfigModalP
 
 // Hooks
 import { useLanguage } from '../../contexts/PALanguageContext';
-import { usePASize } from '../../hooks/useControlSize';
+import { useResponsiveControlSize } from '../../hooks/useResponsiveControlSize';
 import { useConfigListLogic } from '../../hooks/useConfigList';
 
 // Types
@@ -23,7 +23,7 @@ interface ConfigListProps {
 
 export function PAConfigList({ onEdit }: ConfigListProps) {
   const { translation } = useLanguage();
-  const controlSize = usePASize('md');
+  const controlSize = useResponsiveControlSize('md');
 
   const {
     configs,

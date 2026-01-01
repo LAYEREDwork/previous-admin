@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { usePASize } from '../hooks/useControlSize';
+import { useResponsiveControlSize } from '../hooks/useResponsiveControlSize';
 
 describe('useControlSize', () => {
   const originalInnerWidth = window.innerWidth;
@@ -24,7 +24,7 @@ describe('useControlSize', () => {
   });
 
   it('should return default size when window width is above 640px', () => {
-    const { result } = renderHook(() => usePASize('lg'));
+    const { result } = renderHook(() => useResponsiveControlSize('lg'));
     expect(result.current).toBe('lg');
   });
 
@@ -35,17 +35,17 @@ describe('useControlSize', () => {
       value: 500,
     });
 
-    const { result } = renderHook(() => usePASize('lg'));
+    const { result } = renderHook(() => useResponsiveControlSize('lg'));
     expect(result.current).toBe('sm');
   });
 
   it('should default to "md" when no defaultSize is provided', () => {
-    const { result } = renderHook(() => usePASize());
+    const { result } = renderHook(() => useResponsiveControlSize());
     expect(result.current).toBe('md');
   });
 
   it('should update size on window resize', () => {
-    const { result } = renderHook(() => usePASize('lg'));
+    const { result } = renderHook(() => useResponsiveControlSize('lg'));
 
     // Initially lg
     expect(result.current).toBe('lg');

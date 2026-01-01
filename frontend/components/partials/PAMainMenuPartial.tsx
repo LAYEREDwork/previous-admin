@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BiHdd, BiFile, BiInfoCircle, BiCog } from 'react-icons/bi';
 import { IoDocumentOutline } from 'react-icons/io5';
+import { Nav } from 'rsuite';
 import { useLanguage } from '../../contexts/PALanguageContext';
-import { PANeomorphSegmentedControl } from '../controls/PANeomorphSegmentedControl';
-import { PANeomorphControlShape } from '../../lib/utils/styling';
+import { PASegmentedControl } from '../controls/PASegmentedControl';
+import { PASize } from '../../lib/types/sizes';
 
 interface MainMenuProps {
     currentTab: string;
@@ -12,9 +13,7 @@ interface MainMenuProps {
 
 export function MainMenuPartial({ currentTab, onTabChange }: MainMenuProps) {
     const { translation } = useLanguage();
-
-    // Lokale Konstante für die Hintergrundfarbe des Menüs
-    const menuBackgroundColor = '#0a0a0a';
+    const [hoveredTab, setHoveredTab] = useState<string | null>(null);
 
     const tabs = [
         { value: 'configs', label: translation.tabs.savedConfigs, icon: <IoDocumentOutline size={18} /> },
@@ -26,31 +25,39 @@ export function MainMenuPartial({ currentTab, onTabChange }: MainMenuProps) {
 
     return (
         <>
-            {/* Desktop Navigation - oben */}
-            <nav className="hidden md:block">
-                <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-4">
-                    <PANeomorphSegmentedControl
-                        options={tabs}
-                        value={currentTab}
-                        onChange={onTabChange}
-                        fullWidth
-                        size="md"
-                        shape={PANeomorphControlShape.rect}
-                        baseColor={menuBackgroundColor}
-                    />
+            {/* Desktop Navigation - RSuite Nav */}
+            <div className="hidden md:block">
+                <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8">
+                    <Nav
+                        activeKey={currentTab}
+                        onSelect={onTabChange}
+                        appearance="subtle"
+                        justified
+                        className="w-full"
+                    >
+                        {tabs.map((tab) => (
+                            <Nav.Item
+                                key={tab.value}
+                                eventKey={tab.value}
+                                className="flex items-center gap-2"
+                            >
+                                {tab.icon}
+                                <span>{tab.label}</span>
+                            </Nav.Item>
+                        ))}
+                    </Nav>
                 </div>
-            </nav>
+            </div>
 
             {/* Mobile Bottom Tabbar */}
             <nav className="md:hidden fixed bottom-3 left-3 right-3 z-50 drop-shadow-2xl">
-                <PANeomorphSegmentedControl
+                <PASegmentedControl
                     options={tabs.map(tab => ({ ...tab, icon: React.cloneElement(tab.icon as React.ReactElement, { size: 22 }) }))}
                     value={currentTab}
                     onChange={onTabChange}
                     fullWidth
-                    size="lg"
+                    size={PASize.lg}
                     iconOnly
-                    baseColor={menuBackgroundColor}
                 />
             </nav>
         </>

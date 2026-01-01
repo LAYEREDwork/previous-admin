@@ -5,9 +5,6 @@ import { Configuration } from '../../../lib/database';
 import type { Translations } from '../../../lib/translations';
 import {
   getFrameShadow,
-  getConfigItemBackground,
-  getConfigItemBoxShadow,
-  getConfigItemTransition,
 } from '../../../lib/utils/styling';
 
 interface ConfigListItemPartialProps {
@@ -49,10 +46,7 @@ export function ConfigListItemPartial({
   isDragged,
   isDragOver,
 }: ConfigListItemPartialProps) {
-  // Skeuomorphic shadow effects for frame only
   const frameShadow = getFrameShadow();
-  const isDarkMode = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
-  const backgroundStyles = getConfigItemBackground(isDragged, isActive ?? false, isDarkMode);
 
   return (
     <div
@@ -60,14 +54,7 @@ export function ConfigListItemPartial({
         isActive
           ? 'border-primary-500'
           : 'border-gray-200 dark:border-next-border hover:border-gray-300 dark:hover:border-gray-500'
-      } ${isDragOver ? 'border-primary-500' : ''}`}
-      style={{
-        boxShadow: getConfigItemBoxShadow(isActive ?? false, frameShadow),
-        transition: getConfigItemTransition(isActive ?? false),
-        ...backgroundStyles,
-        // Ensure slight contrast to site background when not active/dragged
-        ...(backgroundStyles.backgroundColor ? { color: 'inherit' } : {}),
-      }}
+      } ${isDragOver ? 'border-primary-500' : ''} bg-white dark:bg-gray-900`}
       tabIndex={0}
       aria-label={config.name}
       draggable={hasMultipleConfigs}

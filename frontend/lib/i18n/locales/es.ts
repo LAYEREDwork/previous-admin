@@ -266,4 +266,10 @@ export const es: Translations = {
     savedConfigs: 'Configuraciones',
     system: 'Sistema',
   },
+  theme: {
+    light: 'Claro',
+    dark: 'Oscuro',
+    system: 'Sistema',
+    select: 'Seleccionar tema',
+  },
 };

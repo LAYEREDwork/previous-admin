@@ -1,8 +1,6 @@
 import { ConfigListActionsPartial } from './PAConfigListActionsPartial';
 import { Configuration } from '../../../lib/database';
 import type { Translations } from '../../../lib/translations';
-import { stylingDefaults } from '../../../lib/utils/styling';
-import { StylingKey } from '../../../../shared/enums';
 
 interface ConfigItemActionsProps {
   config: Configuration;
@@ -27,11 +25,10 @@ export function ConfigItemActions({
   translation,
 }: ConfigItemActionsProps) {
   return (
-    <div className="hidden sm:flex items-center">
+    <div className="hidden sm:flex items-center pr-2">
       <ConfigListActionsPartial
         config={config}
         isMobile={isMobile}
-        baseColor={stylingDefaults[StylingKey.buttonBaseColor]}
         exportSingleConfig={exportSingleConfig}
         duplicateConfig={duplicateConfig}
         onEdit={onEdit}

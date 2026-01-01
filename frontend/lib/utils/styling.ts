@@ -5,8 +5,8 @@
 
 import { StylingKey } from '../../../shared/enums';
 import { PASize } from '../types';
-import { PATexture } from './color';
 import { computePalette, Palette } from './palette';
+import { adjustLightness, hslToString, parseColorToHsl } from './color';
 
 /**
  * Calculate active glow shadow
@@ -23,11 +23,9 @@ export function getActiveGlowShadow(
  */
 export function getConfigItemBackground(
   isDragged: boolean,
-  isActive: boolean,
   isDarkMode: boolean
 ): {
   backgroundColor?: string;
-  backgroundImage?: string;
   backgroundBlendMode?: string;
   backgroundSize?: string;
   backgroundRepeat?: string;
@@ -42,13 +40,8 @@ export function getConfigItemBackground(
     ? stylingDefaults[StylingKey.dragBackground]
     : stylingDefaults[StylingKey.itemBackground];
 
-  const overlay = isActive
-    ? `linear-gradient(${stylingDefaults[StylingKey.activeOverlay]}, ${stylingDefaults[StylingKey.activeOverlay]}), `
-    : '';
-
   return {
     backgroundColor: baseBackground,
-    backgroundImage: `${overlay}${PATexture.noise}`,
     backgroundBlendMode: 'soft-light',
     backgroundSize: 'auto',
     backgroundRepeat: 'repeat',
@@ -105,6 +98,48 @@ export const PANeomorphControlShape = {
   rect: 'rect',
 } as const;
 export type PANeomorphControlShape = typeof PANeomorphControlShape[keyof typeof PANeomorphControlShape];
+
+/**
+ * Default configuration values for neomorphic controls containing all sizing and styling parameters
+ */
+export const PANeomorphControlConfigDefaults = {
+  size: PASize.md,
+  shape: PANeomorphControlShape.rect,
+  baseColor: '',
+  color: '#00000000',
+  frameWidth: 2,
+  ringWidth: 1,
+  buttonBorderWidth: 2,
+} as const;
+
+export type PANeomorphControlConfig = {
+  size?: PASize;
+  shape?: PANeomorphControlShape;
+  baseColor?: string;
+  color?: string;
+  frameWidth?: number;
+  ringWidth?: number;
+  buttonBorderWidth?: number;
+};
+
+/**
+ * Merges the provided config with default values for neomorphic controls
+ * @param config - Partial configuration object
+ * @returns Complete configuration object with defaults applied
+ */
+export function mergeNeomorphControlConfig(
+  config: PANeomorphControlConfig = {}
+): Required<PANeomorphControlConfig> {
+  return {
+    size: config.size ?? PANeomorphControlConfigDefaults.size,
+    shape: config.shape ?? PANeomorphControlConfigDefaults.shape,
+    baseColor: config.baseColor ?? PANeomorphControlConfigDefaults.baseColor,
+    color: config.color ?? PANeomorphControlConfigDefaults.color,
+    frameWidth: config.frameWidth ?? PANeomorphControlConfigDefaults.frameWidth,
+    ringWidth: config.ringWidth ?? PANeomorphControlConfigDefaults.ringWidth,
+    buttonBorderWidth: config.buttonBorderWidth ?? PANeomorphControlConfigDefaults.buttonBorderWidth,
+  };
+}
 
 /**
  * Shadow configuration
@@ -170,11 +205,20 @@ export const stylingDefaults = {
  * Interface für die berechneten Styles eines neomorphen Controls.
  * Enthält die Styles für Frame, Ring, Button und die verwendete Palette.
  */
-export interface PANeomorphControlStyle {
+export interface PANeomorphControlCSS {
   frame: React.CSSProperties;  // Styles für den äußeren recessed Container
   ring: React.CSSProperties;   // Styles für den Ring
   button: React.CSSProperties; // Styles für den inneren embossed Bereich
   palette: Palette;            // Die berechnete Farb-Palette
+  inactiveTextColor: string;   // Textfarbe für inaktive Zustände
+  activeTextColor: string;     // Textfarbe für aktive Zustände
+  backgroundColor: string;     // Hintergrundfarbe des recessed Bereiches (dunkler als baseColor)
+  hoverBackgroundColor: string; // Hover-Hintergrundfarbe
+  buttonBackgroundColor: string; // Hintergrundfarbe des Buttons (heller als baseColor)
+  frameShadowLightColor: string; // Helle Schattenfarbe für Frame
+  frameShadowDarkColor: string;  // Dunkle Schattenfarbe für Frame
+  buttonFrameLightColor: string; // Helle Schattenfarbe für Button
+  buttonFrameDarkColor: string;  // Dunkle Schattenfarbe für Button
 }
 
 /**
@@ -182,44 +226,52 @@ export interface PANeomorphControlStyle {
  * Diese Funktion zentralisiert die Logik für Schatten, Farben, Höhen und Texturen,
  * um Konsistenz über alle neomorphen Components zu gewährleisten.
  *
- * @param size - Die Größe des Controls, bestimmt die Gesamthöhe.
- * @param shape - Die Form des Controls: 'rect' oder 'pill'.
- * @param baseColor - Optionale Basis-Farbe; falls nicht angegeben, wird die Website-Hintergrundfarbe verwendet.
- * @param color - Optionale Farbe für den Ring; default ist palette.frameBackground.
- * @param frameWidth - Breite des äußeren Frames (default: 2px).
- * @param ringWidth - Breite des Rings (default: 1px).
- * @param buttonBorderWidth - Breite des inneren Buttons/Rands (default: 2px).
+ * @param config - Configuration object containing all sizing and styling parameters
  * @returns Ein Objekt mit den berechneten Styles für frame, ring, button und palette.
  */
-export function computeNeomorphControlStyle(
-  size: PASize,
-  shape: PANeomorphControlShape,
-  baseColor?: string,
-  color?: string,
-  frameWidth: number = 2,
-  ringWidth: number = 1,
-  buttonBorderWidth: number = 2
-): PANeomorphControlStyle {
+export function computeNeomorphControlCSS(
+  config: PANeomorphControlConfig = {}
+): PANeomorphControlCSS {
+  // Merge config with defaults
+  const {
+    size,
+    shape,
+    baseColor,
+    color,
+    frameWidth,
+    ringWidth,
+    buttonBorderWidth,
+  } = mergeNeomorphControlConfig(config);
   // Palette berechnen (fallback: Website-Hintergrundfarbe, hier angenommen als '#0a0a0a' oder ähnlich)
   const websiteBackgroundColor = '#0a0a0a'; // TODO: Aus Config holen
   const palette = computePalette(baseColor || websiteBackgroundColor);
+
+  // Basis-HSL für zusätzliche Farbberechnungen
+  const baseHsl = parseColorToHsl(baseColor || websiteBackgroundColor)!;
+
+  // Zusätzliche Farben berechnen
+  const inactiveTextColor = hslToString(adjustLightness(parseColorToHsl(palette.textColor)!, -40)); // 40% dunkler
+  const activeTextColor = 'white'; // Standard für aktive Zustände
+  const backgroundColor = hslToString(adjustLightness(baseHsl, -1)); // Nuance dunkler als baseColor
+  const hoverBackgroundColor = hslToString(adjustLightness(parseColorToHsl(palette.frameBackground)!, 16)); // Heller für Hover
+  const buttonBackgroundColor = hslToString(adjustLightness(baseHsl, 1)); // Nuance heller als baseColor
+  const frameShadowLightColor = hslToString(adjustLightness(parseColorToHsl(palette.frameShadowLight)!, 10));
+  const frameShadowDarkColor = palette.frameShadowDark;
+  const buttonFrameLightColor = palette.buttonShadowLight;
+  const buttonFrameDarkColor = palette.buttonShadowDark;
 
   // Höhe und Corner-Radii berechnen
   const height = containerHeightsPixel[size];
   const cornerRadius = shape === PANeomorphControlShape.pill ? height / 2 : height / 4;
 
-  // Schatten-Blur (festgelegt auf 4px für Konsistenz)
-  const shadowBlur = 4;
+  // Schatten-Blur (festgelegt auf 2px für Konsistenz mit SegmentedControl)
+  const shadowBlur = 2;
 
   // Frame-Styles (recessed)
   const frame: React.CSSProperties = {
     height: `${height}px`,
     borderRadius: `${cornerRadius}px`,
     backgroundColor: palette.frameBackground,
-    backgroundImage: PATexture.fineNoise,
-    backgroundSize: '100% 100%',
-    backgroundRepeat: 'no-repeat',
-    backgroundBlendMode: 'overlay',
     boxShadow: `
       inset ${frameWidth}px ${frameWidth}px ${shadowBlur}px ${palette.frameShadowDark},
       inset -${frameWidth}px -${frameWidth}px ${shadowBlur}px ${palette.frameShadowLight}
@@ -228,7 +280,7 @@ export function computeNeomorphControlStyle(
 
   // Ring-Styles
   const ring: React.CSSProperties = {
-    backgroundColor: color || palette.frameBackground,
+    backgroundColor: (color && color !== PANeomorphControlConfigDefaults.color) ? color : palette.frameBackground,
     borderRadius: `${cornerRadius}px`,
   };
 
@@ -237,20 +289,27 @@ export function computeNeomorphControlStyle(
     height: `${height - 2 * ringWidth}px`, // Höhe minus Ring-Breite oben und unten
     borderRadius: `${cornerRadius - ringWidth}px`,
     backgroundColor: palette.buttonBackground,
-    backgroundImage: PATexture.fineNoise,
-    backgroundSize: '100% 100%',
-    backgroundRepeat: 'no-repeat',
-    backgroundBlendMode: 'overlay',
     boxShadow: `
       -${buttonBorderWidth}px -${buttonBorderWidth}px ${shadowBlur}px ${palette.buttonShadowLight},
       ${buttonBorderWidth}px ${buttonBorderWidth}px ${shadowBlur}px ${palette.buttonShadowDark}
     `,
   };
 
-  return {
+  const result: PANeomorphControlCSS = {
     frame,
     ring,
     button,
     palette,
+    inactiveTextColor,
+    activeTextColor,
+    backgroundColor,
+    hoverBackgroundColor,
+    buttonBackgroundColor,
+    frameShadowLightColor,
+    frameShadowDarkColor,
+    buttonFrameLightColor,
+    buttonFrameDarkColor,
   };
+
+  return result;
 }

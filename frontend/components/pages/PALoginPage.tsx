@@ -7,11 +7,11 @@ import { PALoginFormPartial } from '../partials/login/PALoginFormPartial';
 
 // Hooks
 import { useLanguage } from '../../contexts/PALanguageContext';
-import { usePASize } from '../../hooks/useControlSize';
+import { useResponsiveControlSize } from '../../hooks/useResponsiveControlSize';
 import { useLoginLogic } from '../../hooks/useLogin';
 
 export function Login() {
-  const controlSize = usePASize('lg');
+  const controlSize = useResponsiveControlSize('lg');
   const { translation } = useLanguage();
 
   const {
