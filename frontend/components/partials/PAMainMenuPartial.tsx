@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BiHdd, BiFile, BiInfoCircle, BiCog } from 'react-icons/bi';
 import { IoDocumentOutline } from 'react-icons/io5';
 import { Nav } from 'rsuite';
@@ -13,7 +13,6 @@ interface MainMenuProps {
 
 export function MainMenuPartial({ currentTab, onTabChange }: MainMenuProps) {
     const { translation } = useLanguage();
-    const [hoveredTab, setHoveredTab] = useState<string | null>(null);
 
     const tabs = [
         { value: 'configs', label: translation.tabs.savedConfigs, icon: <IoDocumentOutline size={18} /> },

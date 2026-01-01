@@ -45,7 +45,6 @@ export function PAConfigList({ onEdit }: ConfigListProps) {
     handleDragOver,
     handleDragEnd,
     handleDragLeave,
-    draggedIndex,
     dragOverIndex,
   } = useConfigListLogic(onEdit);
 
@@ -102,7 +101,6 @@ export function PAConfigList({ onEdit }: ConfigListProps) {
             onDragOver={handleDragOver}
             onDragEnd={handleDragEnd}
             onDragLeave={handleDragLeave}
-            isDragged={draggedIndex === index}
             isDragOver={dragOverIndex === index}
           />
         ))}

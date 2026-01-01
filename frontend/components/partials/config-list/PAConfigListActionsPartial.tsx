@@ -57,7 +57,7 @@ export function ConfigListActionsPartial({
         size={buttonSize}
         title={translation.configList.delete}
         onClick={() => deleteConfig(config.id)}
-        color="#e53935"
+        color="red"
         className="flex items-center justify-center"
       />
     </div>

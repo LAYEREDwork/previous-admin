@@ -4,9 +4,7 @@ import type { Translations } from '../../../lib/translations';
 
 interface ConfigItemControlsProps {
   isActive?: boolean;
-  hasMultipleConfigs: boolean;
   onSetActive: () => void;
-  onDragStart: () => void;
   translation: Translations;
 }
 
@@ -16,9 +14,7 @@ interface ConfigItemControlsProps {
  */
 export function ConfigItemControls({
   isActive,
-  hasMultipleConfigs,
   onSetActive,
-  onDragStart,
   translation,
 }: ConfigItemControlsProps) {
   return (

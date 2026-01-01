@@ -3,9 +3,6 @@ import { ConfigItemContent } from './PAConfigItemContentPartial';
 import { ConfigItemActions } from './PAConfigItemActionsPartial';
 import { Configuration } from '../../../lib/database';
 import type { Translations } from '../../../lib/translations';
-import {
-  getFrameShadow,
-} from '../../../lib/utils/styling';
 
 interface ConfigListItemPartialProps {
   config: Configuration;
@@ -23,7 +20,6 @@ interface ConfigListItemPartialProps {
   onDragOver: (e: React.DragEvent, index: number) => void;
   onDragEnd: () => void;
   onDragLeave: () => void;
-  isDragged: boolean;
   isDragOver: boolean;
 }
 
@@ -43,10 +39,8 @@ export function ConfigListItemPartial({
   onDragOver,
   onDragEnd,
   onDragLeave,
-  isDragged,
   isDragOver,
 }: ConfigListItemPartialProps) {
-  const frameShadow = getFrameShadow();
 
   return (
     <div
@@ -66,9 +60,7 @@ export function ConfigListItemPartial({
       {/* Linke Spalte: Active Button oben, Drag Button unten */}
       <ConfigItemControls
         isActive={isActive}
-        hasMultipleConfigs={hasMultipleConfigs}
         onSetActive={() => setActiveConfig(config.id)}
-        onDragStart={() => hasMultipleConfigs && onDragStart(index)}
         translation={translation}
       />
 
