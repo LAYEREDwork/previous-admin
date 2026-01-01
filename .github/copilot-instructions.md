@@ -4,7 +4,7 @@
 - Never use a single character for variable names, parameters, or any identifiers; always use descriptive names.
 - Always add comments in code to explain non-trivial parts.
 - Always format code with proper indentation and spacing for better readability.
-- Always add documentation comments for all functions and classes.
+- Always add JSDoc documentation comments for all functions and classes.
 - Never change code on your own without my explicit request.
 - Always communicate in German when discussing internal logic or UI strings.
 

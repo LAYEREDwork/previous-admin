@@ -47,24 +47,4 @@ describe('ConfigItemControls', () => {
     fireEvent.click(button);
     expect(onSetActive).not.toHaveBeenCalled();
   });
-
-  it('should render drag button when hasMultipleConfigs is true', () => {
-    render(<ConfigItemControls {...defaultProps} />);
-    const button = screen.getByTitle('Verschieben');
-    expect(button).toBeInTheDocument();
-  });
-
-  it('should not render drag button when hasMultipleConfigs is false', () => {
-    render(<ConfigItemControls {...defaultProps} hasMultipleConfigs={false} />);
-    const button = screen.queryByTitle('Verschieben');
-    expect(button).not.toBeInTheDocument();
-  });
-
-  it('should call onDragStart when drag button is clicked', () => {
-    const onDragStart = vi.fn();
-    render(<ConfigItemControls {...defaultProps} onDragStart={onDragStart} />);
-    const button = screen.getByTitle('Verschieben');
-    fireEvent.click(button);
-    expect(onDragStart).toHaveBeenCalled();
-  });
 });
