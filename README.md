@@ -11,7 +11,7 @@
 
 # Previous Admin [WIP]
 
-![Previous Admin Banner](.github/assets/banner.png)
+![Previous Admin Banner](.github/assets/configs-combined.png)
 
 You can watch more screenshots [here](docs/SCREENSHOTS.md).
 
