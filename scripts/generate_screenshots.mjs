@@ -214,28 +214,30 @@ async function createCombinedScreenshot(leftPath, rightPath, outputPath) {
     const metadata = await sharp(leftPath).metadata();
     const { width, height } = metadata;
     const separatorWidth = 3;
-    const accentColor = '#009a9a'; // Project accent color
+    const accentColor = '#eb1919ff'; // Project accent color
     
-    const centerX = Math.floor(width / 2);
+    // Diagonal line from top-left-ish to bottom-right-ish
+    const topX = Math.floor(width * 0.45);
+    const bottomX = Math.floor(width * 0.55);
     
     // Create mask for the left side (Light Mode)
     const leftMaskSvg = `
       <svg width="${width}" height="${height}">
-        <rect x="0" y="0" width="${centerX}" height="${height}" fill="white" />
+        <polygon points="0,0 ${topX},0 ${bottomX},${height} 0,${height}" fill="white" />
       </svg>
     `;
     
     // Create mask for the right side (Dark Mode)
     const rightMaskSvg = `
       <svg width="${width}" height="${height}">
-        <rect x="${centerX}" y="0" width="${width - centerX}" height="${height}" fill="white" />
+        <polygon points="${topX},0 ${width},0 ${width},${height} ${bottomX},${height}" fill="white" />
       </svg>
     `;
     
     // Create the separator line
     const separatorSvg = `
       <svg width="${width}" height="${height}">
-        <rect x="${centerX - separatorWidth / 2}" y="0" width="${separatorWidth}" height="${height}" fill="${accentColor}" />
+        <line x1="${topX}" y1="0" x2="${bottomX}" y2="${height}" stroke="${accentColor}" stroke-width="${separatorWidth}" />
       </svg>
     `;
     
