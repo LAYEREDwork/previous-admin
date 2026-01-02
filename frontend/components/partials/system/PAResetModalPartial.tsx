@@ -21,7 +21,7 @@ export function ResetModalPartial({
     translation
 }: ResetModalPartialProps) {
     return (
-        <PAModal open={open} onClose={onClose} size="sm" controlSize={controlSize as any}>
+        <PAModal open={open} onClose={onClose} size={PASize.sm} controlSize={controlSize as any}>
             <PAModal.Header>
                 <PAModal.Title>{translation.system.resetTitle}</PAModal.Title>
             </PAModal.Header>
@@ -30,7 +30,7 @@ export function ResetModalPartial({
                     <p className="text-sm text-[var(--rs-text-secondary)]">
                         {translation.system.resetDescription}
                     </p>
-                    <div className="bg-[var(--rs-bg-error)] border border-[var(--rs-border-error)] rounded p-3">
+                    <div className="border border-[var(--rs-border-error)] rounded p-3" style={{ backgroundColor: 'color-mix(in srgb, var(--rs-border-error), transparent 92%)' }}>
                         <p className="text-sm text-[var(--rs-text-error)] font-medium">
                             ⚠️ {translation.system.resetWarning}
                         </p>

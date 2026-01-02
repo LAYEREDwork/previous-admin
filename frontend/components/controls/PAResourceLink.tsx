@@ -16,7 +16,7 @@ export function PAResourceLink({ href, label, domain }: PAResourceLinkProps) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center justify-between p-3 rounded-lg transition-colors group bg-[var(--rs-bg-card)] hover:bg-[var(--rs-bg-active)] border border-[var(--rs-border-primary)]"
+      className="flex items-center justify-between p-3 rounded-lg transition-colors group bg-[var(--rs-bg-card)] hover:bg-[var(--rs-bg-overlay)] border border-[var(--rs-border-primary)]"
       style={{ textDecoration: 'none' }}
     >
       <span className="flex items-center gap-3 text-[var(--rs-text-primary)]">

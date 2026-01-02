@@ -16,8 +16,9 @@ interface DiskIOChartProps {
 export function DiskIOChart({ metrics, translation }: DiskIOChartProps) {
   return (
     <PACard
+      bgColorScheme="surface"
       header={
-        <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] flex items-center gap-2 m-0 leading-none">
           <BiHdd size={20} className="text-[var(--rs-primary-500)]" />
           Disk I/O
         </h3>

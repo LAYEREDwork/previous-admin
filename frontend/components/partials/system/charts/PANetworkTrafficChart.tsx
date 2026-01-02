@@ -16,8 +16,9 @@ interface NetworkTrafficChartProps {
 export function NetworkTrafficChart({ metrics, translation }: NetworkTrafficChartProps) {
   return (
     <PACard
+      bgColorScheme="surface"
       header={
-        <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] flex items-center gap-2 m-0 leading-none">
           <BiGlobe size={20} className="text-[var(--rs-text-info)]" />
           {translation.system.networkTraffic}
         </h3>

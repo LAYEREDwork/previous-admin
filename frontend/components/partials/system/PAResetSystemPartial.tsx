@@ -20,7 +20,7 @@ export function ResetSystemPartial({
         <div className="mt-8">
             <PACard
                 header={
-                    <h3 className="text-lg font-semibold text-[var(--rs-text-error)]">
+                    <h3 className="text-lg font-semibold text-[var(--rs-text-error)] m-0 leading-none">
                         {translation.system.resetTitle}
                     </h3>
                 }

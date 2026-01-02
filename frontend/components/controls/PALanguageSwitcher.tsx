@@ -6,6 +6,7 @@ import { useLanguage } from '../../contexts/PALanguageContext';
 
 // Types/Utilities
 import { Language } from '../../lib/translations';
+import { PASize } from '../../lib/types/sizes';
 
 const languageNames: Record<Language, string> = {
   en: 'English',
@@ -42,7 +43,7 @@ export function PALanguageSwitcher() {
           {...props}
           ref={ref}
           appearance="default"
-          size="sm"
+          size={PASize.sm}
         >
           <div className="flex items-center gap-2">
             <span className="text-lg">{languageFlags[language]}</span>

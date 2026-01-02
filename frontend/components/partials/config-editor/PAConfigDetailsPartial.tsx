@@ -26,12 +26,12 @@ export function ConfigDetailsPartial({
     controlSize,
     translation
 }: ConfigDetailsPartialProps) {
-    const rsuiteSize = controlSize === 'xs' ? 'sm' : controlSize;
+    const rsuiteSize = controlSize === PASize.xs ? PASize.sm : controlSize;
 
     return (
         <PACard
             header={
-                <h3 className="text-lg font-semibold text-[var(--rs-text-primary)]">
+                <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] leading-none m-0">
                     {translation.configEditor.configurationDetailsTitle}
                 </h3>
             }

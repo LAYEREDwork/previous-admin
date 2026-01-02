@@ -37,10 +37,10 @@ export function DatabaseImportExportPartial({
                 <PACard
                     header={
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-[var(--rs-bg-info)] rounded-lg flex items-center justify-center">
+                            <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'color-mix(in srgb, var(--rs-border-info), transparent 85%)' }}>
                                 <BiData size={20} className="text-[var(--rs-text-info)]" />
                             </div>
-                            <h3 className="text-lg font-semibold text-[var(--rs-text-primary)]">
+                            <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] m-0 leading-none">
                                 {translation.importExport.importDatabase}
                             </h3>
                         </div>
@@ -74,11 +74,11 @@ export function DatabaseImportExportPartial({
                         </PAButton>
                     </label>
 
-                    <div className="mt-4 p-3 bg-[var(--rs-bg-error)] rounded-lg">
+                    <PACard bgColorScheme="danger" className="mt-4">
                         <p className="text-xs text-[var(--rs-text-error)] font-semibold">
                             {translation.importExport.warningReplaceAll}
                         </p>
-                    </div>
+                    </PACard>
                     </div>
                 </PACard>
 
@@ -86,10 +86,10 @@ export function DatabaseImportExportPartial({
                 <PACard
                     header={
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-[var(--rs-bg-info)] rounded-lg flex items-center justify-center">
+                            <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'color-mix(in srgb, var(--rs-border-info), transparent 85%)' }}>
                                 <BiData size={20} className="text-[var(--rs-text-info)]" />
                             </div>
-                            <h3 className="text-lg font-semibold text-[var(--rs-text-primary)]">
+                            <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] m-0 leading-none">
                                 {translation.importExport.exportDatabase}
                             </h3>
                         </div>
@@ -111,11 +111,11 @@ export function DatabaseImportExportPartial({
                         {databaseExporting ? translation.importExport.exportingDatabase : translation.importExport.exportCompleteDatabase}
                     </PAButton>
 
-                    <div className="mt-4 p-3 bg-[var(--rs-bg-info)] rounded-lg">
+                    <PACard bgColorScheme="info" className="mt-4">
                         <p className="text-xs text-[var(--rs-text-info)]">
                             {translation.importExport.exportsAllData}
                         </p>
-                    </div>
+                    </PACard>
                     </div>
                 </PACard>
             </div>

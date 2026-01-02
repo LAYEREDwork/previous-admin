@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { useConfig } from '../contexts/PAConfigContext';
 import { useLanguage } from '../contexts/PALanguageContext';
 import { useNotification } from '../contexts/PANotificationContext';
-import { useConfigSections } from './useConfigSections';
 import { useConfigMetadataEditor } from './useConfigMetadataEditor';
 
 // Types
@@ -39,11 +38,46 @@ export function useConfigEditor(configId?: string | null) {
   const [viewMode, setViewMode] = useState<'editor' | 'raw'>('editor');
   const [hasSavedConfigs, setHasSavedConfigs] = useState<boolean | null>(null);
 
-  const {
-    expandedSections,
-    setExpandedSections,
-    toggleAllSections
-  } = useConfigSections();
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>(() => {
+    const saved = localStorage.getItem('configEditorSectionsExpanded');
+    const defaultSections = {
+      system: true,
+      display: false,
+      scsi: false,
+      network: false,
+      sound: false,
+      boot: false,
+      input: false,
+    };
+    
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        // Merge saved state with defaults to ensure all sections are defined
+        return { ...defaultSections, ...parsed };
+      } catch (e) {
+        console.error('Error parsing expanded sections from localStorage', e);
+      }
+    }
+    return defaultSections;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('configEditorSectionsExpanded', JSON.stringify(expandedSections));
+  }, [expandedSections]);
+
+  const toggleAllSections = useCallback(() => {
+    setExpandedSections(prev => {
+      const allExpanded = Object.values(prev).every(expanded => expanded);
+      const newState = !allExpanded;
+      // Create new state object with all current sections set to the new state
+      const newExpandedSections: Record<string, boolean> = {};
+      Object.keys(prev).forEach(key => {
+        newExpandedSections[key] = newState;
+      });
+      return newExpandedSections;
+    });
+  }, []);
 
   const {
     localName,

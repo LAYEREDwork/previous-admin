@@ -35,7 +35,7 @@ export function VersionInfoPartial({
   return (
     <PACard
       header={
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 m-0 leading-none">
           <BiInfoCircle size={20} />
           {translation.about.appVersion}
         </div>
@@ -75,7 +75,7 @@ export function VersionInfoPartial({
                     </div>
 
                     {versionInfo.releaseNotes && (
-                      <div className="bg-[var(--rs-bg-warning)] rounded-[24px] px-3 sm:px-5 py-2 min-h-[48px] border border-[var(--rs-border-warning)]">
+                      <div className="rounded-[24px] px-3 sm:px-5 py-2 min-h-[48px] border border-[var(--rs-border-warning)]" style={{ backgroundColor: 'color-mix(in srgb, var(--rs-border-warning), transparent 92%)' }}>
                         <div
                           className={`flex justify-between items-center cursor-pointer ${newExpanded ? 'mb-2' : ''}`}
                           onClick={() => setNewExpanded(!newExpanded)}

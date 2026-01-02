@@ -14,6 +14,7 @@ import { RawViewPartial } from '../partials/config-editor/PARawViewPartial';
 // Hooks
 import { useResponsiveControlSize } from '../../hooks/useResponsiveControlSize';
 import { useConfigEditor } from '../../hooks/useConfigEditor';
+import { PASize } from '../../lib/types/sizes';
 
 export function PAConfigEditor({ configId, onTabChange }: { configId?: string | null; onTabChange?: (tab: string) => void }) {
   const {
@@ -43,7 +44,7 @@ export function PAConfigEditor({ configId, onTabChange }: { configId?: string | 
     translation,
   } = useConfigEditor(configId);
 
-  const controlSize = useResponsiveControlSize('md');
+  const controlSize = useResponsiveControlSize(PASize.md);
 
   // 1. Loading state must come first
   if (loading) {

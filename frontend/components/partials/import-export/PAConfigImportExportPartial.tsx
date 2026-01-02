@@ -32,10 +32,10 @@ export function ConfigImportExportPartial({
             <PACard
                 header={
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-[var(--rs-bg-info)] rounded-lg flex items-center justify-center">
-                            <BiDownload size={20} className="text-[var(--rs-primary-500)]" />
+                        <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'color-mix(in srgb, var(--rs-border-info), transparent 85%)' }}>
+                            <BiDownload size={20} className="text-[var(--rs-text-info)]" />
                         </div>
-                        <h3 className="text-lg font-semibold text-[var(--rs-text-primary)]">
+                        <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] m-0 leading-none">
                             {translation.importExport.import}
                         </h3>
                     </div>
@@ -70,11 +70,11 @@ export function ConfigImportExportPartial({
                     </PAButton>
                 </label>
 
-                <div className="mt-4 p-3 bg-[var(--rs-bg-info)] rounded-lg">
+                <PACard bgColorScheme="info" className="mt-4">
                     <p className="text-xs text-[var(--rs-text-info)]">
                         {translation.importExport.importDescription}
                     </p>
-                </div>
+                </PACard>
                 </div>
             </PACard>
 
@@ -82,10 +82,10 @@ export function ConfigImportExportPartial({
             <PACard
                 header={
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-[var(--rs-bg-success)] rounded-lg flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'color-mix(in srgb, var(--rs-border-success), transparent 85%)' }}>
                             <BiUpload size={20} className="text-[var(--rs-text-success)]" />
                         </div>
-                        <h3 className="text-lg font-semibold text-[var(--rs-text-primary)]">
+                        <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] m-0 leading-none">
                             {translation.importExport.export}
                         </h3>
                     </div>
@@ -119,11 +119,11 @@ export function ConfigImportExportPartial({
                         {exporting ? translation.importExport.exporting : translation.importExport.exportAllConfigs}
                     </PAButton>
 
-                    <div className="mt-4 p-3 bg-[var(--rs-bg-success)] rounded-lg">
-                        <p className="text-xs text-[var(--rs-text-success)]">
+                    <PACard bgColorScheme="info" className="mt-4">
+                        <p className="text-xs text-[var(--rs-text-info)]">
                             {translation.importExport.exportDescription}
                         </p>
-                    </div>
+                    </PACard>
                 </div>
             </PACard>
         </div>

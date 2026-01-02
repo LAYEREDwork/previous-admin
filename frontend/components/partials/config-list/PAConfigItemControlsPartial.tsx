@@ -1,6 +1,7 @@
 import { IconButton } from 'rsuite';
 import { BiCheckCircle, BiCircle } from 'react-icons/bi';
 import type { Translations } from '../../../lib/translations';
+import { PASize } from '../../../lib/types/sizes';
 
 interface ConfigItemControlsProps {
   isActive?: boolean;
@@ -31,7 +32,7 @@ export function ConfigItemControls({
         style={{ backgroundColor: 'transparent' }}
         title={isActive ? translation.configList.active : translation.configList.activate}
         disabled={isActive}
-        size="lg"
+        size={PASize.lg}
       />
     </div>
   );

@@ -21,7 +21,7 @@ export function EditorViewPartial({
     controlSize,
     translation
 }: EditorViewPartialProps) {
-    const rsuiteSize = controlSize === 'xs' ? 'sm' : controlSize === 'xl' ? 'lg' : controlSize;
+    const rsuiteSize = controlSize === PASize.xs ? PASize.sm : controlSize === PASize.xl ? PASize.lg : controlSize;
 
     return (
         <div className="grid gap-4">

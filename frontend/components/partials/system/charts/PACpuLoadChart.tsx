@@ -16,9 +16,10 @@ interface CpuLoadChartProps {
 export function CpuLoadChart({ metrics, translation }: CpuLoadChartProps) {
   return (
     <PACard
+      bgColorScheme="surface"
       header={
         <div className="flex items-center justify-between w-full">
-          <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] flex items-center gap-2">
+          <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] flex items-center gap-2 m-0 leading-none">
             <BiChip size={20} className="text-[var(--rs-primary-500)]" />
             {translation.system.cpuLoadAverage}
           </h3>

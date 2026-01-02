@@ -34,7 +34,7 @@ export function NewConfigModalPartial({
         <PAModal
             open={open}
             onClose={onClose}
-            size="sm"
+            size={PASize.sm}
             controlSize={controlSize as any}
             style={{ minHeight: '400px' }}
         >

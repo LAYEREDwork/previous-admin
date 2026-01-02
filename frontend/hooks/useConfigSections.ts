@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 /**
  * Hook to manage the expanded/collapsed state of configuration sections.
@@ -7,14 +7,7 @@ import { useState, useEffect } from 'react';
 export function useConfigSections() {
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>(() => {
     const saved = localStorage.getItem('configEditorSectionsExpanded');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        console.error('Error parsing expanded sections from localStorage', e);
-      }
-    }
-    return {
+    const defaultSections = {
       system: true,
       display: false,
       scsi: false,
@@ -23,6 +16,17 @@ export function useConfigSections() {
       boot: false,
       input: false,
     };
+    
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        // Merge saved state with defaults to ensure all sections are defined
+        return { ...defaultSections, ...parsed };
+      } catch (e) {
+        console.error('Error parsing expanded sections from localStorage', e);
+      }
+    }
+    return defaultSections;
   });
 
   useEffect(() => {
@@ -30,16 +34,20 @@ export function useConfigSections() {
   }, [expandedSections]);
 
   function toggleAllSections() {
-    const allExpanded = Object.values(expandedSections).every(expanded => expanded);
-    const newState = !allExpanded;
-    setExpandedSections({
-      system: newState,
-      display: newState,
-      scsi: newState,
-      network: newState,
-      sound: newState,
-      boot: newState,
-      input: newState,
+    console.log('toggleAllSections called');
+    setExpandedSections(prev => {
+      console.log('prev expandedSections:', prev);
+      const allExpanded = Object.values(prev).every(expanded => expanded);
+      console.log('allExpanded:', allExpanded);
+      const newState = !allExpanded;
+      console.log('newState:', newState);
+      // Create new state object with all current sections set to the new state
+      const newExpandedSections: Record<string, boolean> = {};
+      Object.keys(prev).forEach(key => {
+        newExpandedSections[key] = newState;
+      });
+      console.log('newExpandedSections:', newExpandedSections);
+      return newExpandedSections;
     });
   }
 

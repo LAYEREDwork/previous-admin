@@ -33,7 +33,7 @@ export function PASegmentedControl<T extends string>({
   className = '',
 }: PASegmentedControlProps<T>) {
   // Map PASize to RSuite size
-  const rsuiteSize = size === PASize.xs ? 'xs' : size === PASize.sm ? 'sm' : size === PASize.lg ? 'lg' : 'md';
+  const rsuiteSize = size === PASize.xl ? PASize.lg : size;
 
   // Precise height mapping
   const iconSizes = {

@@ -13,7 +13,7 @@ export function HostInfoPartial({ systemInfo, translation }: HostInfoPartialProp
     return (
         <PACard
             header={
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 m-0 leading-none">
                     <BiHdd size={20} className="text-[var(--rs-text-secondary)]" />
                     {translation.system.hostInfo}
                 </div>

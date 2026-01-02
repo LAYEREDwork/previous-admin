@@ -21,7 +21,7 @@ export interface PAButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButto
 export const PAButton = forwardRef<HTMLButtonElement, PAButtonProps>(
     ({ size = PASize.md, appearance = 'default', color, loading = false, block = false, as, icon, children, fullWidth = false, disabled = false, className = '', ...rest }, ref) => {
         // Map PASize to RSuite size
-        const rsuiteSize = size === PASize.xs ? 'xs' : size === PASize.sm ? 'sm' : size === PASize.lg ? 'lg' : 'md';
+        const rsuiteSize = size === PASize.xl ? PASize.lg : size;
 
         // Map appearance to RSuite appearance
         const rsuiteAppearance = appearance === 'primary' ? 'primary' : appearance === 'ghost' ? 'ghost' : appearance === 'link' ? 'link' : 'default';

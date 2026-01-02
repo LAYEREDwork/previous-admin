@@ -14,7 +14,7 @@ export function DiskSpacePartial({ disks, translation }: DiskSpacePartialProps) 
     return (
         <PACard
             header={
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 m-0 leading-none">
                     <BiHdd size={20} className="text-[var(--rs-primary-500)]" />
                     {translation.system.disks}
                 </div>

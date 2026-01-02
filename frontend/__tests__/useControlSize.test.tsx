@@ -1,6 +1,7 @@
 import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { useResponsiveControlSize } from '../hooks/useResponsiveControlSize';
+import { PASize } from '../lib/types/sizes';
 
 describe('useControlSize', () => {
   const originalInnerWidth = window.innerWidth;
@@ -24,8 +25,8 @@ describe('useControlSize', () => {
   });
 
   it('should return default size when window width is above 640px', () => {
-    const { result } = renderHook(() => useResponsiveControlSize('lg'));
-    expect(result.current).toBe('lg');
+    const { result } = renderHook(() => useResponsiveControlSize(PASize.lg));
+    expect(result.current).toBe(PASize.lg);
   });
 
   it('should return "sm" when window width is below 640px', () => {
@@ -35,20 +36,20 @@ describe('useControlSize', () => {
       value: 500,
     });
 
-    const { result } = renderHook(() => useResponsiveControlSize('lg'));
-    expect(result.current).toBe('sm');
+    const { result } = renderHook(() => useResponsiveControlSize(PASize.lg));
+    expect(result.current).toBe(PASize.sm);
   });
 
   it('should default to "md" when no defaultSize is provided', () => {
     const { result } = renderHook(() => useResponsiveControlSize());
-    expect(result.current).toBe('md');
+    expect(result.current).toBe(PASize.md);
   });
 
   it('should update size on window resize', () => {
-    const { result } = renderHook(() => useResponsiveControlSize('lg'));
+    const { result } = renderHook(() => useResponsiveControlSize(PASize.lg));
 
     // Initially lg
-    expect(result.current).toBe('lg');
+    expect(result.current).toBe(PASize.lg);
 
     // Simulate resize to small screen
     Object.defineProperty(window, 'innerWidth', {
@@ -61,6 +62,6 @@ describe('useControlSize', () => {
       window.dispatchEvent(new Event('resize'));
     });
 
-    expect(result.current).toBe('sm');
+    expect(result.current).toBe(PASize.sm);
   });
 });

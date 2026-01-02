@@ -13,7 +13,7 @@ export interface PAInputProps extends Omit<React.InputHTMLAttributes<HTMLInputEl
 export const PAInput = forwardRef<HTMLInputElement, PAInputProps>(
     ({ size = PASize.md, className = '', onChange, ...rest }, ref) => {
         // Map PASize to RSuite size
-        const rsuiteSize = size === PASize.xs ? 'xs' : size === PASize.sm ? 'sm' : size === PASize.lg ? 'lg' : 'md';
+        const rsuiteSize = size === PASize.xl ? PASize.lg : size;
 
         // Handle onChange compatibility
         const handleChange = (_value: string, event: React.ChangeEvent<HTMLInputElement>) => {

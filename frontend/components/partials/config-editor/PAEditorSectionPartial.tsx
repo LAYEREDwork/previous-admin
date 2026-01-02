@@ -10,9 +10,9 @@ interface EditorSectionPartialProps {
 export function EditorSectionPartial({ title, children, expanded, onToggle }: EditorSectionPartialProps) {
     return (
         <PACard
-            header={<div className="text-base sm:text-lg font-semibold text-[var(--rs-text-primary)] p-0.5">{title}</div>}
+            header={<span className="text-base sm:text-lg font-semibold text-[var(--rs-text-primary)] leading-none">{title}</span>}
             collapsible
-            defaultExpanded={expanded}
+            expanded={expanded}
             onToggle={onToggle}
             className="transition-colors duration-200"
         >

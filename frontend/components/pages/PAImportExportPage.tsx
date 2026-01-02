@@ -10,6 +10,7 @@ import { ImportExportNotesPartial } from '../partials/import-export/PAImportExpo
 import { useLanguage } from '../../contexts/PALanguageContext';
 import { useResponsiveControlSize } from '../../hooks/useResponsiveControlSize';
 import { useImportExport } from '../../hooks/useImportExport';
+import { PASize } from '../../lib/types/sizes';
 
 /**
  * Import/Export page component
@@ -29,7 +30,7 @@ export function PAImportExport() {
     importDatabaseDump,
   } = useImportExport();
 
-  const controlSize = useResponsiveControlSize('lg');
+  const controlSize = useResponsiveControlSize(PASize.lg);
 
   return (
     <div className="space-y-6">

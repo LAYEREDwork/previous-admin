@@ -3,6 +3,7 @@ import { PAButton } from '../../controls/PAButton';
 import { Translations } from '../../../lib/translations';
 import { PreviousConfig } from '../../../lib/types';
 import { PACard } from '../../controls/PACard';
+import { PASize } from '../../../lib/types/sizes';
 
 interface RawViewPartialProps {
     configData: PreviousConfig;
@@ -21,13 +22,13 @@ export function RawViewPartial({
         <PACard
             header={
                 <div className="flex justify-between items-center w-full">
-                    <h3 className="text-sm font-medium text-[var(--rs-text-secondary)]">
+                    <h3 className="text-sm font-medium text-[var(--rs-text-secondary)] m-0 leading-none">
                         {translation.configEditor.content}
                     </h3>
                     <PAButton
                         onClick={copyToClipboard}
                         appearance="ghost"
-                        size="sm"
+                        size={PASize.sm}
                         className="flex items-center gap-2"
                     >
                         <BiCopy size={16} />

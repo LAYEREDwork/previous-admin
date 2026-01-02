@@ -9,7 +9,7 @@ export function ImportExportNotesPartial({ translation }: ImportExportNotesParti
     return (
         <PACard
             header={
-                <h4 className="text-sm font-semibold text-[var(--rs-text-warning)]">
+                <h4 className="text-sm font-semibold text-[var(--rs-text-warning)] m-0 leading-none">
                     {translation.importExport.notesTitle}
                 </h4>
             }
