@@ -5,12 +5,7 @@ Previous Admin is a web-based management tool specifically designed for configur
 
 ## Backend Functions
 
-The backend forms the server-side foundation of the tool and provides the core logic for data management, security, and communication. It handles all requests from the frontend, manages data persistence, and ensures a secure environment.
-
-### Authentication and Security
-- On first launch, the user is prompted to create an admin account with a secure password.
-- All accesses to the tool are handled through secure session management, keeping the user authenticated after login.
-- The system prevents unauthorized access and ensures that only authorized users can manage configurations.
+The backend forms the server-side foundation of the tool and provides the core logic for data management and communication. It handles all requests from the frontend, manages data persistence, and ensures a stable environment.
 
 ### Configuration Management
 - Enables creating, reading, updating, and deleting emulator configurations.
@@ -36,10 +31,6 @@ The backend forms the server-side foundation of the tool and provides the core l
 ## Frontend Functions
 
 The frontend represents the user interface through which all interactions with the tool take place. It is designed responsively, supports various languages, and offers a modern, user-friendly experience.
-
-### Login and Access
-- A dedicated login page where users enter their credentials to gain access.
-- After successful login, the user is directed to the main overview.
 
 ### Configuration Overview
 - Displays a list of all stored configurations, with options for sorting and filtering.

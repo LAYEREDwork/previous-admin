@@ -230,7 +230,7 @@ export const es: Translations = {
     releaseNotes: 'Notas de la Versión',
     hardwareInfo: 'Información de Hardware',
     resetTitle: 'Restablecer Sistema',
-    resetDescription: 'Elimina todos los datos, incluido el usuario administrador, y vuelve a la configuración inicial. El usuario administrador debe ser recreado después del restablecimiento.',
+    resetDescription: 'Elimina todos los datos y vuelve a la configuración inicial.',
     resetConfirm: 'Restablecer',
     resetWarning: 'Advertencia: ¡Esto eliminará todas las configuraciones y restablecerá el sistema a la configuración inicial. ¡Esta acción no se puede deshacer!',
     resetting: 'Restableciendo...',

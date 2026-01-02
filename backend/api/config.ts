@@ -5,8 +5,8 @@
  * Uses platform-specific configuration managers for file paths.
  *
  * Endpoints:
- *   - GET /api/config: Retrieve user configuration
- *   - PUT /api/config: Update user configuration
+ *   - GET /api/config: Retrieve emulator configuration
+ *   - PUT /api/config: Update emulator configuration
  *
  * @requires express - HTTP framework
  * @requires config - Unified config manager
@@ -23,7 +23,7 @@ const configManager = getConfigManager();
 /**
  * GET /api/config
  *
- * Retrieve user's configuration file
+ * Retrieve emulator configuration file
  *
  * Fetches config from disk.
  * Returns default config if file doesn't exist and creates it.
@@ -58,7 +58,7 @@ router.get(apiPaths.Config.get.relative, async (req: Request, res: TypedResponse
 /**
  * PUT /api/config
  *
- * Update user's configuration file
+ * Update emulator configuration file
  *
  * Writes updated config to disk and broadcasts changes to all
  * connected WebSocket clients for real-time synchronization.

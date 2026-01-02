@@ -230,7 +230,7 @@ export const it: Translations = {
     currentReleaseNotes: 'Note di Rilascio Correnti',
     releaseNotes: 'Note di Rilascio',
     resetTitle: 'Resetta Sistema',
-    resetDescription: `Elimina tutti i dati, incluso l'utente admin, e torna alla configurazione iniziale. L'utente admin dovrà essere ricreato dopo il reset.`,
+    resetDescription: `Elimina tutti i dati e torna alla configurazione iniziale.`,
     resetConfirm: 'Resetta',
     resetWarning: 'Attenzione: Questo eliminerà tutte le configurazioni e ripristinerà il sistema alla configurazione iniziale. Questa azione non può essere annullata!',
     resetting: 'Reset in corso...',

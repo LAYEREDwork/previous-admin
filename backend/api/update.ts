@@ -27,9 +27,7 @@ const router = express.Router();
  * Performs git pull on the current repository and gracefully restarts
  * the application. The response is sent before restart begins.
  *
- * Requires authentication and a valid git repository.
- *
- * @authentication {boolean} required
+ * Requires a valid git repository.
  *
  * @returns {Object}
  *   - success {boolean}: true if update command succeeded
@@ -112,8 +110,6 @@ router.post(apiPaths.Update.update.relative, async (req: any, res: any) => {
 /**
  * GET /api/update/version
  * Fetch version information from Codeberg API (proxy to avoid CORS)
- *
- * @authentication {boolean} required
  *
  * @returns {Object}
  *   - currentVersion {string}: Current installed version from package.json

@@ -5,12 +5,7 @@ Previous Admin ist ein webbasiertes Verwaltungstool, das speziell für die Konfi
 
 ## Backend-Funktionen
 
-Das Backend bildet die serverseitige Grundlage des Tools und stellt die Kernlogik für Datenverwaltung, Sicherheit und Kommunikation bereit. Es handhabt alle Anfragen vom Frontend, verwaltet die Datenpersistenz und sorgt für eine sichere Umgebung.
-
-### Authentifizierung und Sicherheit
-- Beim ersten Start wird der Benutzer aufgefordert, ein Admin-Konto mit einem sicheren Passwort zu erstellen.
-- Alle Zugriffe auf das Tool erfolgen über eine sichere Sitzungsverwaltung, die den Benutzer nach der Anmeldung authentifiziert hält.
-- Das System verhindert unbefugten Zugriff und stellt sicher, dass nur autorisierte Benutzer Konfigurationen verwalten können.
+Das Backend bildet die serverseitige Grundlage des Tools und stellt die Kernlogik für Datenverwaltung und Kommunikation bereit. Es handhabt alle Anfragen vom Frontend, verwaltet die Datenpersistenz und sorgt für eine stabile Umgebung.
 
 ### Konfigurationsverwaltung
 - Ermöglicht das Erstellen, Lesen, Aktualisieren und Löschen von Emulator-Konfigurationen.
@@ -36,10 +31,6 @@ Das Backend bildet die serverseitige Grundlage des Tools und stellt die Kernlogi
 ## Frontend-Funktionen
 
 Das Frontend stellt die Benutzeroberfläche dar, über die alle Interaktionen mit dem Tool erfolgen. Es ist responsiv gestaltet, unterstützt verschiedene Sprachen und bietet eine moderne, benutzerfreundliche Erfahrung.
-
-### Anmeldung und Zugang
-- Eine dedizierte Anmeldeseite, auf der Benutzer ihre Zugangsdaten eingeben, um Zugriff zu erhalten.
-- Nach erfolgreicher Anmeldung wird der Benutzer zur Hauptübersicht geleitet.
 
 ### Konfigurationsübersicht
 - Zeigt eine Liste aller gespeicherten Konfigurationen an, mit Optionen zur Sortierung und Filterung.

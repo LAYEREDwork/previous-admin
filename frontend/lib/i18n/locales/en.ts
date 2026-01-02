@@ -223,7 +223,7 @@ export const en: Translations = {
     os: 'Operating System',
     reset: 'Reset System',
     resetConfirm: 'Reset',
-    resetDescription: 'Delete all data, including the admin user, and return to initial setup. The admin user must be recreated after reset.',
+    resetDescription: 'Delete all data and return to initial setup.',
     resetTitle: 'Reset System',
     resetWarning: 'Warning: This will delete all configurations and reset the system to initial setup. This action cannot be undone!',
     resetting: 'Resetting...',

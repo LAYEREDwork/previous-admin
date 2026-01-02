@@ -78,8 +78,8 @@ export function importDatabase(
     if (dump.configurations && Array.isArray(dump.configurations)) {
       const insertStatement = database.prepare(`
         INSERT OR REPLACE INTO configurations 
-        (id, name, description, config_data, is_active, created_at, updated_at, created_by, sort_order)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (id, name, description, config_data, is_active, created_at, updated_at, sort_order)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
       `);
 
       for (const config of dump.configurations) {
@@ -92,7 +92,6 @@ export function importDatabase(
             config.isActive ? 1 : 0,
             config.createdAt || new Date().toISOString(),
             config.updatedAt || new Date().toISOString(),
-            config.userId || null,
             0 // sort_order
           );
           statistics.configurations.imported++;

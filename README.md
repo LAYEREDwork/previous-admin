@@ -1,5 +1,5 @@
 [![Mastodon: @phranck](https://img.shields.io/badge/Mastodon-@LAYERED-6364ff.svg?style=flat)](https://oldbytes.space/@LAYERED)
-![CI](https://github.com/LAYEREDwork/previous-admin/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/LAYEREDwork/previous-admin/actions/workflows/Previous-Admin-CI.yml/badge.svg)
 ![Node.js](https://img.shields.io/badge/Node.js-22+-339933.svg?style=flat&logo=node.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-97%25-blue.svg?style=flat)
 ![JavaScript](https://img.shields.io/badge/JavaScript-1%25-yellow.svg?style=flat)
@@ -22,9 +22,6 @@ Previous Admin is a modern web-based configuration management tool designed spec
 The application runs as a self-contained web service on your system (Linux or macOS) and allows you to create, edit, import, export, and organize multiple emulator configurations through a clean, responsive user interface.
 
 ## ✨ Features
-
-### Secure Authentication
-On first launch, you'll be prompted to create an admin account. This admin user is used to securely access and manage all configurations.
 
 ### Configuration Management
 - Create and organize multiple emulator configurations
@@ -109,7 +106,6 @@ For detailed manual installation instructions, platform-specific setup guides, a
 - **Frontend**: React 18 + TypeScript, Vite, Tailwind CSS, RSuite UI
 - **Backend**: Node.js + Express (TypeScript), SQLite via better-sqlite3
 - **Database**: SQLite mit automatischer Schema-Initialisierung
-- **Authentication**: Session-basiert mit express-session
 - **Real-time**: WebSocket-Unterstützung für Live-Systemmetriken
 - **Network**: Avahi/Bonjour für automatische Netzwerkerkennung
 - **Build**: Vite für Frontend, TypeScript-Compiler für Backend
@@ -182,7 +178,6 @@ This project follows modern TypeScript best practices with:
 - **Custom Hooks**: Business logic extracted into reusable React hooks
 - **Internationalization**: Complete translation support for 5 languages
 - **Responsive Design**: Mobile-first approach with Tailwind CSS
-- **Security**: Session-based authentication with secure password hashing
 - **Real-time Updates**: WebSocket integration for live system monitoring
 
 ## ⚠️ Disclaimer

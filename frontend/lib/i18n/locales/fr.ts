@@ -230,7 +230,7 @@ export const fr: Translations = {
     currentReleaseNotes: 'Notes de Version Actuelles',
     releaseNotes: 'Notes de Version',
     resetTitle: 'Réinitialiser le Système',
-    resetDescription: "Supprime toutes les données, y compris l'utilisateur administrateur, et revient à la configuration initiale. L'utilisateur administrateur doit être recréé après la réinitialisation.",
+    resetDescription: "Supprime toutes les données et revient à la configuration initiale.",
     resetConfirm: 'Réinitialiser',
     resetWarning: 'Avertissement : Cela supprimera toutes les configurations et réinitialisera le système à la configuration initiale. Cette action est irréversible !',
     resetting: 'Réinitialisation...',

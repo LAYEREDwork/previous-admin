@@ -2,14 +2,15 @@ import chokidar from 'chokidar';
 import { readConfig } from './config-manager';
 
 export class ConfigFileWatcher {
+  private watcher: any = null;
+  private callback: any = null;
+
   constructor() {
-    this.watchers = new Map();
-    this.callbacks = new Map();
   }
 
-  watch(username, configPath, callback) {
-    if (this.watchers.has(username)) {
-      this.unwatch(username);
+  watch(configPath, callback) {
+    if (this.watcher) {
+      this.unwatch();
     }
 
     const watcher = chokidar.watch(configPath, {
@@ -45,22 +46,19 @@ export class ConfigFileWatcher {
       console.error('File watcher error:', error);
     });
 
-    this.watchers.set(username, watcher);
-    this.callbacks.set(username, callback);
+    this.watcher = watcher;
+    this.callback = callback;
   }
 
-  unwatch(username) {
-    const watcher = this.watchers.get(username);
-    if (watcher) {
-      watcher.close();
-      this.watchers.delete(username);
-      this.callbacks.delete(username);
+  unwatch() {
+    if (this.watcher) {
+      this.watcher.close();
+      this.watcher = null;
+      this.callback = null;
     }
   }
 
   unwatchAll() {
-    for (const [username] of this.watchers) {
-      this.unwatch(username);
-    }
+    this.unwatch();
   }
 }

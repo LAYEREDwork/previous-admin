@@ -218,7 +218,7 @@ export const de: Translations = {
     os: 'Betriebssystem',
     reset: 'System Zurücksetzen',
     resetConfirm: 'Zurücksetzen',
-    resetDescription: 'Löscht alle Daten, einschließlich des Admin-Benutzers, und setzt das System auf die Standardkonfiguration zurück. Der Admin-Benutzer muss nach dem Reset neu angelegt werden.',
+    resetDescription: 'Löscht alle Daten und setzt das System auf die Standardkonfiguration zurück.',
     resetTitle: 'System Zurücksetzen',
     resetWarning: 'Warnung: Dies löscht alle Konfigurationen und setzt das System auf die Standardkonfiguration zurück. Diese Aktion kann nicht rückgängig gemacht werden!',
     resetting: 'Wird zurückgesetzt...',

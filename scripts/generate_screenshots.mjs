@@ -30,7 +30,7 @@ const __dirname = dirname(__filename);
 // Configuration
 const CONFIG = {
   baseUrl: 'http://localhost:2342',
-  screenshotDir: join(__dirname, '../screenshots'),
+  screenshotDir: join(__dirname, '../.github/assets'),
   viewport: {
     width: 1300,
     height: 1080 // Starting value, ignored for fullPage
