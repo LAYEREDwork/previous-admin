@@ -3,13 +3,6 @@
  * Contains both full URLs (for frontend) and relative paths (for backend routers)
  */
 export const apiPaths = {
-  Auth: {
-    setupRequired: { full: '/api/auth/setup-required', relative: '/setup-required' },
-    setup: { full: '/api/auth/setup', relative: '/setup' },
-    login: { full: '/api/auth/login', relative: '/login' },
-    logout: { full: '/api/auth/logout', relative: '/logout' },
-    session: { full: '/api/auth/session', relative: '/session' },
-  },
   Configuration: {
     list: { full: '/api/configurations', relative: '' },
     getById: { full: '/api/configurations/:id', relative: '/:id' },
@@ -30,7 +23,6 @@ export const apiPaths = {
     export: { full: '/api/database/export', relative: '/export' },
     import: { full: '/api/database/import', relative: '/import' },
     stats: { full: '/api/database/stats', relative: '/stats' },
-    setupImport: { full: '/api/database/setup-import', relative: '/setup-import' },
   },
   System: {
     health: { full: '/api/system/health', relative: '/health' },
@@ -55,7 +47,6 @@ export const ApiPaths = apiPaths;
 /**
  * Type definitions for endpoint paths
  */
-export type AuthEndpoint = typeof apiPaths.Auth[keyof typeof apiPaths.Auth]['relative'];
 export type ConfigurationEndpoint = typeof apiPaths.Configuration[keyof typeof apiPaths.Configuration]['relative'];
 export type ConfigEndpoint = typeof apiPaths.Config[keyof typeof apiPaths.Config]['relative'];
 export type DatabaseEndpoint = typeof apiPaths.Database[keyof typeof apiPaths.Database]['relative'];

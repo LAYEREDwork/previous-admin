@@ -26,7 +26,7 @@ export function ConfigItemControls({
         className={`flex-shrink-0 ${
           isActive
             ? 'cursor-default !text-primary-500 !cursor-default'
-            : 'cursor-pointer text-gray-800 hover:text-gray-200'
+            : 'cursor-pointer text-[var(--rs-text-secondary)] hover:text-[var(--rs-text-primary)]'
         }`}
         style={{ backgroundColor: 'transparent' }}
         title={isActive ? translation.configList.active : translation.configList.activate}

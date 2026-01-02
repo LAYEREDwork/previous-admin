@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { PALanguageProvider } from './contexts/PALanguageContext';
-import { PAAuthProvider, useAuth } from './contexts/PAAuthContext';
 import { PAConfigProvider } from './contexts/PAConfigContext';
 import { PANotificationProvider } from './contexts/PANotificationContext';
 import { PAErrorBoundary } from './components/PAErrorBoundary';
@@ -10,13 +9,11 @@ import { PAConfigList } from './components/pages/PAConfigListPage';
 import { PAImportExport } from './components/pages/PAImportExportPage';
 import { PASystem } from './components/pages/PASystemPage';
 import { PAAbout } from './components/pages/PAAboutPage';
-import { Login } from './components/pages/PALoginPage';
 import { CustomProvider } from 'rsuite';
 import { Configuration } from './lib/database';
 import { ThemeProvider, useTheme } from './contexts/PAThemeContext';
 
 function PAAppContent() {
-  const { isAuthenticated, loading } = useAuth();
   const { actualTheme } = useTheme();
   const [currentTab, setCurrentTab] = useState(() => {
     // Restore last active tab from localStorage
@@ -30,22 +27,12 @@ function PAAppContent() {
     localStorage.setItem('currentTab', currentTab);
   }, [currentTab]);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <div className="text-gray-500 dark:text-gray-400">Laden...</div>
-      </div>
-    );
-  }
-
   function handleEditConfig(config: Configuration) {
     setEditingConfigId(config.id);
     setCurrentTab('editor');
   }
 
-  const content = !isAuthenticated ? (
-    <Login />
-  ) : (
+  const content = (
     <Layout currentTab={currentTab} onTabChange={setCurrentTab}>
       {currentTab === 'editor' && <PAConfigEditor configId={editingConfigId} onTabChange={setCurrentTab} />}
       {currentTab === 'configs' && <PAConfigList onEdit={handleEditConfig} />}
@@ -67,13 +54,11 @@ function App() {
     <PAErrorBoundary>
       <PALanguageProvider>
         <PANotificationProvider>
-          <PAAuthProvider>
-            <PAConfigProvider>
-              <ThemeProvider>
-                <PAAppContent />
-              </ThemeProvider>
-            </PAConfigProvider>
-          </PAAuthProvider>
+          <PAConfigProvider>
+            <ThemeProvider>
+              <PAAppContent />
+            </ThemeProvider>
+          </PAConfigProvider>
         </PANotificationProvider>
       </PALanguageProvider>
     </PAErrorBoundary>

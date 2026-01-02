@@ -10,14 +10,12 @@
  *
  * @requires express - HTTP framework
  * @requires config - Unified config manager
- * @requires middleware - Authentication middleware
  */
 
-import express from 'express';
+import express, { Request } from 'express';
 import { getConfigManager, getDefaultConfig, PreviousConfig } from '../config/index';
 import { apiPaths } from '../../shared/constants';
-import { requireAuth } from '../middleware';
-import { AuthenticatedRequest, TypedResponse } from '../types';
+import { TypedResponse } from '../types';
 
 const router = express.Router();
 const configManager = getConfigManager();
@@ -27,12 +25,10 @@ const configManager = getConfigManager();
  *
  * Retrieve user's configuration file
  *
- * Fetches authenticated user's config from disk.
+ * Fetches config from disk.
  * Returns default config if file doesn't exist and creates it.
- * Requires authentication.
  *
  * @route GET /api/config
- * @authentication required
  *
  * @returns {Object}
  *   - config {PreviousConfig}: Configuration object
@@ -40,12 +36,10 @@ const configManager = getConfigManager();
  * @throws {500} If config file reading or creation fails
  *
  * @example
- * const res = await fetch('/api/config', {
- *   headers: { Cookie: 'sessionId=...' }
- * });
+ * const res = await fetch('/api/config');
  * const { config } = await res.json();
  */
-router.get(apiPaths.Config.get.relative, requireAuth, async (req: AuthenticatedRequest, res: TypedResponse<{ config: PreviousConfig }>) => {
+router.get(apiPaths.Config.get.relative, async (req: Request, res: TypedResponse<{ config: PreviousConfig }>) => {
   try {
     let config = await configManager.readConfig();
 
@@ -68,10 +62,8 @@ router.get(apiPaths.Config.get.relative, requireAuth, async (req: AuthenticatedR
  *
  * Writes updated config to disk and broadcasts changes to all
  * connected WebSocket clients for real-time synchronization.
- * Requires authentication.
  *
  * @route PUT /api/config
- * @authentication required
  *
  * @param {PreviousConfig} config - New configuration object
  *
@@ -89,7 +81,7 @@ router.get(apiPaths.Config.get.relative, requireAuth, async (req: AuthenticatedR
  * });
  * const { success, config } = await res.json();
  */
-router.put(apiPaths.Config.put.relative, requireAuth, async (req: AuthenticatedRequest, res: TypedResponse<{ success: boolean; config: PreviousConfig }>) => {
+router.put(apiPaths.Config.put.relative, async (req: Request, res: TypedResponse<{ success: boolean; config: PreviousConfig }>) => {
   try {
     const { config }: { config: PreviousConfig } = req.body;
 
@@ -101,7 +93,7 @@ router.put(apiPaths.Config.put.relative, requireAuth, async (req: AuthenticatedR
 
     // Broadcast update to connected clients
     if (req.app.locals.broadcastConfigUpdate) {
-      req.app.locals.broadcastConfigUpdate(req.session.username, config);
+      req.app.locals.broadcastConfigUpdate(config);
     }
 
     res.json({ success: true, config });

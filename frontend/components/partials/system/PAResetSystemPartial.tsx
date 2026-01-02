@@ -1,4 +1,5 @@
 import { PAButton } from '../../controls/PAButton';
+import { PACard } from '../../controls/PACard';
 import { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
 
@@ -17,26 +18,32 @@ export function ResetSystemPartial({
 }: ResetSystemPartialProps) {
     return (
         <div className="mt-8">
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-red-900 dark:text-red-100 mb-2">
-                    {translation.system.resetTitle}
-                </h3>
-                <p className="text-sm text-red-800 dark:text-red-200 mb-4">
-                    {translation.system.resetDescription}
-                </p>
-                <div className="flex justify-end">
-                    <PAButton
-                        onClick={onResetClick}
-                        appearance="primary"
-                        color="red"
-                        disabled={isResetting}
-                        loading={isResetting}
-                        size={controlSize}
-                    >
-                        {translation.system.reset}
-                    </PAButton>
+            <PACard
+                header={
+                    <h3 className="text-lg font-semibold text-[var(--rs-text-error)]">
+                        {translation.system.resetTitle}
+                    </h3>
+                }
+                bgColorScheme="danger"
+            >
+                <div className="space-y-4">
+                    <p className="text-sm text-[var(--rs-text-error)]">
+                        {translation.system.resetDescription}
+                    </p>
+                    <div className="flex justify-end">
+                        <PAButton
+                            onClick={onResetClick}
+                            appearance="primary"
+                            color="red"
+                            disabled={isResetting}
+                            loading={isResetting}
+                            size={controlSize}
+                        >
+                            {translation.system.reset}
+                        </PAButton>
+                    </div>
                 </div>
-            </div>
+            </PACard>
         </div>
     );
 }

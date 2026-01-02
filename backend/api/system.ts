@@ -19,7 +19,6 @@ import { existsSync, unlinkSync } from 'fs';
 import { getSystemInfo } from '../platform/system-info';
 import { getMetricsSnapshot } from '../metrics';
 import { apiPaths } from '../../shared/constants';
-import { requireAuth } from '../middleware';
 import { DATABASE_PATH } from '../database/core';
 import { closeDatabase, reinitializeDatabase } from '../database';
 
@@ -55,12 +54,12 @@ SYSTEM_ROUTER.get(apiPaths.System.health.relative, (_request: Request, response:
  *
  * GET /api/system/system-info
  *
- * @param request - Express request object (authenticated)
+ * @param request - Express request object
  * @param response - Express response object
  * @returns System information object
  * @throws 500 if unable to gather system information
  */
-SYSTEM_ROUTER.get(apiPaths.System.systemInfo.relative, requireAuth, async (request: Request, response: Response) => {
+SYSTEM_ROUTER.get(apiPaths.System.systemInfo.relative, async (request: Request, response: Response) => {
   try {
     const systemInfo = await getSystemInfo();
     response.json(systemInfo);
@@ -84,12 +83,12 @@ SYSTEM_ROUTER.get(apiPaths.System.systemInfo.relative, requireAuth, async (reque
  *
  * GET /api/system/metrics
  *
- * @param request - Express request object (authenticated)
+ * @param request - Express request object
  * @param response - Express response object
  * @returns Metrics snapshot object
  * @throws 500 if unable to collect metrics
  */
-SYSTEM_ROUTER.get(apiPaths.System.metrics.relative, requireAuth, async (request: Request, response: Response) => {
+SYSTEM_ROUTER.get(apiPaths.System.metrics.relative, async (request: Request, response: Response) => {
   try {
     const metricsSnapshot = await getMetricsSnapshot();
     response.json(metricsSnapshot);
@@ -109,19 +108,18 @@ SYSTEM_ROUTER.get(apiPaths.System.metrics.relative, requireAuth, async (request:
  * 1. Closing the database connection
  * 2. Deleting the database file
  * 3. Reinitializing the database with fresh schema
- * 4. Clearing the user session
  *
  * WARNING: This operation is destructive and cannot be undone!
- * All user data, configurations, and credentials will be permanently deleted.
+ * All configurations will be permanently deleted.
  *
  * POST /api/system/reset
  *
- * @param request - Express request object (authenticated)
+ * @param request - Express request object
  * @param response - Express response object
  * @returns Success confirmation
  * @throws 500 if reset operation fails
  */
-SYSTEM_ROUTER.post(apiPaths.System.reset.relative, requireAuth, (request: Request, response: Response) => {
+SYSTEM_ROUTER.post(apiPaths.System.reset.relative, (request: Request, response: Response) => {
   try {
     // Step 1: Close database connection
     closeDatabase();
@@ -141,17 +139,6 @@ SYSTEM_ROUTER.post(apiPaths.System.reset.relative, requireAuth, (request: Reques
     // Step 3: Reinitialize database
     reinitializeDatabase();
     console.log('Database reinitialized with fresh schema');
-
-    // Step 4: Clear session
-    if (request.session) {
-      request.session.destroy((sessionError) => {
-        if (sessionError) {
-          console.error('Error destroying session:', sessionError);
-        } else {
-          console.log('User session cleared');
-        }
-      });
-    }
 
     response.json({
       success: true,

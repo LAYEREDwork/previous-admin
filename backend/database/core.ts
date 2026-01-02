@@ -67,16 +67,6 @@ function initializeDatabaseConnection(): any {
  */
 function initializeDatabaseSchema(database: any): void {
   try {
-    // Users table
-    database.exec(`
-      CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT UNIQUE NOT NULL,
-        password_hash TEXT NOT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-
     // Configurations table
     database.exec(`
       CREATE TABLE IF NOT EXISTS configurations (
@@ -87,16 +77,13 @@ function initializeDatabaseSchema(database: any): void {
         is_active INTEGER DEFAULT 0,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        created_by INTEGER,
-        sort_order INTEGER DEFAULT 0,
-        FOREIGN KEY (created_by) REFERENCES users(id)
+        sort_order INTEGER DEFAULT 0
       )
     `);
 
     // Indexes for performance
     database.exec(`CREATE INDEX IF NOT EXISTS idx_configurations_sort ON configurations(sort_order, created_at)`);
     database.exec(`CREATE INDEX IF NOT EXISTS idx_configurations_active ON configurations(is_active)`);
-    database.exec(`CREATE INDEX IF NOT EXISTS idx_configurations_user ON configurations(created_by)`);
     
     console.log('Database schema initialized successfully');
   } catch (error) {

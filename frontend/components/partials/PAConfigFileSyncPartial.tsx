@@ -4,6 +4,7 @@ import { database, Configuration } from '../../lib/database';
 import { useLanguage } from '../../contexts/PALanguageContext';
 import { PAButton } from '../controls/PAButton';
 import { useResponsiveControlSize } from '../../hooks/useResponsiveControlSize';
+import { PACard } from '../controls/PACard';
 
 export function ConfigFileSyncPartial() {
   const { translation } = useLanguage();
@@ -62,21 +63,23 @@ export function ConfigFileSyncPartial() {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 bg-cyan-100 dark:bg-cyan-900 rounded-lg flex items-center justify-center">
-          <BiRefresh size={20} className="text-cyan-600 dark:text-cyan-400" />
+    <PACard
+      header={
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-[var(--rs-bg-info)] rounded-lg flex items-center justify-center">
+            <BiRefresh size={20} className="text-[var(--rs-text-info)]" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-[var(--rs-text-primary)]">
+              {translation.importExport.syncTitle}
+            </h3>
+            <p className="text-sm text-[var(--rs-text-secondary)]">
+              ~/.config/previous/previous.cfg
+            </p>
+          </div>
         </div>
-        <div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-            {translation.importExport.syncTitle}
-          </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            ~/.config/previous/previous.cfg
-          </p>
-        </div>
-      </div>
-
+      }
+    >
       <div className="grid md:grid-cols-2 gap-4 mb-4">
         <PAButton
           onClick={handleSyncToFile}
@@ -106,8 +109,8 @@ export function ConfigFileSyncPartial() {
       {message && (
         <div
           className={`flex items-center gap-2 p-3 rounded-lg ${message.type === 'success'
-            ? 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-300'
-            : 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300'
+            ? 'bg-[var(--rs-bg-success)] text-[var(--rs-text-success)]'
+            : 'bg-[var(--rs-bg-error)] text-[var(--rs-text-error)]'
             }`}
         >
           {message.type === 'success' ? (
@@ -119,13 +122,13 @@ export function ConfigFileSyncPartial() {
         </div>
       )}
 
-      <div className="mt-4 p-3 bg-cyan-50 dark:bg-cyan-900/20 rounded-lg">
-        <p className="text-xs text-cyan-800 dark:text-cyan-300">
+      <div className="mt-4 p-3 bg-[var(--rs-bg-info)] rounded-lg">
+        <p className="text-xs text-[var(--rs-text-info)]">
           {translation.importExport.syncHelpApply}
           <br />
           {translation.importExport.syncHelpImport}
         </p>
       </div>
-    </div>
+    </PACard>
   );
 }

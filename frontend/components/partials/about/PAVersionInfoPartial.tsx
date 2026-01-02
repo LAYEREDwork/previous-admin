@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { BiInfoCircle, BiRefresh, BiCheck, BiError, BiFile, BiChevronUp, BiChevronDown } from 'react-icons/bi';
 import { PAButton } from '../../controls/PAButton';
+import { PACard } from '../../controls/PACard';
 import { useLanguage } from '../../../contexts/PALanguageContext';
 import { useResponsiveControlSize } from '../../../hooks/useResponsiveControlSize';
 import { type VersionInfo } from '../../../lib/version';
@@ -32,28 +33,31 @@ export function VersionInfoPartial({
   const [newExpanded, setNewExpanded] = useState(false);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
-        <BiInfoCircle size={20} />
-        {translation.about.appVersion}
-      </h3>
+    <PACard
+      header={
+        <div className="flex items-center gap-2">
+          <BiInfoCircle size={20} />
+          {translation.about.appVersion}
+        </div>
+      }
+    >
       <div className="space-y-4">
         {checking ? (
-          <div className="flex items-center gap-2 text-next-accent">
+          <div className="flex items-center gap-2 text-[var(--rs-primary-500)]">
             <BiRefresh size={16} className="animate-spin" />
             <span className="text-sm">{translation.system.checkingForUpdates}</span>
           </div>
         ) : (
           <>
             <div className="flex items-center justify-between">
-              <span className="text-gray-600 dark:text-gray-400">{translation.system.currentVersion}:</span>
-              <span className="font-mono font-semibold text-gray-900 dark:text-gray-100">
+              <span className="text-[var(--rs-text-secondary)]">{translation.system.currentVersion}:</span>
+              <span className="font-mono font-semibold text-[var(--rs-text-primary)]">
                 v{versionInfo?.currentVersion || '1.0.0'}
               </span>
             </div>
 
             {error && (
-              <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
+              <div className="flex items-center gap-2 text-[var(--rs-text-error)]">
                 <BiError size={16} />
                 <span className="text-sm">{translation.system.updateError}</span>
               </div>
@@ -63,7 +67,7 @@ export function VersionInfoPartial({
               <div className="space-y-3">
                 {versionInfo.updateAvailable ? (
                   <>
-                    <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400">
+                    <div className="flex items-center gap-2 text-[var(--rs-text-warning)]">
                       <BiError size={16} />
                       <span className="text-sm font-semibold">
                         {translation.system.updateAvailable}: v{versionInfo.latestVersion}
@@ -71,12 +75,12 @@ export function VersionInfoPartial({
                     </div>
 
                     {versionInfo.releaseNotes && (
-                      <div className="bg-amber-50 dark:bg-amber-900/20 rounded-[24px] px-3 sm:px-5 py-2 min-h-[48px] border border-amber-200 dark:border-amber-700">
+                      <div className="bg-[var(--rs-bg-warning)] rounded-[24px] px-3 sm:px-5 py-2 min-h-[48px] border border-[var(--rs-border-warning)]">
                         <div
                           className={`flex justify-between items-center cursor-pointer ${newExpanded ? 'mb-2' : ''}`}
                           onClick={() => setNewExpanded(!newExpanded)}
                         >
-                          <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
+                          <div className="flex items-center gap-2 text-[var(--rs-text-warning)]">
                             <BiFile size={14} />
                             <span className="text-base font-semibold">{translation.system.releaseNotes}</span>
                           </div>
@@ -84,12 +88,12 @@ export function VersionInfoPartial({
                         </div>
                         <div className={`grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${newExpanded ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
                           <div className="overflow-hidden">
-                            <div className="text-sm text-amber-600 dark:text-amber-400">
+                            <div className="text-sm text-[var(--rs-text-warning)]">
                               <ReactMarkdown
                                 components={{
-                                  h1: ({ children }) => <h1 className="text-lg font-semibold mt-8 mb-2 uppercase text-amber-700 dark:text-amber-300">{children}</h1>,
-                                  h2: ({ children }) => <h2 className="text-base font-semibold mt-8 mb-2 uppercase text-amber-700 dark:text-amber-300">{children}</h2>,
-                                  h3: ({ children }) => <h3 className="text-sm font-semibold mt-6 mb-1 uppercase text-amber-700 dark:text-amber-300">{children}</h3>,
+                                  h1: ({ children }) => <h1 className="text-lg font-semibold mt-8 mb-2 uppercase text-[var(--rs-text-warning)]">{children}</h1>,
+                                  h2: ({ children }) => <h2 className="text-base font-semibold mt-8 mb-2 uppercase text-[var(--rs-text-warning)]">{children}</h2>,
+                                  h3: ({ children }) => <h3 className="text-sm font-semibold mt-6 mb-1 uppercase text-[var(--rs-text-warning)]">{children}</h3>,
                                   p: ({ children }) => <p className="mb-2">{children}</p>,
                                   ul: ({ children }) => <ul className="list-disc pl-8 mb-2">{children}</ul>,
                                   ol: ({ children }) => <ol className="list-decimal pl-8 mb-2">{children}</ol>,
@@ -119,7 +123,7 @@ export function VersionInfoPartial({
                     </PAButton>
                   </>
                 ) : (
-                  <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
+                  <div className="flex items-center gap-2 text-[var(--rs-text-success)]">
                     <BiCheck size={16} />
                     <span className="text-sm">{translation.system.upToDate}</span>
                   </div>
@@ -140,6 +144,6 @@ export function VersionInfoPartial({
           </>
         )}
       </div>
-    </div>
+    </PACard>
   );
 }

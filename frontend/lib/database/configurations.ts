@@ -17,7 +17,7 @@ export { type Configuration, type PreviousConfig };
  * API client for configuration database operations
  *
  * Provides methods for CRUD operations on configurations.
- * All methods communicate with backend API and handle authentication automatically.
+ * All methods communicate with backend API and handle JSON responses automatically.
  */
 export const configurations = {
   /**

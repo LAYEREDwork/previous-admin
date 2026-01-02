@@ -49,6 +49,14 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   }, [mode]);
 
   useEffect(() => {
+    if (actualTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [actualTheme]);
+
+  useEffect(() => {
     localStorage.setItem('theme-mode', mode);
   }, [mode]);
 

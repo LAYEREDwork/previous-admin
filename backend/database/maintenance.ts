@@ -10,22 +10,18 @@ import { existsSync, statSync } from 'fs';
 import type { Configuration } from '../types';
 import { DATABASE_PATH, getDatabase } from './core';
 import * as configurations from './configurations';
-import * as users from './users';
 
 export interface DatabaseExport {
   version: string;
   exportedAt: string;
-  users: Array<{ id: string; username: string; password_hash: string; createdAt: string }>;
   configurations: Configuration[];
 }
 
 export interface ImportStatistics {
   configurations: { imported: number; skipped: number; errors: number };
-  users: { imported: number; skipped: number; errors: number };
 }
 
 export interface DatabaseStatistics {
-  totalUsers: number;
   totalConfigurations: number;
   activeConfigurations: number;
   databasePath: string;
@@ -38,18 +34,11 @@ export interface DatabaseStatistics {
  * @returns Database dump object
  */
 export function exportDatabase(): DatabaseExport {
-  const allUsers = users.getAllUsers();
   const allConfigurations = configurations.getConfigurations();
 
   return {
     version: '1.0.0',
     exportedAt: new Date().toISOString(),
-    users: allUsers.map((user) => ({
-      id: user.id,
-      username: user.username,
-      password_hash: user.password_hash,
-      createdAt: user.created_at,
-    })),
     configurations: allConfigurations,
   };
 }
@@ -71,7 +60,6 @@ export function importDatabase(
 
   const statistics: ImportStatistics = {
     configurations: { imported: 0, skipped: 0, errors: 0 },
-    users: { imported: 0, skipped: 0, errors: 0 },
   };
 
   const database = getDatabase();
@@ -82,36 +70,6 @@ export function importDatabase(
   database.prepare('BEGIN TRANSACTION').run();
 
   try {
-    // Handle users first
-    if (!shouldMerge) {
-      database.prepare('DELETE FROM users').run();
-    }
-
-    if (dump.users && Array.isArray(dump.users)) {
-      const userInsertStatement = database.prepare(`
-        INSERT OR REPLACE INTO users (id, username, password_hash, created_at)
-        VALUES (?, ?, ?, ?)
-      `);
-
-      for (const user of dump.users) {
-        try {
-          const passwordHash = user.passwordHash || '';
-          console.log(`Importing user "${user.username}" with passwordHash length: ${passwordHash.length}`);
-          
-          userInsertStatement.run(
-            user.id,
-            user.username,
-            passwordHash,
-            user.createdAt || new Date().toISOString()
-          );
-          statistics.users.imported++;
-        } catch (error) {
-          console.error(`Error importing user "${user.username}":`, error instanceof Error ? error.message : error);
-          statistics.users.errors++;
-        }
-      }
-    }
-
     // Handle configurations
     if (!shouldMerge) {
       database.prepare('DELETE FROM configurations').run();
@@ -158,29 +116,12 @@ export function importDatabase(
 }
 
 /**
- * Get configuration file path for user
- *
- * @param username - Username
- * @param baseDirectory - Base directory for config files
- * @returns Full path to user's config file
- */
-export function getConfigFilePath(username: string, baseDirectory: string): string {
-  // Remove unsafe characters from filename
-  const safeUsername = username.replace(/[^a-zA-Z0-9_-]/g, '');
-  return `${baseDirectory}/${safeUsername}-previous.conf`;
-}
-
-/**
  * Get database statistics and information
  *
  * @returns Database statistics object
  */
 export function getDatabaseStatistics(): DatabaseStatistics {
   const database = getDatabase();
-
-  const userCountResult = database
-    .prepare('SELECT COUNT(*) as count FROM users')
-    .get();
   const configCountResult = database
     .prepare('SELECT COUNT(*) as count FROM configurations')
     .get();
@@ -198,7 +139,6 @@ export function getDatabaseStatistics(): DatabaseStatistics {
   }
 
   return {
-    totalUsers: (userCountResult as { count: number }).count,
     totalConfigurations: (configCountResult as { count: number }).count,
     activeConfigurations: (activeConfigResult as { count: number }).count,
     databasePath: DATABASE_PATH,

@@ -158,36 +158,36 @@ function AlertDialog({ alert, onRemove }: { alert: Alert; onRemove: (id: string)
   const getIcon = () => {
     switch (type) {
       case 'success':
-        return <BiCheckCircle size={48} className="text-green-500 dark:text-green-400" />;
+        return <BiCheckCircle size={48} className="text-[var(--rs-text-info)]" />;
       case 'error':
-        return <BiXCircle size={48} className="text-red-500 dark:text-red-400" />;
+        return <BiXCircle size={48} className="text-[var(--rs-text-error)]" />;
       case 'warning':
-        return <BiError size={48} className="text-amber-500 dark:text-amber-400" />;
+        return <BiError size={48} className="text-[var(--rs-text-warning)]" />;
       case 'info':
       case 'confirm':
       default:
-        return <BiInfoCircle size={48} className="text-next-accent" />;
+        return <BiInfoCircle size={48} className="text-[var(--rs-primary-500)]" />;
     }
   };
 
   const getButtonStyles = (variant?: string) => {
     switch (variant) {
       case 'primary':
-        return 'bg-next-accent hover:bg-next-accent-hover text-gray-100';
+        return 'bg-[var(--rs-primary-500)] hover:opacity-90 text-white';
       case 'danger':
-        return 'bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-gray-100';
+        return 'bg-[var(--rs-bg-error)] hover:opacity-90 text-white';
       case 'secondary':
       default:
-        return 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200';
+        return 'bg-[var(--rs-bg-active)] hover:opacity-90 text-[var(--rs-text-primary)]';
     }
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-2xl max-w-md w-full animate-scale-in">
-      <div className="flex justify-end p-3 border-b border-gray-200 dark:border-gray-700">
+    <div className="bg-[var(--rs-bg-card)] rounded-lg shadow-2xl max-w-md w-full animate-scale-in border border-[var(--rs-border-primary)]">
+      <div className="flex justify-end p-3 border-b border-[var(--rs-border-primary)]">
         <button
           onClick={() => onRemove(id)}
-          className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+          className="text-[var(--rs-text-secondary)] hover:text-[var(--rs-text-primary)] transition-colors"
         >
           <BiX size={20} />
         </button>
@@ -195,12 +195,12 @@ function AlertDialog({ alert, onRemove }: { alert: Alert; onRemove: (id: string)
 
       <div className="p-6 text-center">
         <div className="flex justify-center mb-4">{getIcon()}</div>
-        <p className="text-base sm:text-lg text-gray-900 dark:text-gray-100 leading-relaxed">
+        <p className="text-base sm:text-lg text-[var(--rs-text-primary)] leading-relaxed">
           {message}
         </p>
       </div>
 
-      <div className="flex gap-3 p-4 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-200 dark:border-gray-700">
+      <div className="flex gap-3 p-4 bg-[var(--rs-bg-active)] border-t border-[var(--rs-border-primary)]">
         {buttons?.map((button, index) => (
           <button
             key={index}

@@ -49,8 +49,8 @@ export function PAConfigEditor({ configId, onTabChange }: { configId?: string | 
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-12">
-        <BiRefresh className="w-8 h-8 text-next-accent animate-spin mb-2" />
-        <p className="text-gray-500 dark:text-gray-400">{translation.common.loading || 'Loading...'}</p>
+        <BiRefresh className="w-8 h-8 text-[var(--rs-primary-500)] animate-spin mb-2" />
+        <p className="text-[var(--rs-text-secondary)]">{translation.common.loading || 'Loading...'}</p>
       </div>
     );
   }
@@ -60,7 +60,7 @@ export function PAConfigEditor({ configId, onTabChange }: { configId?: string | 
     return (
       <div className="text-center py-12">
         <div className="mb-4">
-          <p className="text-gray-500 dark:text-gray-400 mb-4">{translation.configEditor.errorLoading}</p>
+          <p className="text-[var(--rs-text-secondary)] mb-4">{translation.configEditor.errorLoading}</p>
           <PAButton
             onClick={refreshConfig}
             appearance="primary"
@@ -108,8 +108,8 @@ export function PAConfigEditor({ configId, onTabChange }: { configId?: string | 
   if (!config || !configData) {
     return (
       <div className="flex flex-col items-center justify-center py-12">
-        <BiRefresh className="w-8 h-8 text-next-accent animate-spin mb-2" />
-        <p className="text-gray-500 dark:text-gray-400">{translation.common.loading || 'Loading...'}</p>
+        <BiRefresh className="w-8 h-8 text-[var(--rs-primary-500)] animate-spin mb-2" />
+        <p className="text-[var(--rs-text-secondary)]">{translation.common.loading || 'Loading...'}</p>
       </div>
     );
   }

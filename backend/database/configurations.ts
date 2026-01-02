@@ -22,29 +22,19 @@ function generateConfigurationId(): string {
 /**
  * Get all configurations
  *
- * @param userId - Optional: Filter by user ID
  * @returns Array of configuration objects
  */
-export function getConfigurations(userId?: number): Configuration[] {
+export function getConfigurations(): Configuration[] {
   const database = getDatabase();
   
   const query = `
-    SELECT id, name, description, config_data, is_active, 
-           created_at, updated_at, created_by, sort_order
+        SELECT id, name, description, config_data, is_active, 
+          created_at, updated_at, sort_order
     FROM configurations
+    ORDER BY sort_order ASC
   `;
 
-  let configurations: any[];
-  
-  if (userId !== undefined) {
-    configurations = database
-      .prepare(query + ' WHERE created_by = ? ORDER BY sort_order ASC')
-      .all(userId) as any[];
-  } else {
-    configurations = database
-      .prepare(query + ' ORDER BY sort_order ASC')
-      .all() as any[];
-  }
+  const configurations = database.prepare(query).all() as any[];
 
   return configurations.map((config: any) => ({
     id: config.id,
@@ -54,7 +44,6 @@ export function getConfigurations(userId?: number): Configuration[] {
     is_active: !!config.is_active,
     created_at: config.created_at,
     updated_at: config.updated_at,
-    created_by: config.created_by,
     sort_order: config.sort_order,
   })) as Configuration[];
 }
@@ -70,8 +59,8 @@ export function getConfiguration(configurationId: string): Configuration | undef
   
   const config = database
     .prepare(`
-      SELECT id, name, description, config_data, is_active, 
-             created_at, updated_at, created_by, sort_order
+            SELECT id, name, description, config_data, is_active, 
+              created_at, updated_at, sort_order
       FROM configurations
       WHERE id = ?
     `)
@@ -91,7 +80,6 @@ export function getConfiguration(configurationId: string): Configuration | undef
     is_active: !!c.is_active,
     created_at: c.created_at,
     updated_at: c.updated_at,
-    created_by: c.created_by,
     sort_order: c.sort_order,
   } as Configuration;
 }
@@ -99,30 +87,20 @@ export function getConfiguration(configurationId: string): Configuration | undef
 /**
  * Get active configuration
  *
- * @param userId - Optional: Filter by user ID
  * @returns Active configuration or undefined if none exists
  */
-export function getActiveConfiguration(userId?: number): Configuration | undefined {
+export function getActiveConfiguration(): Configuration | undefined {
   const database = getDatabase();
   
   const query = `
     SELECT id, name, description, config_data, is_active, 
-           created_at, updated_at, created_by, sort_order
+           created_at, updated_at, sort_order
     FROM configurations 
     WHERE is_active = 1
+    LIMIT 1
   `;
 
-  let activeConfig: any;
-  
-  if (userId !== undefined) {
-    activeConfig = database
-      .prepare(query + ' AND created_by = ? LIMIT 1')
-      .get(userId) as any;
-  } else {
-    activeConfig = database
-      .prepare(query + ' LIMIT 1')
-      .get() as any;
-  }
+  const activeConfig = database.prepare(query).get() as any;
 
   if (!activeConfig) {
     return undefined;
@@ -136,7 +114,6 @@ export function getActiveConfiguration(userId?: number): Configuration | undefin
     is_active: !!activeConfig.is_active,
     created_at: activeConfig.created_at,
     updated_at: activeConfig.updated_at,
-    created_by: activeConfig.created_by,
     sort_order: activeConfig.sort_order,
   } as Configuration;
 }
@@ -144,12 +121,10 @@ export function getActiveConfiguration(userId?: number): Configuration | undefin
 /**
  * Create new configuration
  *
- * @param userId - Creator user ID
  * @param request - Configuration creation request
  * @returns Created configuration object
  */
 export function createConfiguration(
-  userId: number,
   request: CreateConfigurationRequest
 ): Configuration {
   const configurationId = generateConfigurationId();
@@ -163,10 +138,10 @@ export function createConfiguration(
   try {
     // If this config should be active, deactivate all others first
     if (request.is_active) {
-      console.log('Deactivating all other configs for user:', userId);
+      console.log('Deactivating all other configs');
       database
-        .prepare('UPDATE configurations SET is_active = 0 WHERE created_by = ?')
-        .run(userId);
+        .prepare('UPDATE configurations SET is_active = 0')
+        .run();
     }
 
     // Get next sort order
@@ -176,8 +151,8 @@ export function createConfiguration(
 
     database
       .prepare(`
-        INSERT INTO configurations (id, name, description, config_data, is_active, created_at, updated_at, created_by, sort_order)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO configurations (id, name, description, config_data, is_active, created_at, updated_at, sort_order)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
       `)
       .run(
         configurationId,
@@ -187,7 +162,6 @@ export function createConfiguration(
         request.is_active ? 1 : 0,
         now,
         now,
-        userId,
         maxOrderResult.nextOrder
       );
 
@@ -273,16 +247,14 @@ export function deleteConfiguration(configurationId: string): boolean {
 }
 
 /**
- * Set configuration as active (exclusive per user)
- * Deactivates all other configurations for the same user
+ * Set configuration as active
+ * Deactivates all other configurations
  *
  * @param configurationId - Configuration ID to activate
- * @param userId - Optional: User ID for scoping
  * @returns Activated configuration or undefined if not found
  */
 export function setActiveConfiguration(
-  configurationId: string,
-  userId?: number
+  configurationId: string
 ): Configuration | undefined {
   const database = getDatabase();
 
@@ -290,13 +262,7 @@ export function setActiveConfiguration(
 
   try {
     // Deactivate all others
-    if (userId !== undefined) {
-      database
-        .prepare('UPDATE configurations SET is_active = 0 WHERE created_by = ?')
-        .run(userId);
-    } else {
-      database.prepare('UPDATE configurations SET is_active = 0').run();
-    }
+    database.prepare('UPDATE configurations SET is_active = 0').run();
 
     // Activate this one
     database
@@ -335,18 +301,4 @@ export function updateConfigurationsOrder(configurationIds: string[]): void {
     console.error('Sort order update error:', error);
     throw error;
   }
-}
-
-/**
- * Get configuration count for user
- *
- * @param userId - User ID
- * @returns Number of configurations
- */
-export function getConfigurationCount(userId: number): number {
-  const database = getDatabase();
-  const result = database
-    .prepare('SELECT COUNT(*) as count FROM configurations WHERE created_by = ?')
-    .get(userId);
-  return (result as { count: number }).count;
 }

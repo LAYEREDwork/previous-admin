@@ -7,24 +7,20 @@
  * Environment Variables:
  *   - PORT {number} (default: 3001): Server port
  *   - HOST {string} (default: 0.0.0.0): Server host address
- *   - SESSION_SECRET {string} (required in production): Session encryption secret
  *   - NODE_ENV {string} (default: development): Environment mode
  *
  * @module backend
  */
 
-import crypto from 'crypto';
 import express, { Express, Request, Response } from 'express';
 import { createServer, Server as HttpServer } from 'http';
-import session, { SessionOptions } from 'express-session';
 import cors from 'cors';
-import { API_CONFIG, SESSION_CONFIG } from './constants';
+import { API_CONFIG } from './constants';
 
 // Import database to initialize on startup
 import * as database from './database';
 
 // Import route handlers
-import authRoutes from './api/auth';
 import configRoutes from './api/config';
 import configurationsRoutes from './api/configurations';
 import databaseRoutes from './api/database';
@@ -39,31 +35,9 @@ const EXPRESS_APPLICATION = express();
 const HTTP_SERVER = createServer(EXPRESS_APPLICATION);
 
 /**
- * Initialize session secret
- * In production, SESSION_SECRET must be provided via environment variable
- */
-function initializeSessionSecret(): string {
-  const sessionSecret = process.env.SESSION_SECRET;
-
-  if (sessionSecret) {
-    return sessionSecret;
-  }
-
-  if (process.env.NODE_ENV === 'production') {
-    console.error('❌ SESSION_SECRET environment variable is required in production mode');
-    process.exit(1);
-  }
-
-  console.warn('⚠️  Generating random SESSION_SECRET for development mode');
-  console.warn('⚠️  Set SESSION_SECRET environment variable for persistence across restarts');
-
-  return crypto.randomBytes(SESSION_CONFIG.SECRET_LENGTH_BYTES).toString('hex');
-}
-
-/**
  * Configure Express middleware
  */
-function configureMiddleware(app: Express, sessionSecret: string): void {
+function configureMiddleware(app: Express): void {
   // CORS configuration
   app.use(
     cors({
@@ -74,31 +48,12 @@ function configureMiddleware(app: Express, sessionSecret: string): void {
 
   // JSON body parsing
   app.use(express.json({ limit: API_CONFIG.MAX_PAYLOAD_SIZE }));
-
-  // Session management
-  const sessionMiddleware = session({
-    secret: sessionSecret,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: process.env.NODE_ENV === 'production',
-      httpOnly: true,
-      maxAge: SESSION_CONFIG.MAX_AGE_MS,
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-    },
-  } as SessionOptions);
-
-  app.use(sessionMiddleware);
-
-  // Store session middleware for WebSocket
-  app.locals.sessionMiddleware = sessionMiddleware;
 }
 
 /**
  * Configure API routes
  */
 function configureRoutes(app: Express): void {
-  app.use('/api/auth', authRoutes);
   app.use('/api', configRoutes);
   app.use('/api/configurations', configurationsRoutes);
   app.use('/api/database', databaseRoutes);
@@ -151,17 +106,14 @@ function setupGracefulShutdown(server: HttpServer): void {
  */
 async function startServer(): Promise<void> {
   try {
-    // Initialize session secret
-    const sessionSecret = initializeSessionSecret();
-
     // Configure middleware
-    configureMiddleware(EXPRESS_APPLICATION, sessionSecret);
+    configureMiddleware(EXPRESS_APPLICATION);
 
     // Configure routes
     configureRoutes(EXPRESS_APPLICATION);
 
     // Setup WebSocket
-    setupWebSocket(HTTP_SERVER, EXPRESS_APPLICATION.locals.sessionMiddleware);
+    setupWebSocket(HTTP_SERVER);
 
     // Setup graceful shutdown
     setupGracefulShutdown(HTTP_SERVER);

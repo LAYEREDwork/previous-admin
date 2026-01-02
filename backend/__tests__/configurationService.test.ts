@@ -50,9 +50,9 @@ describe('ConfigurationService', () => {
       const mockConfigs: Configuration[] = [{ id: '1', name: 'Test' } as Configuration];
       (dbGetConfigurations as jest.MockedFunction<typeof dbGetConfigurations>).mockReturnValue(mockConfigs);
 
-      const result = getConfigurations(1);
+      const result = getConfigurations();
       expect(result).toEqual(mockConfigs);
-      expect(dbGetConfigurations).toHaveBeenCalledWith(1);
+      expect(dbGetConfigurations).toHaveBeenCalled();
     });
   });
 
@@ -81,9 +81,9 @@ describe('ConfigurationService', () => {
       const mockConfig: Configuration = { id: '1', name: 'Test Config' } as Configuration;
       (dbCreateConfiguration as jest.MockedFunction<typeof dbCreateConfiguration>).mockReturnValue(mockConfig);
 
-      const result = createConfiguration(request, 1);
+      const result = createConfiguration(request);
       expect(result).toEqual(mockConfig);
-      expect(dbCreateConfiguration).toHaveBeenCalledWith(1, request);
+      expect(dbCreateConfiguration).toHaveBeenCalledWith(request);
     });
 
     it('should throw error for invalid configuration', () => {
@@ -102,7 +102,7 @@ describe('ConfigurationService', () => {
         }
       };
 
-      expect(() => createConfiguration(request, 1)).toThrow('Invalid CPU configuration');
+      expect(() => createConfiguration(request)).toThrow('Invalid CPU configuration');
     });
   });
 
@@ -131,7 +131,7 @@ describe('ConfigurationService', () => {
       (dbGetConfiguration as jest.MockedFunction<typeof dbGetConfiguration>).mockReturnValue(mockConfig);
       (dbGetActiveConfiguration as jest.MockedFunction<typeof dbGetActiveConfiguration>).mockReturnValue(null);
 
-      deleteConfiguration('1', 1);
+      deleteConfiguration('1');
       expect(dbDeleteConfiguration).toHaveBeenCalledWith('1');
     });
 
@@ -140,7 +140,7 @@ describe('ConfigurationService', () => {
       (dbGetConfiguration as jest.MockedFunction<typeof dbGetConfiguration>).mockReturnValue(mockConfig);
       (dbGetActiveConfiguration as jest.MockedFunction<typeof dbGetActiveConfiguration>).mockReturnValue(mockConfig);
 
-      expect(() => deleteConfiguration('1', 1)).toThrow('Cannot delete active configuration');
+      expect(() => deleteConfiguration('1')).toThrow('Cannot delete active configuration');
     });
   });
 
@@ -149,14 +149,14 @@ describe('ConfigurationService', () => {
       const mockConfig: Configuration = { id: '1', name: 'Test' } as Configuration;
       (dbGetConfiguration as jest.MockedFunction<typeof dbGetConfiguration>).mockReturnValue(mockConfig);
 
-      setActiveConfiguration('1', 1);
-      expect(dbSetActiveConfiguration).toHaveBeenCalledWith('1', 1);
+      setActiveConfiguration('1');
+      expect(dbSetActiveConfiguration).toHaveBeenCalledWith('1');
     });
 
     it('should throw error if configuration not found', () => {
       (dbGetConfiguration as jest.MockedFunction<typeof dbGetConfiguration>).mockReturnValue(undefined);
 
-      expect(() => setActiveConfiguration('1', 1)).toThrow('Configuration not found');
+      expect(() => setActiveConfiguration('1')).toThrow('Configuration not found');
     });
   });
 
@@ -173,9 +173,9 @@ describe('ConfigurationService', () => {
       const mockConfig: Configuration = { id: '1', name: 'Test' } as Configuration;
       (dbGetActiveConfiguration as jest.MockedFunction<typeof dbGetActiveConfiguration>).mockReturnValue(mockConfig);
 
-      const result = getActiveConfiguration(1);
+      const result = getActiveConfiguration();
       expect(result).toEqual(mockConfig);
-      expect(dbGetActiveConfiguration).toHaveBeenCalledWith(1);
+      expect(dbGetActiveConfiguration).toHaveBeenCalled();
     });
   });
 });

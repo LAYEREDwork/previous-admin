@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 
 // Hooks
 import { useLanguage } from '../contexts/PALanguageContext';
-import { useAuth } from '../contexts/PAAuthContext';
 import { useNotification } from '../contexts/PANotificationContext';
 import { useSystemMetrics } from './useSystemMetrics';
 
@@ -17,7 +16,6 @@ import type { SystemInfo } from '../../shared/types';
  */
 export function useSystem() {
   const { translation } = useLanguage();
-  const { logout } = useAuth();
   const { showError } = useNotification();
 
   const [systemInfo, setSystemInfo] = useState<SystemInfo | null>(null);
@@ -71,7 +69,7 @@ export function useSystem() {
         localStorage.clear();
         sessionStorage.clear();
         setShowResetModal(false);
-        await logout();
+        window.location.reload();
       } else {
         showError(translation.common.error || 'Reset failed');
       }

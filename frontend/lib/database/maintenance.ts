@@ -13,7 +13,7 @@ import { apiBaseUrl } from '../constants';
  * API client for database maintenance operations
  *
  * Provides methods for database export/import and statistics.
- * All methods communicate with backend API and handle authentication automatically.
+ * All methods communicate with backend API and handle responses automatically.
  */
 export const maintenance = {
   /**
@@ -78,41 +78,4 @@ export const maintenance = {
     return response.json();
   },
 
-  /**
-   * Import database during initial setup (no authentication required)
-   *
-   * @param {Object} dump - Database dump object
-   * @returns {Promise<Object>} Import statistics
-   * @throws {Error} If API request fails or setup already completed
-   */
-  async setupImportDatabase(dump: unknown) {
-    const response = await fetch(`${apiBaseUrl}/api/database/setup-import`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({ dump }),
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || error.error || 'Failed to import database');
-    }
-
-    return response.json();
-  },
-
-  /**
-   * Legacy method for authentication (deprecated, moved to AuthContext)
-   *
-   * @deprecated Use AuthContext instead
-   * @param {string} username - Username
-   * @param {string} password - Password (plaintext)
-   * @returns {Promise<Object | null>} User object or null
-   */
-  async authenticate(/* username: string, password: string */): Promise<{ id: string; username: string } | null> {
-    console.warn('database.authenticate() is deprecated. Use AuthContext instead.');
-    return null;
-  },
 };

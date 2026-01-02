@@ -2,7 +2,6 @@
  * Configuration management API routes
  *
  * Provides CRUD operations for configuration profiles.
- * All routes require authentication.
  *
  * @module server/api/configurations
  */
@@ -19,8 +18,8 @@ import {
   updateConfigurationOrder
 } from '../services/configurationService';
 import { apiPaths } from '../../shared/constants';
-import { requireAuth } from '../middleware';
-import { AuthenticatedRequest, Configuration, PreviousConfig, UpdateConfigurationRequest } from '../types';
+import { Configuration, PreviousConfig, UpdateConfigurationRequest } from '../types';
+import { getDatabase } from '../database/core';
 
 const router = express.Router();
 
@@ -38,7 +37,6 @@ interface ConfigurationsListResponse {
     is_active: boolean;
     created_at: string;
     updated_at: string;
-    created_by: string | null;
     sort_order: number;
   }>;
 }
@@ -75,17 +73,14 @@ interface UpdateOrderBody {
  * GET /api/configurations
  * Get all configurations
  *
- * @authentication required
  * @returns {Array} Array of configuration objects
  */
-router.get(apiPaths.Configuration.list.relative, requireAuth, (
+router.get(apiPaths.Configuration.list.relative, (
   _req: Request,
   res: Response<ConfigurationsListResponse | ErrorResponse>
 ) => {
   try {
-    const authReq = _req as AuthenticatedRequest;
-    console.log('Session userId:', authReq.session.userId, 'username:', authReq.session.username);
-    const configurations = getConfigurations(authReq.session.userId!);
+    const configurations = getConfigurations();
 
     const parsed = configurations.map(config => ({
       id: config.id,
@@ -95,7 +90,6 @@ router.get(apiPaths.Configuration.list.relative, requireAuth, (
       is_active: Boolean(config.is_active),
       created_at: config.created_at,
       updated_at: config.updated_at,
-      created_by: config.created_by,
       sort_order: config.sort_order
     }));
 
@@ -110,16 +104,14 @@ router.get(apiPaths.Configuration.list.relative, requireAuth, (
  * GET /api/configurations/active
  * Get currently active configuration
  *
- * @authentication required
  * @returns {Object|null} Active configuration or null
  */
-router.get(apiPaths.Configuration.getActive.relative, requireAuth, (
+router.get(apiPaths.Configuration.getActive.relative, (
   _req: Request,
   res: Response<ConfigurationResponse | ErrorResponse>
 ) => {
   try {
-    const authReq = _req as AuthenticatedRequest;
-    const config = getActiveConfiguration(authReq.session.userId!);
+    const config = getActiveConfiguration();
 
     if (!config) {
       return res.json({ configuration: null });
@@ -134,7 +126,6 @@ router.get(apiPaths.Configuration.getActive.relative, requireAuth, (
         is_active: Boolean(config.is_active),
         created_at: config.created_at,
         updated_at: config.updated_at,
-        created_by: config.created_by,
         sort_order: config.sort_order
       }
     });
@@ -148,11 +139,10 @@ router.get(apiPaths.Configuration.getActive.relative, requireAuth, (
  * GET /api/configurations/:id
  * Get specific configuration by ID
  *
- * @authentication required
  * @param {string} id - Configuration ID
  * @returns {Object} Configuration object
  */
-router.get(apiPaths.Configuration.getById.relative, requireAuth, (
+router.get(apiPaths.Configuration.getById.relative, (
   req: Request<{ id: string }>,
   res: Response<ConfigurationResponse | ErrorResponse>
 ) => {
@@ -172,7 +162,6 @@ router.get(apiPaths.Configuration.getById.relative, requireAuth, (
         is_active: Boolean(config.is_active),
         created_at: config.created_at,
         updated_at: config.updated_at,
-        created_by: config.created_by,
         sort_order: config.sort_order
       }
     });
@@ -186,17 +175,15 @@ router.get(apiPaths.Configuration.getById.relative, requireAuth, (
  * POST /api/configurations
  * Create new configuration
  *
- * @authentication required
  * @body {Object} data - Configuration data
  * @returns {Object} Created configuration
  */
-router.post(apiPaths.Configuration.create.relative, requireAuth, (
+router.post(apiPaths.Configuration.create.relative, (
   req: Request<object, ConfigurationResponse | ErrorResponse, CreateConfigurationBody>,
   res: Response<ConfigurationResponse | ErrorResponse>
 ) => {
   try {
     const { name, description, config_data, is_active } = req.body;
-    const authReq = req as AuthenticatedRequest;
 
     console.log('API create config:', name, 'is_active:', is_active);
 
@@ -209,7 +196,7 @@ router.post(apiPaths.Configuration.create.relative, requireAuth, (
       description: description || '',
       config_data: typeof config_data === 'string' ? JSON.parse(config_data) : config_data,
       is_active: is_active || false,
-    }, authReq.session.userId!);
+    });
 
     console.log('API created config:', config.name, 'is_active:', config.is_active);
 
@@ -226,24 +213,22 @@ router.post(apiPaths.Configuration.create.relative, requireAuth, (
  * PUT /api/configurations/:id
  * Update configuration
  *
- * @authentication required
  * @param {string} id - Configuration ID
  * @body {Object} updates - Fields to update
  * @returns {Object} Updated configuration
  */
-router.put(apiPaths.Configuration.update.relative, requireAuth, (
+router.put(apiPaths.Configuration.update.relative, (
   req: Request<{ id: string }, ConfigurationResponse | ErrorResponse, UpdateConfigurationBody>,
   res: Response<ConfigurationResponse | ErrorResponse>
 ) => {
   try {
     const { id } = req.params;
-    const authReq = req as AuthenticatedRequest;
     const updates: UpdateConfigurationRequest = {};
 
     if (req.body.name !== undefined) updates.name = req.body.name;
     if (req.body.description !== undefined) updates.description = req.body.description;
     if (req.body.config_data !== undefined) {
-      updates.config = typeof req.body.config_data === 'string' ? JSON.parse(req.body.config_data) : req.body.config_data;
+      updates.config_data = typeof req.body.config_data === 'string' ? JSON.parse(req.body.config_data) : req.body.config_data;
     }
 
     const config = updateConfiguration(id, updates);
@@ -253,7 +238,7 @@ router.put(apiPaths.Configuration.update.relative, requireAuth, (
     }
 
     if (req.app.locals.broadcastConfigUpdate && updates.is_active) {
-      req.app.locals.broadcastConfigUpdate(authReq.session.username, config.config_data);
+      req.app.locals.broadcastConfigUpdate(config.config_data);
     }
 
     res.json({
@@ -269,17 +254,15 @@ router.put(apiPaths.Configuration.update.relative, requireAuth, (
  * DELETE /api/configurations/:id
  * Delete configuration
  *
- * @authentication required
  * @param {string} id - Configuration ID
  * @returns {Object} Success message
  */
-router.delete(apiPaths.Configuration.delete.relative, requireAuth, (
+router.delete(apiPaths.Configuration.delete.relative, (
   req: Request<{ id: string }>,
   res: Response<SuccessResponse | ErrorResponse>
 ) => {
   try {
-    const authReq = req as AuthenticatedRequest;
-    deleteConfiguration(req.params.id, parseInt(authReq.session.userId));
+    deleteConfiguration(req.params.id);
 
     res.json({ success: true, message: 'Configuration deleted' });
   } catch (error) {
@@ -292,17 +275,15 @@ router.delete(apiPaths.Configuration.delete.relative, requireAuth, (
  * POST /api/configurations/:id/activate
  * Set configuration as active
  *
- * @authentication required
  * @param {string} id - Configuration ID
  * @returns {Object} Activated configuration
  */
-router.post(apiPaths.Configuration.activate.relative, requireAuth, (
+router.post(apiPaths.Configuration.activate.relative, (
   req: Request<{ id: string }>,
   res: Response<ConfigurationResponse | ErrorResponse>
 ) => {
   try {
-    const authReq = req as AuthenticatedRequest;
-    setActiveConfiguration(req.params.id, parseInt(authReq.session.userId));
+    setActiveConfiguration(req.params.id);
 
     const config = getConfigurationById(req.params.id);
 
@@ -311,7 +292,7 @@ router.post(apiPaths.Configuration.activate.relative, requireAuth, (
     }
 
     if (req.app.locals.broadcastConfigUpdate) {
-      req.app.locals.broadcastConfigUpdate(authReq.session.username, config.config_data);
+      req.app.locals.broadcastConfigUpdate(config.config_data);
     }
 
     res.json({
@@ -327,11 +308,10 @@ router.post(apiPaths.Configuration.activate.relative, requireAuth, (
  * PUT /api/configurations/order
  * Update configurations display order
  *
- * @authentication required
  * @body {Array<string>} orderedIds - Configuration IDs in desired order
  * @returns {Object} Success message
  */
-router.put(apiPaths.Configuration.updateOrder.relative, requireAuth, (
+router.put(apiPaths.Configuration.updateOrder.relative, (
   req: Request<object, SuccessResponse | ErrorResponse, UpdateOrderBody>,
   res: Response<SuccessResponse | ErrorResponse>
 ) => {
@@ -355,28 +335,20 @@ router.put(apiPaths.Configuration.updateOrder.relative, requireAuth, (
  * POST /api/configurations/deactivate-all
  * Deactivate all configurations
  *
- * @authentication required
  * @returns {Object} Success message
  */
-router.post(apiPaths.Configuration.deactivateAll.relative, requireAuth, (
+router.post(apiPaths.Configuration.deactivateAll.relative, (
   req: Request,
   res: Response<SuccessResponse | ErrorResponse>
 ) => {
-  const authReq = req as AuthenticatedRequest;
-  console.log('Deactivate-all route called for user:', authReq.session.userId);
+  console.log('Deactivate-all route called');
   try {
     const database = getDatabase();
 
-    // Deactivate all configurations for this user
-    if (authReq.session.userId !== undefined) {
-      database
-        .prepare('UPDATE configurations SET is_active = 0 WHERE created_by = ?')
-        .run(Number(authReq.session.userId));
-    } else {
-      database.prepare('UPDATE configurations SET is_active = 0').run();
-    }
+    // Deactivate all configurations
+    database.prepare('UPDATE configurations SET is_active = 0').run();
 
-    console.log('Successfully deactivated all configurations for user:', authReq.session.userId);
+    console.log('Successfully deactivated all configurations');
     res.json({ success: true });
   } catch (error) {
     console.error('Error deactivating all configurations:', error);

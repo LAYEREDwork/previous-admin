@@ -1,22 +1,4 @@
-import 'express-session';
-
-declare module 'express-session' {
-  interface SessionData {
-    userId?: number;
-    username?: string;
-  }
-}
-
-/**
- * Authenticated request with session data
- */
-export interface AuthenticatedRequest extends Request {
-  session: Session & Partial<SessionData> & {
-    userId?: number;
-    username?: string;
-    destroy: (callback: (err?: Error) => void) => void;
-  };
-}
+import type { Response } from 'express';
 
 /**
  * Typed Express response
@@ -83,37 +65,6 @@ export interface Configuration {
   sort_order: number;
   created_at: string;
   updated_at: string;
-  created_by: string | null;
-}
-
-/**
- * User database record
- */
-export interface User {
-  id: string;
-  username: string;
-  password_hash: string;
-  email: string | null;
-  created_at: string;
-  last_login: string | null;
-}
-
-/**
- * Request to create a new user
- */
-export interface CreateUserRequest {
-  username: string;
-  password: string;
-  email?: string;
-}
-
-/**
- * User session data stored in session store
- */
-export interface UserSessionData {
-  userId: number;
-  username: string;
-  loginTime?: number;
 }
 
 /**
@@ -124,7 +75,6 @@ export interface CreateConfigurationRequest {
   description: string;
   config_data: PreviousConfig;
   is_active?: boolean;
-  created_by?: string | null;
 }
 
 /**
@@ -151,5 +101,4 @@ export interface WebSocketMessage {
 export interface WebSocketClient {
   id: string;
   ws: WebSocket;
-  userId?: string;
 }

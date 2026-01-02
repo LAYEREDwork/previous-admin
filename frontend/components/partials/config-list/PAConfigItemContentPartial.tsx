@@ -27,10 +27,10 @@ export function ConfigItemContent({
 }: ConfigItemContentProps) {
   return (
     <div className="flex-1 flex flex-col gap-1 min-w-0">
-      <span className="font-semibold text-base text-gray-900 dark:text-gray-100 truncate">
+      <span className="font-semibold text-base text-[var(--rs-text-primary)] truncate">
         {config.name}
       </span>
-      <span className="text-sm text-gray-500 dark:text-gray-400">
+      <span className="text-sm text-[var(--rs-text-secondary)]">
         {config.description}
       </span>
       {/* Mobile: Action Buttons unter Description */}

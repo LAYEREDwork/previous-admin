@@ -35,11 +35,10 @@ export const configApi = {
   /**
    * Retrieve user configuration
    *
-   * Gets the current user's configuration file.
-   * Requires authentication.
+  * Gets the current configuration file from the backend.
    *
    * @returns {Promise<ConfigResponse>} User configuration object
-   * @throws {ApiError} If not authenticated or retrieval fails
+  * @throws {ApiError} On failure
    */
   async getConfig(): Promise<ConfigResponse> {
     return http.get<ConfigResponse>(apiPaths.Config.get.full);
@@ -48,12 +47,11 @@ export const configApi = {
   /**
    * Update user configuration
    *
-   * Persists configuration changes to server and broadcasts to other clients.
-   * Requires authentication.
+  * Persists configuration changes to server and broadcasts to other clients.
    *
    * @param {PreviousConfig} config - Complete configuration object
    * @returns {Promise<UpdateConfigResponse>} Update confirmation
-   * @throws {ApiError} If not authenticated or update fails
+  * @throws {ApiError} On failure
    */
   async updateConfig(config: PreviousConfig): Promise<UpdateConfigResponse> {
     return http.put<UpdateConfigResponse>(apiPaths.Config.get.full, { config });

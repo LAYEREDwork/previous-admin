@@ -2,45 +2,34 @@
  * WebSocket server for real-time updates
  *
  * Handles WebSocket connections for streaming metrics, configuration updates,
- * and real-time notifications. Authenticates connections via session middleware.
+ * and real-time notifications.
  *
  * @module backend/websocket
  */
 
 import { WebSocketServer, WebSocket } from 'ws';
-import { IncomingMessage } from 'http';
 import { getMetricsSnapshot } from './metrics';
 
 import type { WebSocketMessage } from './types';
 
-interface SessionRequest extends IncomingMessage {
-  session?: {
-    userId?: number;
-    username?: string;
-  };
-}
-
 /**
- * Map of username to list of WebSocket connections
- * Used for broadcasting updates to all connected clients of a user
+ * List of all active WebSocket connections
  */
-const USER_WEBSOCKET_SESSIONS = new Map<string, WebSocket[]>();
+const ACTIVE_WEBSOCKET_CONNECTIONS: WebSocket[] = [];
 
 /**
  * Setup WebSocket server
  *
  * Creates and configures WebSocket server on top of HTTP server.
- * Uses session middleware for authentication on new connections.
  *
  * @param httpServer - HTTP server instance from createServer()
- * @param sessionMiddleware - Express session middleware for authentication
  * @returns Configured WebSocket server instance
  */
-export function setupWebSocket(httpServer: any, sessionMiddleware: any): WebSocketServer {
+export function setupWebSocket(httpServer: any): WebSocketServer {
   const websocketServer = new WebSocketServer({ server: httpServer });
 
-  websocketServer.on('connection', (socket: WebSocket, request: SessionRequest) => {
-    handleWebSocketConnection(socket, request, sessionMiddleware);
+  websocketServer.on('connection', (socket: WebSocket) => {
+    handleWebSocketConnection(socket);
   });
 
   console.log('✅ WebSocket server initialized');
@@ -50,92 +39,57 @@ export function setupWebSocket(httpServer: any, sessionMiddleware: any): WebSock
 /**
  * Handle new WebSocket connection
  *
- * Authenticates user, registers session, and sets up message handlers.
- * Closes connection with 1008 status if authentication fails.
- *
  * @param socket - WebSocket connection
- * @param request - HTTP upgrade request with session
- * @param sessionMiddleware - Express session middleware
- * @param websocketServer - WebSocket server instance
  */
-function handleWebSocketConnection(
-  socket: WebSocket,
-  request: SessionRequest,
-  sessionMiddleware: any
-): void {
-  // Create mock response object for session middleware
-  const mockResponse = createMockResponse();
+function handleWebSocketConnection(socket: WebSocket): void {
+  // Register connection
+  ACTIVE_WEBSOCKET_CONNECTIONS.push(socket);
 
-  sessionMiddleware(request, mockResponse, async () => {
-    // Authenticate user
-    if (!request.session?.username) {
-      console.warn('⚠️  WebSocket connection rejected: Not authenticated');
-      socket.close(1008, 'Not authenticated');
-      return;
+  console.log(`✅ WebSocket connected (${ACTIVE_WEBSOCKET_CONNECTIONS.length} active connections)`);
+
+  let metricsStreamInterval: NodeJS.Timeout | null = null;
+
+  /**
+   * Handle incoming WebSocket messages
+   */
+  socket.on('message', (messageData: Buffer) => {
+    try {
+      handleWebSocketMessage(
+        messageData,
+        socket,
+        (interval: NodeJS.Timeout | null) => {
+          metricsStreamInterval = interval;
+        }
+      );
+    } catch (error) {
+      console.error('Error processing WebSocket message:', error);
+      sendErrorMessage(socket, 'Failed to process message');
+    }
+  });
+
+  /**
+   * Handle socket errors
+   */
+  socket.on('error', (error: Error) => {
+    console.error(`WebSocket error:`, error);
+  });
+
+  /**
+   * Handle socket closure
+   */
+  socket.on('close', () => {
+    // Cleanup metrics interval
+    if (metricsStreamInterval) {
+      clearInterval(metricsStreamInterval);
     }
 
-    const username = request.session.username;
-
-    // Register session
-    if (!USER_WEBSOCKET_SESSIONS.has(username)) {
-      USER_WEBSOCKET_SESSIONS.set(username, []);
+    // Remove from connections list
+    const index = ACTIVE_WEBSOCKET_CONNECTIONS.indexOf(socket);
+    if (index > -1) {
+      ACTIVE_WEBSOCKET_CONNECTIONS.splice(index, 1);
     }
-    const userSockets = USER_WEBSOCKET_SESSIONS.get(username)!;
-    userSockets.push(socket);
 
-    console.log(`✅ WebSocket connected: ${username}`);
-
-    let metricsStreamInterval: NodeJS.Timeout | null = null;
-
-    /**
-     * Handle incoming WebSocket messages
-     */
-    socket.on('message', (messageData: Buffer) => {
-      try {
-        handleWebSocketMessage(
-          messageData,
-          socket,
-          username,
-          (interval: NodeJS.Timeout | null) => {
-            metricsStreamInterval = interval;
-          }
-        );
-      } catch (error) {
-        console.error('Error processing WebSocket message:', error);
-        sendErrorMessage(socket, 'Failed to process message');
-      }
-    });
-
-    /**
-     * Handle socket errors
-     */
-    socket.on('error', (error: Error) => {
-      console.error(`WebSocket error for ${username}:`, error);
-    });
-
-    /**
-     * Handle socket closure
-     */
-    socket.on('close', () => {
-      // Cleanup metrics interval
-      if (metricsStreamInterval) {
-        clearInterval(metricsStreamInterval);
-      }
-
-      // Remove from session map
-      const sockets = USER_WEBSOCKET_SESSIONS.get(username);
-      if (sockets) {
-        const index = sockets.indexOf(socket);
-        if (index > -1) {
-          sockets.splice(index, 1);
-        }
-        if (sockets.length === 0) {
-          USER_WEBSOCKET_SESSIONS.delete(username);
-        }
-      }
-
-      console.log(`WebSocket disconnected: ${username}`);
-    });
+    console.log(`WebSocket disconnected (${ACTIVE_WEBSOCKET_CONNECTIONS.length} active connections)`);
   });
 }
 
@@ -146,13 +100,11 @@ function handleWebSocketConnection(
  *
  * @param messageData - Raw message buffer
  * @param socket - WebSocket connection
- * @param username - Authenticated username
  * @param setMetricsInterval - Callback to set metrics stream interval
  */
 function handleWebSocketMessage(
   messageData: Buffer,
   socket: WebSocket,
-  username: string,
   setMetricsInterval: (interval: NodeJS.Timeout | null) => void
 ): void {
   let parsedMessage: WebSocketMessage;
@@ -162,7 +114,7 @@ function handleWebSocketMessage(
     const messageText = messageData.toString('utf-8');
     parsedMessage = JSON.parse(messageText) as WebSocketMessage;
   } catch (parseError) {
-    console.warn(`Invalid WebSocket message from ${username}:`, parseError);
+    console.warn(`Invalid WebSocket message:`, parseError);
     sendErrorMessage(socket, 'Invalid message format - expected valid JSON');
     return;
   }
@@ -176,7 +128,7 @@ function handleWebSocketMessage(
   // Route to appropriate handler
   switch (parsedMessage.type) {
     case 'subscribe_metrics':
-      handleMetricsSubscription(socket, username, parsedMessage, setMetricsInterval);
+      handleMetricsSubscription(socket, parsedMessage, setMetricsInterval);
       break;
 
     case 'unsubscribe_metrics':
@@ -197,13 +149,11 @@ function handleWebSocketMessage(
  * Handle metrics subscription
  *
  * @param socket - WebSocket connection
- * @param username - Authenticated username
  * @param message - Subscription message with optional frequency
  * @param setMetricsInterval - Callback to register interval
  */
 async function handleMetricsSubscription(
   socket: WebSocket,
-  username: string,
   message: WebSocketMessage,
   setMetricsInterval: (interval: NodeJS.Timeout | null) => void
 ): Promise<void> {
@@ -255,7 +205,7 @@ async function handleMetricsSubscription(
   }, intervalMs);
 
   setMetricsInterval(interval);
-  console.log(`📊 Metrics subscription started for ${username} at ${frequency}s`);
+  console.log(`📊 Metrics subscription started at ${frequency}s interval`);
 }
 
 /**
@@ -288,25 +238,18 @@ function sendErrorMessage(socket: WebSocket, errorMessage: string): void {
 }
 
 /**
- * Broadcast configuration update to all users
+ * Broadcast configuration update to all connected clients
  *
- * @param username - Username whose config changed
  * @param configUpdate - Updated configuration data
  */
-export function broadcastConfigUpdate(username: string, configUpdate: any): void {
-  const userSockets = USER_WEBSOCKET_SESSIONS.get(username);
-
-  if (!userSockets) {
-    return;
-  }
-
+export function broadcastConfigUpdate(configUpdate: any): void {
   const message = JSON.stringify({
     type: 'config_update',
     data: configUpdate,
     timestamp: Date.now(),
   });
 
-  userSockets.forEach((socket) => {
+  ACTIVE_WEBSOCKET_CONNECTIONS.forEach((socket) => {
     if (socket.readyState === WebSocket.OPEN) {
       try {
         socket.send(message);
@@ -318,35 +261,10 @@ export function broadcastConfigUpdate(username: string, configUpdate: any): void
 }
 
 /**
- * Get all active user sessions
+ * Get all active WebSocket connections
  *
- * @returns Map of username to WebSocket connections
+ * @returns Array of active WebSocket connections
  */
-export function getUserSessions(): Map<string, WebSocket[]> {
-  return USER_WEBSOCKET_SESSIONS;
-}
-
-/**
- * Create mock response object for session middleware
- * Session middleware requires response object for compatibility
- *
- * @returns Mock response object
- */
-function createMockResponse(): any {
-  return {
-    headers: {},
-    statusCode: 200,
-    end() {},
-    setHeader(key: string, value: string) {
-      this.headers[key] = value;
-    },
-    getHeader(key: string) {
-      return this.headers[key];
-    },
-    removeHeader(key: string) {
-      delete this.headers[key];
-    },
-    writableEnded: false,
-    writable: true,
-  };
+export function getActiveConnections(): WebSocket[] {
+  return ACTIVE_WEBSOCKET_CONNECTIONS;
 }

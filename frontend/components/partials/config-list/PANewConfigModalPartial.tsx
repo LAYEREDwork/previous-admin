@@ -47,7 +47,7 @@ export function NewConfigModalPartial({
             <PAModal.Body>
                 <div className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label className="block text-sm font-medium text-[var(--rs-text-secondary)] mb-2">
                             {translation.configEditor.configurationNameLabel}
                         </label>
                         <Input
@@ -59,7 +59,7 @@ export function NewConfigModalPartial({
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label className="block text-sm font-medium text-[var(--rs-text-secondary)] mb-2">
                             {translation.configList.description}
                         </label>
                         <Input

@@ -1,5 +1,6 @@
 import { BiDownload, BiUpload, BiData } from 'react-icons/bi';
 import { PAButton } from '../../controls/PAButton';
+import { PACard } from '../../controls/PACard';
 import { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
 
@@ -21,29 +22,33 @@ export function DatabaseImportExportPartial({
     translation
 }: DatabaseImportExportPartialProps) {
     return (
-        <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+        <div className="border-t border-[var(--rs-border-primary)] pt-6">
             <div className="mb-4">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                <h2 className="text-2xl font-bold text-[var(--rs-text-primary)] mb-2">
                     {translation.importExport.databaseTitle}
                 </h2>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-[var(--rs-text-secondary)]">
                     {translation.importExport.databaseDescription}
                 </p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
                 {/* Import Database */}
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-                            <BiData size={20} className="text-blue-600 dark:text-blue-400" />
+                <PACard
+                    header={
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-[var(--rs-bg-info)] rounded-lg flex items-center justify-center">
+                                <BiData size={20} className="text-[var(--rs-text-info)]" />
+                            </div>
+                            <h3 className="text-lg font-semibold text-[var(--rs-text-primary)]">
+                                {translation.importExport.importDatabase}
+                            </h3>
                         </div>
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                            {translation.importExport.importDatabase}
-                        </h3>
-                    </div>
+                    }
+                >
+                    <div className="space-y-4">
 
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                    <p className="text-sm text-[var(--rs-text-secondary)] mb-4">
                         {translation.importExport.importDatabaseDescription}
                     </p>
 
@@ -69,27 +74,28 @@ export function DatabaseImportExportPartial({
                         </PAButton>
                     </label>
 
-                    <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                        <p className="text-xs text-red-800 dark:text-red-300 font-semibold">
+                    <div className="mt-4 p-3 bg-[var(--rs-bg-error)] rounded-lg">
+                        <p className="text-xs text-[var(--rs-text-error)] font-semibold">
                             {translation.importExport.warningReplaceAll}
                         </p>
                     </div>
-                </div>
+                    </div>
+                </PACard>
 
                 {/* Export Database */}
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-                            <BiData size={20} className="text-blue-600 dark:text-blue-400" />
+                <PACard
+                    header={
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-[var(--rs-bg-info)] rounded-lg flex items-center justify-center">
+                                <BiData size={20} className="text-[var(--rs-text-info)]" />
+                            </div>
+                            <h3 className="text-lg font-semibold text-[var(--rs-text-primary)]">
+                                {translation.importExport.exportDatabase}
+                            </h3>
                         </div>
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                            {translation.importExport.exportDatabase}
-                        </h3>
-                    </div>
-
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                        {translation.importExport.exportDatabaseDescription}
-                    </p>
+                    }
+                >
+                    <div className="space-y-4">
 
                     <PAButton
                         onClick={exportDatabaseDump}
@@ -105,12 +111,13 @@ export function DatabaseImportExportPartial({
                         {databaseExporting ? translation.importExport.exportingDatabase : translation.importExport.exportCompleteDatabase}
                     </PAButton>
 
-                    <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                        <p className="text-xs text-blue-800 dark:text-blue-300">
+                    <div className="mt-4 p-3 bg-[var(--rs-bg-info)] rounded-lg">
+                        <p className="text-xs text-[var(--rs-text-info)]">
                             {translation.importExport.exportsAllData}
                         </p>
                     </div>
-                </div>
+                    </div>
+                </PACard>
             </div>
         </div>
     );

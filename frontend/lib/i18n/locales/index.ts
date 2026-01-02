@@ -209,31 +209,8 @@ export interface Translations {
     warningReplaceAll: string;
   };
   layout: {
-    signOut: string;
     subtitle: string;
     title: string;
-  };
-  login: {
-    confirmPassword: string;
-    confirmPasswordPlaceholder: string;
-    createAccount: string;
-    creatingAccount: string;
-    databaseImportFailed: string;
-    databaseImportSuccess: string;
-    loginFailed: string;
-    or: string;
-    importingDatabase: string;
-    importExistingDatabase: string;
-    importDatabaseHint: string;
-    password: string;
-    passwordMismatch: string;
-    passwordPlaceholder: string;
-    setupTitle: string;
-    signIn: string;
-    signingIn: string;
-    title: string;
-    username: string;
-    usernamePlaceholder: string;
   };
   system: {
     checkForUpdates: string;

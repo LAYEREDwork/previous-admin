@@ -3,6 +3,7 @@ import { Input } from 'rsuite';
 import { PAButton } from '../../controls/PAButton';
 import { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
+import { PACard } from '../../controls/PACard';
 
 interface ConfigDetailsPartialProps {
     localName: string;
@@ -28,15 +29,17 @@ export function ConfigDetailsPartial({
     const rsuiteSize = controlSize === 'xs' ? 'sm' : controlSize;
 
     return (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                {translation.configEditor.configurationDetailsTitle}
-            </h3>
-
+        <PACard
+            header={
+                <h3 className="text-lg font-semibold text-[var(--rs-text-primary)]">
+                    {translation.configEditor.configurationDetailsTitle}
+                </h3>
+            }
+        >
             <div className="grid gap-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20">
                     <div className="flex flex-col">
-                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label className="text-sm font-medium text-[var(--rs-text-secondary)] mb-2">
                             {translation.configEditor.configurationNameLabel}
                         </label>
                         <Input
@@ -47,7 +50,7 @@ export function ConfigDetailsPartial({
                         />
                     </div>
                     <div className="flex flex-col">
-                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label className="text-sm font-medium text-[var(--rs-text-secondary)] mb-2">
                             {translation.configEditor.descriptionLabel}
                         </label>
                         <Input
@@ -72,6 +75,6 @@ export function ConfigDetailsPartial({
                     </PAButton>
                 </div>
             </div>
-        </div>
+        </PACard>
     );
 }

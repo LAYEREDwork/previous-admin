@@ -30,7 +30,7 @@ export function EditorControlsPartial({
     return (
         <div className="flex flex-col gap-3 sm:gap-4">
             <div className="w-full">
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">
+                <h2 className="text-xl sm:text-2xl font-bold text-[var(--rs-text-primary)]">
                     {translation.configEditor.title}
                 </h2>
             </div>

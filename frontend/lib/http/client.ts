@@ -17,7 +17,7 @@ export class ApiError extends Error {
   constructor(
     message: string,
     public statusCode: number,
-    public type: 'auth' | 'validation' | 'server' | 'network' = 'server'
+    public type: 'validation' | 'server' | 'network' = 'server'
   ) {
     super(message);
     this.name = 'ApiError';
@@ -49,7 +49,6 @@ async function parseErrorResponse(response: Response): Promise<string> {
  * Determine error type from status code
  */
 function getErrorType(statusCode: number): ApiError['type'] {
-  if (statusCode === 401 || statusCode === 403) return 'auth';
   if (statusCode === 400 || statusCode === 422) return 'validation';
   if (statusCode >= 500) return 'server';
   return 'server';
@@ -65,12 +64,12 @@ function getErrorType(statusCode: number): ApiError['type'] {
  *
  * @example
  * // GET request
- * const data = await request(ApiPaths.Auth.session.full);
+ * const data = await request(apiPaths.Config.get.full);
  *
  * // POST request with body
- * const result = await request(ApiPaths.Auth.login.full, {
+ * const result = await request(apiPaths.Configuration.create.full, {
  *   method: 'POST',
- *   body: { username: 'admin', password: 'secret' }
+ *   body: { name: 'My Config', config_data: {} }
  * });
  */
 export async function request<TResponse, TBody = unknown>(

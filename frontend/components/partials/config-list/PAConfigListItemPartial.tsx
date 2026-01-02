@@ -1,6 +1,7 @@
 import { ConfigItemControls } from './PAConfigItemControlsPartial';
 import { ConfigItemContent } from './PAConfigItemContentPartial';
 import { ConfigItemActions } from './PAConfigItemActionsPartial';
+import { PACard } from '../../controls/PACard';
 import { Configuration } from '../../../lib/database';
 import type { Translations } from '../../../lib/translations';
 
@@ -44,11 +45,9 @@ export function ConfigListItemPartial({
 
   return (
     <div
-      className={`relative w-full flex flex-row gap-3 sm:gap-2 p-3 sm:p-2 rounded-lg border shadow-sm transition-all ${
-        isActive
-          ? 'border-primary-500'
-          : 'border-gray-200 dark:border-next-border hover:border-gray-300 dark:hover:border-gray-500'
-      } ${isDragOver ? 'border-primary-500' : ''} bg-white dark:bg-gray-900`}
+      className={`relative transition-all ${
+        isDragOver ? 'opacity-60' : ''
+      }`}
       tabIndex={0}
       aria-label={config.name}
       draggable={hasMultipleConfigs}
@@ -57,34 +56,38 @@ export function ConfigListItemPartial({
       onDragEnd={() => hasMultipleConfigs && onDragEnd()}
       onDragLeave={() => hasMultipleConfigs && onDragLeave()}
     >
-      {/* Linke Spalte: Active Button oben, Drag Button unten */}
-      <ConfigItemControls
-        isActive={isActive}
-        onSetActive={() => setActiveConfig(config.id)}
-        translation={translation}
-      />
+      <PACard className={isActive ? 'ring-2 ring-primary-500' : ''}>
+        <div className="w-full flex flex-row gap-3 sm:gap-2">
+          {/* Linke Spalte: Active Button oben, Drag Button unten */}
+          <ConfigItemControls
+            isActive={isActive}
+            onSetActive={() => setActiveConfig(config.id)}
+            translation={translation}
+          />
 
-      {/* Mittlere Spalte: Name, Description */}
-      <ConfigItemContent
-        config={config}
-        isMobile={isMobile}
-        exportSingleConfig={exportSingleConfig}
-        duplicateConfig={duplicateConfig}
-        onEdit={onEdit}
-        deleteConfig={deleteConfig}
-        translation={translation}
-      />
+          {/* Mittlere Spalte: Name, Description */}
+          <ConfigItemContent
+            config={config}
+            isMobile={isMobile}
+            exportSingleConfig={exportSingleConfig}
+            duplicateConfig={duplicateConfig}
+            onEdit={onEdit}
+            deleteConfig={deleteConfig}
+            translation={translation}
+          />
 
-      {/* Rechte Spalte: Action Buttons - nur Desktop, vertikal zentriert */}
-      <ConfigItemActions
-        config={config}
-        isMobile={isMobile}
-        exportSingleConfig={exportSingleConfig}
-        duplicateConfig={duplicateConfig}
-        onEdit={onEdit}
-        deleteConfig={deleteConfig}
-        translation={translation}
-      />
+          {/* Rechte Spalte: Action Buttons - nur Desktop, vertikal zentriert */}
+          <ConfigItemActions
+            config={config}
+            isMobile={isMobile}
+            exportSingleConfig={exportSingleConfig}
+            duplicateConfig={duplicateConfig}
+            onEdit={onEdit}
+            deleteConfig={deleteConfig}
+            translation={translation}
+          />
+        </div>
+      </PACard>
     </div>
   );
 }

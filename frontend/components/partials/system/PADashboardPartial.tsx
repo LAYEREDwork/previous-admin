@@ -1,4 +1,5 @@
 import { PASegmentedControl } from '../../controls/PASegmentedControl';
+import { PACard } from '../../controls/PACard';
 import { metricsUpdateFrequencies } from '../../../lib/constants';
 import { Metrics } from '../../../hooks/useSystemMetrics';
 import { Translations } from '../../../lib/translations';
@@ -21,13 +22,14 @@ export function DashboardPartial({
     translation
 }: DashboardPartialProps) {
     return (
-        <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
-                    Dashboard
-                </h3>
-                <div className="flex items-center gap-3">
-                    <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+        <PACard
+            header={
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full">
+                    <h3 className="text-xl font-bold text-[var(--rs-text-primary)]">
+                        Dashboard
+                    </h3>
+                    <div className="flex items-center gap-3">
+                    <span className="text-xs font-medium text-[var(--rs-text-secondary)] uppercase tracking-wider">
                         {translation.system.updateFrequency}
                     </span>
                     <PASegmentedControl
@@ -39,9 +41,10 @@ export function DashboardPartial({
                         onChange={(val) => setUpdateFrequency(parseFloat(val))}
                         size="sm"
                     />
+                    </div>
                 </div>
-            </div>
-
+            }
+        >
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* CPU Load Chart */}
                 <CpuLoadChart metrics={metrics} translation={translation} />
@@ -55,6 +58,6 @@ export function DashboardPartial({
                 {/* Disk IO Chart */}
                 <DiskIOChart metrics={metrics} translation={translation} />
             </div>
-        </div>
+        </PACard>
     );
 }

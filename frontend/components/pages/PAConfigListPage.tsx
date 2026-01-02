@@ -51,7 +51,7 @@ export function PAConfigList({ onEdit }: ConfigListProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="text-gray-500 dark:text-gray-400">{translation.configList.loading}</div>
+        <div className="text-[var(--rs-text-secondary)]">{translation.configList.loading}</div>
       </div>
     );
   }

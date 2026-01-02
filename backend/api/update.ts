@@ -5,7 +5,6 @@
 
 import express from 'express';
 import { execAsync } from './helpers';
-import { requireAuth } from '../middleware';
 import { apiPaths } from '../../shared/constants';
 import packageJson from '../../package.json';
 import { API_BASE_URL } from '../constants';
@@ -49,7 +48,7 @@ const router = express.Router();
  * const { success, message } = await res.json();
  * // Application will restart automatically
  */
-router.post(apiPaths.Update.update.relative, requireAuth, async (req: any, res: any) => {
+router.post(apiPaths.Update.update.relative, async (req: any, res: any) => {
   try {
     const adminDir = process.cwd();
 
@@ -124,7 +123,7 @@ router.post(apiPaths.Update.update.relative, requireAuth, async (req: any, res: 
  *   - releaseNotes {string|null}: Release notes for latest version
  *   - currentReleaseNotes {string|null}: Release notes for current version
  */
-router.get(apiPaths.Update.version.relative, requireAuth, async (req: any, res: any) => {
+router.get(apiPaths.Update.version.relative, async (req: any, res: any) => {
   const REPO_API_URL = 'https://codeberg.org/api/v1/repos/phranck/previous-admin';
 
   try {

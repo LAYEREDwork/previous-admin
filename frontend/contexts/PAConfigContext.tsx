@@ -1,9 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react';
 
-// Hooks
-import { useAuth } from './PAAuthContext';
-
 // Utilities
 import { api } from '../lib/api';
 import { database } from '../lib/database';
@@ -89,11 +86,8 @@ export function PAConfigProvider({ children }: { children: ReactNode }) {
   const [currentConfigId, setCurrentConfigId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { isAuthenticated } = useAuth();
 
   const refreshConfig = useCallback(async () => {
-    if (!isAuthenticated) return;
-
     try {
       setLoading(true);
       setError(null);
@@ -118,7 +112,7 @@ export function PAConfigProvider({ children }: { children: ReactNode }) {
     } finally {
       setLoading(false);
     }
-  }, [isAuthenticated]);
+  }, []);
 
   const updateConfig = useCallback(async (newConfig: PreviousConfig) => {
     try {
@@ -193,17 +187,8 @@ export function PAConfigProvider({ children }: { children: ReactNode }) {
   }, [currentConfigId]);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      setConfig(null);
-      setConfigName(null);
-      setConfigDescription(null);
-      setCurrentConfigId(null);
-      setLoading(false);
-      return;
-    }
-
     refreshConfig();
-  }, [isAuthenticated, refreshConfig]);
+  }, [refreshConfig]);
 
   return (
     <ConfigContext.Provider value={{ config, configName, configDescription, loading, error, updateConfig, refreshConfig, loadConfigById, updateConfigMetadata }}>

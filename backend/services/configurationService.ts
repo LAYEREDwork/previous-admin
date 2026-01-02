@@ -25,13 +25,12 @@ import type {
 } from '../types';
 
 /**
- * Get all configurations for a user
+ * Get all configurations
  *
- * @param userId - User ID to filter configurations
  * @returns Array of configurations
  */
-export function getConfigurations(userId: number): Configuration[] {
-  return dbGetConfigurations(userId);
+export function getConfigurations(): Configuration[] {
+  return dbGetConfigurations();
 }
 
 /**
@@ -48,18 +47,16 @@ export function getConfigurationById(id: string): Configuration | null {
  * Create new configuration
  *
  * @param request - Configuration creation request
- * @param userId - User ID creating the configuration
  * @returns Created configuration
  * @throws Error if validation fails
  */
 export function createConfiguration(
-  request: CreateConfigurationRequest,
-  userId: number
+  request: CreateConfigurationRequest
 ): Configuration {
   // Validate configuration data
   validateConfiguration(request.config_data);
 
-  return dbCreateConfiguration(userId, request);
+  return dbCreateConfiguration(request);
 }
 
 /**
@@ -97,10 +94,9 @@ export function updateConfiguration(
  * Delete configuration
  *
  * @param id - Configuration ID
- * @param userId - User ID deleting the configuration
  * @throws Error if not found or in use
  */
-export function deleteConfiguration(id: string, userId: number): void {
+export function deleteConfiguration(id: string): void {
   // Check if configuration exists
   const config = dbGetConfiguration(id);
   if (!config) {
@@ -108,7 +104,7 @@ export function deleteConfiguration(id: string, userId: number): void {
   }
 
   // Prevent deletion of active configuration
-  const active = dbGetActiveConfiguration(userId);
+  const active = dbGetActiveConfiguration();
   if (active && active.id === id) {
     throw new Error('Cannot delete active configuration');
   }
@@ -120,23 +116,21 @@ export function deleteConfiguration(id: string, userId: number): void {
  * Set active configuration
  *
  * @param id - Configuration ID
- * @param userId - User ID
  * @throws Error if not found
  */
-export function setActiveConfiguration(id: string, userId: number): void {
+export function setActiveConfiguration(id: string): void {
   const config = dbGetConfiguration(id);
   if (!config) {
     throw new Error('Configuration not found');
   }
 
-  dbSetActiveConfiguration(id, userId);
+  dbSetActiveConfiguration(id);
 }
 
 /**
  * Update configuration order
  *
  * @param orderedIds - Array of configuration IDs in new order
- * @param userId - User ID
  */
 export function updateConfigurationOrder(
   orderedIds: string[]
@@ -147,11 +141,10 @@ export function updateConfigurationOrder(
 /**
  * Get active configuration
  *
- * @param userId - User ID
  * @returns Active configuration or null
  */
-export function getActiveConfiguration(userId: number): Configuration | null {
-  return dbGetActiveConfiguration(userId);
+export function getActiveConfiguration(): Configuration | null {
+  return dbGetActiveConfiguration();
 }
 
 /**
@@ -170,7 +163,5 @@ function validateConfiguration(config: PreviousConfig): void {
     throw new Error('Invalid CPU configuration');
   }
 
-  if (typeof config.system !== 'object' || typeof config.system.memory_size !== 'number') {
-    throw new Error('Invalid memory configuration');
-  }
+  // Add more validation as needed
 }

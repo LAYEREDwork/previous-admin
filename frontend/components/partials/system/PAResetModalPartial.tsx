@@ -27,11 +27,11 @@ export function ResetModalPartial({
             </PAModal.Header>
             <PAModal.Body>
                 <div className="space-y-4">
-                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                    <p className="text-sm text-[var(--rs-text-secondary)]">
                         {translation.system.resetDescription}
                     </p>
-                    <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded p-3">
-                        <p className="text-sm text-red-800 dark:text-red-200 font-medium">
+                    <div className="bg-[var(--rs-bg-error)] border border-[var(--rs-border-error)] rounded p-3">
+                        <p className="text-sm text-[var(--rs-text-error)] font-medium">
                             ⚠️ {translation.system.resetWarning}
                         </p>
                     </div>

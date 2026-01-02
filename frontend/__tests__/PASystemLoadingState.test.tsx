@@ -21,15 +21,9 @@ describe('SystemLoadingState', () => {
     expect(icon).toBeInTheDocument();
   });
 
-  it('should have correct styling classes', () => {
-    render(<SystemLoadingState translation={mockTranslation} />);
-    const container = screen.getByText('Loading system information...').parentElement?.parentElement;
-    expect(container).toHaveClass('bg-white', 'dark:bg-gray-800', 'rounded-lg', 'shadow-md', 'border', 'border-gray-200', 'dark:border-gray-700', 'p-6');
-  });
-
   it('should have correct text color', () => {
     render(<SystemLoadingState translation={mockTranslation} />);
     const textContainer = screen.getByText('Loading system information...').closest('div');
-    expect(textContainer).toHaveClass('text-next-accent');
+    expect(textContainer).toHaveClass('text-[var(--rs-primary-500)]');
   });
 });
