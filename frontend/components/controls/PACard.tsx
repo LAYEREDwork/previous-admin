@@ -107,7 +107,7 @@ export function PACard({
   );
 
   // Check if header border should be shown (when body is visible)
-  const showHeaderBorder = collapsible ? isExpanded && children : !!children;
+  const showHeaderBorder = false; // Border between header and content disabled
 
   return (
     <div className={`pa-card ${className}`} style={finalStyle}>
