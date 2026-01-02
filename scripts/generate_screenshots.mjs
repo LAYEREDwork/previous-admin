@@ -206,54 +206,36 @@ async function switchToTab(page, tabName) {
 }
 
 /**
- * Generates a jagged tear line path for the separator
- */
-function generateJaggedPath(width, height) {
-  const points = [];
-  const segmentHeight = 10;
-  const variation = 12;
-  
-  // Diagonal tear: from top-right-ish to bottom-left-ish
-  const startX = width * 0.65;
-  const endX = width * 0.35;
-  
-  for (let y = -segmentHeight; y <= height + segmentHeight; y += segmentHeight) {
-    const progress = Math.max(0, Math.min(1, y / height));
-    const centerX = startX + (endX - startX) * progress;
-    const offset = Math.random() * variation - variation / 2;
-    points.push({ x: centerX + offset, y });
-  }
-  
-  return points;
-}
-
-/**
- * Creates a combined light/dark screenshot with a transparent gap
+ * Creates a combined light/dark screenshot with a vertical separator line
  */
 async function createCombinedScreenshot(leftPath, rightPath, outputPath) {
   try {
     // Get image dimensions
     const metadata = await sharp(leftPath).metadata();
     const { width, height } = metadata;
-    const gap = 8; // Width of the transparent gap
+    const separatorWidth = 3;
+    const accentColor = '#009a9a'; // Project accent color
     
-    const rawPoints = generateJaggedPath(width, height);
+    const centerX = Math.floor(width / 2);
     
-    // Create points for left and right polygons with a gap
-    const leftPoints = rawPoints.map(p => `${p.x - gap/2},${p.y}`).join(' ');
-    const rightPoints = rawPoints.map(p => `${p.x + gap/2},${p.y}`).join(' ');
-    
-    // Create mask for the left side
+    // Create mask for the left side (Light Mode)
     const leftMaskSvg = `
       <svg width="${width}" height="${height}">
-        <polygon points="0,0 ${leftPoints} 0,${height}" fill="white" />
+        <rect x="0" y="0" width="${centerX}" height="${height}" fill="white" />
       </svg>
     `;
     
-    // Create mask for the right side
+    // Create mask for the right side (Dark Mode)
     const rightMaskSvg = `
       <svg width="${width}" height="${height}">
-        <polygon points="${width},0 ${rightPoints} ${width},${height}" fill="white" />
+        <rect x="${centerX}" y="0" width="${width - centerX}" height="${height}" fill="white" />
+      </svg>
+    `;
+    
+    // Create the separator line
+    const separatorSvg = `
+      <svg width="${width}" height="${height}">
+        <rect x="${centerX - separatorWidth / 2}" y="0" width="${separatorWidth}" height="${height}" fill="${accentColor}" />
       </svg>
     `;
     
@@ -295,6 +277,10 @@ async function createCombinedScreenshot(leftPath, rightPath, outputPath) {
       },
       {
         input: rightSideBuffer,
+        blend: 'over'
+      },
+      {
+        input: Buffer.from(separatorSvg),
         blend: 'over'
       }
     ])
