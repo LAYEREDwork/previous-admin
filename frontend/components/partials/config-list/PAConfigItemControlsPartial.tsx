@@ -10,8 +10,7 @@ interface ConfigItemControlsProps {
 }
 
 /**
- * Controls section of a configuration list item containing the active state toggle
- * and drag handle buttons.
+ * Controls section of a configuration list item containing the active state toggle button.
  */
 export function ConfigItemControls({
   isActive,

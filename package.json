@@ -14,7 +14,8 @@
     "test": "npm run test:frontend && npm run test:backend",
     "test:frontend": "vitest run",
     "test:backend": "jest",
-    "screenshots": "node scripts/generate_screenshots.mjs"
+    "screenshots": "node scripts/generate_screenshots.mjs",
+    "generate:sfsymbols": "tsx scripts/generate-sf-symbols.ts"
   },
   "dependencies": {
     "better-sqlite3": "^11.0.0",

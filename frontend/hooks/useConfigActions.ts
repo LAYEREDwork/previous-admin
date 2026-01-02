@@ -32,6 +32,7 @@ export function useConfigActions(onRefreshList: () => Promise<void>) {
       try {
         await database.deleteConfiguration(id);
         await onRefreshList();
+        await refreshConfig();
       } catch (error) {
         console.error('Error deleting config:', error);
         showError(translation.configList.errorDeletingConfiguration);
@@ -67,8 +68,8 @@ export function useConfigActions(onRefreshList: () => Promise<void>) {
 
   async function duplicateConfig(config: Configuration) {
     try {
-      const duplicatedName = config.name + translation.configList.copySuffix;
-      await database.createConfiguration(duplicatedName, config.description, config.config_data, false);
+      // Create duplicate with potentially edited name and description
+      await database.createConfiguration(config.name, config.description, config.config_data, false);
       await onRefreshList();
       showSuccess(translation.configList.configurationDuplicatedSuccessfully);
     } catch (error) {

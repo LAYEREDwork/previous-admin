@@ -45,7 +45,7 @@ export const PAEmptyView: React.FC<PAEmptyViewProps> = ({
 }) => {
   return (
     <div className={`flex flex-col items-center justify-center min-h-[60vh] py-16 px-4 ${className}`}>
-      <div className="text-[var(--rs-text-secondary)] opacity-30 mb-6">
+      <div className="text-[var(--rs-text-secondary)] opacity-70 mb-6">
         <Icon size={iconSize} />
       </div>
       <h3 className="text-xl font-semibold text-[var(--rs-text-primary)] mb-2">

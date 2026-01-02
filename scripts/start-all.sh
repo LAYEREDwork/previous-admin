@@ -8,18 +8,23 @@ echo "  Previous Admin wird gestartet..."
 echo "========================================"
 echo ""
 
-# Prüfen ob bereits läuft
-if pgrep -f "node backend/index.js" > /dev/null; then
-    echo "⚠️  Backend läuft bereits!"
-else
-    # Backend im Hintergrund starten
-    npm run backend > backend.log 2>&1 &
-    BACKEND_PID=$!
-    echo "✓ Backend gestartet (PID: $BACKEND_PID)"
-    echo "  Logs: backend.log"
-fi
-
+# Alle laufenden Backend- und Frontend-Prozesse beenden
+echo "Beende alle laufenden Prozesse..."
+pkill -f "backend/index" 2>/dev/null
+pkill -f "vite preview" 2>/dev/null
+pkill -f "tsx backend" 2>/dev/null
+sleep 2
+echo "✓ Prozesse beendet"
 echo ""
+
+# Backend im Hintergrund starten
+echo "Starte Backend..."
+npm run backend > backend.log 2>&1 &
+BACKEND_PID=$!
+echo "✓ Backend gestartet (PID: $BACKEND_PID)"
+echo "  Logs: backend.log"
+echo ""
+
 echo "Warte 3 Sekunden..."
 sleep 3
 

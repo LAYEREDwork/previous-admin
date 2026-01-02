@@ -135,12 +135,13 @@ describe('ConfigurationService', () => {
       expect(dbDeleteConfiguration).toHaveBeenCalledWith('1');
     });
 
-    it('should throw error if configuration is active', () => {
+    it('should delete active configuration without error', () => {
       const mockConfig: Configuration = { id: '1', name: 'Test' } as Configuration;
       (dbGetConfiguration as jest.MockedFunction<typeof dbGetConfiguration>).mockReturnValue(mockConfig);
       (dbGetActiveConfiguration as jest.MockedFunction<typeof dbGetActiveConfiguration>).mockReturnValue(mockConfig);
 
-      expect(() => deleteConfiguration('1')).toThrow('Cannot delete active configuration');
+      deleteConfiguration('1');
+      expect(dbDeleteConfiguration).toHaveBeenCalledWith('1');
     });
   });
 

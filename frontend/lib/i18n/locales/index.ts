@@ -116,6 +116,7 @@ export interface Translations {
     configurationExportedSuccessfully: string;
     confirmDelete: string;
     copySuffix: string;
+    createNew: string;
     delete: string;
     description: string;
     duplicate: string;
@@ -131,7 +132,6 @@ export interface Translations {
     errorUpdatingOrder: string;
     loading: string;
     move: string;
-    createNew: string;
     setActive: string;
     export: string;
     title: string;

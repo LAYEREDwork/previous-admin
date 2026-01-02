@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
-import { BiCheckCircle, BiXCircle, BiError, BiInfoCircle, BiX } from 'react-icons/bi';
+import { BiCheckCircle, BiXCircle, BiError, BiInfoCircle } from 'react-icons/bi';
 import { useLanguage } from './PALanguageContext';
 
 export type AlertType = 'success' | 'error' | 'warning' | 'info' | 'confirm';
@@ -95,7 +95,7 @@ export function PANotificationProvider({ children }: { children: ReactNode }) {
 
   const showConfirm = useCallback(
     (message: string, onConfirm: () => void, onCancel?: () => void) => {
-      showAlert(message, 'confirm', [
+      showAlert(message, 'warning', [
         {
           label: translation.common.cancel,
           onClick: onCancel,
@@ -184,15 +184,6 @@ function AlertDialog({ alert, onRemove }: { alert: Alert; onRemove: (id: string)
 
   return (
     <div className="bg-[var(--rs-bg-card)] rounded-lg shadow-2xl max-w-md w-full animate-scale-in border border-[var(--rs-border-primary)]">
-      <div className="flex justify-end p-3 border-b border-[var(--rs-border-primary)]">
-        <button
-          onClick={() => onRemove(id)}
-          className="text-[var(--rs-text-secondary)] hover:text-[var(--rs-text-primary)] transition-colors"
-        >
-          <BiX size={20} />
-        </button>
-      </div>
-
       <div className="p-6 text-center">
         <div className="flex justify-center mb-4">{getIcon()}</div>
         <p className="text-base sm:text-lg text-[var(--rs-text-primary)] leading-relaxed">
@@ -200,7 +191,7 @@ function AlertDialog({ alert, onRemove }: { alert: Alert; onRemove: (id: string)
         </p>
       </div>
 
-      <div className="flex gap-3 p-4 bg-[var(--rs-bg-active)] border-t border-[var(--rs-border-primary)]">
+      <div className="flex gap-3 p-4 border-t border-[var(--rs-border-primary)]">
         {buttons?.map((button, index) => (
           <button
             key={index}

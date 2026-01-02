@@ -58,7 +58,7 @@ export function ConfigListItemPartial({
     >
       <PACard className={isActive ? 'ring-2 ring-primary-500' : ''}>
         <div className="w-full flex flex-row gap-3 sm:gap-2">
-          {/* Linke Spalte: Active Button oben, Drag Button unten */}
+          {/* Linke Spalte: Active Button */}
           <ConfigItemControls
             isActive={isActive}
             onSetActive={() => setActiveConfig(config.id)}

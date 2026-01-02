@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { PACard } from '../../controls/PACard';
 
 interface EditorSectionPartialProps {
@@ -5,12 +6,18 @@ interface EditorSectionPartialProps {
     children: React.ReactNode;
     expanded: boolean;
     onToggle: (expanded: boolean) => void;
+    icon?: ReactNode;
 }
 
-export function EditorSectionPartial({ title, children, expanded, onToggle }: EditorSectionPartialProps) {
+export function EditorSectionPartial({ title, children, expanded, onToggle, icon }: EditorSectionPartialProps) {
     return (
         <PACard
-            header={<span className="text-base sm:text-lg font-semibold text-[var(--rs-text-primary)] leading-none">{title}</span>}
+            header={
+                <div className="flex items-center gap-2">
+                    {icon && <div className="flex-shrink-0 text-[var(--rs-text-primary)]">{icon}</div>}
+                    <span className="text-base sm:text-lg font-semibold text-[var(--rs-text-primary)] leading-none">{title}</span>
+                </div>
+            }
             collapsible
             expanded={expanded}
             onToggle={onToggle}

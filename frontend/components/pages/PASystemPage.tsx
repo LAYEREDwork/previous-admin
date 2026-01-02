@@ -21,8 +21,6 @@ export function PASystem() {
     setShowResetModal,
     isResetting,
     handleReset,
-    updateFrequency,
-    setUpdateFrequency,
   } = useSystem();
 
   return (
@@ -41,8 +39,6 @@ export function PASystem() {
           setShowResetModal={setShowResetModal}
           isResetting={isResetting}
           handleReset={handleReset}
-          updateFrequency={updateFrequency}
-          setUpdateFrequency={setUpdateFrequency}
           controlSize={controlSize}
           translation={translation}
         />

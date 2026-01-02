@@ -1,4 +1,6 @@
 import { SelectPicker, Input, Toggle } from 'rsuite';
+import { BiChip, BiDesktop, BiWifi, BiVolume } from 'react-icons/bi';
+import { MdStorage, MdRestartAlt, MdKeyboard } from 'react-icons/md';
 import { EditorSectionPartial } from './PAEditorSectionPartial';
 import { EditorFieldPartial } from './PAEditorFieldPartial';
 import { PASize, PreviousConfig } from '../../../lib/types';
@@ -31,6 +33,7 @@ export function EditorViewPartial({
                 title={translation.configEditor.sections.system}
                 expanded={expandedSections.system}
                 onToggle={(expanded) => setExpandedSections((prev) => ({ ...prev, system: expanded }))}
+                icon={<BiChip size={20} />}
             >
                 <EditorFieldPartial label={translation.configEditor.fields.cpuType}>
                     <SelectPicker
@@ -103,6 +106,7 @@ export function EditorViewPartial({
                 title={translation.configEditor.sections.display}
                 expanded={expandedSections.display}
                 onToggle={(expanded) => setExpandedSections((prev) => ({ ...prev, display: expanded }))}
+                icon={<BiDesktop size={20} />}
             >
                 <EditorFieldPartial label={translation.configEditor.fields.displayType}>
                     <SelectPicker
@@ -176,6 +180,7 @@ export function EditorViewPartial({
                 title={translation.configEditor.sections.scsi}
                 expanded={expandedSections.scsi}
                 onToggle={(expanded) => setExpandedSections((prev) => ({ ...prev, scsi: expanded }))}
+                icon={<MdStorage size={20} />}
             >
                 {['hd0', 'hd1', 'hd2', 'hd3', 'hd4', 'hd5', 'hd6'].map((hd) => (
                     <EditorFieldPartial key={hd} label={`${translation.configEditor.fields.scsiHd} ${hd.toUpperCase()}`}>
@@ -204,6 +209,7 @@ export function EditorViewPartial({
                 title={translation.configEditor.sections.network}
                 expanded={expandedSections.network}
                 onToggle={(expanded) => setExpandedSections((prev) => ({ ...prev, network: expanded }))}
+                icon={<BiWifi size={20} />}
             >
                 <EditorFieldPartial label={translation.configEditor.fields.networkEnabled}>
                     <Toggle
@@ -235,6 +241,7 @@ export function EditorViewPartial({
                 title={translation.configEditor.sections.sound}
                 expanded={expandedSections.sound}
                 onToggle={(expanded) => setExpandedSections((prev) => ({ ...prev, sound: expanded }))}
+                icon={<BiVolume size={20} />}
             >
                 <EditorFieldPartial label={translation.configEditor.fields.soundEnabled}>
                     <Toggle
@@ -267,6 +274,7 @@ export function EditorViewPartial({
                 title={translation.configEditor.sections.boot}
                 expanded={expandedSections.boot}
                 onToggle={(expanded) => setExpandedSections((prev) => ({ ...prev, boot: expanded }))}
+                icon={<MdRestartAlt size={20} />}
             >
                 <EditorFieldPartial label={translation.configEditor.fields.romFile}>
                     <Input
@@ -298,6 +306,7 @@ export function EditorViewPartial({
                 title={translation.configEditor.sections.input}
                 expanded={expandedSections.input}
                 onToggle={(expanded) => setExpandedSections((prev) => ({ ...prev, input: expanded }))}
+                icon={<MdKeyboard size={20} />}
             >
                 <EditorFieldPartial label={translation.configEditor.fields.keyboardType}>
                     <SelectPicker

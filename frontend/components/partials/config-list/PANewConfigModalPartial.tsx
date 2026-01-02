@@ -1,4 +1,5 @@
-import { IoDocumentText } from 'react-icons/io5';
+import { SFSymbolDocumentBadgePlusFill } from '../../sf-symbols/SFSymbolDocumentBadgePlusFill';
+import { useEffect } from 'react';
 import { Input } from 'rsuite';
 import { PAButton } from '../../controls/PAButton';
 import { PAModal } from '../../controls/PAModal';
@@ -30,6 +31,15 @@ export function NewConfigModalPartial({
     controlSize,
     translation
 }: NewConfigModalPartialProps) {
+    // Focus on name input when modal opens
+    useEffect(() => {
+        if (open && nameRef.current) {
+            // Use setTimeout to ensure the focus happens after modal is rendered
+            setTimeout(() => {
+                nameRef.current?.focus();
+            }, 100);
+        }
+    }, [open, nameRef]);
     return (
         <PAModal
             open={open}
@@ -40,7 +50,7 @@ export function NewConfigModalPartial({
         >
             <PAModal.Header closeButton={false}>
                 <PAModal.Title>
-                    <IoDocumentText size={32} className="inline-block mr-2 -mt-0.5" />
+                    <SFSymbolDocumentBadgePlusFill size={32} className="inline-block mr-2 -mt-0.5" />
                     {translation.configList.createNew}
                 </PAModal.Title>
             </PAModal.Header>

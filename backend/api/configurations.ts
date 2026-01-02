@@ -266,8 +266,9 @@ router.delete(apiPaths.Configuration.delete.relative, (
 
     res.json({ success: true, message: 'Configuration deleted' });
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to delete configuration';
     console.error('Error deleting configuration:', error);
-    res.status(500).json({ error: 'Failed to delete configuration' });
+    res.status(400).json({ error: errorMessage });
   }
 });
 

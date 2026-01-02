@@ -1,27 +1,36 @@
 import { BiRefresh } from 'react-icons/bi';
 import { IoDocumentText } from 'react-icons/io5';
+import { useState, useRef } from 'react';
 import { PAButton } from '../controls/PAButton';
 
 // Components
 import { PAEmptyView } from '../controls/PAEmptyView';
+import { PANoConfigurationsEmptyView } from '../PANoConfigurationsEmptyView';
 
 // Partials
 import { ConfigDetailsPartial } from '../partials/config-editor/PAConfigDetailsPartial';
 import { EditorControlsPartial } from '../partials/config-editor/PAEditorControlsPartial';
 import { EditorViewPartial } from '../partials/config-editor/PAEditorViewPartial';
 import { RawViewPartial } from '../partials/config-editor/PARawViewPartial';
+import { NewConfigModalPartial } from '../partials/config-list/PANewConfigModalPartial';
 
 // Hooks
 import { useResponsiveControlSize } from '../../hooks/useResponsiveControlSize';
 import { useConfigEditor } from '../../hooks/useConfigEditor';
+import { useConfigActions } from '../../hooks/useConfigActions';
 import { PASize } from '../../lib/types/sizes';
 
 export function PAConfigEditor({ configId, onTabChange }: { configId?: string | null; onTabChange?: (tab: string) => void }) {
+  // Modal states for creating new configuration
+  const [showNewConfig, setShowNewConfig] = useState(false);
+  const [newConfigName, setNewConfigName] = useState('');
+  const [newConfigDesc, setNewConfigDesc] = useState('');
+  const newConfigNameRef = useRef<HTMLInputElement>(null);
+
   const {
     config,
     configName,
     configData,
-    loading,
     error,
     saving,
     viewMode,
@@ -44,19 +53,39 @@ export function PAConfigEditor({ configId, onTabChange }: { configId?: string | 
     translation,
   } = useConfigEditor(configId);
 
+  // Create a dummy refresh function for useConfigActions
+  const dummyRefresh = async () => {
+    // Just switch to configs tab - it will refresh there
+    onTabChange?.('configs');
+  };
+
+  const { createConfig } = useConfigActions(dummyRefresh);
+
+  // Handle new configuration creation
+  const handleCreateNewConfig = async () => {
+    if (newConfigName.trim()) {
+      try {
+        await createConfig(newConfigName, newConfigDesc, true);
+        setShowNewConfig(false);
+        setNewConfigName('');
+        setNewConfigDesc('');
+        // Switch to configs tab after creation
+        onTabChange?.('configs');
+      } catch (err) {
+        console.error('Failed to create configuration:', err);
+      }
+    }
+  };
+
+  const handleCloseNewConfigModal = () => {
+    setShowNewConfig(false);
+    setNewConfigName('');
+    setNewConfigDesc('');
+  };
+
   const controlSize = useResponsiveControlSize(PASize.md);
 
-  // 1. Loading state must come first
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center py-12">
-        <BiRefresh className="w-8 h-8 text-[var(--rs-primary-500)] animate-spin mb-2" />
-        <p className="text-[var(--rs-text-secondary)]">{translation.common.loading || 'Loading...'}</p>
-      </div>
-    );
-  }
-
-  // 2. Error state
+  // 1. Error state
   if (error) {
     return (
       <div className="text-center py-12">
@@ -76,18 +105,28 @@ export function PAConfigEditor({ configId, onTabChange }: { configId?: string | 
     );
   }
 
-  // 3. Handle cases where no config is selected or none exists
+  // 2. Handle cases where no config is selected or none exists
   if (!configId) {
     if (hasSavedConfigs === false) {
       return (
-        <PAEmptyView
-          icon={IoDocumentText}
-          title={translation.configEditor.noSavedConfigs}
-          description={translation.configEditor.noSavedConfigsDescription}
-          actionText={translation.configEditor.createFirstConfig}
-          onAction={() => onTabChange?.('configs')}
-          buttonSize={controlSize}
-        />
+        <>
+          <NewConfigModalPartial
+            open={showNewConfig}
+            onClose={handleCloseNewConfigModal}
+            onSave={handleCreateNewConfig}
+            name={newConfigName}
+            setName={setNewConfigName}
+            description={newConfigDesc}
+            setDescription={setNewConfigDesc}
+            nameRef={newConfigNameRef}
+            controlSize={controlSize}
+            translation={translation}
+          />
+          <PANoConfigurationsEmptyView
+            onCreateNew={() => setShowNewConfig(true)}
+            buttonSize={controlSize}
+          />
+        </>
       );
     }
 
@@ -105,14 +144,9 @@ export function PAConfigEditor({ configId, onTabChange }: { configId?: string | 
     }
   }
 
-  // 4. Ensure we have config data before rendering the editor
+  // 3. Ensure we have config data before rendering the editor
   if (!config || !configData) {
-    return (
-      <div className="flex flex-col items-center justify-center py-12">
-        <BiRefresh className="w-8 h-8 text-[var(--rs-primary-500)] animate-spin mb-2" />
-        <p className="text-[var(--rs-text-secondary)]">{translation.common.loading || 'Loading...'}</p>
-      </div>
-    );
+    return null;
   }
 
   return (

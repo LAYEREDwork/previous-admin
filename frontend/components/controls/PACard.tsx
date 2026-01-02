@@ -91,6 +91,7 @@ export function PACard({
     backgroundColor: scheme.backgroundColor,
     border: `1px solid ${scheme.borderColor}`,
     borderRadius: '6px',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
     ...style
   } as React.CSSProperties;
 
@@ -99,7 +100,7 @@ export function PACard({
     <div className="flex items-center justify-between w-full cursor-pointer py-2 px-4" onClick={handleToggle}>
       <div className="flex items-center gap-2 flex-1">{header}</div>
       <div className="flex-shrink-0 ml-2 flex items-center">
-        {isExpanded ? <BiChevronUp size={20} /> : <BiChevronDown size={20} />}
+        {isExpanded ? <BiChevronUp size={24} /> : <BiChevronDown size={24} />}
       </div>
     </div>
   ) : (

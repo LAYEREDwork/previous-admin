@@ -24,9 +24,9 @@ export function useSystem() {
   const [isSystemTabActive, setIsSystemTabActive] = useState(true);
   const [showResetModal, setShowResetModal] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
-  const [updateFrequency, setUpdateFrequency] = useState(defaultMetricsUpdateFrequency);
 
-  const metrics = useSystemMetrics(isSystemTabActive, updateFrequency);
+  // Metrics update frequency is fixed to 0.5 seconds
+  const metrics = useSystemMetrics(isSystemTabActive, defaultMetricsUpdateFrequency);
 
   // Load static system info
   useEffect(() => {
@@ -90,7 +90,5 @@ export function useSystem() {
     setShowResetModal,
     isResetting,
     handleReset,
-    updateFrequency,
-    setUpdateFrequency,
   };
 }

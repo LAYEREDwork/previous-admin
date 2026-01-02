@@ -1,8 +1,8 @@
 
 
 // Components
-import { PAEmptyView } from '../controls/PAEmptyView';
-import { BiPlus } from 'react-icons/bi';
+import { useState, useRef } from 'react';
+import { PANoConfigurationsEmptyView } from '../PANoConfigurationsEmptyView';
 
 // Partials
 import { ConfigListItemPartial } from '../partials/config-list/PAConfigListItemPartial';
@@ -26,9 +26,15 @@ export function PAConfigList({ onEdit }: ConfigListProps) {
   const { translation } = useLanguage();
   const controlSize = useResponsiveControlSize(PASize.md);
 
+  // Duplicate modal states
+  const [showDuplicateModal, setShowDuplicateModal] = useState(false);
+  const [duplicateConfigName, setDuplicateConfigName] = useState('');
+  const [duplicateConfigDesc, setDuplicateConfigDesc] = useState('');
+  const duplicateConfigNameRef = useRef<HTMLInputElement>(null);
+  const [duplicatingConfig, setDuplicatingConfig] = useState<Configuration | null>(null);
+
   const {
     configs,
-    loading,
     showNewConfig,
     setShowNewConfig,
     newConfigName,
@@ -38,7 +44,7 @@ export function PAConfigList({ onEdit }: ConfigListProps) {
     newConfigNameRef,
     createConfig,
     deleteConfig,
-    duplicateConfig,
+    duplicateConfig: performDuplicate,
     exportSingleConfig,
     setActiveConfig,
     handleCloseNewConfigModal,
@@ -49,13 +55,36 @@ export function PAConfigList({ onEdit }: ConfigListProps) {
     dragOverIndex,
   } = useConfigListLogic(onEdit);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <div className="text-[var(--rs-text-secondary)]">{translation.configList.loading}</div>
-      </div>
-    );
-  }
+  // Handle duplicate - show modal with prefilled data
+  const handleDuplicateClick = (config: Configuration) => {
+    setDuplicatingConfig(config);
+    setDuplicateConfigName(config.name + translation.configList.copySuffix);
+    setDuplicateConfigDesc(config.description);
+    setShowDuplicateModal(true);
+  };
+
+  // Handle saving the duplicated config
+  const handleSaveDuplicate = async () => {
+    if (duplicatingConfig && duplicateConfigName.trim()) {
+      // Manually create the duplicate with the user's edited values
+      await performDuplicate({
+        ...duplicatingConfig,
+        name: duplicateConfigName,
+        description: duplicateConfigDesc,
+      } as Configuration);
+      setShowDuplicateModal(false);
+      setDuplicatingConfig(null);
+      setDuplicateConfigName('');
+      setDuplicateConfigDesc('');
+    }
+  };
+
+  const handleCloseDuplicateModal = () => {
+    setShowDuplicateModal(false);
+    setDuplicatingConfig(null);
+    setDuplicateConfigName('');
+    setDuplicateConfigDesc('');
+  };
 
   return (
     <div className="space-y-4">
@@ -82,6 +111,20 @@ export function PAConfigList({ onEdit }: ConfigListProps) {
         translation={translation}
       />
 
+      {/* Duplicate Configuration Modal */}
+      <NewConfigModalPartial
+        open={showDuplicateModal}
+        onClose={handleCloseDuplicateModal}
+        onSave={handleSaveDuplicate}
+        name={duplicateConfigName}
+        setName={setDuplicateConfigName}
+        description={duplicateConfigDesc}
+        setDescription={setDuplicateConfigDesc}
+        nameRef={duplicateConfigNameRef}
+        controlSize={controlSize}
+        translation={translation}
+      />
+
       {/* Configurations List */}
       <div className="grid gap-3">
         {configs.map((config, index) => (
@@ -91,7 +134,7 @@ export function PAConfigList({ onEdit }: ConfigListProps) {
             isMobile={false} /* Passe ggf. an, falls mobile Detection vorhanden */
             isActive={config.is_active}
             exportSingleConfig={exportSingleConfig}
-            duplicateConfig={duplicateConfig}
+            duplicateConfig={handleDuplicateClick}
             onEdit={onEdit}
             deleteConfig={deleteConfig}
             translation={translation}
@@ -109,12 +152,8 @@ export function PAConfigList({ onEdit }: ConfigListProps) {
 
       {/* Empty State */}
       {configs.length === 0 && !showNewConfig && (
-        <PAEmptyView
-          icon={BiPlus}
-          title={translation.configList.title}
-          description={translation.configList.emptyStateDescription}
-          actionText={translation.configList.createNew}
-          onAction={() => setShowNewConfig(true)}
+        <PANoConfigurationsEmptyView
+          onCreateNew={() => setShowNewConfig(true)}
           buttonSize={controlSize}
         />
       )}

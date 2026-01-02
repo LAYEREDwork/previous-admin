@@ -15,8 +15,6 @@ interface SystemContentProps {
   setShowResetModal: (show: boolean) => void;
   isResetting: boolean;
   handleReset: () => void;
-  updateFrequency: number;
-  setUpdateFrequency: (freq: number) => void;
   controlSize: PASize;
   translation: Translations;
 }
@@ -31,8 +29,6 @@ export function SystemContent({
   setShowResetModal,
   isResetting,
   handleReset,
-  updateFrequency,
-  setUpdateFrequency,
   controlSize,
   translation,
 }: SystemContentProps) {
@@ -47,8 +43,6 @@ export function SystemContent({
       {/* Server Dashboard */}
       <DashboardPartial
         metrics={metrics}
-        updateFrequency={updateFrequency}
-        setUpdateFrequency={setUpdateFrequency}
         translation={translation}
       />
 

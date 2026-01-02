@@ -94,19 +94,13 @@ export function updateConfiguration(
  * Delete configuration
  *
  * @param id - Configuration ID
- * @throws Error if not found or in use
+ * @throws Error if not found
  */
 export function deleteConfiguration(id: string): void {
   // Check if configuration exists
   const config = dbGetConfiguration(id);
   if (!config) {
     throw new Error('Configuration not found');
-  }
-
-  // Prevent deletion of active configuration
-  const active = dbGetActiveConfiguration();
-  if (active && active.id === id) {
-    throw new Error('Cannot delete active configuration');
   }
 
   dbDeleteConfiguration(id);

@@ -120,6 +120,11 @@
   --rs-bg-card: #f5f5f5;
   --rs-border-primary: #e5e5e5;
   --pa-message-bg-transparency: 70%;
+  /* Darken buttons in light mode - lighter gray */
+  --rs-btn-default-bg: #e8e8e8;
+  --rs-btn-default-hover-bg: #dcdcdc;
+  /* Primary color RGB components for use with rgba() */
+  --rs-primary-500-rgb: 0, 107, 227;
 }
 
 .dark {
@@ -127,6 +132,8 @@
   --rs-bg-card: #1a1a1a;
   --rs-border-primary: #262626;
   --pa-message-bg-transparency: 80%;
+  /* Primary color RGB components for use with rgba() */
+  --rs-primary-500-rgb: 0, 107, 227;
 }
 
 @layer base {
@@ -152,6 +159,12 @@
 
   .icon-inner-emboss {
     filter: drop-shadow(0 -1px 1px rgba(0, 0, 0, 1)) drop-shadow(0 1px 1px rgba(255, 255, 255, 1));
+  }
+
+  /* Active config item focus ring */
+  .ring-2.ring-primary-500 {
+    box-shadow: 0 0 12px rgba(21, 157, 224, 0.5), 0 0 6px rgba(21, 157, 224, 0.2), inset 0 0 1px rgba(21, 157, 224, 0.15) !important;
+    border: 1px solid rgba(21, 157, 224, 0.75) !important;
   }
 
   .input {
@@ -329,6 +342,37 @@
   .rs-panel-btn:active,
   .rs-panel-btn:focus {
     background-color: rgb(239, 239, 244) !important;
+  }
+
+  /* Darken button backgrounds in light mode */
+  .rs-btn-default {
+    background-color: var(--rs-btn-default-bg, #e8e8e8) !important;
+    color: var(--rs-text-secondary) !important;
+  }
+
+  .rs-btn-default:hover {
+    background-color: var(--rs-btn-default-hover-bg, #dcdcdc) !important;
+  }
+
+  /* Darken segmented control and dropdown in light mode */
+  .rs-segmented-control {
+    background-color: #e8e8e8 !important;
+  }
+
+  .rs-picker-default,
+  .rs-picker-toggle {
+    background-color: #e8e8e8 !important;
+    color: var(--rs-text-secondary) !important;
+  }
+
+  .rs-picker-default:hover,
+  .rs-picker-toggle:hover {
+    background-color: #dcdcdc !important;
+  }
+
+  /* Green color for "Up to date" status - light and dark mode compatible */
+  .text-\[var\(--rs-text-success\)\] {
+    color: #22c55e !important;
   }
 
   /* Prevent dropdown flash at (0,0) before positioning */
