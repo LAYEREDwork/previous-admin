@@ -1,5 +1,4 @@
 import { ReactNode, useState, useEffect } from 'react';
-import { Panel } from 'rsuite';
 import { BiChevronUp, BiChevronDown } from 'react-icons/bi';
 
 interface PACardProps {
@@ -15,7 +14,7 @@ interface PACardProps {
 }
 
 /**
- * PACard - RSuite Panel with consistent styling
+ * PACard - Card component with consistent styling
  * @param children - Content to display inside the card
  * @param className - Additional CSS classes
  * @param header - Header content for the card
@@ -26,11 +25,11 @@ interface PACardProps {
  * @param defaultExpanded - Initial expanded state when collapsible (default: true)
  * @param onToggle - Callback when the card is expanded or collapsed
  */
-export function PACard({ 
-  children, 
-  className = '', 
-  header, 
-  style, 
+export function PACard({
+  children,
+  className = '',
+  header,
+  style,
   bgColorScheme = 'default',
   collapsible = false,
   expanded,
@@ -57,7 +56,7 @@ export function PACard({
       onToggle?.(!expanded);
     }
   };
-  
+
   // Define color schemes using RSuite CSS variables for consistent light/dark mode support
   const colorSchemes = {
     default: {
@@ -86,47 +85,69 @@ export function PACard({
   };
 
   const scheme = colorSchemes[bgColorScheme];
-  
-  // Build final style that works for both light and dark mode using RSuite variables
+
+  // Build final style
   const finalStyle = {
     backgroundColor: scheme.backgroundColor,
-    borderColor: scheme.borderColor,
+    border: `1px solid ${scheme.borderColor}`,
+    borderRadius: '6px',
     ...style
   } as React.CSSProperties;
 
   // Build header with optional collapse toggle
   const headerContent = collapsible ? (
     <div className="flex items-center justify-between w-full cursor-pointer py-2 px-4" onClick={handleToggle}>
-      <div className="flex items-center gap-2 flex-1 min-h-[24px]">{header}</div>
+      <div className="flex items-center gap-2 flex-1">{header}</div>
       <div className="flex-shrink-0 ml-2 flex items-center">
         {isExpanded ? <BiChevronUp size={20} /> : <BiChevronDown size={20} />}
       </div>
     </div>
   ) : (
-    header ? <div className="py-2 px-4 leading-none">{header}</div> : null
+    header ? <div className="py-2 px-3">{header}</div> : null
   );
 
+  // Check if header border should be shown (when body is visible)
+  const showHeaderBorder = collapsible ? isExpanded && children : !!children;
+
   return (
-    <Panel
-      header={headerContent}
-      className={`pa-card ${className}`}
-      style={finalStyle}
-      bordered
-    >
-      {/* Animated collapse/expand content */}
-      {collapsible ? (
+    <div className={`pa-card ${className}`} style={finalStyle}>
+      {/* Header */}
+      {headerContent && (
         <div
-          className="grid transition-[grid-template-rows,opacity] duration-300 ease-in-out"
+          className="pa-card-header"
           style={{
-            gridTemplateRows: isExpanded ? '1fr' : '0fr',
-            opacity: isExpanded ? 1 : 0,
+            borderBottom: showHeaderBorder ? `1px solid ${scheme.borderColor}` : 'none',
+            transition: 'border-bottom 0.2s ease-out'
           }}
         >
-          <div className="overflow-hidden">{children}</div>
+          {headerContent}
+        </div>
+      )}
+
+      {/* Body - with animation for collapsible cards */}
+      {collapsible ? (
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateRows: isExpanded ? '1fr' : '0fr',
+            transition: 'grid-template-rows 0.2s ease-out'
+          }}
+        >
+          <div style={{ overflow: 'hidden' }}>
+            {children && (
+              <div className="pa-card-body p-4">
+                {children}
+              </div>
+            )}
+          </div>
         </div>
       ) : (
-        children
+        children && (
+          <div className="pa-card-body p-4">
+            {children}
+          </div>
+        )
       )}
-    </Panel>
+    </div>
   );
 }

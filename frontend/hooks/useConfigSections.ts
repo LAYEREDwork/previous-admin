@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 /**
  * Hook to manage the expanded/collapsed state of configuration sections.

@@ -16,8 +16,8 @@ export function EditorSectionPartial({ title, children, expanded, onToggle }: Ed
             onToggle={onToggle}
             className="transition-colors duration-200"
         >
-            <div className="p-2 sm:p-3">
-                <div className="grid gap-4 sm:gap-6">{children}</div>
+            <div className="p-4 sm:p-6">
+                <div className="grid gap-2 sm:gap-3">{children}</div>
             </div>
         </PACard>
     );

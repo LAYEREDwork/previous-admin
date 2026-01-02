@@ -337,10 +337,10 @@
     top: -9999px !important;
   }
 
-  /* PACard Header normalization */
-  .pa-card .rs-panel-header {
+  /* PACard Header normalization - removed padding override to allow proper spacing */
+  /* .pa-card .rs-panel-header {
     padding: 0 !important;
-  }
+  } */
 }
 
 /* DEPRECATED STYLES - Migrated to RSuite Components */
