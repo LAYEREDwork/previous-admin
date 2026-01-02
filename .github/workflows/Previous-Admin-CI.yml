@@ -1,4 +1,4 @@
-name: Previous-Admin-CI
+name: Previous-Admin CI
 
 on:
   push:
