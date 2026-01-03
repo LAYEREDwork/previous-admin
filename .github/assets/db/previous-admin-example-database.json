@@ -1,0 +1,189 @@
+{
+  "version": "1.0.0",
+  "exportedAt": "2026-01-03T13:18:49.640Z",
+  "configurations": [
+    {
+      "id": "7643002f-d60a-4dcb-b762-4905b0612c71",
+      "name": "NeXTcube",
+      "description": "NeXTcube Default Config",
+      "config_data": {
+        "system": {
+          "cpu_type": "68040",
+          "cpu_frequency": 25,
+          "memory_size": 32,
+          "turbo": false,
+          "fpu": true
+        },
+        "display": {
+          "type": "color",
+          "width": 1120,
+          "height": 832,
+          "color_depth": 24,
+          "frameskip": 0
+        },
+        "scsi": {
+          "hd0": "",
+          "hd1": "",
+          "hd2": "",
+          "hd3": "",
+          "hd4": "",
+          "hd5": "",
+          "hd6": "",
+          "cd": ""
+        },
+        "network": {
+          "enabled": false,
+          "type": "ethernet"
+        },
+        "ethernet": {
+          "enabled": false,
+          "type": "ethernet"
+        },
+        "sound": {
+          "enabled": true,
+          "output": "sdl"
+        },
+        "printer": {
+          "enabled": false,
+          "type": "parallel"
+        },
+        "boot": {
+          "rom_file": "",
+          "scsi_id": 0
+        },
+        "keyboard": {
+          "type": "us"
+        },
+        "mouse": {
+          "enabled": true
+        }
+      },
+      "is_active": false,
+      "created_at": "2026-01-03T13:18:16.992Z",
+      "updated_at": "2026-01-03T13:18:16.992Z",
+      "sort_order": 0
+    },
+    {
+      "id": "2549378f-b45f-4092-8931-823f2fe3f9d1",
+      "name": "NeXTcube Dimension",
+      "description": "NeXTcube Dimension Default Config",
+      "config_data": {
+        "system": {
+          "cpu_type": "68040",
+          "cpu_frequency": 25,
+          "memory_size": 32,
+          "turbo": false,
+          "fpu": true
+        },
+        "display": {
+          "type": "color",
+          "width": 1120,
+          "height": 832,
+          "color_depth": 24,
+          "frameskip": 0
+        },
+        "scsi": {
+          "hd0": "",
+          "hd1": "",
+          "hd2": "",
+          "hd3": "",
+          "hd4": "",
+          "hd5": "",
+          "hd6": "",
+          "cd": ""
+        },
+        "network": {
+          "enabled": false,
+          "type": "ethernet"
+        },
+        "ethernet": {
+          "enabled": false,
+          "type": "ethernet"
+        },
+        "sound": {
+          "enabled": true,
+          "output": "sdl"
+        },
+        "printer": {
+          "enabled": false,
+          "type": "parallel"
+        },
+        "boot": {
+          "rom_file": "",
+          "scsi_id": 0
+        },
+        "keyboard": {
+          "type": "us"
+        },
+        "mouse": {
+          "enabled": true
+        }
+      },
+      "is_active": true,
+      "created_at": "2026-01-03T13:18:28.239Z",
+      "updated_at": "2026-01-03T13:18:45.034Z",
+      "sort_order": 1
+    },
+    {
+      "id": "aa6a3494-8336-4e30-a68d-b5752a3e7185",
+      "name": "NeXTstation",
+      "description": "NeXTstation Default Config",
+      "config_data": {
+        "system": {
+          "cpu_type": "68040",
+          "cpu_frequency": 25,
+          "memory_size": 32,
+          "turbo": false,
+          "fpu": true
+        },
+        "display": {
+          "type": "color",
+          "width": 1120,
+          "height": 832,
+          "color_depth": 24,
+          "frameskip": 0
+        },
+        "scsi": {
+          "hd0": "",
+          "hd1": "",
+          "hd2": "",
+          "hd3": "",
+          "hd4": "",
+          "hd5": "",
+          "hd6": "",
+          "cd": ""
+        },
+        "network": {
+          "enabled": false,
+          "type": "ethernet"
+        },
+        "ethernet": {
+          "enabled": false,
+          "type": "ethernet"
+        },
+        "sound": {
+          "enabled": true,
+          "output": "sdl"
+        },
+        "printer": {
+          "enabled": false,
+          "type": "parallel"
+        },
+        "boot": {
+          "rom_file": "",
+          "scsi_id": 0
+        },
+        "keyboard": {
+          "type": "us"
+        },
+        "mouse": {
+          "enabled": true
+        }
+      },
+      "is_active": false,
+      "created_at": "2026-01-03T13:18:40.930Z",
+      "updated_at": "2026-01-03T13:18:40.930Z",
+      "sort_order": 2
+    }
+  ]
+}

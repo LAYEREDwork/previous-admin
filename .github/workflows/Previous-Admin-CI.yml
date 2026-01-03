@@ -144,6 +144,14 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
 
+      - name: Install Sharp dependencies
+        run: sudo apt-get update && sudo apt-get install -y libvips-dev
+
+      - name: Import Example Database
+        run: npm run import-example-db
+        env:
+          API_BASE_URL: http://localhost:3001
+
       - name: Generate Screenshots
         run: npm run screenshots
 

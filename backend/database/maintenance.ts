@@ -84,15 +84,21 @@ export function importDatabase(
 
       for (const config of dump.configurations) {
         try {
+          if (!config.config_data) {
+            console.warn(`Skipping configuration "${config.name}": no config data found`);
+            statistics.configurations.skipped++;
+            continue;
+          }
+
           insertStatement.run(
             config.id,
             config.name,
             config.description || '',
-            JSON.stringify(config.configContent),
-            config.isActive ? 1 : 0,
-            config.createdAt || new Date().toISOString(),
-            config.updatedAt || new Date().toISOString(),
-            0 // sort_order
+            typeof config.config_data === 'string' ? config.config_data : JSON.stringify(config.config_data),
+            config.is_active ? 1 : 0,
+            config.created_at || new Date().toISOString(),
+            config.updated_at || new Date().toISOString(),
+            config.sort_order || 0
           );
           statistics.configurations.imported++;
         } catch (error) {

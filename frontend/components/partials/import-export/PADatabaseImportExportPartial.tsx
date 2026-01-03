@@ -21,6 +21,12 @@ export function DatabaseImportExportPartial({
     controlSize,
     translation
 }: DatabaseImportExportPartialProps) {
+    // Handle file input trigger for database import
+    const handleDatabaseFileClick = () => {
+        const fileInput = document.getElementById('import-database') as HTMLInputElement;
+        fileInput?.click();
+    };
+
     return (
         <div className="border-t border-[var(--rs-border-primary)] pt-6">
             <div className="mb-4">
@@ -52,27 +58,26 @@ export function DatabaseImportExportPartial({
                         {translation.importExport.importDatabaseDescription}
                     </p>
 
-                    <label className="block">
-                        <input
-                            type="file"
-                            accept=".json"
-                            onChange={importDatabaseDump}
-                            disabled={databaseImporting}
-                            className="hidden"
-                            id="import-database"
-                        />
-                        <PAButton
-                            as="span"
-                            appearance="primary"
-                            loading={databaseImporting}
-                            block
-                            className="flex items-center justify-center gap-2 cursor-pointer"
-                            size={controlSize}
-                        >
-                            <BiDownload size={18} />
-                            {databaseImporting ? translation.importExport.importingDatabase : translation.importExport.selectDatabaseFile}
-                        </PAButton>
-                    </label>
+                    <input
+                        type="file"
+                        accept=".json"
+                        onChange={importDatabaseDump}
+                        disabled={databaseImporting}
+                        className="hidden"
+                        id="import-database"
+                    />
+                    <PAButton
+                        onClick={handleDatabaseFileClick}
+                        appearance="primary"
+                        loading={databaseImporting}
+                        disabled={databaseImporting}
+                        block
+                        className="flex items-center justify-center gap-2 cursor-pointer"
+                        size={controlSize}
+                    >
+                        <BiDownload size={18} />
+                        {databaseImporting ? translation.importExport.importingDatabase : translation.importExport.selectDatabaseFile}
+                    </PAButton>
 
                     <PACard bgColorScheme="danger" className="mt-4">
                         <p className="text-xs text-[var(--rs-text-error)] font-semibold">
