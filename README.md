@@ -1,10 +1,10 @@
 [![Mastodon: @phranck](https://img.shields.io/badge/Mastodon-@LAYERED-6364ff.svg?style=flat)](https://oldbytes.space/@LAYERED)
 ![CI](https://github.com/LAYEREDwork/previous-admin/actions/workflows/Previous-Admin-CI.yml/badge.svg)
 ![Node.js](https://img.shields.io/badge/Node.js-22+-339933.svg?style=flat&logo=node.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-95%25-blue.svg?style=flat)
-![JavaScript](https://img.shields.io/badge/JavaScript-1%25-yellow.svg?style=flat)
-![Shell](https://img.shields.io/badge/Shell-4%25-green.svg?style=flat)
-![Lines of Code](https://img.shields.io/badge/LOC-17397-orange.svg?style=flat)
+![TypeScript](https://img.shields.io/badge/TypeScript-96%25-blue.svg?style=flat)
+![JavaScript](https://img.shields.io/badge/JavaScript-0%25-yellow.svg?style=flat)
+![Shell](https://img.shields.io/badge/Shell-3%25-green.svg?style=flat)
+![Lines of Code](https://img.shields.io/badge/LOC-22316-orange.svg?style=flat)
 ![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg?style=flat)
 ![Platforms](https://img.shields.io/badge/Platforms-Linux%20%7C%20macOS-lightgrey.svg?style=flat)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
@@ -118,7 +118,7 @@ For detailed manual installation instructions, platform-specific setup guides, a
 
 ## 🛠️ Technology Stack
 
-- **Frontend**: React 18 + TypeScript, Vite, Tailwind CSS, RSuite UI
+- **Frontend**: React 18 + TypeScript, Vite, Tailwind CSS, RSuite UI, SF Symbols Icons
 - **Backend**: Node.js + Express (TypeScript), SQLite via better-sqlite3
 - **Database**: SQLite mit automatischer Schema-Initialisierung
 - **Real-time**: WebSocket-Unterstützung für Live-Systemmetriken
