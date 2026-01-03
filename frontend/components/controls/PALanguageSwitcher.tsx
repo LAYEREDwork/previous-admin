@@ -37,7 +37,8 @@ export function PALanguageSwitcher() {
 
   return (
     <Dropdown
-      placement="bottomEnd"
+      placement="auto"
+      autoPlacement
       renderToggle={(props, ref) => (
         <Button
           {...props}

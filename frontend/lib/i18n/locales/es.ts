@@ -243,6 +243,13 @@ export const es: Translations = {
     importExport: 'Importar/Exportar',
     savedConfigs: 'Configuraciones',
     system: 'Sistema',
+    mobile: {
+      about: 'Info',
+      configEditor: 'Editor',
+      importExport: 'Transfer',
+      savedConfigs: 'Configs',
+      system: 'System',
+    },
   },
   theme: {
     light: 'Claro',

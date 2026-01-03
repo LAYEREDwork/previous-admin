@@ -1,8 +1,7 @@
-import { BiPlus } from 'react-icons/bi';
-
 import { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
 import { PAButton } from '../../controls/PAButton';
+import { SFDocumentBadgePlusFill } from '@frontend/components/sf-symbols';
 
 interface ConfigListHeaderPartialProps {
     onNewConfigClick: () => void;
@@ -22,7 +21,7 @@ export function PAConfigListHeaderPartial({
             </h2>
             <PAButton
                 onClick={onNewConfigClick}
-                icon={<BiPlus size={18} />}
+                icon={<SFDocumentBadgePlusFill size={22} />}
                 size={controlSize}
                 appearance="primary"
                 className="self-end sm:self-auto"

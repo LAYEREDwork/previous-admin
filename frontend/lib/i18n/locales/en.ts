@@ -243,6 +243,13 @@ export const en: Translations = {
     importExport: 'Import/Export',
     savedConfigs: 'Configurations',
     system: 'System',
+    mobile: {
+      about: 'About',
+      configEditor: 'Editor',
+      importExport: 'Transfer',
+      savedConfigs: 'Configs',
+      system: 'System',
+    },
   },
   theme: {
     light: 'Light',

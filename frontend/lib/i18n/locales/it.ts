@@ -243,6 +243,13 @@ export const it: Translations = {
     importExport: 'Importa/Esporta',
     savedConfigs: 'Configurazioni',
     system: 'Sistema',
+    mobile: {
+      about: 'Info',
+      configEditor: 'Editor',
+      importExport: 'Transfer',
+      savedConfigs: 'Configs',
+      system: 'Sistema',
+    },
   },
   theme: {
     light: 'Chiaro',

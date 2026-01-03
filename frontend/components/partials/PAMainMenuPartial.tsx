@@ -2,8 +2,7 @@ import React from 'react';
 import { Nav } from 'rsuite';
 
 import { useLanguage } from '../../contexts/PALanguageContext';
-import { PASize } from '../../lib/types/sizes';
-import { PASegmentedControl } from '../controls/PASegmentedControl';
+import { PATabBar } from '../controls/PATabBar';
 import { 
     SFDocumentOnDocumentFill, 
     SFLongTextPageAndPencilFill, 
@@ -20,12 +19,22 @@ interface MainMenuProps {
 export function MainMenuPartial({ currentTab, onTabChange }: MainMenuProps) {
     const { translation } = useLanguage();
 
-    const tabs = [
+    // Desktop tabs with full labels
+    const desktopTabs = [
         { value: 'configs', label: translation.tabs.savedConfigs, icon: <SFDocumentOnDocumentFill size={23} /> },
         { value: 'editor', label: translation.tabs.configEditor, icon: <SFLongTextPageAndPencilFill size={23} /> },
         { value: 'import-export', label: translation.tabs.importExport, icon: <SFSquareAndArrowUpFill size={23} /> },
         { value: 'system', label: translation.tabs.system, icon: <SFDesktopcomputer size={23} /> },
         { value: 'about', label: translation.tabs.about, icon: <SFInfoBubbleFill size={23} /> },
+    ];
+
+    // Mobile tabs with short labels
+    const mobileTabs = [
+        { value: 'configs', label: translation.tabs.mobile.savedConfigs, icon: <SFDocumentOnDocumentFill size={23} /> },
+        { value: 'editor', label: translation.tabs.mobile.configEditor, icon: <SFLongTextPageAndPencilFill size={23} /> },
+        { value: 'import-export', label: translation.tabs.mobile.importExport, icon: <SFSquareAndArrowUpFill size={23} /> },
+        { value: 'system', label: translation.tabs.mobile.system, icon: <SFDesktopcomputer size={23} /> },
+        { value: 'about', label: translation.tabs.mobile.about, icon: <SFInfoBubbleFill size={23} /> },
     ];
 
     return (
@@ -40,7 +49,7 @@ export function MainMenuPartial({ currentTab, onTabChange }: MainMenuProps) {
                         justified
                         className="w-full"
                     >
-                        {tabs.map((tab) => (
+                        {desktopTabs.map((tab) => (
                             <Nav.Item
                                 key={tab.value}
                                 eventKey={tab.value}
@@ -54,17 +63,16 @@ export function MainMenuPartial({ currentTab, onTabChange }: MainMenuProps) {
                 </div>
             </div>
 
-            {/* Mobile Bottom Tabbar */}
-            <nav className="md:hidden fixed bottom-3 left-3 right-3 z-50 drop-shadow-2xl">
-                <PASegmentedControl
-                    options={tabs.map(tab => ({ ...tab, icon: React.cloneElement(tab.icon as React.ReactElement, { size: 22 }) }))}
-                    value={currentTab}
-                    onChange={onTabChange}
-                    fullWidth
-                    size={PASize.lg}
-                    iconOnly
-                />
-            </nav>
+            {/* Mobile Bottom Tabbar - iOS-style */}
+            <PATabBar
+                options={mobileTabs.map(tab => ({ 
+                    value: tab.value,
+                    label: tab.label,
+                    icon: tab.icon
+                }))}
+                value={currentTab}
+                onChange={onTabChange}
+            />
         </>
     );
 }

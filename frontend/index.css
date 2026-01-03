@@ -1,112 +1,15 @@
 @import "rsuite/dist/rsuite.min.css";
 
+/**
+ * Roboto Flex is a variable font that supports multiple axes
+ * (weight, width, optical sizing, and grading)
+ */
 @font-face {
-  font-family: 'Barlow';
-  src: url('/assets/fonts/Barlow-Thin.ttf') format('truetype');
-  font-weight: 100;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Barlow';
-  src: url('/assets/fonts/Barlow-ThinItalic.ttf') format('truetype');
-  font-weight: 100;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'Barlow';
-  src: url('/assets/fonts/Barlow-ExtraLight.ttf') format('truetype');
-  font-weight: 200;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Barlow';
-  src: url('/assets/fonts/Barlow-ExtraLightItalic.ttf') format('truetype');
-  font-weight: 200;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'Barlow';
-  src: url('/assets/fonts/Barlow-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Barlow';
-  src: url('/assets/fonts/Barlow-LightItalic.ttf') format('truetype');
-  font-weight: 300;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'Barlow';
-  src: url('/assets/fonts/Barlow-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Barlow';
-  src: url('/assets/fonts/Barlow-Italic.ttf') format('truetype');
-  font-weight: 400;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'Barlow';
-  src: url('/assets/fonts/Barlow-Medium.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Barlow';
-  src: url('/assets/fonts/Barlow-MediumItalic.ttf') format('truetype');
-  font-weight: 500;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'Barlow';
-  src: url('/assets/fonts/Barlow-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Barlow';
-  src: url('/assets/fonts/Barlow-SemiBoldItalic.ttf') format('truetype');
-  font-weight: 600;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'Barlow';
-  src: url('/assets/fonts/Barlow-Bold.ttf') format('truetype');
-  font-weight: 700;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Barlow';
-  src: url('/assets/fonts/Barlow-BoldItalic.ttf') format('truetype');
-  font-weight: 700;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'Barlow';
-  src: url('/assets/fonts/Barlow-ExtraBold.ttf') format('truetype');
-  font-weight: 800;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Barlow';
-  src: url('/assets/fonts/Barlow-ExtraBoldItalic.ttf') format('truetype');
-  font-weight: 800;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'Barlow';
-  src: url('/assets/fonts/Barlow-Black.ttf') format('truetype');
-  font-weight: 900;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Barlow';
-  src: url('/assets/fonts/Barlow-BlackItalic.ttf') format('truetype');
-  font-weight: 900;
-  font-style: italic;
+  font-family: 'Roboto Flex';
+  src: url('/fonts/RobotoFlex.ttf') format('truetype-variations');
+  font-weight: 100 900;
+  font-stretch: 75% 100%;
+  font-display: swap;
 }
 
 
@@ -139,7 +42,7 @@
 @layer base {
   html {
     font-size: 110%;
-    font-family: "Barlow", sans-serif;
+    font-family: "Roboto Flex", sans-serif;
   }
 
   body {
@@ -238,6 +141,39 @@
 }
 
 @layer utilities {
+  /* Portrait-only utility for mobile navigation */
+  .portrait-only {
+    display: none;
+  }
+
+  @media (orientation: portrait) {
+    .portrait-only {
+      display: block;
+    }
+  }
+
+  /* Spacer for portrait-mode tab bar */
+  .portrait-tab-bar-spacer {
+    height: 0;
+  }
+
+  @media (orientation: portrait) {
+    .portrait-tab-bar-spacer {
+      height: 80px;
+    }
+  }
+
+  /* Portrait mode controls layout - language switch left, theme switch right */
+  .portrait-controls-layout {
+    justify-content: flex-start;
+  }
+
+  @media (orientation: portrait) {
+    .portrait-controls-layout {
+      justify-content: space-between;
+    }
+  }
+
   @keyframes fade-in {
     0% {
       opacity: 0;

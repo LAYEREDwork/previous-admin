@@ -44,7 +44,7 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
               )}
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 portrait-controls-layout md:gap-0">
             <PALanguageSwitcher />
             <PAThemeSwitcher />
           </div>
@@ -91,11 +91,11 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
 
       <main className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 flex-grow w-full pb-8">
         {children}
-        {/* Spacer for the mobile menu bar */}
-        <div className="block md:hidden" style={{ height: '44px' }} />
+        {/* Spacer for the mobile tab bar (80px height) - portrait mode only */}
+        <div className="block md:hidden portrait-tab-bar-spacer" />
       </main>
 
-      {/* Mobile Bottom Tabbar */}
+      {/* Mobile Bottom Tabbar - Portrait mode only (handled via portrait-only class in PATabBar) */}
       <div className="md:hidden">
         <MainMenuPartial currentTab={currentTab} onTabChange={onTabChange} />
       </div>

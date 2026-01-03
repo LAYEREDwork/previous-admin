@@ -40,7 +40,9 @@ Full internationalization support for:
 - Italiano (Italian)
 
 ### Modern UI/UX
-- Clean, responsive design optimized for desktop and mobile
+- Clean, responsive design optimized for desktop and mobile devices
+- iOS-style bottom navigation bar on smartphones in portrait mode
+- Full functionality and optimal layout on tablets and mobile devices
 - Dark mode support with NeXT-inspired aesthetics
 
 ### System Information
