@@ -154,46 +154,51 @@ npm run test       # Run all tests (frontend + backend)
 
 ```text
 previous-admin/
-├── .github/                    # GitHub workflows and instructions
-├── .vscode/                    # VS Code workspace settings
-├── backend/                    # Express TypeScript server
-│   ├── __tests__/              # Backend unit tests
-│   ├── api/                    # REST API endpoints
-│   ├── config/                 # Configuration file management
-│   ├── database/               # SQLite database operations
-│   ├── platform/               # Platform-specific utilities
-│   │   ├── linux/              # Linux-specific implementations
-│   │   └── macos/              # macOS-specific implementations
-│   ├── previous-config/        # Previous emulator config parsing
-│   └── services/               # Business logic services
-├── dist/                       # Production build output
-├── docs/                       # Documentation and guides
-├── frontend/                   # React TypeScript application
-│   ├── __tests__/              # Frontend unit & integration tests
-│   ├── components/             # UI components
-│   │   ├── sf-symbols/         # SF Symbols icon components
-│   │   ├── controls/           # Reusable UI controls
-│   │   ├── pages/              # Main application pages
-│   │   └── partials/           # Reusable UI partials
-│   ├── contexts/               # React contexts for state management
-│   ├── hooks/                  # Custom React hooks
-│   └── lib/                    # Utilities and shared code
-│       ├── api/                # API client functions
-│       ├── config/             # Configuration utilities
-│       ├── http/               # HTTP utilities
-│       ├── translations/       # i18n translation files (5 languages)
-│       ├── types/              # Type definitions
-│       └── utils/              # Helper utilities
-├── node_modules/               # Project dependencies (npm)
-├── public/                     # Static assets
-│   └── assets/                 # Images and media files
-├── scripts/                    # Setup and utility scripts
-├── sf-symbols-raw/             # Raw SF Symbols data files
-├── shared/                     # Shared constants and types
-│   ├── api/                    # Shared API types
-│   └── previous-config/        # Shared config types
-├── systemd/                    # Systemd service files
-└── src/                        # Additional source files (if any)
+├── .github/               GitHub workflows, CI/CD, and project instructions
+│   ├── assets/            Badges and images for documentation
+│   │   └── db/            Database schema documentation
+│   ├── instructions/      Copilot and development guidelines
+│   └── workflows/         GitHub Actions CI/CD workflows
+├── .vscode/               VS Code workspace settings and configurations
+├── backend/               Express TypeScript server with API, config, and database logic
+│   ├── __tests__/         Backend unit tests
+│   ├── api/               REST API route endpoints
+│   ├── config/            Configuration file managers (Linux/macOS specific)
+│   ├── database/          SQLite database operations and schema
+│   ├── platform/          Platform abstraction layer
+│   │   ├── linux/         Linux-specific implementations
+│   │   └── macos/         macOS-specific implementations
+│   ├── previous-config/   Previous emulator config file parsing
+│   └── services/          Business logic services
+├── dist/                  Production build output (generated)
+├── docs/                  Project documentation and guides
+├── frontend/              React 18 TypeScript application
+│   ├── __tests__/         Frontend unit and integration tests
+│   ├── components/        UI components and pages
+│   │   ├── controls/      Reusable UI controls and widgets
+│   │   ├── pages/         Main application pages
+│   │   ├── partials/      Reusable layout partials
+│   │   └── sf-symbols/    SF Symbols icon components
+│   ├── contexts/          React context providers for state
+│   ├── hooks/             Custom React hooks for business logic
+│   └── lib/               Utilities, API client, i18n, and types
+│       ├── api/           API client functions
+│       ├── config/        Configuration utilities
+│       ├── database/      Frontend database API helpers
+│       ├── http/          HTTP client utilities
+│       ├── i18n/          Internationalization (5 languages)
+│       ├── types/         Type definitions
+│       └── utils/         Helper utilities
+├── node_modules/          npm dependencies (generated)
+├── public/                Static assets served as-is
+│   ├── assets/            Images and media files
+│   └── fonts/             Font files (Roboto Flex variable font)
+├── scripts/               Setup, build, and utility scripts
+├── shared/                Shared types and constants (frontend + backend)
+│   ├── api/               Shared API type definitions
+│   └── previous-config/   Shared Previous emulator config types
+└── src/                   Additional source files
+    └── test/              Test utilities and fixtures
 ```
 
 ### Architecture Highlights
