@@ -142,9 +142,20 @@ jobs:
       - name: Import Example Database
         run: npm run import-example-db
 
-  generate-screenshots:
+  clean-database-snapshot:
     runs-on: ubuntu-latest
     needs: [import-example-database]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Clear database snapshots
+        run: |
+          DB_PATH=$HOME/.previous-admin/previous-admin.db
+          rm -f "$DB_PATH" "$DB_PATH-shm" "$DB_PATH-wal"
+          echo "✓ Database snapshots cleared"
+
+  generate-screenshots:
+    runs-on: ubuntu-latest
+    needs: [clean-database-snapshot]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - name: Checkout code
