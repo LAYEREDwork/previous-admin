@@ -25,7 +25,8 @@
 - **Testing**: `npm run test` runs both frontend (Vitest) and backend (Jest) tests.
 - **Code Quality**: `npm run lint` (ESLint), `npm run typecheck` (TypeScript check).
 - **Update Process**: Never use `git pull`; download and extract new versions from GitHub releases (see `scripts/update.ts`).
-- **Production Setup**: Use `scripts/setup.sh` for automated installation with systemd services and Avahi/Bonjour discovery.
+- **Production Setup**: Use `sudo ./install.sh` for automated installation with systemd services and Avahi/Bonjour discovery.
+- **Uninstallation**: Use `sudo scripts/uninstall.sh` for clean removal with optional database backup (can be run from any directory).
 
 ## Project-Specific Patterns
 - **Config Management**: Use `ConfigManager` class (`backend/config/index.ts`) for reading/writing Previous emulator config files. Platform-specific implementations in `linux-config-manager.ts`/`macos-config-manager.ts`.

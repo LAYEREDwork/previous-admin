@@ -1,129 +1,201 @@
 #!/bin/bash
 
+# Previous Admin - Uninstallation Script
+# Cleanly removes all Previous Admin components from the system
+# Can be run from anywhere: home directory, project root, or scripts directory
+
 set -e
 
-echo "=========================================="
-echo "Previous Emulator Admin - Uninstall Script"
-echo "=========================================="
-echo ""
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
 
-if [ "$EEID" -ne 0 ]; then
-    echo "This script must be run as root (use sudo)"
-    exit 1
-fi
-
+# Configuration
 TARGET_USER="next"
 INSTALL_DIR="/home/$TARGET_USER/previous-admin"
+CONFIG_DIR="/home/$TARGET_USER/.config/previous"
+DB_DIR="/home/$TARGET_USER/.previous-admin"
 
-echo "⚠️  WARNING: This will completely remove Previous Admin from your system."
-echo ""
-read -p "Do you want to continue? (yes/no): " CONFIRM
+# Helper functions
+print_header() {
+    echo -e "${BLUE}========================================${NC}"
+    echo -e "${BLUE}$1${NC}"
+    echo -e "${BLUE}========================================${NC}"
+    echo ""
+}
 
-if [ "$CONFIRM" != "yes" ]; then
-    echo "❌ Uninstallation cancelled."
-    exit 0
-fi
+print_success() {
+    echo -e "${GREEN}✓ $1${NC}"
+}
 
-echo ""
-read -p "Do you want to create a database backup before uninstalling? (yes/no): " CREATE_BACKUP
+print_error() {
+    echo -e "${RED}✗ $1${NC}"
+}
 
-if [ "$CREATE_BACKUP" = "yes" ]; then
-    echo "💾 Creating database backup..."
-    
-    # Check if backend service is running, if not, start it
-    if ! systemctl is-active --quiet previous-admin-backend.service; then
-        echo "🔄 Backend service not running. Starting it for backup..."
-        systemctl start previous-admin-backend.service
-        echo "⏳ Waiting for service to be ready..."
-        sleep 3
+print_warning() {
+    echo -e "${YELLOW}⚠ $1${NC}"
+}
+
+print_info() {
+    echo -e "${BLUE}ℹ $1${NC}"
+}
+
+# Check if running as root
+check_root() {
+    if [ "$EUID" -ne 0 ]; then
+        print_error "This script must be run as root"
+        echo "Please run: sudo bash scripts/uninstall.sh"
+        exit 1
     fi
+    print_success "Running as root"
+}
+
+# Stop services
+stop_services() {
+    print_info "Stopping services..."
     
-    BACKUP_DIR="/home/$TARGET_USER"
-    BACKUP_FILE="$BACKUP_DIR/previous-admin-backup-$(date +%Y%m%d-%H%M%S).json"
+    systemctl stop previous-admin-backend.service 2>/dev/null || true
+    systemctl stop previous-admin-frontend.service 2>/dev/null || true
+    systemctl stop avahi-alias-next.service 2>/dev/null || true
+    print_success "Services stopped"
     
-    # Create backup via API
-    HTTP_CODE=$(curl -s -o "$BACKUP_FILE" -w "%{http_code}" http://localhost:3001/api/database/export 2>/dev/null)
+    echo ""
+}
+
+# Disable services
+disable_services() {
+    print_info "Disabling services..."
     
-    if [ "$HTTP_CODE" = "200" ] && [ -f "$BACKUP_FILE" ]; then
-        chown $TARGET_USER:$TARGET_USER "$BACKUP_FILE"
-        echo "✅ Database backup created: $BACKUP_FILE"
-    else
-        rm -f "$BACKUP_FILE"
-        echo "❌ Failed to create backup via API (HTTP $HTTP_CODE)"
-        echo "⚠️  Backup failed. Do you want to continue with uninstallation? (yes/no): "
-        read CONTINUE_WITHOUT_BACKUP
-        if [ "$CONTINUE_WITHOUT_BACKUP" != "yes" ]; then
-            echo "❌ Uninstallation cancelled."
-            exit 1
+    systemctl disable previous-admin-backend.service 2>/dev/null || true
+    systemctl disable previous-admin-frontend.service 2>/dev/null || true
+    systemctl disable avahi-alias-next.service 2>/dev/null || true
+    print_success "Services disabled"
+    
+    echo ""
+}
+
+# Remove service files
+remove_service_files() {
+    print_info "Removing service files..."
+    
+    rm -f /etc/systemd/system/previous-admin-*.service
+    rm -f /etc/systemd/system/avahi-alias-next.service
+    rm -f /usr/local/bin/avahi-alias-next.sh
+    rm -f /etc/avahi/services/previous-admin.service
+    
+    systemctl daemon-reload
+    print_success "Service files removed"
+    
+    echo ""
+}
+
+# Backup database
+backup_database() {
+    if [ -d "$DB_DIR" ]; then
+        read -p "Do you want to backup the database before deletion? (Y/n) " -n 1 -r
+        echo
+        if [[ ! $REPLY =~ ^[Nn]$ ]]; then
+            BACKUP_DIR="/tmp/previous-admin-backup-$(date +%Y%m%d-%H%M%S)"
+            mkdir -p "$BACKUP_DIR"
+            cp -r "$DB_DIR" "$BACKUP_DIR/"
+            print_success "Database backed up to: $BACKUP_DIR"
+            echo ""
         fi
     fi
-fi
+}
 
-echo ""
-echo "🛑 Stopping services..."
-systemctl stop previous-admin-frontend.service 2>/dev/null || true
-systemctl stop previous-admin-backend.service 2>/dev/null || true
-
-echo ""
-echo "❌ Disabling services..."
-systemctl disable previous-admin-frontend.service 2>/dev/null || true
-systemctl disable previous-admin-backend.service 2>/dev/null || true
-
-echo ""
-echo "🗑️  Removing systemd service files..."
-rm -f /etc/systemd/system/previous-admin-frontend.service
-rm -f /etc/systemd/system/previous-admin-backend.service
-
-echo ""
-echo "🔄 Reloading systemd..."
-systemctl daemon-reload
-
-echo ""
-echo "📁 Removing installation directory..."
-if [ -d "$INSTALL_DIR" ]; then
-    rm -rf "$INSTALL_DIR"
-    echo "✅ Installation directory removed: $INSTALL_DIR"
-else
-    echo "ℹ️  Installation directory not found: $INSTALL_DIR"
-fi
-
-echo ""
-read -p "Do you want to remove the Previous emulator config directory (~/.config/previous)? (yes/no): " REMOVE_CONFIG
-
-if [ "$REMOVE_CONFIG" = "yes" ]; then
-    if [ -d "/home/$TARGET_USER/.config/previous" ]; then
-        rm -rf "/home/$TARGET_USER/.config/previous"
-        echo "✅ Previous emulator config directory removed."
-    fi
-fi
-
-echo ""
-read -p "Do you want to remove user '$TARGET_USER'? (yes/no): " REMOVE_USER
-
-if [ "$REMOVE_USER" = "yes" ]; then
-    if id "$TARGET_USER" &>/dev/null; then
-        userdel -r $TARGET_USER 2>/dev/null || userdel $TARGET_USER
-        echo "✅ User '$TARGET_USER' removed."
-    fi
-fi
-
-echo ""
-read -p "Do you want to uninstall Node.js? (yes/no): " REMOVE_NODEJS
-
-if [ "$REMOVE_NODEJS" = "yes" ]; then
-    if command -v node &> /dev/null; then
-        echo "📦 Uninstalling Node.js..."
-        apt-get remove -y nodejs 2>/dev/null || yum remove -y nodejs 2>/dev/null || brew uninstall node 2>/dev/null || echo "⚠️  Could not remove Node.js automatically. Please remove it manually."
-        apt-get autoremove -y 2>/dev/null || yum autoremove -y 2>/dev/null || true
+# Remove installation directory
+remove_installation() {
+    print_info "Removing installation directory..."
+    
+    if [ -d "$INSTALL_DIR" ]; then
+        rm -rf "$INSTALL_DIR"
+        print_success "Installation directory removed"
     else
-        echo "ℹ️  Node.js is not installed."
+        print_warning "Installation directory not found"
     fi
-fi
+    
+    echo ""
+}
 
-echo ""
-echo "=========================================="
-echo "✅ Uninstallation Complete!"
-echo "=========================================="
-echo ""
-echo "🎉 Previous Admin has been removed from your system."
-echo ""
+# Remove config directory
+remove_config() {
+    print_info "Removing configuration directory..."
+    
+    if [ -d "$CONFIG_DIR" ]; then
+        rm -rf "$CONFIG_DIR"
+        print_success "Configuration directory removed"
+    fi
+    
+    if [ -d "$DB_DIR" ]; then
+        rm -rf "$DB_DIR"
+        print_success "Database directory removed"
+    fi
+    
+    echo ""
+}
+
+# Remove user account
+remove_user() {
+    read -p "Do you want to remove the '$TARGET_USER' user account? (y/N) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        if id "$TARGET_USER" &>/dev/null; then
+            userdel -r "$TARGET_USER" 2>/dev/null || true
+            print_success "User '$TARGET_USER' removed"
+        fi
+    else
+        print_info "User '$TARGET_USER' kept"
+    fi
+    
+    echo ""
+}
+
+# Summary
+show_summary() {
+    print_header "Uninstallation Complete"
+    
+    echo "Previous Admin has been uninstalled."
+    echo ""
+    echo "The following were removed:"
+    echo "  • Systemd services"
+    echo "  • Service files"
+    echo "  • Installation directory ($INSTALL_DIR)"
+    echo "  • Configuration directory ($CONFIG_DIR)"
+    echo "  • Database directory ($DB_DIR)"
+    echo ""
+    echo "The user '$TARGET_USER' was $([ -d /home/$TARGET_USER ] && echo "kept" || echo "removed")"
+    echo ""
+}
+
+# Return to home directory
+return_to_home() {
+    # Check if we're in the installation directory and change to home
+    if [[ "$PWD" == "$INSTALL_DIR"* ]]; then
+        cd ~
+        print_info "Changed working directory to home ($HOME)"
+    fi
+    echo ""
+}
+
+# Main uninstallation flow
+main() {
+    print_header "Previous Admin - Uninstallation"
+    
+    check_root
+    backup_database
+    stop_services
+    disable_services
+    remove_service_files
+    remove_installation
+    remove_config
+    remove_user
+    show_summary
+    return_to_home
+}
+
+# Run main function
+main "$@"

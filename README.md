@@ -55,17 +55,35 @@ Full internationalization support for:
 
 ## 📦 Installation
 
-### Automated Installation
+### Quick Installation (One Command)
 
-The quickest way to get Previous Admin up and running on a **Linux system** (Ubuntu/Debian/Raspberry Pi):
+The fastest way to install Previous Admin on a **Linux system** (Ubuntu/Debian/Fedora/Raspberry Pi):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/LAYEREDwork/previous-admin/main/install.sh | sudo bash
+```
+
+This single command will:
+- Download the latest version from GitHub
+- Install all system dependencies (Avahi, Node.js, etc.)
+- Configure systemd services and Bonjour/mDNS
+- Start the application automatically
+
+After installation, access the admin interface at:
+- [http://next.local:2342](http://next.local:2342) (via Bonjour/mDNS)
+- `http://<your-ip>:2342`
+
+### Automated Installation (Local Setup)
+
+Alternatively, clone the repository and run the setup script:
 
 ```bash
 # Clone the repository
-git clone https://codeberg.org/phranck/previous-admin.git
+git clone https://github.com/LAYEREDwork/previous-admin.git
 cd previous-admin
 
 # Run the automated setup script (requires root)
-sudo ./scripts/setup.sh
+sudo ./install.sh
 ```
 
 The setup script will automatically:
@@ -76,26 +94,23 @@ The setup script will automatically:
 - Set up Avahi/Bonjour for network discovery (`next.local`)
 - Start all services and display access information
 
-After installation, access the admin interface at:
-- [http://next.local:2342](http://next.local:2342) (via Bonjour/mDNS)
-- `http://<your-ip>:2342`
-
-> **Note:** The `next.local` address works on devices that support Bonjour/mDNS (macOS, iOS, Windows with Bonjour, Linux with Avahi). For manual installation on macOS or other platforms, see [DEPLOYMENT.md](DEPLOYMENT.md).
-
 ### Uninstallation
 
 To completely remove Previous Admin from your system:
 
 ```bash
 # Run the uninstall script (requires root)
-sudo ./scripts/uninstall.sh
+# Can be run from any directory (home, project root, or scripts folder)
+sudo scripts/uninstall.sh
 ```
 
-The uninstall script offers:
-- Optional database backup before removal
-- Complete cleanup of systemd services
-- Removal of installation directory and user account
-- Optional Node.js uninstallation
+The uninstall script will:
+- Stop and disable all systemd services
+- Optionally backup your database
+- Remove installation directory
+- Remove configuration and database files
+- Optionally remove the 'next' user account
+- Clean up all system integration (Avahi, systemd)
 
 ### Manual Installation
 
