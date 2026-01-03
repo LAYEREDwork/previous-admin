@@ -120,11 +120,21 @@ router.post(apiPaths.Update.update.relative, async (req: any, res: any) => {
  *   - currentReleaseNotes {string|null}: Release notes for current version
  */
 router.get(apiPaths.Update.version.relative, async (req: any, res: any) => {
-  const REPO_API_URL = 'https://codeberg.org/api/v1/repos/phranck/previous-admin';
+  const REPO_API_URL = 'https://api.github.com/repos/LAYEREDwork/previous-admin';
 
   try {
-    // Read current version from package.json
-    const currentVersion = packageJson.version || '1.0.0';
+    // Get current version from git tag
+    let currentVersion = '1.0.0'; // fallback
+    try {
+      const { stdout } = await execAsync('git describe --tags --always', { cwd: process.cwd() });
+      const tag = stdout.trim().replace(/^v/, '');
+      if (tag) {
+        currentVersion = tag;
+      }
+    } catch {
+      // If git fails, use package.json as fallback
+      currentVersion = packageJson.version || '1.0.0';
+    }
 
     // Fetch releases from Codeberg API
     const releasesResponse = await fetch(`${REPO_API_URL}/releases`, {
@@ -145,7 +155,7 @@ router.get(apiPaths.Update.version.relative, async (req: any, res: any) => {
       });
     }
 
-    const releases = await releasesResponse.json();
+    const releases = (await releasesResponse.json()) as Array<any>;
 
     if (!Array.isArray(releases) || releases.length === 0) {
       return res.json({
