@@ -153,6 +153,13 @@ jobs:
       - name: Import Example Database
         run: npm run import-example-db
 
+      - name: Upload database artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: previous-admin-database
+          path: ~/.previous-admin/previous-admin.db
+          retention-days: 1
+
   generate-screenshots:
     runs-on: ubuntu-latest
     needs: [import-example-database]
@@ -162,6 +169,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download database artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: previous-admin-database
+          path: ~/.previous-admin/
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
