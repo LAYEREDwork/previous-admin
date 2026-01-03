@@ -1,9 +1,14 @@
 /**
  * Configuration file management
  *
- * Handles reading, writing, parsing, and serializing configuration files.
- * Uses INI format for configuration storage.
- * Configuration location: ~/.config/previous/previous.cfg
+ * @deprecated This module is deprecated and will be removed in a future version.
+ * Use `backend/config/index.ts` instead for all configuration management operations.
+ *
+ * The new implementation provides:
+ * - Unified ConfigManager class in backend/config/index.ts
+ * - I/O operations in backend/config/config-io.ts
+ * - Default configuration in backend/config/defaults.ts
+ * - Platform-specific managers in backend/config/macos-config-manager.ts and backend/config/linux-config-manager.ts
  *
  * @requires ini - INI file parser and serializer
  */

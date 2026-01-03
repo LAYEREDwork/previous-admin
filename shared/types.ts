@@ -5,6 +5,13 @@
 
 /**
  * Previous emulator configuration structure
+ *
+ * Complete system configuration including CPU, memory, display, storage,
+ * network, sound, boot, keyboard, and mouse settings.
+ * This is the SINGLE SOURCE OF TRUTH for config structure.
+ *
+ * Optional fields (ethernet, printer) are UI-specific extensions used
+ * by the frontend for managing additional network and printer configurations.
  */
 export interface PreviousConfig {
   system: {
@@ -35,7 +42,30 @@ export interface PreviousConfig {
     enabled: boolean;
     type: string;
   };
-  ethernet: Record<string, never>;
+  // Optional UI-specific network extension
+  ethernet?: {
+    enabled: boolean;
+    type: string;
+  };
+  sound: {
+    enabled: boolean;
+    output: string;
+  };
+  // Optional UI-specific printer extension
+  printer?: {
+    enabled: boolean;
+    type: string;
+  };
+  boot: {
+    rom_file: string;
+    scsi_id: number;
+  };
+  keyboard: {
+    type: string;
+  };
+  mouse: {
+    enabled: boolean;
+  };
 }
 
 /**
@@ -49,14 +79,19 @@ export interface ApiResponse<T = unknown> {
 
 /**
  * Configuration metadata
+ *
+ * Represents a stored configuration profile with metadata.
  */
 export interface Configuration {
   id: string;
   name: string;
   description: string;
+  config_data: PreviousConfig;
   is_active: boolean;
+  sort_order: number;
   created_at: string;
   updated_at: string;
+  created_by: string | null;
 }
 
 /**

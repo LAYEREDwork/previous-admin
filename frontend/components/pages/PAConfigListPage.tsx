@@ -33,6 +33,7 @@ export function PAConfigList({ onEdit }: ConfigListProps) {
 
   const {
     configs,
+    loading,
     showNewConfig,
     setShowNewConfig,
     newConfigName,
@@ -149,7 +150,7 @@ export function PAConfigList({ onEdit }: ConfigListProps) {
       </div>
 
       {/* Empty State */}
-      {configs.length === 0 && !showNewConfig && (
+      {!loading && configs.length === 0 && !showNewConfig && (
         <PANoConfigurationsEmptyView
           onCreateNew={() => setShowNewConfig(true)}
           buttonSize={controlSize}

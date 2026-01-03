@@ -7,7 +7,7 @@
  * @module frontend/lib/database/configurations
  */
 
-import type { Configuration, PreviousConfig } from '../types/config';
+import type { Configuration, PreviousConfig } from '~shared/types';
 import { apiBaseUrl } from '../constants';
 import { apiPaths } from '../../../shared/constants';
 

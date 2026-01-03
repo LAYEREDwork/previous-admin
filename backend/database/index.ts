@@ -33,6 +33,3 @@ export {
   type ImportStatistics,
   type DatabaseStatistics,
 } from './maintenance';
-
-// Re-export types for convenience
-export type { Configuration, UpdateConfigurationRequest } from '../types';

@@ -8,57 +8,11 @@
  */
 
 import fs from 'fs/promises';
+import type { PreviousConfig } from '../../shared/types';
 import { createConfigManager } from './config-manager-factory';
-import { readConfig as ioReadConfig, writeConfig as ioWriteConfig, getDefaultConfig } from './config-io';
+import { readConfig as ioReadConfig, writeConfig as ioWriteConfig } from './config-io';
+import { getDefaultConfig } from './defaults';
 import { BaseConfigManager } from './base-config-manager';
-
-/**
- * Configuration object schema
- */
-export interface PreviousConfig {
-  system: {
-    cpu_type: string;
-    cpu_frequency: number;
-    memory_size: number;
-    turbo: boolean;
-    fpu: boolean;
-  };
-  display: {
-    type: string;
-    width: number;
-    height: number;
-    color_depth: number;
-    frameskip: number;
-  };
-  scsi: {
-    hd0: string;
-    hd1: string;
-    hd2: string;
-    hd3: string;
-    hd4: string;
-    hd5: string;
-    hd6: string;
-    cd: string;
-  };
-  network: {
-    enabled: boolean;
-    type: string;
-  };
-  sound: {
-    enabled: boolean;
-    output: string;
-  };
-  boot: {
-    rom_file: string;
-    scsi_id: number;
-  };
-  keyboard: {
-    type: string;
-  };
-  mouse: {
-    enabled: boolean;
-  };
-}
 
 /**
  * Unified configuration manager

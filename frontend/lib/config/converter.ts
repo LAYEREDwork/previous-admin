@@ -1,4 +1,4 @@
-import type { PreviousConfig } from '../types/config';
+import type { PreviousConfig } from '~shared/types';
 
 /**
  * Converts a JSON configuration object to the Previous emulator's native configuration format (.cfg).

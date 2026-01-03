@@ -9,7 +9,7 @@ import { database } from '../lib/database';
 import { downloadFile, generateConfigFilename } from '../lib/utils';
 
 // Types
-import type { Configuration } from '../lib/types';
+import type { Configuration } from '~shared/types';
 
 /**
  * Custom hook for managing import/export functionality

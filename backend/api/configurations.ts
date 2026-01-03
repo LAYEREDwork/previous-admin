@@ -17,8 +17,9 @@ import {
   getActiveConfiguration,
   updateConfigurationOrder
 } from '../services/configurationService';
+import type { PreviousConfig } from '../../shared/types';
 import { apiPaths } from '../../shared/constants';
-import { Configuration, PreviousConfig, UpdateConfigurationRequest } from '../types';
+import { Configuration, UpdateConfigurationRequest } from '../types';
 import { getDatabase } from '../database/core';
 
 const router = express.Router();

@@ -7,7 +7,7 @@
  * @module frontend/lib/api/config
  */
 
-import type { PreviousConfig } from '../types/config';
+import type { PreviousConfig } from '~shared/types';
 import { http, ApiError } from '../http/client';
 import { apiPaths } from '../../../shared/constants';
 

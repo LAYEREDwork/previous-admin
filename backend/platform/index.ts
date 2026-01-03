@@ -9,9 +9,9 @@
 
 import os from 'os';
 import { getPlatformModule } from './platform-detector';
-import type { PlatformModule } from './types';
 
 export type { PlatformModule } from './types';
+export * from './system-info';
 
 /**
  * Get the current platform module
@@ -59,6 +59,3 @@ export function isMacOS(): boolean {
 export function isLinux(): boolean {
   return os.platform() === 'linux';
 }
-
-export * from './types';
-export * from './system-info';

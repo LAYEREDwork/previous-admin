@@ -13,7 +13,8 @@
  */
 
 import express, { Request } from 'express';
-import { getConfigManager, getDefaultConfig, PreviousConfig } from '../config/index';
+import type { PreviousConfig } from '../../shared/types';
+import { getConfigManager, getDefaultConfig } from '../config/index';
 import { apiPaths } from '../../shared/constants';
 import { TypedResponse } from '../types';
 

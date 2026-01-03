@@ -15,7 +15,8 @@ import {
   updateConfigurationOrder,
   getActiveConfiguration,
 } from '../services/configurationService';
-import type { Configuration, CreateConfigurationRequest, UpdateConfigurationRequest, PreviousConfig } from '../types';
+import type { Configuration, CreateConfigurationRequest, UpdateConfigurationRequest } from '../types';
+import type { PreviousConfig } from '../../shared/types';
 
 // Mock the database functions
 jest.mock('../database/configurations', () => ({

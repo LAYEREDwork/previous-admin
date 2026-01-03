@@ -7,7 +7,7 @@ import { database } from '../lib/database';
 import { defaultConfig } from '../lib/config';
 
 // Types
-import type { PreviousConfig } from '../lib/types';
+import type { PreviousConfig } from '~shared/types';
 
 interface ConfigContextType {
   config: PreviousConfig | null;

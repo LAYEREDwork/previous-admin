@@ -135,7 +135,7 @@ npm install
 # Start development servers
 # Run backend and frontend separately (in different terminals)
 npm run backend  # Starts backend server on port 3001
-npm run dev      # Starts frontend dev server on port 5173
+npm run dev      # Starts frontend dev server on port 2342
 
 # Build for production
 npm run build
@@ -148,7 +148,7 @@ npm run test       # Run all tests (frontend + backend)
 
 ### Development Notes
 
-- **Frontend**: Runs on `http://localhost:5173` with hot reload
+- **Frontend**: Runs on `http://localhost:2342` with hot reload
 - **Backend**: Runs on `http://localhost:3001` with API endpoints at `/api/*`
 - **Database**: SQLite file stored in `~/.previous-admin/previous-admin.db`
 - **Production**: Built frontend served via backend on port 2342

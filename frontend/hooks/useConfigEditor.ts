@@ -7,7 +7,7 @@ import { useNotification } from '../contexts/PANotificationContext';
 import { useConfigMetadataEditor } from './useConfigMetadataEditor';
 
 // Types
-import type { PreviousConfig } from '../lib/types';
+import type { PreviousConfig } from '~shared/types';
 
 // Database & Utils
 import { database } from '../lib/database';
@@ -142,7 +142,7 @@ export function useConfigEditor(configId?: string | null) {
   };
 
   const updateConfigField = useCallback((path: string[], value: string | number | boolean) => {
-    setConfigData((prev) => {
+    setConfigData((prev: PreviousConfig | null) => {
       if (!prev) return prev;
       const newConfig = { ...prev };
       let current: any = newConfig;

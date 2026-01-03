@@ -11,7 +11,7 @@
 - When creating new colours, always ensure that they are theme-aware. This means that they should work in both light and dark mode.
 
 ## Architecture Overview
-- **Frontend**: React 18 + TypeScript app built with Vite, using Tailwind CSS and Rsuite UI components. Runs on port 5173 in development, served by backend in production.
+- **Frontend**: React 18 + TypeScript app built with Vite, using Tailwind CSS and Rsuite UI components. Runs on port 2342 in development, served by backend in production.
 - **Backend**: Node.js + Express server with TypeScript, handling REST API (`/api/*`), WebSocket connections, and platform-specific operations. Runs on port 3001 in development, 2342 in production.
 - **Database**: SQLite database stored in `~/.previous-admin/previous-admin.db` with automatic schema initialization.
 - **Communication**: Frontend communicates with backend via HTTP API and WebSockets for real-time system metrics.
@@ -20,7 +20,7 @@
 - **Internationalization**: Full i18n support with German, English, Spanish, French, Italian translations in `frontend/lib/translations/`.
 
 ## Development Workflows
-- **Start Development**: Run `npm run backend` in one terminal (starts backend on :3001) and `npm run dev` in another (starts frontend on :5173).
+- **Start Development**: Run `npm run backend` in one terminal (starts backend on :3001) and `npm run dev` in another (starts frontend on :2342).
 - **Build**: `npm run build` creates production frontend build served by backend on :2342.
 - **Testing**: `npm run test` runs both frontend (Vitest) and backend (Jest) tests.
 - **Code Quality**: `npm run lint` (ESLint), `npm run typecheck` (TypeScript check).
