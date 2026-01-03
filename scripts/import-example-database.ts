@@ -20,7 +20,14 @@ import type { DatabaseExport } from '../backend/database/maintenance';
  */
 function getDatabasePath(): string {
   const homeDir = os.homedir();
-  return path.join(homeDir, '.previous-admin', 'previous-admin.db');
+  const dbDir = path.join(homeDir, '.previous-admin');
+  
+  // Create directory if it doesn't exist
+  if (!fs.existsSync(dbDir)) {
+    fs.mkdirSync(dbDir, { recursive: true });
+  }
+  
+  return path.join(dbDir, 'previous-admin.db');
 }
 
 /**
