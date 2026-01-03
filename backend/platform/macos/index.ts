@@ -63,19 +63,32 @@ const macosModule: PlatformModule = {
    */
   async getDiskInfo(): Promise<DiskInfo[]> {
     try {
+      // Use a simpler approach that works reliably in bash
+      // Get info for root mount point and all volumes mounted in /Volumes
       const script = `
-        seen=()
+        echo "$HOME/.local/share/Trash:1" > /tmp/disk_seen.txt
         for v in / /Volumes/*; do
+          [ ! -e "$v" ] && continue
           info=$(diskutil info "$v" 2>/dev/null) || continue
-          uuid=$(echo "$info" | grep -E "Volume UUID|Disk / Partition UUID" | head -1 | awk -F': *' '{print $2}')
-          dev=$(echo "$info" | grep "Device Node" | awk -F': *' '{print $2}')
-          key="\${uuid:-\$dev}" // eslint-disable-line no-useless-escape
+          
+          # Extract UUID or device node as unique identifier
+          uuid=$(echo "$info" | grep -E "Volume UUID|Disk / Partition UUID" | head -1 | sed 's/.*: *//')
+          dev=$(echo "$info" | grep "Device Node" | sed 's/.*: *//')
+          key="\${uuid:-\$dev}"
+          
           [ -z "$key" ] && continue
-          [[ " \${seen[@]} " == *" \$key "* ]] && continue // eslint-disable-line no-useless-escape
-          seen+=("$key")
-          echo "$info"
+          
+          # Skip if already seen (simple file-based check since bash arrays don't work well in exec)
+          if grep -q "^\$key$" /tmp/disk_seen.txt 2>/dev/null; then
+            continue
+          fi
+          echo "\$key" >> /tmp/disk_seen.txt
+          
+          # Output the disk info
+          echo "\$info"
           echo "---DISK_END---"
         done
+        rm -f /tmp/disk_seen.txt
       `.trim();
 
       const { stdout: diskInfo } = await execAsync(script, { maxBuffer: 10 * 1024 * 1024 });

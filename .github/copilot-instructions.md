@@ -57,3 +57,4 @@
 - **`:ls`**: Output a list of all custom commands that start with ":" as Markdown.
 - **`:scan`**: Scan the project’s code and update your context.
 - **`:undo`**: Undo the last changes in the code and return to the previous state.
+- **`:release`**: Create concise, non-technical release notes in English for the changes since the last release. The release notes should include the new version name as a heading (e.g. "## Version 1.2.0") and a list of the most important new features, improvements and bug fixes below. Format the release notes as Markdown in a code block.
