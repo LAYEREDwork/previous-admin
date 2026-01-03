@@ -141,8 +141,6 @@ jobs:
 
       - name: Import Example Database
         run: npm run import-example-db
-        env:
-          API_BASE_URL: http://localhost:3001
 
   generate-screenshots:
     runs-on: ubuntu-latest

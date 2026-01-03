@@ -1,7 +1,7 @@
 /**
  * Import Example Database Script
  *
- * Loads the example database from .github/assets/db/ into the test backend.
+ * Loads the example database directly into the SQLite database.
  * This is useful for setting up a consistent database state before running tests or generating screenshots.
  *
  * Usage:
@@ -11,11 +11,40 @@
 
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
+import Database from 'better-sqlite3';
+import type { DatabaseExport } from '../backend/database/maintenance';
 
 /**
- * Import example database via API
+ * Get the database path
  */
-async function importExampleDatabase() {
+function getDatabasePath(): string {
+  const homeDir = os.homedir();
+  return path.join(homeDir, '.previous-admin', 'previous-admin.db');
+}
+
+/**
+ * Initialize database schema
+ */
+function initializeSchema(database: Database.Database): void {
+  database.exec(`
+    CREATE TABLE IF NOT EXISTS configurations (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL UNIQUE,
+      description TEXT,
+      config_data TEXT NOT NULL,
+      is_active BOOLEAN DEFAULT 0,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL,
+      sort_order INTEGER DEFAULT 0
+    )
+  `);
+}
+
+/**
+ * Import example database directly
+ */
+function importExampleDatabase(): void {
   const exampleDbPath = path.join(process.cwd(), '.github', 'assets', 'db', 'previous-admin-example-database.json');
 
   // Verify file exists
@@ -28,7 +57,7 @@ async function importExampleDatabase() {
     // Read the example database
     console.log(`📂 Reading example database from: ${exampleDbPath}`);
     const databaseContent = fs.readFileSync(exampleDbPath, 'utf-8');
-    const databaseDump = JSON.parse(databaseContent);
+    const databaseDump: DatabaseExport = JSON.parse(databaseContent);
 
     // Validate structure
     if (!databaseDump.configurations || !Array.isArray(databaseDump.configurations)) {
@@ -37,36 +66,62 @@ async function importExampleDatabase() {
 
     console.log(`📦 Loaded ${databaseDump.configurations.length} configuration(s)`);
 
-    // Import via API
-    const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:3001';
-    const importUrl = `${apiBaseUrl}/api/database/import`;
+    // Open database
+    const dbPath = getDatabasePath();
+    console.log(`🗄️  Opening database at: ${dbPath}`);
+    const database = new Database(dbPath);
 
-    console.log(`🔄 Importing to: ${importUrl}`);
+    // Initialize schema
+    initializeSchema(database);
 
-    const response = await fetch(importUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        dump: databaseDump,
-        merge: false, // Replace existing data
-      }),
-    });
+    // Clear existing configurations
+    database.prepare('DELETE FROM configurations').run();
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(
-        `API request failed with status ${response.status}: ${errorData.error || errorData.message || 'Unknown error'}`
-      );
+    // Import configurations
+    const insertStatement = database.prepare(`
+      INSERT OR REPLACE INTO configurations 
+      (id, name, description, config_data, is_active, created_at, updated_at, sort_order)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+
+    const statistics = {
+      imported: 0,
+      skipped: 0,
+      errors: 0,
+    };
+
+    for (const config of databaseDump.configurations) {
+      try {
+        if (!config.config_data) {
+          console.warn(`⚠️  Skipping configuration "${config.name}": no config data found`);
+          statistics.skipped++;
+          continue;
+        }
+
+        insertStatement.run(
+          config.id,
+          config.name,
+          config.description || '',
+          typeof config.config_data === 'string' ? config.config_data : JSON.stringify(config.config_data),
+          config.is_active ? 1 : 0,
+          config.created_at || new Date().toISOString(),
+          config.updated_at || new Date().toISOString(),
+          config.sort_order || 0
+        );
+        statistics.imported++;
+      } catch (error) {
+        console.error(`❌ Error importing configuration "${config.name}":`, error instanceof Error ? error.message : error);
+        statistics.errors++;
+      }
     }
 
-    const result = await response.json();
+    // Close database
+    database.close();
 
     console.log('\n✅ Database import successful!');
-    console.log(`   Imported: ${result.stats?.configurations?.imported || 0} configuration(s)`);
-    console.log(`   Skipped: ${result.stats?.configurations?.skipped || 0}`);
-    console.log(`   Errors: ${result.stats?.configurations?.errors || 0}`);
+    console.log(`   Imported: ${statistics.imported} configuration(s)`);
+    console.log(`   Skipped: ${statistics.skipped}`);
+    console.log(`   Errors: ${statistics.errors}`);
   } catch (error) {
     console.error('\n❌ Failed to import example database:');
     console.error(`   ${error instanceof Error ? error.message : String(error)}`);
