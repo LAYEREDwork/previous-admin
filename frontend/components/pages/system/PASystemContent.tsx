@@ -4,7 +4,7 @@ import { DiskSpacePartial } from '../../partials/system/PADiskSpacePartial';
 import { ResetSystemPartial } from '../../partials/system/PAResetSystemPartial';
 import { ResetModalPartial } from '../../partials/system/PAResetModalPartial';
 import { Metrics } from '../../../hooks/useSystemMetrics';
-import { SystemInfo } from '../../../../shared/types';
+import { SystemInfo } from '../../../../shared/previous-config/types';
 import type { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
 

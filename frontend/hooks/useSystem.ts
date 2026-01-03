@@ -9,7 +9,7 @@ import { useSystemMetrics } from './useSystemMetrics';
 import { apiBaseUrl, defaultMetricsUpdateFrequency } from '../lib/constants';
 
 // Shared Types
-import type { SystemInfo } from '../../shared/types';
+import type { SystemInfo } from '@shared/previous-config/types';
 
 /**
  * Hook to manage system information and orchestration of metrics.

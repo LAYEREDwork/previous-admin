@@ -14,9 +14,9 @@ import {
   setActiveConfiguration,
   updateConfigurationOrder,
   getActiveConfiguration,
-} from '../services/configurationService';
-import type { Configuration, CreateConfigurationRequest, UpdateConfigurationRequest } from '../types';
-import type { PreviousConfig } from '../../shared/types';
+} from '@backend/services/configurationService';
+import type { Configuration, CreateConfigurationRequest, UpdateConfigurationRequest } from '@backend/types';
+import type { PreviousConfig } from '@shared/previous-config/types';
 
 // Mock the database functions
 jest.mock('../database/configurations', () => ({
@@ -39,7 +39,7 @@ import {
   setActiveConfiguration as dbSetActiveConfiguration,
   updateConfigurationsOrder as dbUpdateConfigurationsOrder,
   getActiveConfiguration as dbGetActiveConfiguration,
-} from '../database/configurations';
+} from '@backend/database/configurations';
 
 describe('ConfigurationService', () => {
   beforeEach(() => {

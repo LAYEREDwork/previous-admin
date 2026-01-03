@@ -10,7 +10,7 @@ import {
   activeGlowConfig,
   computeNeomorphControlCSS
 } from '../lib/utils/styling';
-import { StylingKey } from '../../shared/enums';
+import { StylingKey } from '@shared/previous-config/enums';
 import { PASize } from '../lib/types';
 
 describe('Styling Utilities', () => {

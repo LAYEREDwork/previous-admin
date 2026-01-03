@@ -3,7 +3,7 @@
  * Provides centralized styling logic and consistent theming
  */
 
-import { StylingKey } from '../../../shared/enums';
+import { StylingKey } from '@shared/previous-config/enums';
 import { PASize } from '../types';
 import { computePalette, Palette } from './palette';
 import { adjustLightness, hslToString, parseColorToHsl } from './color';

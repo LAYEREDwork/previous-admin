@@ -1,7 +1,7 @@
 import { BiCopy } from 'react-icons/bi';
 import { PAButton } from '../../controls/PAButton';
 import { Translations } from '../../../lib/translations';
-import type { PreviousConfig } from '~shared/types';
+import type { PreviousConfig } from '@shared/previous-config/types';
 import { PACard } from '../../controls/PACard';
 import { PASize } from '../../../lib/types/sizes';
 

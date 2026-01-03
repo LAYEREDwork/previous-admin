@@ -16,10 +16,10 @@
 import express, { Request, Response } from 'express';
 import { existsSync, unlinkSync } from 'fs';
 
-import { getSystemInfo } from '../platform/system-info';
+import { getSystemInfo } from '@backend/platform/system-info';
 import { getMetricsSnapshot } from '../metrics';
-import { apiPaths } from '../../shared/constants';
-import { DATABASE_PATH } from '../database/core';
+import { apiPaths } from '@shared/api/constants';
+import { DATABASE_PATH } from '@backend/database/core';
 import { closeDatabase, reinitializeDatabase } from '../database';
 
 const SYSTEM_ROUTER = express.Router();

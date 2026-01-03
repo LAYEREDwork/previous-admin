@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { DragState, DragActions } from '../../shared/types';
+import type { DragState, DragActions } from '@shared/previous-config/types';
 
 /**
  * Hook to manage drag and drop state for reorderable lists.

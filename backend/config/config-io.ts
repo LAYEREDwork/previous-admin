@@ -10,7 +10,7 @@
 
 import fs from 'fs/promises';
 import ini from 'ini';
-import type { PreviousConfig } from '../../shared/types';
+import type { PreviousConfig } from '@shared/previous-config/types';
 
 /**
  * Parse INI configuration file to config object

@@ -2,7 +2,7 @@ import { SelectPicker, Input, Toggle } from 'rsuite';
 import { EditorSectionPartial } from './PAEditorSectionPartial';
 import { EditorFieldPartial } from './PAEditorFieldPartial';
 import { PASize } from '../../../lib/types';
-import type { PreviousConfig } from '~shared/types';
+import type { PreviousConfig } from '@shared/previous-config/types';
 import { Translations } from '../../../lib/translations';
 import { 
     SFCpu, 

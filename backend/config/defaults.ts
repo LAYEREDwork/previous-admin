@@ -12,7 +12,7 @@
  * @module backend/config/defaults
  */
 
-import type { PreviousConfig } from '../../shared/types';
+import type { PreviousConfig } from '@shared/previous-config/types';
 
 /**
  * Default system configuration

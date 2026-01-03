@@ -8,8 +8,8 @@
  */
 
 import { v4 as uuidv4 } from 'uuid';
-import type { Configuration, CreateConfigurationRequest, UpdateConfigurationRequest } from '../types';
-import type { PreviousConfig } from '../../shared/types';
+import type { Configuration, CreateConfigurationRequest, UpdateConfigurationRequest } from '@backend/types';
+import type { PreviousConfig } from '@shared/previous-config/types';
 import { getDatabase } from './core';
 
 /**

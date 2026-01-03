@@ -16,13 +16,13 @@ import {
   setActiveConfiguration as dbSetActiveConfiguration,
   updateConfigurationsOrder as dbUpdateConfigurationsOrder,
   getActiveConfiguration as dbGetActiveConfiguration,
-} from '../database/configurations';
+} from '@backend/database/configurations';
 import type {
   Configuration,
   CreateConfigurationRequest,
   UpdateConfigurationRequest,
   PreviousConfig
-} from '../types';
+} from '@backend/types';
 
 /**
  * Get all configurations

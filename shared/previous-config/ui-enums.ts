@@ -1,34 +1,4 @@
 /**
- * Global enums for the Previous Admin application
- * Used to avoid magic strings and numbers across frontend and backend
- */
-
-/**
- * CPU types for Previous emulator
- */
-export enum CpuType {
-  cpu68020 = '68020',
-  cpu68030 = '68030',
-  cpu68040 = '68040',
-}
-
-/**
- * Display types
- */
-export enum DisplayType {
-  color = 'color',
-  grayscale = 'grayscale',
-}
-
-/**
- * Network types
- */
-export enum NetworkType {
-  ethernet = 'ethernet',
-  slip = 'slip',
-}
-
-/**
  * Input types for forms
  */
 export enum InputType {
@@ -59,22 +29,6 @@ export enum InputType {
 }
 
 /**
- * Sound output types
- */
-export enum SoundOutput {
-  sdl = 'sdl',
-  none = 'none',
-}
-
-/**
- * Printer types
- */
-export enum PrinterType {
-  parallel = 'parallel',
-  serial = 'serial',
-}
-
-/**
  * Styling keys for consistent theming
  */
 export enum StylingKey {
@@ -102,14 +56,4 @@ export enum ChartType {
   memory = 'memory',
   networkTraffic = 'networkTraffic',
   diskIO = 'diskIO',
-}
-
-/**
- * Keyboard types
- */
-export enum KeyboardType {
-  us = 'us',
-  de = 'de',
-  fr = 'fr',
-  gb = 'gb',
 }

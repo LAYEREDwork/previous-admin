@@ -5,7 +5,7 @@
 
 import express from 'express';
 import { execAsync } from './helpers';
-import { apiPaths } from '../../shared/constants';
+import { apiPaths } from '@shared/api/constants';
 import packageJson from '../../package.json';
 import { API_BASE_URL } from '../constants';
 

@@ -7,7 +7,7 @@ import { useNotification } from '../contexts/PANotificationContext';
 import { useConfigMetadataEditor } from './useConfigMetadataEditor';
 
 // Types
-import type { PreviousConfig } from '~shared/types';
+import type { PreviousConfig } from '@shared/previous-config/types';
 
 // Database & Utils
 import { database } from '../lib/database';

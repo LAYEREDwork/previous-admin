@@ -16,11 +16,11 @@ import {
   setActiveConfiguration,
   getActiveConfiguration,
   updateConfigurationOrder
-} from '../services/configurationService';
-import type { PreviousConfig } from '../../shared/types';
-import { apiPaths } from '../../shared/constants';
-import { Configuration, UpdateConfigurationRequest } from '../types';
-import { getDatabase } from '../database/core';
+} from '@backend/services/configurationService';
+import type { PreviousConfig } from '@shared/previous-config/types';
+import { apiPaths } from '@shared/api/constants';
+import { Configuration, UpdateConfigurationRequest } from '@backend/types';
+import { getDatabase } from '@backend/database/core';
 
 const router = express.Router();
 

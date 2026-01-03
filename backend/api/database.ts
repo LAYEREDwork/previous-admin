@@ -8,9 +8,9 @@
 
 import express, { Request } from 'express';
 import { exportDatabase, importDatabase, getDatabaseStatistics } from '../database';
-import { reinitializeDatabase } from '../database/core';
-import { apiPaths } from '../../shared/constants';
-import { TypedResponse } from '../types';
+import { reinitializeDatabase } from '@backend/database/core';
+import { apiPaths } from '@shared/api/constants';
+import { TypedResponse } from '@backend/types';
 
 const router = express.Router();
 

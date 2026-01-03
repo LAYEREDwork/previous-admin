@@ -12,7 +12,7 @@
  */
 
 import { execAsync } from '../../api/helpers';
-import type { PlatformModule, DiskInfo, HostModel, MonitorResolution } from '../types';
+import type { PlatformModule, DiskInfo, HostModel, MonitorResolution } from '@backend/types';
 
 /**
  * Linux platform module

@@ -13,10 +13,10 @@
  */
 
 import express, { Request } from 'express';
-import type { PreviousConfig } from '../../shared/types';
-import { getConfigManager, getDefaultConfig } from '../config/index';
-import { apiPaths } from '../../shared/constants';
-import { TypedResponse } from '../types';
+import type { PreviousConfig } from '@shared/previous-config/types';
+import { getConfigManager, getDefaultConfig } from '@backend/config/index';
+import { apiPaths } from '@shared/api/constants';
+import { TypedResponse } from '@backend/types';
 
 const router = express.Router();
 const configManager = getConfigManager();

@@ -1,5 +1,5 @@
 import { Progress } from 'rsuite';
-import { SystemInfo } from '../../../shared/types';
+import { SystemInfo } from '@shared/previous-config/types';
 
 interface PADiskSpaceProps {
     /**
