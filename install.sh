@@ -149,11 +149,12 @@ install_dependencies() {
 
 # Install npm dependencies
 install_npm() {
-    print_info "Installing npm dependencies..."
+    print_info "Installing npm dependencies (this may take a few minutes)..."
     
     cd "$INSTALL_DIR"
-    sudo -u "$TARGET_USER" npm install
-    print_success "npm dependencies installed"
+    sudo -u "$TARGET_USER" npm install --prefer-offline
+    PACKAGE_COUNT=$(sudo -u "$TARGET_USER" npm ls --depth=0 2>/dev/null | grep -c '├\|└' || echo "0")
+    print_success "npm dependencies installed ($PACKAGE_COUNT packages)"
 
     echo ""
 }
