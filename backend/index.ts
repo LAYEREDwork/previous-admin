@@ -26,7 +26,6 @@ import configurationsRoutes from './api/configurations';
 import databaseRoutes from './api/database';
 import systemRoutes from './api/system';
 import updateRoutes from './api/update';
-import { API_CONFIG } from './constants';
 import * as database from './database';
 
 // Import utilities
@@ -48,8 +47,8 @@ function configureMiddleware(app: Express): void {
     })
   );
 
-  // JSON body parsing
-  app.use(express.json({ limit: API_CONFIG.MAX_PAYLOAD_SIZE }));
+  // JSON body parsing with 50MB payload limit
+  app.use(express.json({ limit: '50mb' }));
 }
 
 /**
@@ -120,8 +119,8 @@ async function startServer(): Promise<void> {
     // Setup graceful shutdown
     setupGracefulShutdown(HTTP_SERVER);
 
-    // Get server configuration from environment
-    const serverPort = process.env.PORT || API_CONFIG.PORT;
+    // Get server configuration from environment (default port: 3001)
+    const serverPort = process.env.PORT || 3001;
     const serverHost = process.env.HOST || '0.0.0.0';
 
     // Start HTTP server
