@@ -1,9 +1,9 @@
-import { BiDownload, BiUpload, BiFile } from 'react-icons/bi';
 import { PAButton } from '../../controls/PAButton';
 import { PACard } from '../../controls/PACard';
 import { Translations } from '../../../lib/translations';
 import { Configuration } from '../../../lib/database';
 import { PASize } from '../../../lib/types/sizes';
+import { SFTrayAndArrowDownFill, SFTrayAndArrowUpFill } from '../../sf-symbols';
 
 interface ConfigImportExportPartialProps {
     importing: boolean;
@@ -33,7 +33,7 @@ export function ConfigImportExportPartial({
                 header={
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'color-mix(in srgb, var(--rs-border-info), transparent 85%)' }}>
-                            <BiDownload size={20} className="text-[var(--rs-text-info)]" />
+                            <SFTrayAndArrowDownFill size={20} className="text-[var(--rs-text-info)]" />
                         </div>
                         <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] m-0 leading-none">
                             {translation.importExport.import}
@@ -65,7 +65,7 @@ export function ConfigImportExportPartial({
                         className="flex items-center justify-center gap-2 cursor-pointer"
                         size={controlSize}
                     >
-                        <BiFile size={18} />
+                        <SFTrayAndArrowDownFill size={18} />
                         {importing ? translation.importExport.importing : translation.importExport.selectConfigFile}
                     </PAButton>
                 </label>
@@ -83,7 +83,7 @@ export function ConfigImportExportPartial({
                 header={
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'color-mix(in srgb, var(--rs-border-success), transparent 85%)' }}>
-                            <BiUpload size={20} className="text-[var(--rs-text-success)]" />
+                            <SFTrayAndArrowUpFill size={20} className="text-[var(--rs-text-info)]" />
                         </div>
                         <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] m-0 leading-none">
                             {translation.importExport.export}
@@ -102,7 +102,7 @@ export function ConfigImportExportPartial({
                         className="flex items-center justify-center gap-2"
                         size={controlSize}
                     >
-                        <BiUpload size={18} />
+                        <SFTrayAndArrowUpFill size={18} />
                         {exporting ? translation.importExport.exporting : translation.importExport.exportActiveConfig}
                     </PAButton>
 
@@ -115,7 +115,7 @@ export function ConfigImportExportPartial({
                         className="flex items-center justify-center gap-2"
                         size={controlSize}
                     >
-                        <BiUpload size={18} />
+                        <SFTrayAndArrowUpFill size={18} />
                         {exporting ? translation.importExport.exporting : translation.importExport.exportAllConfigs}
                     </PAButton>
 

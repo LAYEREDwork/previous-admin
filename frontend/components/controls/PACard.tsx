@@ -1,5 +1,5 @@
 import { ReactNode, useState, useEffect } from 'react';
-import { BiChevronUp, BiChevronDown } from 'react-icons/bi';
+import { SFChevronDown } from '../sf-symbols';
 
 interface PACardProps {
   children?: ReactNode;
@@ -99,8 +99,8 @@ export function PACard({
   const headerContent = collapsible ? (
     <div className="flex items-center justify-between w-full cursor-pointer py-2 px-4" onClick={handleToggle}>
       <div className="flex items-center gap-2 flex-1">{header}</div>
-      <div className="flex-shrink-0 ml-2 flex items-center">
-        {isExpanded ? <BiChevronUp size={24} /> : <BiChevronDown size={24} />}
+      <div className="flex-shrink-0 ml-2 flex items-center transition-transform duration-300 ease-out" style={{ transform: `rotate(${isExpanded ? -180 : 0}deg)` }}>
+        <SFChevronDown size={18} />
       </div>
     </div>
   ) : (

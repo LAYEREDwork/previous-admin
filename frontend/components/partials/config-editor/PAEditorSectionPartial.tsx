@@ -13,7 +13,7 @@ export function EditorSectionPartial({ title, children, expanded, onToggle, icon
     return (
         <PACard
             header={
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-4">
                     {icon && <div className="flex-shrink-0 text-[var(--rs-text-primary)]">{icon}</div>}
                     <span className="text-base sm:text-lg font-semibold text-[var(--rs-text-primary)] leading-none">{title}</span>
                 </div>

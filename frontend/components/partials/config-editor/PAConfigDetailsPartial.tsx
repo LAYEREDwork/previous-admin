@@ -1,9 +1,9 @@
-import { BiSave } from 'react-icons/bi';
 import { Input } from 'rsuite';
 import { PAButton } from '../../controls/PAButton';
 import { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
 import { PACard } from '../../controls/PACard';
+import { SFLongTextPageAndPencilFill, SFSquareAndArrowDownFill } from '../../sf-symbols';
 
 interface ConfigDetailsPartialProps {
     localName: string;
@@ -31,7 +31,8 @@ export function ConfigDetailsPartial({
     return (
         <PACard
             header={
-                <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] leading-none m-0">
+                <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] leading-none m-0 flex items-center gap-2">
+                    <SFLongTextPageAndPencilFill size={26} />
                     {translation.configEditor.configurationDetailsTitle}
                 </h3>
             }
@@ -70,7 +71,7 @@ export function ConfigDetailsPartial({
                         size={controlSize}
                         className="flex items-center gap-2"
                     >
-                        <BiSave size={16} />
+                        <SFSquareAndArrowDownFill size={18} />
                         {translation.configEditor.saveMetadata}
                     </PAButton>
                 </div>

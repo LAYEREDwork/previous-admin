@@ -45,6 +45,14 @@
 - `frontend/lib/database.ts`: Frontend database API client functions.
 - `scripts/`: Automation scripts for setup, updates, and maintenance.
 
+## Handling and Check of Version Numbers
+
+* The SSoT is GitHub!
+* There are tags and releases there. Only the GH release system should be used to check current and new versions.
+* Previous Admin should "somehow" know its current version (aka release)
+* Is there a higher release on GH it should notify the use on the "About" page
+* The `:release` command should fetch the URL: https://github.com/LAYEREDwork/previous-admin/compare/OT...LT, where "OT" stands for "Old Tag" and "LT" stands for "Latest Tag". Specific example: https://github.com/LAYEREDwork/previous-admin/compare/1.1.1...1.1.2 - This displays all changes made between tag "1.1.1" and tag "1.1.2". These changes should be used to generate release notes in Markdown format without any techno babble that are easy for the user to understand.
+
 ## Custom Commands
 
 - **`:arch`**: Provides a brief summary of the architecture of the current project. If the command is followed by a `>` symbol and a string, write the instructions as Markdown to a file with this name in the project root directory.
@@ -57,4 +65,4 @@
 - **`:ls`**: Output a list of all custom commands that start with ":" as Markdown.
 - **`:scan`**: Scan the project’s code and update your context.
 - **`:undo`**: Undo the last changes in the code and return to the previous state.
-- **`:release`**: Create concise, non-technical release notes in English for the changes since the last release. The release notes should include the new version name as a heading (e.g. "## Version 1.2.0") and a list of the most important new features, improvements and bug fixes below. Format the release notes as Markdown in a code block.
+- **`:release`**: Create concise, non-technical release notes in English for the changes since the last release. The release notes should include the new version name as a heading (e.g. "## Version 1.2.0") and a list of the most important new features, improvements and bug fixes below. Format the release notes as Markdown in a code block. To get all the changes for the release notes you have to check the version number of the latest release on GitHub and the latest tag. The difference will describe the release notes.

@@ -27,7 +27,7 @@ export const en: Translations = {
   },
   configEditor: {
     configurationDescriptionPlaceholder: 'Enter a description',
-    configurationDetailsTitle: 'Configuration Details',
+    configurationDetailsTitle: 'Configuration Meta Data',
     configurationNameLabel: 'Configuration Name',
     configurationNamePlaceholder: 'Enter a configuration name',
     content: 'Configuration Content',
@@ -141,7 +141,7 @@ export const en: Translations = {
     exportDescription: 'Download all configurations as a JSON file',
     exporting: 'Exporting...',
     exportingDatabase: 'Exporting...',
-    exportsAllData: 'Exports all configurations and user data as a JSON file',
+    exportsAllData: 'Exports all configurations as a JSON file',
     import: 'Import Configurations',
     importButton: 'Import',
     importDatabase: 'Import Database',

@@ -27,7 +27,7 @@ export const de: Translations = {
   },
   configEditor: {
     configurationDescriptionPlaceholder: 'Geben Sie eine Beschreibung ein',
-    configurationDetailsTitle: 'Konfigurationsdetails',
+    configurationDetailsTitle: 'Konfigurations-Metadaten',
     configurationNameLabel: 'Konfigurationsname',
     configurationNamePlaceholder: 'Geben Sie einen Konfigurationsnamen ein',
     content: 'Konfigurationsinhalt',
@@ -182,7 +182,7 @@ export const de: Translations = {
     syncToEmulator: 'Aktive Konfiguration auf Emulator anwenden',
     syncing: 'Synchronisiere...',
     warningReplaceAll: 'Warnung: Dies ersetzt alle vorhandenen Konfigurationen!',
-    exportsAllData: 'Exportiert alle Konfigurationen und Benutzerdaten als JSON-Datei',
+    exportsAllData: 'Exportiert alle Konfigurationen als JSON-Datei',
   },
   layout: {
     subtitle: 'Previous Emulator Konfigurationsverwaltung',

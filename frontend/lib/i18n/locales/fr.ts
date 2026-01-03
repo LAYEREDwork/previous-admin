@@ -27,7 +27,7 @@ export const fr: Translations = {
   },
   configEditor: {
     configurationDescriptionPlaceholder: 'Saisissez la description de la configuration',
-    configurationDetailsTitle: 'Détails de la configuration',
+    configurationDetailsTitle: 'Métadonnées de configuration',
     configurationNameLabel: 'Nom de la configuration',
     configurationNamePlaceholder: 'Saisissez le nom de la configuration',
     content: 'Contenu de la configuration',
@@ -145,7 +145,7 @@ export const fr: Translations = {
     exportDescription: 'Téléchargez toutes les configurations sous forme de fichier JSON',
     exporting: 'Exportation...',
     exportingDatabase: 'Exportation...',
-    exportsAllData: 'Exporte toutes les configurations et les données utilisateur sous forme de fichier JSON',
+    exportsAllData: 'Exporte toutes les configurations sous forme de fichier JSON',
     import: 'Importer des configurations',
     importButton: 'Importer',
     importDatabase: 'Importer la base de données',

@@ -37,11 +37,11 @@ export function PASegmentedControl<T extends string>({
 
   // Precise height mapping
   const iconSizes = {
-    xs: 12,
-    sm: 14,
-    md: 16,
-    lg: 18,
-    xl: 20,
+    xs: 14,
+    sm: 16,
+    md: 18,
+    lg: 20,
+    xl: 22,
   };
 
   return (

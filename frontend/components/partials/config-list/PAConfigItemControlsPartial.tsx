@@ -1,7 +1,7 @@
 import { IconButton } from 'rsuite';
-import { BiCheckCircle, BiCircle } from 'react-icons/bi';
 import type { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
+import { SFCheckmarkCircle, SFCircle } from '../../sf-symbols';
 
 interface ConfigItemControlsProps {
   isActive?: boolean;
@@ -20,7 +20,7 @@ export function ConfigItemControls({
   return (
     <div className="flex flex-col justify-center items-center w-10 sm:w-12">
       <IconButton
-        icon={isActive ? <BiCheckCircle size={28} /> : <BiCircle size={28} />}
+        icon={isActive ? <SFCheckmarkCircle size={26} /> : <SFCircle size={24} />}
         appearance="subtle"
         onClick={() => !isActive && onSetActive()}
         className={`flex-shrink-0 ${

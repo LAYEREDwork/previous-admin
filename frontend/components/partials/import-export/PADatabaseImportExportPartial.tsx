@@ -1,8 +1,8 @@
-import { BiDownload, BiUpload, BiData } from 'react-icons/bi';
 import { PAButton } from '../../controls/PAButton';
 import { PACard } from '../../controls/PACard';
 import { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
+import { SFTrayAndArrowDownFill, SFTrayAndArrowUpFill } from '../../sf-symbols';
 
 interface DatabaseImportExportPartialProps {
     databaseImporting: boolean;
@@ -28,7 +28,7 @@ export function DatabaseImportExportPartial({
     };
 
     return (
-        <div className="border-t border-[var(--rs-border-primary)] pt-6">
+        <div className="pt-6">
             <div className="mb-4">
                 <h2 className="text-2xl font-bold text-[var(--rs-text-primary)] mb-2">
                     {translation.importExport.databaseTitle}
@@ -44,7 +44,7 @@ export function DatabaseImportExportPartial({
                     header={
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'color-mix(in srgb, var(--rs-border-info), transparent 85%)' }}>
-                                <BiData size={20} className="text-[var(--rs-text-info)]" />
+                                <SFTrayAndArrowDownFill size={20} className="text-[var(--rs-text-info)]" />
                             </div>
                             <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] m-0 leading-none">
                                 {translation.importExport.importDatabase}
@@ -75,7 +75,7 @@ export function DatabaseImportExportPartial({
                         className="flex items-center justify-center gap-2 cursor-pointer"
                         size={controlSize}
                     >
-                        <BiDownload size={18} />
+                        <SFTrayAndArrowDownFill size={18} />
                         {databaseImporting ? translation.importExport.importingDatabase : translation.importExport.selectDatabaseFile}
                     </PAButton>
 
@@ -92,7 +92,7 @@ export function DatabaseImportExportPartial({
                     header={
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'color-mix(in srgb, var(--rs-border-info), transparent 85%)' }}>
-                                <BiData size={20} className="text-[var(--rs-text-info)]" />
+                                <SFTrayAndArrowUpFill size={20} className="text-[var(--rs-text-info)]" />
                             </div>
                             <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] m-0 leading-none">
                                 {translation.importExport.exportDatabase}
@@ -112,7 +112,7 @@ export function DatabaseImportExportPartial({
                         className="flex items-center justify-center gap-2"
                         size={controlSize}
                     >
-                        <BiUpload size={18} />
+                        <SFTrayAndArrowUpFill size={18} />
                         {databaseExporting ? translation.importExport.exportingDatabase : translation.importExport.exportCompleteDatabase}
                     </PAButton>
 

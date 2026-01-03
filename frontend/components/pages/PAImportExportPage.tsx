@@ -1,5 +1,5 @@
 // Components
-import { ConfigFileSyncPartial } from '../partials/PAConfigFileSyncPartial';
+import { ConfigFileSyncPartial } from '../partials/import-export/PAConfigFileSyncPartial';
 
 // Partials
 import { ConfigImportExportPartial } from '../partials/import-export/PAConfigImportExportPartial';
@@ -58,9 +58,6 @@ export function PAImportExport() {
         translation={translation}
       />
 
-      {/* Notes Section */}
-      <ImportExportNotesPartial translation={translation} />
-
       {/* Database Import/Export */}
       <DatabaseImportExportPartial
         databaseImporting={databaseImporting}
@@ -70,6 +67,9 @@ export function PAImportExport() {
         controlSize={controlSize}
         translation={translation}
       />
+
+      {/* Notes Section */}
+      <ImportExportNotesPartial translation={translation} />
     </div>
   );
 }

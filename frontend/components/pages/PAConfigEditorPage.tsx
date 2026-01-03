@@ -1,5 +1,3 @@
-import { BiRefresh } from 'react-icons/bi';
-import { IoDocumentText } from 'react-icons/io5';
 import { useState, useRef } from 'react';
 import { PAButton } from '../controls/PAButton';
 
@@ -19,6 +17,10 @@ import { useConfigEditor } from '../../hooks/useConfigEditor';
 import { useConfigActions } from '../../hooks/useConfigActions';
 import { PASize } from '../../lib/types/sizes';
 import { PANoConfigurationsEmptyView } from '../PANoConfigurationsEmptyView';
+import { 
+  SFArrowTrianglehead2ClockwiseRotate90CircleFill, 
+  SFLongTextPageAndPencilFill 
+} from '../sf-symbols';
 
 export function PAConfigEditor({ configId, onTabChange }: { configId?: string | null; onTabChange?: (tab: string) => void }) {
   // Modal states for creating new configuration
@@ -97,7 +99,7 @@ export function PAConfigEditor({ configId, onTabChange }: { configId?: string | 
             className="flex items-center gap-2 mx-auto"
             size={controlSize}
           >
-            <BiRefresh size={16} />
+            <SFArrowTrianglehead2ClockwiseRotate90CircleFill size={16} />
             {translation.common.reload || 'Reload'}
           </PAButton>
         </div>
@@ -133,7 +135,7 @@ export function PAConfigEditor({ configId, onTabChange }: { configId?: string | 
     if (hasSavedConfigs === true && configName === null) {
       return (
         <PAEmptyView
-          icon={IoDocumentText}
+          icon={SFLongTextPageAndPencilFill}
           title={translation.configEditor.noConfigSelected}
           description={translation.configEditor.noConfigSelectedDescription}
           actionText={translation.configEditor.goToSavedConfigs}

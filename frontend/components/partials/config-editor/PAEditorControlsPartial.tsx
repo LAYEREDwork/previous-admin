@@ -1,8 +1,13 @@
-import { BiSave, BiChevronUp, BiChevronDown } from 'react-icons/bi';
 import { PAButton } from '../../controls/PAButton';
 import { PASegmentedControl } from '../../controls/PASegmentedControl';
 import { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
+import { 
+    SFChevronDownCircleFill, 
+    SFLongTextPageAndPencilFill, 
+    SFSquareAndArrowDownOnSquareFill, 
+    SFTextRectangleFill 
+} from '../../sf-symbols';
 
 interface EditorControlsPartialProps {
     viewMode: 'editor' | 'raw';
@@ -41,7 +46,9 @@ export function EditorControlsPartial({
                     size={controlSize}
                     className="flex items-center gap-2 flex-shrink-0"
                 >
-                    {allExpanded ? <BiChevronUp size={16} /> : <BiChevronDown size={16} />}
+                    <div style={{ transform: `rotate(${allExpanded ? -180 : 0}deg)`, transition: 'transform 300ms ease-out' }}>
+                        <SFChevronDownCircleFill size={18} />
+                    </div>
                     {allExpanded
                         ? translation.configEditor.sectionsCollapseAll
                         : translation.configEditor.sectionsExpandAll}
@@ -50,8 +57,8 @@ export function EditorControlsPartial({
                 <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
                     <PASegmentedControl
                         options={[
-                            { value: 'editor', label: translation.configEditor.viewModeEditor },
-                            { value: 'raw', label: translation.configEditor.viewModeRaw },
+                            { value: 'editor', label: translation.configEditor.viewModeEditor, icon: SFLongTextPageAndPencilFill },
+                            { value: 'raw', label: translation.configEditor.viewModeRaw, icon: SFTextRectangleFill },
                         ]}
                         value={viewMode}
                         onChange={(val) => setViewMode(val as 'editor' | 'raw')}
@@ -67,7 +74,7 @@ export function EditorControlsPartial({
                         size={controlSize}
                         title={saving ? translation.configEditor.saving : translation.configEditor.save}
                     >
-                        <BiSave size={16} />
+                        <SFSquareAndArrowDownOnSquareFill size={18} />
                         <span className="hidden sm:inline">
                             {saving ? translation.configEditor.saving : translation.configEditor.save}
                         </span>

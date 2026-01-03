@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { BiInfoCircle, BiRefresh, BiCheck, BiError, BiFile, BiChevronUp, BiChevronDown } from 'react-icons/bi';
+import { BiInfoCircle, BiRefresh, BiCheck, BiError, BiFile } from 'react-icons/bi';
 import { PAButton } from '../../controls/PAButton';
 import { PACard } from '../../controls/PACard';
 import { useLanguage } from '../../../contexts/PALanguageContext';
 import { useResponsiveControlSize } from '../../../hooks/useResponsiveControlSize';
 import { type VersionInfo } from '../../../lib/version';
 import ReactMarkdown from 'react-markdown';
+import { SFChevronDownCircleFill, SFChevronUpCircleFill } from '../../sf-symbols';
 
 interface VersionInfoPartialProps {
   versionInfo: VersionInfo | null;
@@ -84,7 +85,7 @@ export function VersionInfoPartial({
                             <BiFile size={14} />
                             <span className="text-base font-semibold">{translation.system.releaseNotes}</span>
                           </div>
-                          {newExpanded ? <BiChevronUp size={16} /> : <BiChevronDown size={16} />}
+                          {newExpanded ? <SFChevronUpCircleFill size={16} /> : <SFChevronDownCircleFill size={16} />}
                         </div>
                         <div className={`grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${newExpanded ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
                           <div className="overflow-hidden">

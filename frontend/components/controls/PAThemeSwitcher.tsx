@@ -1,8 +1,8 @@
 import { useTheme, ThemeMode } from '../../contexts/PAThemeContext';
 import { useLanguage } from '../../contexts/PALanguageContext';
 import { PASegmentedControl } from './PASegmentedControl';
-import { MdLightMode, MdDarkMode, MdSettings } from 'react-icons/md';
 import { PASize } from '../../lib/types/sizes';
+import { SFDesktopcomputer, SFMoonStars, SFSunMax } from '../sf-symbols';
 
 export function PAThemeSwitcher() {
   const { mode, setMode } = useTheme();
@@ -12,17 +12,17 @@ export function PAThemeSwitcher() {
     {
       value: 'light',
       label: translation.theme.light,
-      icon: <MdLightMode size={16} />,
+      icon: <SFSunMax size={16} />,
     },
     {
       value: 'system',
       label: translation.theme.system,
-      icon: <MdSettings size={16} />,
+      icon: <SFDesktopcomputer size={16} />,
     },
     {
       value: 'dark',
       label: translation.theme.dark,
-      icon: <MdDarkMode size={16} />,
+      icon: <SFMoonStars size={16} />,
     },
   ];
 

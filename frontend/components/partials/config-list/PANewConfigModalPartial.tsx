@@ -1,4 +1,4 @@
-import { SFDocumentBadgePlusFill } from '../../sf-symbols/SFDocumentBadgePlusFill';
+import { SFDocumentBadgePlusFill } from '../../sf-symbols';
 import { useEffect } from 'react';
 import { Input } from 'rsuite';
 import { PAButton } from '../../controls/PAButton';

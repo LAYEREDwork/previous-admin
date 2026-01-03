@@ -51,7 +51,7 @@ router.post(apiPaths.Update.update.relative, async (req: any, res: any) => {
     const adminDir = process.cwd();
 
     // Get latest version info
-    const versionResponse = await fetch(`${API_BASE_URL}${ApiEndpoints.update_VERSION}`, {
+    const versionResponse = await fetch(`${API_BASE_URL}${apiPaths.Update.version.full}`, {
       headers: {
         'Accept': 'application/json',
       },

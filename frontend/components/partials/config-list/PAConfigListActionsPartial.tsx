@@ -1,9 +1,13 @@
-import { BiTrash, BiEdit, BiCopy } from 'react-icons/bi';
 import { PASize } from '../../../lib/types/sizes';
 import { PAButton } from '../../controls/PAButton';
 import { Configuration } from '../../../lib/database';
 import { Translations } from '../../../lib/translations';
-import { SFArrowUpDocumentFill } from '../../sf-symbols';
+import { 
+  SFArrowUpDocumentFill, 
+  SFDocumentOnDocumentFill, 
+  SFDocumentOnTrashFill, 
+  SFLongTextPageAndPencilFill 
+} from '../../sf-symbols';
 
 interface ConfigListActionsPartialProps {
   config: Configuration;
@@ -27,7 +31,7 @@ export function ConfigListActionsPartial({
   deleteConfig,
   translation
 }: ConfigListActionsPartialProps) {
-  const iconSize = isMobile ? 20 : 24;
+  const iconSize = isMobile ? 20 : 22;
   const buttonSize = isMobile ? PASize.xs : PASize.sm;
 
   return (
@@ -40,21 +44,21 @@ export function ConfigListActionsPartial({
         className="flex items-center justify-center"
       />
       <PAButton
-        icon={<BiCopy size={iconSize} />}
+        icon={<SFDocumentOnDocumentFill size={iconSize} />}
         size={buttonSize}
         title={translation.configList.duplicate}
         onClick={() => duplicateConfig(config)}
         className="flex items-center justify-center"
       />
       <PAButton
-        icon={<BiEdit size={iconSize} />}
+        icon={<SFLongTextPageAndPencilFill size={iconSize} />}
         size={buttonSize}
         title={translation.configList.edit}
         onClick={() => onEdit(config)}
         className="flex items-center justify-center"
       />
       <PAButton
-        icon={<BiTrash size={iconSize} />}
+        icon={<SFDocumentOnTrashFill size={iconSize} />}
         size={buttonSize}
         title={translation.configList.delete}
         onClick={() => deleteConfig(config.id)}
