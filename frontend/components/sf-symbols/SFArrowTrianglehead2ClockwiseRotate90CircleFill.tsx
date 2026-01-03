@@ -1,0 +1,71 @@
+interface SFArrowTrianglehead2ClockwiseRotate90CircleFillProps {
+  /**
+   * Size of the icon in pixels
+   * @default 24
+   */
+  size?: number | string;
+
+  /**
+   * Color of the icon
+   * @default 'currentColor'
+   */
+  color?: string;
+
+  /**
+   * CSS class name to apply to the SVG element
+   */
+  className?: string;
+
+  /**
+   * Stroke width of the icon
+   * @default 1
+   */
+  strokeWidth?: number | string;
+
+  /**
+   * Additional SVG attributes
+   */
+  [key: string]: any;
+}
+
+/**
+ * ArrowTrianglehead2ClockwiseRotate90CircleFill Icon Component
+ *
+ * A custom SVG icon from SF Symbols.
+ * Follows the same API conventions as React Icons library components.
+ *
+ * @param {SFSymbolArrowTrianglehead2ClockwiseRotate90CircleFillProps} props - Component props
+ * @returns {JSX.Element} The SVG icon element
+ *
+ * @example
+ * // Basic usage
+ * <SFSymbolArrowTrianglehead2ClockwiseRotate90CircleFill size={24} color="currentColor" />
+ *
+ * @example
+ * // With custom styling
+ * <SFSymbolArrowTrianglehead2ClockwiseRotate90CircleFill size={32} color="#ff0000" className="custom-class" />
+ */
+export function SFArrowTrianglehead2ClockwiseRotate90CircleFill({
+  size = 24,
+  color = 'currentColor',
+  className = '',
+  strokeWidth = 1,
+  ...rest
+}: SFArrowTrianglehead2ClockwiseRotate90CircleFillProps): JSX.Element {
+  const numSize = typeof size === 'string' ? parseInt(size, 10) : size;
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 25.8008 25.459"
+      width={numSize}
+      height={numSize}
+      fill={color}
+      strokeWidth={strokeWidth}
+      className={className}
+      {...rest}
+    >
+      <g><rect height="25.459" opacity="0" width="25.8008" x="0" y="0"/><path d="M12.7148 25.4395C19.7266 25.4395 25.4395 19.7266 25.4395 12.7246C25.4395 5.71289 19.7266 0 12.7148 0C5.71289 0 0 5.71289 0 12.7246C0 19.7266 5.71289 25.4395 12.7148 25.4395Z" fill="currentColor" fill-opacity="0.2125"/><path d="M4.22852 13.8086L8.7207 13.8086C9.23828 13.8086 9.375 13.3008 9.08203 12.8906L7.07031 10.0586C6.74805 9.58984 6.20117 9.56055 5.84961 10.0586L3.87695 12.8906C3.59375 13.291 3.71094 13.8086 4.22852 13.8086ZM12.7148 19.834C14.4531 19.834 16.0449 19.1895 17.168 18.2324C17.7051 17.8125 17.7246 17.2266 17.4414 16.875C17.1875 16.543 16.6797 16.4355 16.123 16.8262C15.2148 17.5879 14.0527 18.0762 12.7148 18.0762C9.75586 18.0762 7.35352 15.6836 7.35352 12.7246C7.35352 12.2363 6.96289 11.8457 6.48438 11.8457C5.99609 11.8457 5.60547 12.2363 5.60547 12.7246C5.60547 16.6504 8.78906 19.834 12.7148 19.834ZM21.2012 11.6406L16.709 11.6406C16.1914 11.6406 16.0547 12.1387 16.3477 12.5488L18.3594 15.3809C18.6816 15.8496 19.2285 15.8789 19.5801 15.3809L21.5527 12.5488C21.8359 12.1484 21.7188 11.6406 21.2012 11.6406ZM12.7148 5.61523C10.9766 5.61523 9.38477 6.25 8.26172 7.2168C7.72461 7.63672 7.70508 8.22266 7.98828 8.57422C8.24219 8.89648 8.75 9.01367 9.30664 8.61328C10.2148 7.85156 11.377 7.36328 12.7148 7.36328C15.6738 7.36328 18.0762 9.76562 18.0762 12.7246C18.0762 13.2031 18.4668 13.5938 18.9453 13.5938C19.4336 13.5938 19.8242 13.2031 19.8242 12.7246C19.8242 8.79883 16.6406 5.61523 12.7148 5.61523Z" fill="currentColor" fill-opacity="0.85"/></g>
+    </svg>
+  );
+}

@@ -55,7 +55,7 @@ function generateComponentCode(svgFileName: string, svgContent: string): string 
   const viewBoxMatch = svgContent.match(/viewBox="([^"]*)"/);
   const viewBox = viewBoxMatch ? viewBoxMatch[1] : '0 0 24 24';
 
-  const template = `interface SFSymbol${iconName}Props {
+  const template = `interface SF${iconName}Props {
   /**
    * Size of the icon in pixels
    * @default 24
@@ -91,24 +91,24 @@ function generateComponentCode(svgFileName: string, svgContent: string): string 
  * A custom SVG icon from SF Symbols.
  * Follows the same API conventions as React Icons library components.
  *
- * @param {SFSymbol${iconName}Props} props - Component props
+ * @param {SF${iconName}Props} props - Component props
  * @returns {JSX.Element} The SVG icon element
  *
  * @example
  * // Basic usage
- * <SFSymbol${iconName} size={24} color="currentColor" />
+ * <SF${iconName} size={24} color="currentColor" />
  *
  * @example
  * // With custom styling
- * <SFSymbol${iconName} size={32} color="#ff0000" className="custom-class" />
+ * <SF${iconName} size={32} color="#ff0000" className="custom-class" />
  */
-export function SFSymbol${iconName}({
+export function SF${iconName}({
   size = 24,
   color = 'currentColor',
   className = '',
   strokeWidth = 1,
   ...rest
-}: SFSymbol${iconName}Props): JSX.Element {
+}: SF${iconName}Props): JSX.Element {
   const numSize = typeof size === 'string' ? parseInt(size, 10) : size;
 
   return (
@@ -135,19 +135,19 @@ export function SFSymbol${iconName}({
  * Generate index.tsx file with all icon exports
  */
 function generateIndexFile(iconsDir: string, indexFilePath: string, iconNames: string[]): void {
-  // Get all existing SFSymbol files to include any manually added ones
+  // Get all existing SF files to include any manually added ones
   const allIconFiles = fs
     .readdirSync(iconsDir)
-    .filter(file => file.startsWith('SFSymbol') && file.endsWith('.tsx') && file !== 'index.tsx')
+    .filter(file => file.startsWith('SF') && file.endsWith('.tsx') && file !== 'index.tsx')
     .map(file => file.replace('.tsx', ''))
-    .map(file => file.replace(/^SFSymbol/, '')); // Remove SFSymbol prefix to avoid duplication
+    .map(file => file.replace(/^SF/, '')); // Remove SF prefix to avoid duplication
 
   // Remove duplicates and combine with newly created icons
   const allIcons = Array.from(new Set([...allIconFiles, ...iconNames])).sort();
 
   // Generate export statements
   const exportStatements = allIcons
-    .map(iconName => `export { SFSymbol${iconName} } from './SFSymbol${iconName}';`)
+    .map(iconName => `export { SF${iconName} } from './SF${iconName}';`)
     .join('\n');
 
   const indexContent = `/**
@@ -157,7 +157,7 @@ function generateIndexFile(iconsDir: string, indexFilePath: string, iconNames: s
  * It exports all SF Symbol icon components for easy importing.
  * 
  * Usage:
- * import { SFSymbolCheckmark, SFSymbolCircle } from '../sf-symbols';
+ * import { SFCheckmark, SFCircle } from '../sf-symbols';
  */
 
 ${exportStatements}
@@ -205,7 +205,7 @@ async function generateSFIcons() {
 
   svgFiles.forEach(svgFile => {
     const iconName = kebabToPascalCase(svgFile.replace('.svg', ''));
-    const componentFileName = `SFSymbol${iconName}.tsx`;
+    const componentFileName = `SF${iconName}.tsx`;
     const componentPath = path.join(iconsDir, componentFileName);
 
     // Check if component already exists

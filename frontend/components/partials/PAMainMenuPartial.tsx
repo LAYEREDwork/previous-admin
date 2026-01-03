@@ -1,10 +1,10 @@
 import React from 'react';
 import { 
-    SFSymbolDocumentOnDocumentFill, 
-    SFSymbolLongTextPageAndPencilFill, 
-    SFSymbolSquareAndArrowUpFill,
-    SFSymbolDesktopcomputer,
-    SFSymbolInfoBubbleFill
+    SFDocumentOnDocumentFill, 
+    SFLongTextPageAndPencilFill, 
+    SFSquareAndArrowUpFill,
+    SFDesktopcomputer,
+    SFInfoBubbleFill
 } from '../sf-symbols';
 import { Nav } from 'rsuite';
 import { useLanguage } from '../../contexts/PALanguageContext';
@@ -20,11 +20,11 @@ export function MainMenuPartial({ currentTab, onTabChange }: MainMenuProps) {
     const { translation } = useLanguage();
 
     const tabs = [
-        { value: 'configs', label: translation.tabs.savedConfigs, icon: <SFSymbolDocumentOnDocumentFill size={23} /> },
-        { value: 'editor', label: translation.tabs.configEditor, icon: <SFSymbolLongTextPageAndPencilFill size={23} /> },
-        { value: 'import-export', label: translation.tabs.importExport, icon: <SFSymbolSquareAndArrowUpFill size={23} /> },
-        { value: 'system', label: translation.tabs.system, icon: <SFSymbolDesktopcomputer size={23} /> },
-        { value: 'about', label: translation.tabs.about, icon: <SFSymbolInfoBubbleFill size={23} /> },
+        { value: 'configs', label: translation.tabs.savedConfigs, icon: <SFDocumentOnDocumentFill size={23} /> },
+        { value: 'editor', label: translation.tabs.configEditor, icon: <SFLongTextPageAndPencilFill size={23} /> },
+        { value: 'import-export', label: translation.tabs.importExport, icon: <SFSquareAndArrowUpFill size={23} /> },
+        { value: 'system', label: translation.tabs.system, icon: <SFDesktopcomputer size={23} /> },
+        { value: 'about', label: translation.tabs.about, icon: <SFInfoBubbleFill size={23} /> },
     ];
 
     return (

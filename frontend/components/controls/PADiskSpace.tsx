@@ -102,12 +102,12 @@ export function PADiskSpace({
 
                     <div className="space-y-2 text-xs text-[var(--rs-text-secondary)]">
                         <div className="flex justify-between">
-                            <span>Used:</span>
-                            <span className="font-medium">{disk.used}</span>
-                        </div>
-                        <div className="flex justify-between">
                             <span>Total:</span>
                             <span className="font-medium">{disk.size}</span>
+                        </div>
+                        <div className="flex justify-between">
+                            <span>Used:</span>
+                            <span className="font-medium">{disk.used}</span>
                         </div>
                         <div className="flex justify-between">
                             <span>Free:</span>

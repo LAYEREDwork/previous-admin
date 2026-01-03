@@ -3,7 +3,7 @@ import { PASize } from '../../../lib/types/sizes';
 import { PAButton } from '../../controls/PAButton';
 import { Configuration } from '../../../lib/database';
 import { Translations } from '../../../lib/translations';
-import { SFSymbolArrowUpDocumentFill } from '../../sf-symbols';
+import { SFArrowUpDocumentFill } from '../../sf-symbols';
 
 interface ConfigListActionsPartialProps {
   config: Configuration;
@@ -33,7 +33,7 @@ export function ConfigListActionsPartial({
   return (
     <div className="flex items-center justify-end gap-3 mt-2 sm:mt-0">
       <PAButton
-        icon={<SFSymbolArrowUpDocumentFill size={iconSize} />}
+        icon={<SFArrowUpDocumentFill size={iconSize} />}
         size={buttonSize}
         title={translation.configList.export}
         onClick={() => exportSingleConfig(config)}

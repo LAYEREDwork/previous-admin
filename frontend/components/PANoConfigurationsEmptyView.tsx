@@ -1,4 +1,4 @@
-import { SFSymbolDocumentBadgePlusFill } from './sf-symbols';
+import { SFDocumentBadgePlusFill } from './sf-symbols';
 import { PAEmptyView } from './controls/PAEmptyView';
 import { useLanguage } from '../contexts/PALanguageContext';
 
@@ -22,7 +22,7 @@ export function PANoConfigurationsEmptyView({
 
   return (
     <PAEmptyView
-      icon={SFSymbolDocumentBadgePlusFill}
+      icon={SFDocumentBadgePlusFill}
       iconSize={120}
       title={translation.configList.emptyStateTitle}
       description={translation.configList.emptyStateDescription}

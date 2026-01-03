@@ -1,4 +1,4 @@
-import { SFSymbolDocumentBadgePlusFill } from '../../sf-symbols/SFSymbolDocumentBadgePlusFill';
+import { SFDocumentBadgePlusFill } from '../../sf-symbols/SFDocumentBadgePlusFill';
 import { useEffect } from 'react';
 import { Input } from 'rsuite';
 import { PAButton } from '../../controls/PAButton';
@@ -50,7 +50,7 @@ export function PANewConfigModalPartial({
         >
             <PAModal.Header closeButton={false}>
                 <PAModal.Title>
-                    <SFSymbolDocumentBadgePlusFill size={32} className="inline-block mr-2 -mt-0.5" />
+                    <SFDocumentBadgePlusFill size={32} className="inline-block mr-2 -mt-0.5" />
                     {translation.configList.createNew}
                 </PAModal.Title>
             </PAModal.Header>
