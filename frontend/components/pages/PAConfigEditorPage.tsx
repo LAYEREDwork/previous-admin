@@ -5,20 +5,20 @@ import { PAButton } from '../controls/PAButton';
 
 // Components
 import { PAEmptyView } from '../controls/PAEmptyView';
-import { PANoConfigurationsEmptyView } from '../PANoConfigurationsEmptyView';
 
 // Partials
 import { ConfigDetailsPartial } from '../partials/config-editor/PAConfigDetailsPartial';
 import { EditorControlsPartial } from '../partials/config-editor/PAEditorControlsPartial';
 import { EditorViewPartial } from '../partials/config-editor/PAEditorViewPartial';
 import { RawViewPartial } from '../partials/config-editor/PARawViewPartial';
-import { NewConfigModalPartial } from '../partials/config-list/PANewConfigModalPartial';
+import { PANewConfigModalPartial } from '../partials/config-list/PANewConfigModalPartial';
 
 // Hooks
 import { useResponsiveControlSize } from '../../hooks/useResponsiveControlSize';
 import { useConfigEditor } from '../../hooks/useConfigEditor';
 import { useConfigActions } from '../../hooks/useConfigActions';
 import { PASize } from '../../lib/types/sizes';
+import { PANoConfigurationsEmptyView } from '../PANoConfigurationsEmptyView';
 
 export function PAConfigEditor({ configId, onTabChange }: { configId?: string | null; onTabChange?: (tab: string) => void }) {
   // Modal states for creating new configuration
@@ -110,7 +110,7 @@ export function PAConfigEditor({ configId, onTabChange }: { configId?: string | 
     if (hasSavedConfigs === false) {
       return (
         <>
-          <NewConfigModalPartial
+          <PANewConfigModalPartial
             open={showNewConfig}
             onClose={handleCloseNewConfigModal}
             onSave={handleCreateNewConfig}

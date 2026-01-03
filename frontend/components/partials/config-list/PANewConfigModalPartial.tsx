@@ -19,7 +19,7 @@ interface NewConfigModalPartialProps {
     translation: Translations;
 }
 
-export function NewConfigModalPartial({
+export function PANewConfigModalPartial({
     open,
     onClose,
     onSave,

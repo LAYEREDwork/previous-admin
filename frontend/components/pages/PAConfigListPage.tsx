@@ -1,13 +1,10 @@
-
-
 // Components
 import { useState, useRef } from 'react';
-import { PANoConfigurationsEmptyView } from '../PANoConfigurationsEmptyView';
 
 // Partials
 import { ConfigListItemPartial } from '../partials/config-list/PAConfigListItemPartial';
 import { PAConfigListHeaderPartial } from '../partials/config-list/PAConfigListHeaderPartial';
-import { NewConfigModalPartial } from '../partials/config-list/PANewConfigModalPartial';
+import { PANewConfigModalPartial } from '../partials/config-list/PANewConfigModalPartial';
 
 // Hooks
 import { useLanguage } from '../../contexts/PALanguageContext';
@@ -17,6 +14,7 @@ import { PASize } from '../../lib/types/sizes';
 
 // Types
 import { Configuration } from '../../lib/database';
+import { PANoConfigurationsEmptyView } from '../PANoConfigurationsEmptyView';
 
 interface ConfigListProps {
   onEdit: (config: Configuration) => void;
@@ -98,7 +96,7 @@ export function PAConfigList({ onEdit }: ConfigListProps) {
       )}
 
       {/* New Configuration Modal */}
-      <NewConfigModalPartial
+      <PANewConfigModalPartial
         open={showNewConfig}
         onClose={handleCloseNewConfigModal}
         onSave={createConfig}
@@ -112,7 +110,7 @@ export function PAConfigList({ onEdit }: ConfigListProps) {
       />
 
       {/* Duplicate Configuration Modal */}
-      <NewConfigModalPartial
+      <PANewConfigModalPartial
         open={showDuplicateModal}
         onClose={handleCloseDuplicateModal}
         onSave={handleSaveDuplicate}

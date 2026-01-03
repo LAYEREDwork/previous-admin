@@ -1,4 +1,4 @@
-import { SFSymbolDocumentBadgePlusFill } from './sf-symbols/SFSymbolDocumentBadgePlusFill';
+import { SFSymbolDocumentBadgePlusFill } from './sf-symbols';
 import { PAEmptyView } from './controls/PAEmptyView';
 import { useLanguage } from '../contexts/PALanguageContext';
 

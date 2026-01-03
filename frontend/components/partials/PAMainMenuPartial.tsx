@@ -1,8 +1,11 @@
 import React from 'react';
-import { BiInfoCircle, BiCog } from 'react-icons/bi';
-import { IoDocumentText } from 'react-icons/io5';
-import { PiExportDuotone } from 'react-icons/pi';
-import { SFSymbolDocumentOnDocument } from '../sf-symbols/SFSymbolDocumentOnDocument';
+import { 
+    SFSymbolDocumentOnDocumentFill, 
+    SFSymbolLongTextPageAndPencilFill, 
+    SFSymbolSquareAndArrowUpFill,
+    SFSymbolDesktopcomputer,
+    SFSymbolInfoBubbleFill
+} from '../sf-symbols';
 import { Nav } from 'rsuite';
 import { useLanguage } from '../../contexts/PALanguageContext';
 import { PASegmentedControl } from '../controls/PASegmentedControl';
@@ -17,11 +20,11 @@ export function MainMenuPartial({ currentTab, onTabChange }: MainMenuProps) {
     const { translation } = useLanguage();
 
     const tabs = [
-        { value: 'configs', label: translation.tabs.savedConfigs, icon: <SFSymbolDocumentOnDocument size={22} /> },
-        { value: 'editor', label: translation.tabs.configEditor, icon: <IoDocumentText size={22} /> },
-        { value: 'import-export', label: translation.tabs.importExport, icon: <PiExportDuotone size={22} /> },
-        { value: 'system', label: translation.tabs.system, icon: <BiCog size={22} /> },
-        { value: 'about', label: translation.tabs.about, icon: <BiInfoCircle size={22} /> },
+        { value: 'configs', label: translation.tabs.savedConfigs, icon: <SFSymbolDocumentOnDocumentFill size={23} /> },
+        { value: 'editor', label: translation.tabs.configEditor, icon: <SFSymbolLongTextPageAndPencilFill size={23} /> },
+        { value: 'import-export', label: translation.tabs.importExport, icon: <SFSymbolSquareAndArrowUpFill size={23} /> },
+        { value: 'system', label: translation.tabs.system, icon: <SFSymbolDesktopcomputer size={23} /> },
+        { value: 'about', label: translation.tabs.about, icon: <SFSymbolInfoBubbleFill size={23} /> },
     ];
 
     return (
