@@ -15,9 +15,17 @@ NC='\033[0m' # No Color
 
 # Configuration
 REPO_URL="https://github.com/LAYEREDwork/previous-admin"
-TARGET_USER="next"
+
+# Determine the target user (the user who called sudo)
+if [ -n "$SUDO_USER" ] && [ "$SUDO_USER" != "root" ]; then
+    TARGET_USER="$SUDO_USER"
+else
+    # Fallback if run directly as root (not recommended)
+    TARGET_USER="previous"
+fi
+
 INSTALL_DIR="/home/$TARGET_USER/previous-admin"
-MDNS_HOSTNAME="next.local"
+MDNS_HOSTNAME="previous-admin.local"
 FRONTEND_PORT="2342"
 BACKEND_PORT="3001"
 
@@ -59,23 +67,42 @@ check_root() {
 check_tools() {
     print_info "Checking required tools..."
     
-    if ! command -v git &> /dev/null; then
-        print_error "git is not installed"
+    # Detect OS first (needed for installation)
+    if [ -f /etc/os-release ]; then
+        . /etc/os-release
+        OS=$ID
+    else
+        print_error "Cannot detect operating system"
         exit 1
     fi
-    print_success "git found"
+    
+    # Check and install git
+    if ! command -v git &> /dev/null; then
+        print_warning "git is not installed - installing..."
+        if [ "$OS" = "ubuntu" ] || [ "$OS" = "debian" ]; then
+            apt-get update -qq
+            apt-get install -y git
+        elif [ "$OS" = "fedora" ] || [ "$OS" = "rhel" ] || [ "$OS" = "centos" ]; then
+            dnf install -y git
+        fi
+    fi
+    print_success "git found ($(git --version | awk '{print $3}'))"
 
+    # Check and install Node.js
     if ! command -v node &> /dev/null; then
-        print_error "Node.js is not installed"
-        echo "Please install Node.js 20+ first:"
-        echo "  Ubuntu/Debian: curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - && sudo apt-get install -y nodejs"
-        echo "  Fedora: https://nodejs.org/en/download/package-manager"
-        exit 1
+        print_warning "Node.js is not installed - installing..."
+        if [ "$OS" = "ubuntu" ] || [ "$OS" = "debian" ]; then
+            curl -fsSL https://deb.nodesource.com/setup_22.x | bash - > /dev/null 2>&1
+            apt-get install -y nodejs
+        elif [ "$OS" = "fedora" ] || [ "$OS" = "rhel" ] || [ "$OS" = "centos" ]; then
+            dnf install -y nodejs
+        fi
     fi
     print_success "Node.js found ($(node --version))"
 
+    # npm should be installed with Node.js, but check anyway
     if ! command -v npm &> /dev/null; then
-        print_error "npm is not installed"
+        print_error "npm is not installed and could not be installed automatically"
         exit 1
     fi
     print_success "npm found ($(npm --version))"
@@ -85,7 +112,7 @@ check_tools() {
 
 # Create or check target user
 setup_user() {
-    print_info "Setting up user account..."
+    print_info "Setting up user account for '$TARGET_USER'..."
     
     if ! id "$TARGET_USER" &>/dev/null; then
         print_info "Creating user '$TARGET_USER'..."
@@ -180,21 +207,62 @@ setup_config() {
     echo ""
 }
 
-# Setup systemd services
+# Setup systemd services (dynamically generated)
 setup_systemd() {
-    print_info "Setting up systemd services..."
+    print_info "Setting up systemd services for user '$TARGET_USER'..."
     
-    # Copy service files
-    cp "$INSTALL_DIR/systemd/previous-admin-backend.service" /etc/systemd/system/
-    cp "$INSTALL_DIR/systemd/previous-admin-frontend.service" /etc/systemd/system/
-    print_success "Service files installed"
+    # Generate backend service file
+    cat > /etc/systemd/system/previous-admin-backend.service << EOF
+[Unit]
+Description=Previous Admin Backend API
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=$TARGET_USER
+WorkingDirectory=$INSTALL_DIR
+ExecStart=/usr/bin/npm run backend
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=previous-admin-backend
+
+[Install]
+WantedBy=multi-user.target
+EOF
+    print_success "Backend service file generated"
+
+    # Generate frontend service file
+    cat > /etc/systemd/system/previous-admin-frontend.service << EOF
+[Unit]
+Description=Previous Admin Frontend
+After=network.target previous-admin-backend.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=$TARGET_USER
+WorkingDirectory=$INSTALL_DIR
+ExecStart=/usr/bin/npm run preview -- --host 0.0.0.0 --port $FRONTEND_PORT
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=previous-admin-frontend
+
+[Install]
+WantedBy=multi-user.target
+EOF
+    print_success "Frontend service file generated"
 
     echo ""
 }
 
 # Setup Avahi mDNS
 setup_avahi() {
-    print_info "Setting up Avahi mDNS..."
+    print_info "Setting up Avahi mDNS for '$MDNS_HOSTNAME'..."
     
     # Create Avahi service file
     mkdir -p /etc/avahi/services
@@ -214,24 +282,24 @@ EOF
 
     # Create wrapper script for avahi-publish
     mkdir -p /usr/local/bin
-    cat > /usr/local/bin/avahi-alias-next.sh << 'SCRIPT'
+    cat > /usr/local/bin/avahi-alias-previous-admin.sh << 'SCRIPT'
 #!/bin/bash
 # Wait for network to be ready
 sleep 5
 # Get the primary IP address
 IP_ADDR=$(hostname -I | awk '{print $1}')
 if [ -n "$IP_ADDR" ]; then
-    exec /usr/bin/avahi-publish -a -R next.local "$IP_ADDR"
+    exec /usr/bin/avahi-publish -a -R previous-admin.local "$IP_ADDR"
 else
     echo "Could not determine IP address"
     exit 1
 fi
 SCRIPT
-    chmod +x /usr/local/bin/avahi-alias-next.sh
+    chmod +x /usr/local/bin/avahi-alias-previous-admin.sh
     print_success "Avahi wrapper script created"
 
     # Create systemd service for avahi-publish alias
-    cat > /etc/systemd/system/avahi-alias-next.service << EOF
+    cat > /etc/systemd/system/avahi-alias-previous-admin.service << EOF
 [Unit]
 Description=Avahi alias $MDNS_HOSTNAME for Previous Admin
 After=network-online.target avahi-daemon.service
@@ -240,7 +308,7 @@ Requires=avahi-daemon.service
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/avahi-alias-next.sh
+ExecStart=/usr/local/bin/avahi-alias-previous-admin.sh
 Restart=on-failure
 RestartSec=10
 
@@ -261,14 +329,14 @@ start_services() {
     
     # Enable services
     systemctl enable avahi-daemon.service 2>/dev/null || true
-    systemctl enable avahi-alias-next.service
+    systemctl enable avahi-alias-previous-admin.service
     systemctl enable previous-admin-backend.service
     systemctl enable previous-admin-frontend.service
     print_success "Services enabled"
 
     # Start services
     systemctl restart avahi-daemon.service
-    systemctl restart avahi-alias-next.service 2>/dev/null || systemctl start avahi-alias-next.service
+    systemctl restart avahi-alias-previous-admin.service 2>/dev/null || systemctl start avahi-alias-previous-admin.service
     systemctl restart previous-admin-backend.service 2>/dev/null || systemctl start previous-admin-backend.service
     sleep 2
     systemctl restart previous-admin-frontend.service 2>/dev/null || systemctl start previous-admin-frontend.service
@@ -344,4 +412,3 @@ main() {
 
 # Run main function
 main "$@"
-

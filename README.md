@@ -1,11 +1,7 @@
 [![Mastodon: @phranck](https://img.shields.io/badge/Mastodon-@LAYERED-6364ff.svg?style=flat)](https://oldbytes.space/@LAYERED)
 ![CI](https://github.com/LAYEREDwork/previous-admin/actions/workflows/Previous-Admin-CI.yml/badge.svg)
 ![Node.js](https://img.shields.io/badge/Node.js-22+-339933.svg?style=flat&logo=node.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-95%25-blue.svg?style=flat)
-![JavaScript](https://img.shields.io/badge/JavaScript-1%25-yellow.svg?style=flat)
-![Shell](https://img.shields.io/badge/Shell-4%25-green.svg?style=flat)
 ![Lines of Code](https://img.shields.io/badge/LOC-17098-orange.svg?style=flat)
-![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg?style=flat)
 ![Platforms](https://img.shields.io/badge/Platforms-Linux%20%7C%20macOS-lightgrey.svg?style=flat)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
@@ -114,19 +110,9 @@ The uninstall script will:
 
 ### Manual Installation
 
-For detailed manual installation instructions, platform-specific setup guides, and advanced configuration options, please refer to [DEPLOYMENT.md](DEPLOYMENT.md).
+For advanced configuration options, you can customize the installation by running the script locally and modifying the configuration variables in [install.sh](install.sh).
 
-## 🛠️ Technology Stack
-
-- **Frontend**: React 18 + TypeScript, Vite, Tailwind CSS, RSuite UI, SF Symbols Icons
-- **Backend**: Node.js + Express (TypeScript), SQLite via better-sqlite3
-- **Database**: SQLite mit automatischer Schema-Initialisierung
-- **Real-time**: WebSocket-Unterstützung für Live-Systemmetriken
-- **Network**: Avahi/Bonjour für automatische Netzwerkerkennung
-- **Build**: Vite für Frontend, TypeScript-Compiler für Backend
-- **Code Quality**: ESLint mit TypeScript-Regeln, vollständige Typ-Sicherheit
-
-## 👨‍💻 Development
+## �‍💻 Development
 
 ```bash
 # Install dependencies
@@ -146,58 +132,80 @@ npm run typecheck  # TypeScript compilation check
 npm run test       # Run all tests (frontend + backend)
 ```
 
+## 🛠️ Technology Stack
+
+- **Frontend**: React 18, TypeScript, Vite, Tailwind CSS, Rsuite UI, Recharts
+- **Backend**: Node.js 22+, Express, TypeScript, SQLite via better-sqlite3
+- **Real-time**: WebSocket for live system metrics
+- **Network Discovery**: Avahi/Bonjour (mDNS)
+- **Internationalization**: Full i18n support (5 languages)
+
 ### Development Notes
 
-- **Frontend**: Runs on `http://localhost:2342` with hot reload
-- **Backend**: Runs on `http://localhost:3001` with API endpoints at `/api/*`
-- **Database**: SQLite file stored in `~/.previous-admin/previous-admin.db`
-- **Production**: Built frontend served via backend on port 2342
-- **API Base URL**: Dynamic in frontend: `http://${window.location.hostname}:3001`
-- **Session Secret**: In production, `SESSION_SECRET` must be set as an environment variable
-- **Testing**: Frontend tests with Vitest, backend tests with Jest
-- **Build Process**: `npm run build` creates production frontend build, served by backend
+- **Frontend**: `http://localhost:2342` with hot module reload
+- **Backend**: `http://localhost:3001` serving REST API at `/api/*`
+- **Database**: SQLite at `~/.previous-admin/previous-admin.db`
+- **Testing**: Vitest (frontend), Jest (backend)
+- **Production**: Single server on port 2342 with built frontend bundled
 
 ### Project Structure
 
 ```text
 previous-admin/
+├── .github/                    # GitHub workflows and instructions
+├── .vscode/                    # VS Code workspace settings
 ├── backend/                    # Express TypeScript server
+│   ├── __tests__/              # Backend unit tests
 │   ├── api/                    # REST API endpoints
 │   ├── config/                 # Configuration file management
 │   ├── database/               # SQLite database operations
 │   ├── platform/               # Platform-specific utilities
 │   │   ├── linux/              # Linux-specific implementations
 │   │   └── macos/              # macOS-specific implementations
+│   ├── previous-config/        # Previous emulator config parsing
 │   └── services/               # Business logic services
+├── dist/                       # Production build output
+├── docs/                       # Documentation and guides
 ├── frontend/                   # React TypeScript application
+│   ├── __tests__/              # Frontend unit & integration tests
 │   ├── components/             # UI components
+│   │   ├── sf-symbols/         # SF Symbols icon components
 │   │   ├── controls/           # Reusable UI controls
 │   │   ├── pages/              # Main application pages
 │   │   └── partials/           # Reusable UI partials
 │   ├── contexts/               # React contexts for state management
 │   ├── hooks/                  # Custom React hooks
 │   └── lib/                    # Utilities and shared code
-│       └── translations/       # Internationalization files
-├── docs/                       # Documentation
+│       ├── api/                # API client functions
+│       ├── config/             # Configuration utilities
+│       ├── http/               # HTTP utilities
+│       ├── translations/       # i18n translation files (5 languages)
+│       ├── types/              # Type definitions
+│       └── utils/              # Helper utilities
+├── node_modules/               # Project dependencies (npm)
 ├── public/                     # Static assets
+│   └── assets/                 # Images and media files
 ├── scripts/                    # Setup and utility scripts
+├── sf-symbols-raw/             # Raw SF Symbols data files
 ├── shared/                     # Shared constants and types
-└── systemd/                    # Systemd service files
+│   ├── api/                    # Shared API types
+│   └── previous-config/        # Shared config types
+├── systemd/                    # Systemd service files
+└── src/                        # Additional source files (if any)
 ```
 
-### Code Quality & Architecture
+### Architecture Highlights
 
-This project follows modern TypeScript best practices with:
-- **Full Type Safety**: Zero TypeScript compilation errors
-- **Clean Architecture**: Separation of business logic from UI components
-- **Custom Hooks**: Business logic extracted into reusable React hooks
-- **Internationalization**: Complete translation support for 5 languages
-- **Responsive Design**: Mobile-first approach with Tailwind CSS
-- **Real-time Updates**: WebSocket integration for live system monitoring
+- **Full TypeScript**: Type-safe codebase from backend to frontend
+- **Clean Separation**: REST API layer, business logic services, stateless components
+- **Custom Hooks**: Reusable business logic extracted into React hooks
+- **Responsive Design**: Mobile-friendly UI with Tailwind CSS
+- **Real-time Metrics**: WebSocket integration for live system monitoring
+- **Multi-language**: Complete i18n support with local storage preferences
 
-## ⚠️ Disclaimer
+## 🤝 Contributing
 
-This is a private project. Therefore I take no responsibility for the correctness and completeness (if there is any). If you find any mistakes, please use the issue function to report them. Or even better: correct the issue immediately and submit a pull request.
+Reports and pull requests are welcome. Feel free to use the GitHub issue tracker for bug reports or feature requests, or open a pull request with your improvements.
 
 ## 📄 License
 
