@@ -1,6 +1,7 @@
-import { SFDocumentBadgePlusFill } from './sf-symbols';
-import { PAEmptyView } from './controls/PAEmptyView';
 import { useLanguage } from '../contexts/PALanguageContext';
+
+import { PAEmptyView } from './controls/PAEmptyView';
+import { SFDocumentBadgePlusFill } from './sf-symbols';
 
 /**
  * A reusable empty state component displayed when no configurations are available.

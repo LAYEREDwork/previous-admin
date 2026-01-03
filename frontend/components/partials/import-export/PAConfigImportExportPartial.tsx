@@ -1,8 +1,8 @@
+import { Configuration } from '../../../lib/database';
+import { Translations } from '../../../lib/translations';
+import { PASize } from '../../../lib/types/sizes';
 import { PAButton } from '../../controls/PAButton';
 import { PACard } from '../../controls/PACard';
-import { Translations } from '../../../lib/translations';
-import { Configuration } from '../../../lib/database';
-import { PASize } from '../../../lib/types/sizes';
 import { SFTrayAndArrowDownFill, SFTrayAndArrowUpFill } from '../../sf-symbols';
 
 interface ConfigImportExportPartialProps {

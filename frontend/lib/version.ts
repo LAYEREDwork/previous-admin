@@ -1,5 +1,6 @@
-import { apiBaseUrl } from './constants';
 import { apiPaths } from '@shared/api/constants';
+
+import { apiBaseUrl } from './constants';
 
 export const REPO_URL = 'https://codeberg.org/phranck/previous-admin';
 

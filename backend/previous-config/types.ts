@@ -2,6 +2,7 @@
  * Backend-specific types for Previous configuration domain
  */
 import type { Response } from 'express';
+
 import type { PreviousConfig } from '@shared/previous-config/types';
 
 // Re-export shared types for convenience

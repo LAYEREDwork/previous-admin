@@ -1,4 +1,5 @@
 import { BiHdd, BiChip, BiGlobe, BiDesktop } from 'react-icons/bi';
+
 import { SystemInfo } from '../../../../shared/previous-config/types';
 import { Translations } from '../../../lib/translations';
 import { formatUptime } from '../../../lib/utils';

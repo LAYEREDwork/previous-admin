@@ -1,6 +1,6 @@
 import { useLanguage } from '../../../contexts/PALanguageContext';
-import { PAResourceLink } from '../../controls/PAResourceLink';
 import { PACard } from '../../controls/PACard';
+import { PAResourceLink } from '../../controls/PAResourceLink';
 
 /**
  * Partial component for displaying Previous resources links.

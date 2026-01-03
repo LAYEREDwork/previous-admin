@@ -9,7 +9,9 @@
  */
 
 import fs from 'fs/promises';
+
 import ini from 'ini';
+
 import type { PreviousConfig } from '@shared/previous-config/types';
 
 /**

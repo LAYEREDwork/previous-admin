@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
 
 // Hooks
+import type { SystemInfo } from '@shared/previous-config/types';
+
 import { useLanguage } from '../contexts/PALanguageContext';
 import { useNotification } from '../contexts/PANotificationContext';
+import { apiBaseUrl, defaultMetricsUpdateFrequency } from '../lib/constants';
+
 import { useSystemMetrics } from './useSystemMetrics';
 
 // Utilities
-import { apiBaseUrl, defaultMetricsUpdateFrequency } from '../lib/constants';
 
 // Shared Types
-import type { SystemInfo } from '@shared/previous-config/types';
 
 /**
  * Hook to manage system information and orchestration of metrics.

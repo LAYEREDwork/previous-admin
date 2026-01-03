@@ -12,13 +12,13 @@
  * @module backend
  */
 
-import express, { Express, Request, Response } from 'express';
 import { createServer, Server as HttpServer } from 'http';
+
 import cors from 'cors';
-import { API_CONFIG } from './constants';
+import express, { Express, Request, Response } from 'express';
+
 
 // Import database to initialize on startup
-import * as database from './database';
 
 // Import route handlers
 import configRoutes from './api/config';
@@ -26,10 +26,12 @@ import configurationsRoutes from './api/configurations';
 import databaseRoutes from './api/database';
 import systemRoutes from './api/system';
 import updateRoutes from './api/update';
+import { API_CONFIG } from './constants';
+import * as database from './database';
 
 // Import utilities
-import { setupWebSocket } from './websocket.js';
 import { collectMetrics } from './metrics.js';
+import { setupWebSocket } from './websocket.js';
 
 const EXPRESS_APPLICATION = express();
 const HTTP_SERVER = createServer(EXPRESS_APPLICATION);

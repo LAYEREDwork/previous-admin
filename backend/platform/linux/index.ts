@@ -11,8 +11,9 @@
  * @module backend/platform/linux
  */
 
-import { execAsync } from '../../api/helpers';
 import type { PlatformModule, DiskInfo, HostModel, MonitorResolution } from '@backend/types';
+
+import { execAsync } from '../../api/helpers';
 
 /**
  * Linux platform module

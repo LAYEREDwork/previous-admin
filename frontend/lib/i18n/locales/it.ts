@@ -1,4 +1,5 @@
 import { appName } from '../../constants';
+
 import { Translations } from '.';
 
 export const it: Translations = {

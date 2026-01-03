@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
+
 import { NetworkTrafficChart } from '../components/partials/system/charts/PANetworkTrafficChart';
 import { Metrics } from '../hooks/useSystemMetrics';
 import type { Translations } from '../lib/translations';

@@ -1,5 +1,6 @@
 import type { Response } from 'express';
-import type { PreviousConfig } from '../shared/types';
+
+import type { PreviousConfig } from '@shared/previous-config/types';
 
 // Re-export shared types for convenience
 export type { PreviousConfig };

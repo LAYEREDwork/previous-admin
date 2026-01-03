@@ -2,19 +2,19 @@
 import { useState, useRef } from 'react';
 
 // Partials
-import { ConfigListItemPartial } from '../partials/config-list/PAConfigListItemPartial';
-import { PAConfigListHeaderPartial } from '../partials/config-list/PAConfigListHeaderPartial';
-import { PANewConfigModalPartial } from '../partials/config-list/PANewConfigModalPartial';
 
 // Hooks
 import { useLanguage } from '../../contexts/PALanguageContext';
-import { useResponsiveControlSize } from '../../hooks/useResponsiveControlSize';
 import { useConfigListLogic } from '../../hooks/useConfigList';
+import { useResponsiveControlSize } from '../../hooks/useResponsiveControlSize';
+import { Configuration } from '../../lib/database';
 import { PASize } from '../../lib/types/sizes';
 
 // Types
-import { Configuration } from '../../lib/database';
 import { PANoConfigurationsEmptyView } from '../PANoConfigurationsEmptyView';
+import { PAConfigListHeaderPartial } from '../partials/config-list/PAConfigListHeaderPartial';
+import { ConfigListItemPartial } from '../partials/config-list/PAConfigListItemPartial';
+import { PANewConfigModalPartial } from '../partials/config-list/PANewConfigModalPartial';
 
 interface ConfigListProps {
   onEdit: (config: Configuration) => void;

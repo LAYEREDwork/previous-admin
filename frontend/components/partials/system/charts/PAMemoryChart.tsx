@@ -1,5 +1,6 @@
 import { BiChip } from 'react-icons/bi';
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+
 import { Metrics } from '../../../../hooks/useSystemMetrics';
 import { Translations } from '../../../../lib/translations';
 import { padDataToWindow, formatBytes } from '../../../../lib/utils';

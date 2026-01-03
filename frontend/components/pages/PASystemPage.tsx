@@ -1,13 +1,14 @@
-import { SystemPageHeader } from './system/PASystemPageHeader';
-import { SystemLoadingState } from './system/PASystemLoadingState';
-import { SystemErrorState } from './system/PASystemErrorState';
-import { SystemContent } from './system/PASystemContent';
-import { SystemEmptyState } from './system/PASystemEmptyState';
 
 // Hooks
 import { useLanguage } from '../../contexts/PALanguageContext';
 import { useResponsiveControlSize } from '../../hooks/useResponsiveControlSize';
 import { useSystem } from '../../hooks/useSystem';
+
+import { SystemContent } from './system/PASystemContent';
+import { SystemEmptyState } from './system/PASystemEmptyState';
+import { SystemErrorState } from './system/PASystemErrorState';
+import { SystemLoadingState } from './system/PASystemLoadingState';
+import { SystemPageHeader } from './system/PASystemPageHeader';
 
 export function PASystem() {
   const { translation } = useLanguage();

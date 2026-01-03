@@ -1,6 +1,7 @@
-import { PASize } from '../../lib/types/sizes';
 import React, { ReactNode } from 'react';
 import { ButtonGroup, Button } from 'rsuite';
+
+import { PASize } from '../../lib/types/sizes';
 
 interface SegmentOption<T extends string> {
   value: T;

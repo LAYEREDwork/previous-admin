@@ -2,12 +2,13 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react';
 
 // Utilities
+import type { PreviousConfig } from '@shared/previous-config/types';
+
 import { api } from '../lib/api';
-import { database } from '../lib/database';
 import { defaultConfig } from '../lib/config';
+import { database } from '../lib/database';
 
 // Types
-import type { PreviousConfig } from '@shared/previous-config/types';
 
 interface ConfigContextType {
   config: PreviousConfig | null;

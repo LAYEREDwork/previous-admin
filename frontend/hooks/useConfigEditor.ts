@@ -1,17 +1,19 @@
 import { useState, useEffect, useCallback } from 'react';
 
 // Hooks
+import type { PreviousConfig } from '@shared/previous-config/types';
+
 import { useConfig } from '../contexts/PAConfigContext';
 import { useLanguage } from '../contexts/PALanguageContext';
 import { useNotification } from '../contexts/PANotificationContext';
+import { convertToConfigFile } from '../lib/config';
+import { database } from '../lib/database';
+
 import { useConfigMetadataEditor } from './useConfigMetadataEditor';
 
 // Types
-import type { PreviousConfig } from '@shared/previous-config/types';
 
 // Database & Utils
-import { database } from '../lib/database';
-import { convertToConfigFile } from '../lib/config';
 
 /**
  * Custom hook to handle configuration editor business logic.

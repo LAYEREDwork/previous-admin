@@ -1,5 +1,5 @@
-import type { PreviousConfig } from '@shared/previous-config/types';
 import { CpuType, DisplayType, NetworkType, SoundOutput, PrinterType, KeyboardType } from '@shared/previous-config/enums';
+import type { PreviousConfig } from '@shared/previous-config/types';
 
 /**
  * Default system configuration

@@ -8,6 +8,7 @@
  */
 
 import os from 'os';
+
 import { getPlatformModule } from './platform-detector';
 
 export type { PlatformModule } from './types';

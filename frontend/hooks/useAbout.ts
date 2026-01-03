@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+
 import { checkForUpdates, updateApplication, type VersionInfo } from '../lib/version';
 
 /**

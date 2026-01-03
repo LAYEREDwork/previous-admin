@@ -1,14 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
 
 // Hooks
-import { useNotification } from '../contexts/PANotificationContext';
 import { useLanguage } from '../contexts/PALanguageContext';
+import { useNotification } from '../contexts/PANotificationContext';
+import { database, Configuration } from '../lib/database';
+
+import { useConfigActions } from './useConfigActions';
 import { useConfigDnD } from './useConfigDnD';
 import { useNewConfigModal } from './useNewConfigModal';
-import { useConfigActions } from './useConfigActions';
 
 // Utilities
-import { database, Configuration } from '../lib/database';
 
 /**
  * Custom hook to handle config list page business logic.

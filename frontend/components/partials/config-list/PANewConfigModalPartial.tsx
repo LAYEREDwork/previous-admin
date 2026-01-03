@@ -1,10 +1,11 @@
-import { SFDocumentBadgePlusFill } from '../../sf-symbols';
 import { useEffect } from 'react';
 import { Input } from 'rsuite';
-import { PAButton } from '../../controls/PAButton';
-import { PAModal } from '../../controls/PAModal';
+
 import { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
+import { PAButton } from '../../controls/PAButton';
+import { PAModal } from '../../controls/PAModal';
+import { SFDocumentBadgePlusFill } from '../../sf-symbols';
 
 interface NewConfigModalPartialProps {
     open: boolean;

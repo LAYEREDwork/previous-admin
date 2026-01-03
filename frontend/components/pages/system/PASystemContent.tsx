@@ -1,12 +1,12 @@
-import { HostInfoPartial } from '../../partials/system/PAHostInfoPartial';
-import { DashboardPartial } from '../../partials/system/PADashboardPartial';
-import { DiskSpacePartial } from '../../partials/system/PADiskSpacePartial';
-import { ResetSystemPartial } from '../../partials/system/PAResetSystemPartial';
-import { ResetModalPartial } from '../../partials/system/PAResetModalPartial';
-import { Metrics } from '../../../hooks/useSystemMetrics';
 import { SystemInfo } from '../../../../shared/previous-config/types';
+import { Metrics } from '../../../hooks/useSystemMetrics';
 import type { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
+import { DashboardPartial } from '../../partials/system/PADashboardPartial';
+import { DiskSpacePartial } from '../../partials/system/PADiskSpacePartial';
+import { HostInfoPartial } from '../../partials/system/PAHostInfoPartial';
+import { ResetModalPartial } from '../../partials/system/PAResetModalPartial';
+import { ResetSystemPartial } from '../../partials/system/PAResetSystemPartial';
 
 interface SystemContentProps {
   systemInfo: SystemInfo;

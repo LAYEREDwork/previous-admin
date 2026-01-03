@@ -1,4 +1,5 @@
 import { IconButton } from 'rsuite';
+
 import type { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
 import { SFCheckmarkCircle, SFCircle } from '../../sf-symbols';

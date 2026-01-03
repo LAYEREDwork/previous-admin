@@ -7,8 +7,9 @@
  * @module frontend/lib/httpClient
  */
 
-import { apiBaseUrl } from '../constants';
 import { apiPaths } from '@shared/api/constants';
+
+import { apiBaseUrl } from '../constants';
 
 /**
  * Custom API error with status code

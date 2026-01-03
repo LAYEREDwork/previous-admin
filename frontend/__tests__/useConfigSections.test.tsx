@@ -1,5 +1,6 @@
 import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+
 import { useConfigSections } from '../hooks/useConfigSections';
 
 describe('useConfigSections', () => {

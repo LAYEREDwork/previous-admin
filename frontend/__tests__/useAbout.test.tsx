@@ -1,5 +1,6 @@
 import { renderHook, waitFor, act } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
+
 import { useAboutLogic } from '../hooks/useAbout';
 import { checkForUpdates, updateApplication } from '../lib/version';
 

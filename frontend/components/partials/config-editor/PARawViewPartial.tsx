@@ -1,9 +1,11 @@
 import { BiCopy } from 'react-icons/bi';
-import { PAButton } from '../../controls/PAButton';
-import { Translations } from '../../../lib/translations';
+
 import type { PreviousConfig } from '@shared/previous-config/types';
-import { PACard } from '../../controls/PACard';
+
+import { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
+import { PAButton } from '../../controls/PAButton';
+import { PACard } from '../../controls/PACard';
 
 interface RawViewPartialProps {
     configData: PreviousConfig;

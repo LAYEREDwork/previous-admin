@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { BiInfoCircle, BiRefresh, BiCheck, BiError, BiFile } from 'react-icons/bi';
-import { PAButton } from '../../controls/PAButton';
-import { PACard } from '../../controls/PACard';
+import ReactMarkdown from 'react-markdown';
+
 import { useLanguage } from '../../../contexts/PALanguageContext';
 import { useResponsiveControlSize } from '../../../hooks/useResponsiveControlSize';
 import { type VersionInfo } from '../../../lib/version';
-import ReactMarkdown from 'react-markdown';
+import { PAButton } from '../../controls/PAButton';
+import { PACard } from '../../controls/PACard';
 import { SFChevronDownCircleFill, SFChevronUpCircleFill } from '../../sf-symbols';
 
 interface VersionInfoPartialProps {

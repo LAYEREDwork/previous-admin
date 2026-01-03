@@ -1,7 +1,7 @@
-import { PAButton } from '../../controls/PAButton';
-import { PAModal } from '../../controls/PAModal';
 import { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
+import { PAButton } from '../../controls/PAButton';
+import { PAModal } from '../../controls/PAModal';
 
 interface ResetModalPartialProps {
     open: boolean;

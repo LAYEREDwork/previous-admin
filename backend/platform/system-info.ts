@@ -8,8 +8,10 @@
  */
 
 import os from 'os';
-import { getPlatform } from './index';
+
 import type { DiskInfo, NetworkInterface, MonitorResolution, CPUInfo, MemoryInfo, HostModel } from './types';
+
+import { getPlatform } from './index';
 
 /**
  * System information object

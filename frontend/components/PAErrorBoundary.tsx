@@ -1,7 +1,8 @@
 import { Component, ReactNode } from 'react';
 import { BiError } from 'react-icons/bi';
-import { PACard } from './controls/PACard';
+
 import { PAButton } from './controls/PAButton';
+import { PACard } from './controls/PACard';
 
 interface ErrorBoundaryProps {
   children: ReactNode;

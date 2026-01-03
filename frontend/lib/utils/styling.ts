@@ -4,9 +4,11 @@
  */
 
 import { StylingKey } from '@shared/previous-config/enums';
+
 import { PASize } from '../types';
-import { computePalette, Palette } from './palette';
+
 import { adjustLightness, hslToString, parseColorToHsl } from './color';
+import { computePalette, Palette } from './palette';
 
 /**
  * Calculate active glow shadow

@@ -3,10 +3,10 @@ import { useLanguage } from '../../contexts/PALanguageContext';
 import { useAboutLogic } from '../../hooks/useAbout';
 
 // Components
-import { VersionInfoPartial } from '../partials/about/PAVersionInfoPartial';
-import { PreviousResourcesPartial } from '../partials/about/PAPreviousResourcesPartial';
-import { LayeredResourcesPartial } from '../partials/about/PALayeredResourcesPartial';
 import { GeneralResourcesPartial } from '../partials/about/PAGeneralResourcesPartial';
+import { LayeredResourcesPartial } from '../partials/about/PALayeredResourcesPartial';
+import { PreviousResourcesPartial } from '../partials/about/PAPreviousResourcesPartial';
+import { VersionInfoPartial } from '../partials/about/PAVersionInfoPartial';
 
 export function PAAbout() {
    const { translation } = useLanguage();

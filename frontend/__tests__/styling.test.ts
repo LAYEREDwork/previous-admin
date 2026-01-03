@@ -1,4 +1,8 @@
 import { describe, it, expect } from 'vitest';
+
+import { StylingKey } from '@shared/previous-config/enums';
+
+import { PASize } from '../lib/types';
 import {
   stylingDefaults,
   getFrameShadow,
@@ -10,8 +14,6 @@ import {
   activeGlowConfig,
   computeNeomorphControlCSS
 } from '../lib/utils/styling';
-import { StylingKey } from '@shared/previous-config/enums';
-import { PASize } from '../lib/types';
 
 describe('Styling Utilities', () => {
   describe('stylingDefaults', () => {

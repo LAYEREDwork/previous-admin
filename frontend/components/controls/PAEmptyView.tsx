@@ -1,5 +1,5 @@
-import { Button } from 'rsuite';
 import { IconType } from 'react-icons';
+import { Button } from 'rsuite';
 
 /**
  * Props für die PAEmptyView-Komponente

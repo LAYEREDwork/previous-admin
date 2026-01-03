@@ -7,9 +7,10 @@
  * @module frontend/lib/api/config
  */
 
-import type { PreviousConfig } from '@shared/previous-config/types';
-import { http, ApiError } from '../http/client';
 import { apiPaths } from '@shared/api/constants';
+import type { PreviousConfig } from '@shared/previous-config/types';
+
+import { http, ApiError } from '../http/client';
 
 // Re-export ApiError for consumers
 export { ApiError };

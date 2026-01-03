@@ -7,6 +7,7 @@
  */
 
 import os from 'os';
+
 import type { PlatformModule } from './types';
 
 let cachedModule: PlatformModule | null = null;

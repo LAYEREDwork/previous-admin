@@ -1,7 +1,9 @@
 import { ReactElement } from 'react';
-import { PAButton } from './PAButton';
 import { ButtonProps as RSuiteButtonProps } from 'rsuite';
+
 import { PASize } from '../../lib/types/sizes';
+
+import { PAButton } from './PAButton';
 
 interface PAIconButtonProps extends Omit<RSuiteButtonProps, 'size' | 'color' | 'children'> {
     icon: ReactElement;

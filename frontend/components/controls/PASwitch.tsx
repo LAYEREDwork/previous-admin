@@ -1,5 +1,6 @@
 import { forwardRef } from 'react';
 import { Toggle } from 'rsuite';
+
 import { PASize } from '../../lib/types/sizes';
 
 export interface PASwitchProps {

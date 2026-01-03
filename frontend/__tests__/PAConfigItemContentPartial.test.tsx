@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
+
 import { ConfigItemContent } from '../components/partials/config-list/PAConfigItemContentPartial';
 import { Configuration } from '../lib/database';
 import type { Translations } from '../lib/translations';

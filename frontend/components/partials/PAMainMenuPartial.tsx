@@ -1,4 +1,9 @@
 import React from 'react';
+import { Nav } from 'rsuite';
+
+import { useLanguage } from '../../contexts/PALanguageContext';
+import { PASize } from '../../lib/types/sizes';
+import { PASegmentedControl } from '../controls/PASegmentedControl';
 import { 
     SFDocumentOnDocumentFill, 
     SFLongTextPageAndPencilFill, 
@@ -6,10 +11,6 @@ import {
     SFDesktopcomputer,
     SFInfoBubbleFill
 } from '../sf-symbols';
-import { Nav } from 'rsuite';
-import { useLanguage } from '../../contexts/PALanguageContext';
-import { PASegmentedControl } from '../controls/PASegmentedControl';
-import { PASize } from '../../lib/types/sizes';
 
 interface MainMenuProps {
     currentTab: string;

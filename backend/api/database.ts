@@ -7,10 +7,13 @@
  */
 
 import express, { Request } from 'express';
-import { exportDatabase, importDatabase, getDatabaseStatistics } from '../database';
-import { reinitializeDatabase } from '@backend/database/core';
+
 import { apiPaths } from '@shared/api/constants';
+
+import { reinitializeDatabase } from '@backend/database/core';
 import { TypedResponse } from '@backend/types';
+
+import { exportDatabase, importDatabase, getDatabaseStatistics } from '../database';
 
 const router = express.Router();
 

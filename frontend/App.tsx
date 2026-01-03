@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react';
-import { PALanguageProvider } from './contexts/PALanguageContext';
-import { PAConfigProvider } from './contexts/PAConfigContext';
-import { PANotificationProvider } from './contexts/PANotificationContext';
+import { CustomProvider } from 'rsuite';
+
 import { PAErrorBoundary } from './components/PAErrorBoundary';
-import { Layout } from './components/partials/PALayoutPartial';
+import { PAAbout } from './components/pages/PAAboutPage';
 import { PAConfigEditor } from './components/pages/PAConfigEditorPage';
 import { PAConfigList } from './components/pages/PAConfigListPage';
 import { PAImportExport } from './components/pages/PAImportExportPage';
 import { PASystem } from './components/pages/PASystemPage';
-import { PAAbout } from './components/pages/PAAboutPage';
-import { CustomProvider } from 'rsuite';
-import { Configuration } from './lib/database';
+import { Layout } from './components/partials/PALayoutPartial';
+import { PAConfigProvider } from './contexts/PAConfigContext';
+import { PALanguageProvider } from './contexts/PALanguageContext';
+import { PANotificationProvider } from './contexts/PANotificationContext';
 import { ThemeProvider, useTheme } from './contexts/PAThemeContext';
+import { Configuration } from './lib/database';
 
 function PAAppContent() {
   const { actualTheme } = useTheme();

@@ -1,8 +1,9 @@
-import { useTheme, ThemeMode } from '../../contexts/PAThemeContext';
 import { useLanguage } from '../../contexts/PALanguageContext';
-import { PASegmentedControl } from './PASegmentedControl';
+import { useTheme, ThemeMode } from '../../contexts/PAThemeContext';
 import { PASize } from '../../lib/types/sizes';
 import { SFDesktopcomputer, SFMoonStars, SFSunMax } from '../sf-symbols';
+
+import { PASegmentedControl } from './PASegmentedControl';
 
 export function PAThemeSwitcher() {
   const { mode, setMode } = useTheme();

@@ -1,5 +1,5 @@
-import { Modal, ModalProps } from 'rsuite';
 import { ReactNode } from 'react';
+import { Modal, ModalProps } from 'rsuite';
 
 /**
  * PAModal - Now using standard RSuite Modal.

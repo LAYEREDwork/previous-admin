@@ -1,9 +1,9 @@
 import { SelectPicker, Input, Toggle } from 'rsuite';
-import { EditorSectionPartial } from './PAEditorSectionPartial';
-import { EditorFieldPartial } from './PAEditorFieldPartial';
-import { PASize } from '../../../lib/types';
+
 import type { PreviousConfig } from '@shared/previous-config/types';
+
 import { Translations } from '../../../lib/translations';
+import { PASize } from '../../../lib/types';
 import { 
     SFCpu, 
     SFDisplay2, 
@@ -13,6 +13,9 @@ import {
     SFServerRack, 
     SFWifi,  
 } from '../../sf-symbols';
+
+import { EditorFieldPartial } from './PAEditorFieldPartial';
+import { EditorSectionPartial } from './PAEditorSectionPartial';
 
 interface EditorViewPartialProps {
     configData: PreviousConfig;

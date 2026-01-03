@@ -7,9 +7,11 @@
  */
 
 import { existsSync, statSync } from 'fs';
+
 import type { Configuration } from '@backend/types';
-import { DATABASE_PATH, getDatabase } from './core';
+
 import * as configurations from './configurations';
+import { DATABASE_PATH, getDatabase } from './core';
 
 export interface DatabaseExport {
   version: string;

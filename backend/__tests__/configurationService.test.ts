@@ -5,17 +5,7 @@
  */
 
 import { describe, it, expect, beforeEach, jest } from '@jest/globals';
-import {
-  getConfigurations,
-  getConfigurationById,
-  createConfiguration,
-  updateConfiguration,
-  deleteConfiguration,
-  setActiveConfiguration,
-  updateConfigurationOrder,
-  getActiveConfiguration,
-} from '@backend/services/configurationService';
-import type { Configuration, CreateConfigurationRequest, UpdateConfigurationRequest } from '@backend/types';
+
 import type { PreviousConfig } from '@shared/previous-config/types';
 
 // Mock the database functions
@@ -40,6 +30,19 @@ import {
   updateConfigurationsOrder as dbUpdateConfigurationsOrder,
   getActiveConfiguration as dbGetActiveConfiguration,
 } from '@backend/database/configurations';
+
+import {
+  getConfigurations,
+  getConfigurationById,
+  createConfiguration,
+  updateConfiguration,
+  deleteConfiguration,
+  setActiveConfiguration,
+  updateConfigurationOrder,
+  getActiveConfiguration,
+} from '@backend/services/configurationService';
+
+import type { Configuration, CreateConfigurationRequest, UpdateConfigurationRequest } from '@backend/types';
 
 describe('ConfigurationService', () => {
   beforeEach(() => {

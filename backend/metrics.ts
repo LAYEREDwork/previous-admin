@@ -7,7 +7,12 @@
  * - macOS: BSD-style system commands (iostat, netstat, vm_stat)
  */
 
+import { exec, execSync } from 'child_process';
+
 import * as os from 'os';
+import { promisify } from 'util';
+
+const execAsync = promisify(exec);
 
 interface DiskStats {
   read: number;
@@ -42,10 +47,6 @@ interface NetworkTrafficEntry {
   received: number;
   sent: number;
 }
-import { exec, execSync } from 'child_process';
-import { promisify } from 'util';
-
-const execAsync = promisify(exec);
 
 /**
  * Platform detection and configuration

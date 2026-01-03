@@ -7,10 +7,10 @@
  * @module backend/database/core
  */
 
-import { createRequire } from 'module';
-import { join } from 'path';
 import { existsSync, mkdirSync, chmodSync } from 'fs';
+import { createRequire } from 'module';
 import os from 'os';
+import { join } from 'path';
 
 const require = createRequire(import.meta.url);
  

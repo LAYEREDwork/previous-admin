@@ -4,10 +4,15 @@
  */
 
 import express from 'express';
-import { execAsync } from './helpers';
+
 import { apiPaths } from '@shared/api/constants';
+
 import packageJson from '../../package.json';
-import { API_BASE_URL } from '../constants';
+
+import { execAsync } from './helpers';
+
+// API base URL for internal requests
+const API_BASE_URL = 'http://localhost:3001';
 
 interface VersionInfo {
   currentVersion: string;

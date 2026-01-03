@@ -13,14 +13,17 @@
  * @module server/api/system
  */
 
-import express, { Request, Response } from 'express';
 import { existsSync, unlinkSync } from 'fs';
 
-import { getSystemInfo } from '@backend/platform/system-info';
-import { getMetricsSnapshot } from '../metrics';
+import express, { Request, Response } from 'express';
+
 import { apiPaths } from '@shared/api/constants';
+
 import { DATABASE_PATH } from '@backend/database/core';
+import { getSystemInfo } from '@backend/platform/system-info';
+
 import { closeDatabase, reinitializeDatabase } from '../database';
+import { getMetricsSnapshot } from '../metrics';
 
 const SYSTEM_ROUTER = express.Router();
 

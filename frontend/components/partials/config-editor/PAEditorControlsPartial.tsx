@@ -1,7 +1,7 @@
-import { PAButton } from '../../controls/PAButton';
-import { PASegmentedControl } from '../../controls/PASegmentedControl';
 import { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
+import { PAButton } from '../../controls/PAButton';
+import { PASegmentedControl } from '../../controls/PASegmentedControl';
 import { 
     SFChevronDownCircleFill, 
     SFLongTextPageAndPencilFill, 

@@ -1,10 +1,11 @@
-import { PACard } from '../../controls/PACard';
 import { Metrics } from '../../../hooks/useSystemMetrics';
 import { Translations } from '../../../lib/translations';
+import { PACard } from '../../controls/PACard';
+
 import { CpuLoadChart } from './charts/PACpuLoadChart';
+import { DiskIOChart } from './charts/PADiskIOChart';
 import { MemoryChart } from './charts/PAMemoryChart';
 import { NetworkTrafficChart } from './charts/PANetworkTrafficChart';
-import { DiskIOChart } from './charts/PADiskIOChart';
 
 interface DashboardPartialProps {
     metrics: Metrics | null;

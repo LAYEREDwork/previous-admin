@@ -7,6 +7,11 @@
  */
 
 import express, { Request, Response } from 'express';
+
+import { apiPaths } from '@shared/api/constants';
+import type { PreviousConfig } from '@shared/previous-config/types';
+
+import { getDatabase } from '@backend/database/core';
 import {
   getConfigurations,
   getConfigurationById,
@@ -17,10 +22,7 @@ import {
   getActiveConfiguration,
   updateConfigurationOrder
 } from '@backend/services/configurationService';
-import type { PreviousConfig } from '@shared/previous-config/types';
-import { apiPaths } from '@shared/api/constants';
 import { Configuration, UpdateConfigurationRequest } from '@backend/types';
-import { getDatabase } from '@backend/database/core';
 
 const router = express.Router();
 

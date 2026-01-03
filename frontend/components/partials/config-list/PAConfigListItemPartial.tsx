@@ -1,9 +1,10 @@
-import { ConfigItemControls } from './PAConfigItemControlsPartial';
-import { ConfigItemContent } from './PAConfigItemContentPartial';
-import { ConfigItemActions } from './PAConfigItemActionsPartial';
-import { PACard } from '../../controls/PACard';
 import { Configuration } from '../../../lib/database';
 import type { Translations } from '../../../lib/translations';
+import { PACard } from '../../controls/PACard';
+
+import { ConfigItemActions } from './PAConfigItemActionsPartial';
+import { ConfigItemContent } from './PAConfigItemContentPartial';
+import { ConfigItemControls } from './PAConfigItemControlsPartial';
 
 interface ConfigListItemPartialProps {
   config: Configuration;

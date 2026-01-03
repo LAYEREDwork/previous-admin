@@ -1,4 +1,8 @@
 // Components
+import { useLanguage } from '../../contexts/PALanguageContext';
+import { useImportExport } from '../../hooks/useImportExport';
+import { useResponsiveControlSize } from '../../hooks/useResponsiveControlSize';
+import { PASize } from '../../lib/types/sizes';
 import { ConfigFileSyncPartial } from '../partials/import-export/PAConfigFileSyncPartial';
 
 // Partials
@@ -7,10 +11,6 @@ import { DatabaseImportExportPartial } from '../partials/import-export/PADatabas
 import { ImportExportNotesPartial } from '../partials/import-export/PAImportExportNotesPartial';
 
 // Hooks
-import { useLanguage } from '../../contexts/PALanguageContext';
-import { useResponsiveControlSize } from '../../hooks/useResponsiveControlSize';
-import { useImportExport } from '../../hooks/useImportExport';
-import { PASize } from '../../lib/types/sizes';
 
 /**
  * Import/Export page component

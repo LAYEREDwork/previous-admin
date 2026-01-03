@@ -8,9 +8,10 @@
  */
 
 import os from 'os';
-import { MacOSConfigManager } from './macos-config-manager';
-import { LinuxConfigManager } from './linux-config-manager';
+
 import { BaseConfigManager } from './base-config-manager';
+import { LinuxConfigManager } from './linux-config-manager';
+import { MacOSConfigManager } from './macos-config-manager';
 
 /**
  * Create platform-specific configuration manager

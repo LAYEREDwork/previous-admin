@@ -1,11 +1,14 @@
 import { ReactNode, useState, useEffect } from 'react';
-import { PANeXTLogo } from '../controls/PANeXTLogo';
-import { PALanguageSwitcher } from '../controls/PALanguageSwitcher';
-import { PAThemeSwitcher } from '../controls/PAThemeSwitcher';
-import { FooterPartial } from './PAFooterPartial';
-import { MainMenuPartial } from './PAMainMenuPartial';
+
 import { useLanguage } from '../../contexts/PALanguageContext';
 import { getCurrentVersion } from '../../lib/version';
+import { PALanguageSwitcher } from '../controls/PALanguageSwitcher';
+import { PANeXTLogo } from '../controls/PANeXTLogo';
+import { PAThemeSwitcher } from '../controls/PAThemeSwitcher';
+
+import { FooterPartial } from './PAFooterPartial';
+import { MainMenuPartial } from './PAMainMenuPartial';
+
 
 interface LayoutProps {
   children: ReactNode;

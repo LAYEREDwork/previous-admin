@@ -10,9 +10,11 @@
  */
 
 import fs from 'fs';
-import path from 'path';
 import os from 'os';
+import path from 'path';
+
 import Database from 'better-sqlite3';
+
 import type { DatabaseExport } from '../backend/database/maintenance';
 
 /**

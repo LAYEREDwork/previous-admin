@@ -8,11 +8,13 @@
  */
 
 import fs from 'fs/promises';
+
 import type { PreviousConfig } from '@shared/previous-config/types';
-import { createConfigManager } from './config-manager-factory';
-import { readConfig as ioReadConfig, writeConfig as ioWriteConfig } from './config-io';
-import { getDefaultConfig } from './defaults';
+
 import { BaseConfigManager } from './base-config-manager';
+import { readConfig as ioReadConfig, writeConfig as ioWriteConfig } from './config-io';
+import { createConfigManager } from './config-manager-factory';
+import { getDefaultConfig } from './defaults';
 
 /**
  * Unified configuration manager

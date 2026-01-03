@@ -8,8 +8,8 @@
  */
 
 import { WebSocketServer, WebSocket } from 'ws';
-import { getMetricsSnapshot } from './metrics';
 
+import { getMetricsSnapshot } from './metrics';
 import type { WebSocketMessage } from './types';
 
 /**
