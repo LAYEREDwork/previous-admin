@@ -222,20 +222,20 @@ export function extractSchema(
   rawConfig: RawConfigData,
   symbolMapping: Record<string, string> = {}
 ): ConfigSchema {
-  const sections: Record<string, SectionSchema> = {};
+  const sectionsArray: SectionSchema[] = [];
   
   for (const rawSection of rawConfig.sections) {
     const sectionName = rawSection.name;
     const parameters = rawSection.parameters.map(extractParameterSchema);
     
-    sections[sectionName] = {
+    sectionsArray.push({
       name: sectionName,
       displayName: toDisplayName(sectionName),
       translationKey: `configEditor.sections.${sectionName}`,
       sfSymbol: symbolMapping[sectionName] || 'gearshape.fill',
       parameters
-    };
+    });
   }
   
-  return { sections };
+  return { sections: sectionsArray };
 }

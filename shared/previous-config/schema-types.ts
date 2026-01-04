@@ -31,8 +31,14 @@ export interface ParameterSchema {
   /** Human-readable description (from config file "Meaning" comment) */
   description: string;
   
+  /** Display name formatted for UI (e.g., "Show Config Dialog At Startup") */
+  displayName?: string;
+  
   /** Translation key for multi-language support (e.g., "configEditor.parameters.bShowConfigDialogAtStartup") */
-  translationKey: string;
+  translationKey?: string;
+  
+  /** Whether this parameter is required (cannot be empty) */
+  required?: boolean;
   
   /** Possible values for enum types (when type === 'enum') */
   possibleValues?: string[];
@@ -60,11 +66,14 @@ export interface SectionSchema {
   /** Display name formatted for UI (e.g., "Config Dialog") */
   displayName: string;
   
+  /** Description of what this section contains */
+  description?: string;
+  
   /** Translation key for section header (e.g., "configEditor.sections.ConfigDialog") */
-  translationKey: string;
+  translationKey?: string;
   
   /** SF Symbol name for section icon (Apple SF Symbols format, e.g., "gearshape.fill") */
-  sfSymbol: string;
+  sfSymbol?: string;
   
   /** All parameters contained in this section */
   parameters: ParameterSchema[];
@@ -78,8 +87,8 @@ export interface SectionSchema {
  * Used by both backend (type validation) and frontend (UI generation).
  */
 export interface ConfigSchema {
-  /** All sections keyed by section name */
-  sections: Record<string, SectionSchema>;
+  /** All sections as array */
+  sections: SectionSchema[];
 }
 
 /**
