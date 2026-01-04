@@ -19,6 +19,12 @@ export const apiPaths = {
     get: { full: '/api/config', relative: '' },
     put: { full: '/api/config', relative: '' },
   },
+  ConfigSchema: {
+    get: { full: '/api/config/schema', relative: '/config/schema' },
+    getSections: { full: '/api/config/schema/sections', relative: '/config/schema/sections' },
+    getSection: { full: '/api/config/schema/sections/:sectionName', relative: '/config/schema/sections/:sectionName' },
+    reload: { full: '/api/config/schema/reload', relative: '/config/schema/reload' },
+  },
   Database: {
     export: { full: '/api/database/export', relative: '/export' },
     import: { full: '/api/database/import', relative: '/import' },
@@ -44,6 +50,7 @@ export const apiPaths = {
  */
 export type ConfigurationEndpoint = typeof apiPaths.Configuration[keyof typeof apiPaths.Configuration]['relative'];
 export type ConfigEndpoint = typeof apiPaths.Config[keyof typeof apiPaths.Config]['relative'];
+export type ConfigSchemaEndpoint = typeof apiPaths.ConfigSchema[keyof typeof apiPaths.ConfigSchema]['relative'];
 export type DatabaseEndpoint = typeof apiPaths.Database[keyof typeof apiPaths.Database]['relative'];
 export type SystemEndpoint = typeof apiPaths.System[keyof typeof apiPaths.System]['relative'];
 export type UpdateEndpoint = typeof apiPaths.Update[keyof typeof apiPaths.Update]['relative'];
