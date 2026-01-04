@@ -1,4 +1,5 @@
 @import "rsuite/dist/rsuite.min.css";
+@import "tailwindcss";
 
 /**
  * Roboto Flex is a variable font that supports multiple axes
@@ -11,11 +12,6 @@
   font-stretch: 75% 100%;
   font-display: swap;
 }
-
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* Theme Overrides */
 :root:not(.dark) {
@@ -49,6 +45,31 @@
     background-color: var(--rs-body);
   }
 
+  /* Differentiated heading sizes - larger than body text but not oversized */
+  h1 {
+    font-size: 2rem !important;
+    font-weight: inherit !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: inherit !important;
+  }
+
+  h2 {
+    font-size: 1.625rem !important;
+    font-weight: inherit !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: inherit !important;
+  }
+
+  h3, h4, h5, h6 {
+    font-size: 1.5rem !important;
+    font-weight: inherit !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: inherit !important;
+  }
+
   .dark {
     --tw-bg-opacity: 1;
     color-scheme: dark;
@@ -71,25 +92,54 @@
   }
 
   .input {
-    @apply w-full px-3 py-2 border border-[var(--rs-border-primary)] rounded-lg bg-[var(--rs-input-bg)] text-[var(--rs-text-primary)] focus:ring-2 focus:border-transparent transition-colors;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--rs-border-primary);
+    border-radius: 0.5rem;
+    background-color: var(--rs-input-bg);
+    color: var(--rs-text-primary);
+    transition-property: color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .input:focus {
+    outline: none;
+    border-color: transparent;
+    ring: 2px;
+    ring-offset-width: 0px;
   }
 
   .input::placeholder {
-    @apply text-[var(--rs-text-secondary)];
+    color: var(--rs-text-secondary);
   }
 
   .checkbox {
-    @apply w-5 h-5 bg-[var(--rs-input-bg)] border-[var(--rs-border-primary)] rounded focus:ring-2 transition-colors cursor-pointer;
+    width: 1.25rem;
+    height: 1.25rem;
+    background-color: var(--rs-input-bg);
+    border: 1px solid var(--rs-border-primary);
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition-property: color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .checkbox:focus {
+    outline: none;
+    ring: 2px;
+    ring-offset-width: 0px;
   }
 
   /* Placeholder styles for RSuite Input */
   .rs-input::placeholder {
-    @apply text-[var(--rs-text-secondary)];
+    color: var(--rs-text-secondary);
   }
 
   /* Placeholder styles for input elements */
   input::placeholder {
-    @apply text-[var(--rs-text-secondary)];
+    color: var(--rs-text-secondary);
   }
 
   .line-clamp-2 {
@@ -118,16 +168,17 @@
   }
 
   /* Fokus-Stile für PAInput */
-.noFocusRing.rs-input:focus,
-.noFocusRing.rs-input:focus-visible {
-  outline: none !important;
-  box-shadow: none !important;
-}
+  .noFocusRing.rs-input:focus,
+  .noFocusRing.rs-input:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
 
-.noFocusRing.rs-input-group:focus-within {
-  outline: none !important;
-  box-shadow: none !important;
-}
+  .noFocusRing.rs-input-group:focus-within {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
   .recessed-input:focus-within .rs-input-group-addon {
     color: #ffffff !important;
   }
@@ -304,6 +355,41 @@
   .rs-picker-default:hover,
   .rs-picker-toggle:hover {
     background-color: #dcdcdc !important;
+  }
+
+  /* Dark mode styles for pickers/dropdowns */
+  .dark .rs-picker-default,
+  .dark .rs-picker-toggle {
+    background-color: #2a2a2a !important;
+    color: #f5f5f5 !important;
+    border-color: var(--rs-border-primary) !important;
+  }
+
+  .dark .rs-picker-default:hover,
+  .dark .rs-picker-toggle:hover {
+    background-color: #333333 !important;
+  }
+
+  .dark .rs-picker-popup {
+    background-color: #1a1a1a !important;
+    border-color: var(--rs-border-primary) !important;
+  }
+
+  .dark .rs-picker-menu {
+    background-color: #1a1a1a !important;
+  }
+
+  .dark .rs-picker-menu-item {
+    color: #f5f5f5 !important;
+  }
+
+  .dark .rs-picker-menu-item:hover {
+    background-color: #2a2a2a !important;
+  }
+
+  .dark .rs-picker-menu-item.active {
+    background-color: rgba(0, 107, 227, 0.3) !important;
+    color: #f5f5f5 !important;
   }
 
   /* Green color for "Up to date" status - light and dark mode compatible */

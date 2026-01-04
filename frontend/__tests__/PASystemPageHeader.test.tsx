@@ -31,6 +31,6 @@ describe('SystemPageHeader', () => {
   it('should have correct CSS classes', () => {
     render(<SystemPageHeader translation={mockTranslation} />);
     const titleElement = screen.getByText('System Information');
-    expect(titleElement).toHaveClass('text-2xl', 'font-bold', 'text-[var(--rs-text-primary)]', 'mb-2');
+    expect(titleElement).toHaveClass('text-sm', 'font-semibold', 'text-[var(--rs-text-primary)]', 'mb-2');
   });
 });

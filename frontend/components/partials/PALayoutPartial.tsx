@@ -34,7 +34,7 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
               <PANeXTLogo size={52} className="w-full h-full" shadow />
             </div>
             <div className="flex flex-col items-end gap-0.5">
-              <h1 className="text-lg font-bold text-[var(--rs-text-primary)]">
+              <h1 className="text-sm font-semibold text-[var(--rs-text-primary)]">
                 {translation.layout.title}
               </h1>
               {version && (
@@ -61,7 +61,7 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <h1 className="text-base sm:text-xl font-bold text-[var(--rs-text-primary)] truncate">
+                    <h1 className="text-sm sm:text-base font-bold text-[var(--rs-text-primary)] truncate">
                       {translation.layout.title}
                     </h1>
                     {version && (

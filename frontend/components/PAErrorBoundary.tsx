@@ -60,7 +60,7 @@ export class PAErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundary
               <BiError size={64} className="text-[var(--rs-text-error)]" />
             </div>
 
-            <h1 className="text-xl font-semibold text-[var(--rs-text-primary)] mb-2">
+            <h1 className="text-sm font-semibold text-[var(--rs-text-primary)] mb-2">
               Something went wrong
             </h1>
 

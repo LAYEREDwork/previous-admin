@@ -1,4 +1,4 @@
-import { SelectPicker, Input, Toggle } from 'rsuite';
+import { Dropdown, Input, Toggle, Button } from 'rsuite';
 
 import type { PreviousConfig } from '@shared/previous-config/types';
 
@@ -11,7 +11,8 @@ import {
     SFKeyboardMacwindow, 
     SFRestartCircleFill, 
     SFServerRack, 
-    SFWifi,  
+    SFWifi,
+    SFChevronDown,
 } from '../../sf-symbols';
 
 import { EditorFieldPartial } from './PAEditorFieldPartial';
@@ -47,18 +48,27 @@ export function EditorViewPartial({
                 icon={<SFCpu size={22} />}
             >
                 <EditorFieldPartial label={translation.configEditor.fields.cpuType}>
-                    <SelectPicker
-                        data={[
-                            { label: '68030', value: '68030' },
-                            { label: '68040', value: '68040' },
-                            { label: '68060', value: '68060' },
-                        ]}
-                        value={configData.system.cpu_type}
-                        onChange={(value) => updateConfigField(['system', 'cpu_type'], value || '68030')}
-                        block
-                        searchable={false}
-                        size={rsuiteSize}
-                    />
+                    <Dropdown
+                        className="w-full"
+                        title={configData.system.cpu_type}
+                        onSelect={(value) => updateConfigField(['system', 'cpu_type'], value || '68030')}
+                        renderToggle={(props, ref) => (
+                            <Button
+                                {...props}
+                                ref={ref}
+                                appearance="default"
+                                block
+                                style={{ justifyContent: 'space-between' }}
+                            >
+                                <span>{configData.system.cpu_type}</span>
+                                <SFChevronDown size={16} />
+                            </Button>
+                        )}
+                    >
+                        <Dropdown.Item eventKey="68030" active={configData.system.cpu_type === '68030'}>68030</Dropdown.Item>
+                        <Dropdown.Item eventKey="68040" active={configData.system.cpu_type === '68040'}>68040</Dropdown.Item>
+                        <Dropdown.Item eventKey="68060" active={configData.system.cpu_type === '68060'}>68060</Dropdown.Item>
+                    </Dropdown>
                 </EditorFieldPartial>
 
                 <EditorFieldPartial label={translation.configEditor.fields.cpuFrequency}>
@@ -75,23 +85,30 @@ export function EditorViewPartial({
                 </EditorFieldPartial>
 
                 <EditorFieldPartial label={translation.configEditor.fields.memorySize}>
-                    <SelectPicker
-                        data={[
-                            { label: '8 MB', value: 8 },
-                            { label: '16 MB', value: 16 },
-                            { label: '32 MB', value: 32 },
-                            { label: '64 MB', value: 64 },
-                            { label: '128 MB', value: 128 },
-                            { label: '256 MB', value: 256 },
-                        ]}
-                        value={configData.system.memory_size}
-                        onChange={(value) =>
-                            updateConfigField(['system', 'memory_size'], value || 8)
-                        }
-                        block
-                        searchable={false}
-                        size={rsuiteSize}
-                    />
+                    <Dropdown
+                        className="w-full"
+                        title={configData.system.memory_size}
+                        onSelect={(value) => updateConfigField(['system', 'memory_size'], value || 8)}
+                        renderToggle={(props, ref) => (
+                            <Button
+                                {...props}
+                                ref={ref}
+                                appearance="default"
+                                block
+                                style={{ justifyContent: 'space-between' }}
+                            >
+                                <span>{configData.system.memory_size} MB</span>
+                                <SFChevronDown size={16} />
+                            </Button>
+                        )}
+                    >
+                        <Dropdown.Item eventKey={8} active={configData.system.memory_size === 8}>8 MB</Dropdown.Item>
+                        <Dropdown.Item eventKey={16} active={configData.system.memory_size === 16}>16 MB</Dropdown.Item>
+                        <Dropdown.Item eventKey={32} active={configData.system.memory_size === 32}>32 MB</Dropdown.Item>
+                        <Dropdown.Item eventKey={64} active={configData.system.memory_size === 64}>64 MB</Dropdown.Item>
+                        <Dropdown.Item eventKey={128} active={configData.system.memory_size === 128}>128 MB</Dropdown.Item>
+                        <Dropdown.Item eventKey={256} active={configData.system.memory_size === 256}>256 MB</Dropdown.Item>
+                    </Dropdown>
                 </EditorFieldPartial>
 
                 <EditorFieldPartial label={translation.configEditor.fields.turboMode}>
@@ -120,17 +137,26 @@ export function EditorViewPartial({
                 icon={<SFDisplay2 size={24} />}
             >
                 <EditorFieldPartial label={translation.configEditor.fields.displayType}>
-                    <SelectPicker
-                        data={[
-                            { label: 'Color', value: 'color' },
-                            { label: 'Monochrome', value: 'monochrome' },
-                        ]}
-                        value={configData.display.type}
-                        onChange={(value) => updateConfigField(['display', 'type'], value || 'color')}
-                        block
-                        searchable={false}
-                        size={rsuiteSize}
-                    />
+                    <Dropdown
+                        className="w-full"
+                        title={configData.display.type}
+                        onSelect={(value) => updateConfigField(['display', 'type'], value || 'color')}
+                        renderToggle={(props, ref) => (
+                            <Button
+                                {...props}
+                                ref={ref}
+                                appearance="default"
+                                block
+                                style={{ justifyContent: 'space-between' }}
+                            >
+                                <span>{configData.display.type === 'color' ? 'Color' : 'Monochrome'}</span>
+                                <SFChevronDown size={16} />
+                            </Button>
+                        )}
+                    >
+                        <Dropdown.Item eventKey="color" active={configData.display.type === 'color'}>Color</Dropdown.Item>
+                        <Dropdown.Item eventKey="monochrome" active={configData.display.type === 'monochrome'}>Monochrome</Dropdown.Item>
+                    </Dropdown>
                 </EditorFieldPartial>
 
                 <EditorFieldPartial label={translation.configEditor.fields.width}>
@@ -154,21 +180,28 @@ export function EditorViewPartial({
                 </EditorFieldPartial>
 
                 <EditorFieldPartial label={translation.configEditor.fields.colorDepth}>
-                    <SelectPicker
-                        data={[
-                            { label: '2-bit', value: 2 },
-                            { label: '8-bit', value: 8 },
-                            { label: '16-bit', value: 16 },
-                            { label: '24-bit', value: 24 },
-                        ]}
-                        value={configData.display.color_depth}
-                        onChange={(value) =>
-                            updateConfigField(['display', 'color_depth'], value || 2)
-                        }
-                        block
-                        searchable={false}
-                        size={rsuiteSize}
-                    />
+                    <Dropdown
+                        className="w-full"
+                        title={configData.display.color_depth}
+                        onSelect={(value) => updateConfigField(['display', 'color_depth'], value || 2)}
+                        renderToggle={(props, ref) => (
+                            <Button
+                                {...props}
+                                ref={ref}
+                                appearance="default"
+                                block
+                                style={{ justifyContent: 'space-between' }}
+                            >
+                                <span>{configData.display.color_depth}-bit</span>
+                                <SFChevronDown size={16} />
+                            </Button>
+                        )}
+                    >
+                        <Dropdown.Item eventKey={2} active={configData.display.color_depth === 2}>2-bit</Dropdown.Item>
+                        <Dropdown.Item eventKey={8} active={configData.display.color_depth === 8}>8-bit</Dropdown.Item>
+                        <Dropdown.Item eventKey={16} active={configData.display.color_depth === 16}>16-bit</Dropdown.Item>
+                        <Dropdown.Item eventKey={24} active={configData.display.color_depth === 24}>24-bit</Dropdown.Item>
+                    </Dropdown>
                 </EditorFieldPartial>
 
                 <EditorFieldPartial label={translation.configEditor.fields.frameSkip}>
@@ -231,18 +264,27 @@ export function EditorViewPartial({
                 </EditorFieldPartial>
 
                 <EditorFieldPartial label={translation.configEditor.fields.networkType}>
-                    <SelectPicker
-                        data={[
-                            { label: 'Ethernet', value: 'ethernet' },
-                            { label: 'SLIRP', value: 'slirp' },
-                        ]}
-                        value={configData.network.type}
-                        onChange={(value) => updateConfigField(['network', 'type'], value || 'ethernet')}
+                    <Dropdown
+                        className="w-full"
+                        title={configData.network.type}
+                        onSelect={(value) => updateConfigField(['network', 'type'], value || 'ethernet')}
                         disabled={!configData.network.enabled}
-                        block
-                        searchable={false}
-                        size={rsuiteSize}
-                    />
+                        renderToggle={(props, ref) => (
+                            <Button
+                                {...props}
+                                ref={ref}
+                                appearance="default"
+                                block
+                                style={{ justifyContent: 'space-between' }}
+                            >
+                                <span>{configData.network.type === 'ethernet' ? 'Ethernet' : 'SLIRP'}</span>
+                                <SFChevronDown size={16} />
+                            </Button>
+                        )}
+                    >
+                        <Dropdown.Item eventKey="ethernet" active={configData.network.type === 'ethernet'}>Ethernet</Dropdown.Item>
+                        <Dropdown.Item eventKey="slirp" active={configData.network.type === 'slirp'}>SLIRP</Dropdown.Item>
+                    </Dropdown>
                 </EditorFieldPartial>
             </EditorSectionPartial>
 
@@ -263,19 +305,28 @@ export function EditorViewPartial({
                 </EditorFieldPartial>
 
                 <EditorFieldPartial label={translation.configEditor.fields.soundOutput}>
-                    <SelectPicker
-                        data={[
-                            { label: 'SDL', value: 'sdl' },
-                            { label: 'PortAudio', value: 'portaudio' },
-                            { label: 'None', value: 'none' },
-                        ]}
-                        value={configData.sound.output}
-                        onChange={(value) => updateConfigField(['sound', 'output'], value || 'sdl')}
+                    <Dropdown
+                        className="w-full"
+                        title={configData.sound.output}
+                        onSelect={(value) => updateConfigField(['sound', 'output'], value || 'sdl')}
                         disabled={!configData.sound.enabled}
-                        block
-                        searchable={false}
-                        size={rsuiteSize}
-                    />
+                        renderToggle={(props, ref) => (
+                            <Button
+                                {...props}
+                                ref={ref}
+                                appearance="default"
+                                block
+                                style={{ justifyContent: 'space-between' }}
+                            >
+                                <span>{configData.sound.output.toUpperCase()}</span>
+                                <SFChevronDown size={16} />
+                            </Button>
+                        )}
+                    >
+                        <Dropdown.Item eventKey="sdl" active={configData.sound.output === 'sdl'}>SDL</Dropdown.Item>
+                        <Dropdown.Item eventKey="portaudio" active={configData.sound.output === 'portaudio'}>PortAudio</Dropdown.Item>
+                        <Dropdown.Item eventKey="none" active={configData.sound.output === 'none'}>None</Dropdown.Item>
+                    </Dropdown>
                 </EditorFieldPartial>
             </EditorSectionPartial>
 
@@ -297,17 +348,31 @@ export function EditorViewPartial({
                 </EditorFieldPartial>
 
                 <EditorFieldPartial label={translation.configEditor.fields.bootScsiId}>
-                    <SelectPicker
-                        data={[0, 1, 2, 3, 4, 5, 6].map((id) => ({
-                            label: `SCSI ID ${id}`,
-                            value: id,
-                        }))}
-                        value={configData.boot.scsi_id}
-                        onChange={(value) => updateConfigField(['boot', 'scsi_id'], value || 0)}
-                        block
-                        searchable={false}
-                        size={rsuiteSize}
-                    />
+                    <Dropdown
+                        className="w-full"
+                        title={configData.boot.scsi_id}
+                        onSelect={(value) => updateConfigField(['boot', 'scsi_id'], value || 0)}
+                        renderToggle={(props, ref) => (
+                            <Button
+                                {...props}
+                                ref={ref}
+                                appearance="default"
+                                block
+                                style={{ justifyContent: 'space-between' }}
+                            >
+                                <span>SCSI ID {configData.boot.scsi_id}</span>
+                                <SFChevronDown size={16} />
+                            </Button>
+                        )}
+                    >
+                        <Dropdown.Item eventKey={0} active={configData.boot.scsi_id === 0}>SCSI ID 0</Dropdown.Item>
+                        <Dropdown.Item eventKey={1} active={configData.boot.scsi_id === 1}>SCSI ID 1</Dropdown.Item>
+                        <Dropdown.Item eventKey={2} active={configData.boot.scsi_id === 2}>SCSI ID 2</Dropdown.Item>
+                        <Dropdown.Item eventKey={3} active={configData.boot.scsi_id === 3}>SCSI ID 3</Dropdown.Item>
+                        <Dropdown.Item eventKey={4} active={configData.boot.scsi_id === 4}>SCSI ID 4</Dropdown.Item>
+                        <Dropdown.Item eventKey={5} active={configData.boot.scsi_id === 5}>SCSI ID 5</Dropdown.Item>
+                        <Dropdown.Item eventKey={6} active={configData.boot.scsi_id === 6}>SCSI ID 6</Dropdown.Item>
+                    </Dropdown>
                 </EditorFieldPartial>
             </EditorSectionPartial>
 
@@ -320,19 +385,28 @@ export function EditorViewPartial({
                 icon={<SFKeyboardMacwindow size={22} />}
             >
                 <EditorFieldPartial label={translation.configEditor.fields.keyboardType}>
-                    <SelectPicker
-                        data={[
-                            { label: 'US', value: 'us' },
-                            { label: 'German', value: 'de' },
-                            { label: 'French', value: 'fr' },
-                            { label: 'UK', value: 'uk' },
-                        ]}
-                        value={configData.keyboard.type}
-                        onChange={(value) => updateConfigField(['keyboard', 'type'], value || 'us')}
-                        block
-                        searchable={false}
-                        size={rsuiteSize}
-                    />
+                    <Dropdown
+                        className="w-full"
+                        title={configData.keyboard.type}
+                        onSelect={(value) => updateConfigField(['keyboard', 'type'], value || 'us')}
+                        renderToggle={(props, ref) => (
+                            <Button
+                                {...props}
+                                ref={ref}
+                                appearance="default"
+                                block
+                                style={{ justifyContent: 'space-between' }}
+                            >
+                                <span>{configData.keyboard.type.toUpperCase()}</span>
+                                <SFChevronDown size={16} />
+                            </Button>
+                        )}
+                    >
+                        <Dropdown.Item eventKey="us" active={configData.keyboard.type === 'us'}>US</Dropdown.Item>
+                        <Dropdown.Item eventKey="de" active={configData.keyboard.type === 'de'}>German</Dropdown.Item>
+                        <Dropdown.Item eventKey="fr" active={configData.keyboard.type === 'fr'}>French</Dropdown.Item>
+                        <Dropdown.Item eventKey="uk" active={configData.keyboard.type === 'uk'}>UK</Dropdown.Item>
+                    </Dropdown>
                 </EditorFieldPartial>
 
                 <EditorFieldPartial label={translation.configEditor.fields.mouseEnabled}>
