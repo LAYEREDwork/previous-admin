@@ -1,0 +1,12 @@
+{
+  "ConfigDialog": "gearshape.fill",
+  "Screen": "display",
+  "Keyboard": "keyboard",
+  "Mouse": "computermouse",
+  "System": "server.rack",
+  "Network": "network",
+  "Storage": "externaldrive.fill",
+  "Memory": "memorychip",
+  "Display": "display",
+  "Sound": "speaker.wave.2.fill"
+}
