@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 
+import { apiPaths } from '@shared/api/constants';
 // Hooks
 import type { SystemInfo } from '@shared/previous-config/types';
 
@@ -36,7 +37,7 @@ export function useSystem() {
       setLoadingSystemInfo(true);
       setSystemInfoError(false);
       try {
-        const response = await fetch(`${apiBaseUrl}/api/system/system-info`, {
+        const response = await fetch(`${apiBaseUrl}${apiPaths.System.systemInfo.full}`, {
           credentials: 'include',
         });
         if (!response.ok) throw new Error('Failed to load system info');
@@ -62,7 +63,7 @@ export function useSystem() {
   const handleReset = async () => {
     setIsResetting(true);
     try {
-      const response = await fetch(`${apiBaseUrl}/api/system/reset`, {
+      const response = await fetch(`${apiBaseUrl}${apiPaths.System.reset.full}`, {
         method: 'POST',
         credentials: 'include',
       });

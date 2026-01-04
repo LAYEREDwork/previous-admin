@@ -17,11 +17,13 @@ import { createServer, Server as HttpServer } from 'http';
 import cors from 'cors';
 import express, { Express, Request, Response } from 'express';
 
+import { apiPaths } from '../shared/api/constants';
 
 // Import database to initialize on startup
 
 // Import route handlers
 import configRoutes from './api/config';
+import configSchemaRoutes from './api/config-schema';
 import configurationsRoutes from './api/configurations';
 import databaseRoutes from './api/database';
 import systemRoutes from './api/system';
@@ -55,14 +57,16 @@ function configureMiddleware(app: Express): void {
  * Configure API routes
  */
 function configureRoutes(app: Express): void {
+  // Mount routers with base paths
   app.use('/api', configRoutes);
-  app.use('/api/configurations', configurationsRoutes);
-  app.use('/api/database', databaseRoutes);
-  app.use('/api/system', systemRoutes);
-  app.use('/api/update', updateRoutes);
+  app.use('/api', configSchemaRoutes);
+  app.use(apiPaths.Configuration.list.full.replace(apiPaths.Configuration.list.relative, ''), configurationsRoutes);
+  app.use(apiPaths.Database.export.full.replace(apiPaths.Database.export.relative, ''), databaseRoutes);
+  app.use(apiPaths.System.health.full.replace(apiPaths.System.health.relative, ''), systemRoutes);
+  app.use(apiPaths.Update.update.full.replace(apiPaths.Update.update.relative, ''), updateRoutes);
 
   // Health check endpoint
-  app.get('/api/health', (request: Request, response: Response) => {
+  app.get(apiPaths.Health.health.full, (request: Request, response: Response) => {
     response.json({
       status: 'ok',
       timestamp: new Date().toISOString(),

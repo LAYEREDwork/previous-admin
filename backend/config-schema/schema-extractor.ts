@@ -11,72 +11,14 @@
  * @module backend/config-schema/schema-extractor
  */
 
+import type { 
+  ParameterType, 
+  ParameterSchema, 
+  SectionSchema, 
+  ConfigSchema 
+} from '../../shared/previous-config/schema-types';
+
 import type { RawConfigData, RawConfigParameter } from './config-parser';
-
-/**
- * Supported parameter types
- */
-export type ParameterType = 'string' | 'number' | 'boolean' | 'enum' | 'range';
-
-/**
- * Single parameter schema with type information
- */
-export interface ParameterSchema {
-  /** Parameter name (e.g., "bShowConfigDialogAtStartup") */
-  name: string;
-  
-  /** Determined parameter type */
-  type: ParameterType;
-  
-  /** Default value (converted to appropriate type) */
-  default: string | number | boolean;
-  
-  /** Description from "Meaning" comment */
-  description: string;
-  
-  /** Translation key (e.g., "configEditor.parameters.bShowConfigDialogAtStartup") */
-  translationKey: string;
-  
-  /** Possible values for enum types */
-  possibleValues?: string[];
-  
-  /** Labels for enum values (e.g., ["NEXT_CUBE030", "NEXT_CUBE040"]) */
-  labels?: string[];
-  
-  /** Minimum value for range/number types */
-  min?: number;
-  
-  /** Maximum value for range/number types */
-  max?: number;
-}
-
-/**
- * Section schema with metadata
- */
-export interface SectionSchema {
-  /** Section name (e.g., "ConfigDialog") */
-  name: string;
-  
-  /** Display name for UI (e.g., "Config Dialog") */
-  displayName: string;
-  
-  /** Translation key (e.g., "configEditor.sections.ConfigDialog") */
-  translationKey: string;
-  
-  /** SF Symbol name (e.g., "gearshape.fill") */
-  sfSymbol: string;
-  
-  /** Parameters in this section */
-  parameters: ParameterSchema[];
-}
-
-/**
- * Complete schema for entire configuration
- */
-export interface ConfigSchema {
-  /** All sections keyed by section name */
-  sections: Record<string, SectionSchema>;
-}
 
 /**
  * Convert CamelCase to display name with spaces

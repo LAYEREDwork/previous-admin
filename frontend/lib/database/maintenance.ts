@@ -7,6 +7,8 @@
  * @module frontend/lib/database/maintenance
  */
 
+import { apiPaths } from '@shared/api/constants';
+
 import { apiBaseUrl } from '../constants';
 
 /**
@@ -23,7 +25,7 @@ export const maintenance = {
    * @throws {Error} If API request fails
    */
   async exportDatabase() {
-    const response = await fetch(`${apiBaseUrl}/api/database/export`, {
+    const response = await fetch(`${apiBaseUrl}${apiPaths.Database.export.full}`, {
       credentials: 'include',
     });
 
@@ -43,7 +45,7 @@ export const maintenance = {
    * @throws {Error} If API request fails
    */
   async importDatabase(dump: unknown, merge: boolean = false) {
-    const response = await fetch(`${apiBaseUrl}/api/database/import`, {
+    const response = await fetch(`${apiBaseUrl}${apiPaths.Database.import.full}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -67,7 +69,7 @@ export const maintenance = {
    * @throws {Error} If API request fails
    */
   async getDatabaseStats() {
-    const response = await fetch(`${apiBaseUrl}/api/database/stats`, {
+    const response = await fetch(`${apiBaseUrl}${apiPaths.Database.stats.full}`, {
       credentials: 'include',
     });
 
