@@ -1,4 +1,3 @@
-import React from 'react';
 import { Nav } from 'rsuite';
 
 import { useLanguage } from '../../contexts/PALanguageContext';
@@ -65,7 +64,7 @@ export function MainMenuPartial({ currentTab, onTabChange }: MainMenuProps) {
 
             {/* Mobile Bottom Tabbar - iOS-style */}
             <PATabBar
-                options={mobileTabs.map(tab => ({ 
+                options={mobileTabs.map(tab => ({
                     value: tab.value,
                     label: tab.label,
                     icon: tab.icon

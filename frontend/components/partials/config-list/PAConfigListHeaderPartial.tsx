@@ -1,7 +1,8 @@
+import { SFDocumentBadgePlusFill } from '@frontend/components/sf-symbols';
+
 import { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
 import { PAButton } from '../../controls/PAButton';
-import { SFDocumentBadgePlusFill } from '@frontend/components/sf-symbols';
 
 interface ConfigListHeaderPartialProps {
     onNewConfigClick: () => void;
