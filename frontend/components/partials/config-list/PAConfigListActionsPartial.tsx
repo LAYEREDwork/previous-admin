@@ -31,7 +31,7 @@ export function ConfigListActionsPartial({
   deleteConfig,
   translation
 }: ConfigListActionsPartialProps) {
-  const iconSize = isMobile ? 20 : 22;
+  const iconSize = 20;
   const buttonSize = isMobile ? PASize.xs : PASize.sm;
 
   return (
