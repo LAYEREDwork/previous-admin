@@ -1,7 +1,7 @@
 [![Mastodon: @phranck](https://img.shields.io/badge/Mastodon-@LAYERED-6364ff.svg?style=flat)](https://oldbytes.space/@LAYERED)
 ![CI](https://github.com/LAYEREDwork/previous-admin/actions/workflows/Previous-Admin-CI.yml/badge.svg)
 ![Node.js](https://img.shields.io/badge/Node.js-22+-339933.svg?style=flat&logo=node.js)
-![Lines of Code](https://img.shields.io/badge/LOC-17551-orange.svg?style=flat)
+![Lines of Code](https://img.shields.io/badge/LOC-17624-orange.svg?style=flat)
 ![Platforms](https://img.shields.io/badge/Platforms-Linux%20%7C%20macOS-lightgrey.svg?style=flat)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
