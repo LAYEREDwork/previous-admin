@@ -1,3 +1,5 @@
+import { ReactElement } from 'react';
+
 import { sfIconsData, sfIconsViewBox } from './icons-data';
 
 interface SFIconProps {
@@ -61,7 +63,7 @@ export function createSFIcon(iconName: keyof typeof sfIconsData) {
     className = '',
     strokeWidth = 1,
     ...rest
-  }: SFIconProps): JSX.Element {
+  }: SFIconProps): ReactElement {
     const numSize = typeof size === 'string' ? parseInt(size, 10) : size;
     const svgContent = sfIconsData[iconName];
     const viewBox = sfIconsViewBox[iconName] || '0 0 24 24';

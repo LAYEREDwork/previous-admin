@@ -15,7 +15,7 @@ interface NewConfigModalPartialProps {
     setName: (name: string) => void;
     description: string;
     setDescription: (desc: string) => void;
-    nameRef: React.RefObject<HTMLInputElement>;
+    nameRef: React.RefObject<HTMLInputElement | null>;
     controlSize: PASize;
     translation: Translations;
 }

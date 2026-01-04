@@ -14,6 +14,8 @@ export interface PAButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButto
     as?: React.ElementType;
     icon?: ReactNode;
     fullWidth?: boolean;
+    // Omit RSuite onToggle to avoid React 19 compatibility issues
+    onToggle?: never;
 }
 
 /**

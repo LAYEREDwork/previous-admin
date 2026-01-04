@@ -7,7 +7,7 @@ export function useNewConfigModal() {
   const [showNewConfig, setShowNewConfig] = useState(false);
   const [newConfigName, setNewConfigName] = useState('');
   const [newConfigDesc, setNewConfigDesc] = useState('');
-  const newConfigNameRef = useRef<HTMLInputElement>(null);
+  const newConfigNameRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (showNewConfig) {

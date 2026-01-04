@@ -5,7 +5,7 @@ import { PASize } from '../../lib/types/sizes';
 
 import { PAButton } from './PAButton';
 
-interface PAIconButtonProps extends Omit<RSuiteButtonProps, 'size' | 'color' | 'children'> {
+interface PAIconButtonProps extends Omit<RSuiteButtonProps, 'size' | 'color' | 'children' | 'onToggle'> {
     icon: ReactElement;
     size?: PASize;
     className?: string;

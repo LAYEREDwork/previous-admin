@@ -31,7 +31,7 @@ export function PAConfigList({ onEdit }: ConfigListProps) {
   const [showDuplicateModal, setShowDuplicateModal] = useState(false);
   const [duplicateConfigName, setDuplicateConfigName] = useState('');
   const [duplicateConfigDesc, setDuplicateConfigDesc] = useState('');
-  const duplicateConfigNameRef = useRef<HTMLInputElement>(null);
+  const duplicateConfigNameRef = useRef<HTMLInputElement | null>(null);
   const [duplicatingConfig, setDuplicatingConfig] = useState<Configuration | null>(null);
 
   const {
