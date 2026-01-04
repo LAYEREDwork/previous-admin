@@ -1,5 +1,7 @@
 import { Button } from 'rsuite';
+
 import { PAContextMenuItemActionType } from './PAContextMenuItemActionType';
+
 export { PAContextMenuItemActionType };
 
 interface PAContextMenuItemProps {
