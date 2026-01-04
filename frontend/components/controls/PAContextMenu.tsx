@@ -97,7 +97,7 @@ export function PAContextMenu({
         top: `${adjustedPosition.y}px`,
       }}
     >
-      <div className="bg-[color-mix(in_srgb,var(--rs-bg-card),white_8%)] border border-[var(--rs-border-primary)] rounded-lg shadow-lg overflow-hidden">
+      <div className="bg-[color-mix(in_srgb,var(--rs-bg-card),white_8%)] border border-[var(--rs-border-primary)] rounded-lg shadow-lg overflow-hidden max-w-52 min-w-48">
         {title && (
           <div className="px-5 py-3 border-b border-[var(--rs-border-primary)] text-sm font-semibold text-[var(--rs-text-secondary)]">
             {title}

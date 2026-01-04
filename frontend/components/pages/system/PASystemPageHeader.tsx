@@ -10,7 +10,7 @@ interface SystemPageHeaderProps {
 export function SystemPageHeader({ translation }: SystemPageHeaderProps) {
   return (
     <div>
-      <h2 className="text-2xl font-bold text-[var(--rs-text-primary)] mb-2">
+      <h2 className="text-sm font-semibold text-[var(--rs-text-primary)] mb-2">
         {translation.system.title}
       </h2>
       <p className="text-[var(--rs-text-secondary)]">

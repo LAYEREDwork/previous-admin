@@ -15,7 +15,7 @@ export function PAAbout() {
    return (
       <div className="space-y-6">
          <div>
-            <h2 className="text-2xl font-bold text-[var(--rs-text-primary)] mb-2">
+            <h2 className="text-sm font-semibold text-[var(--rs-text-primary)] mb-2">
                {translation.about.title}
             </h2>
             <p className="text-[var(--rs-text-secondary)]">

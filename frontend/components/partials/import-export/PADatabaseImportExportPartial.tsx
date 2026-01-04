@@ -30,7 +30,7 @@ export function DatabaseImportExportPartial({
     return (
         <div className="pt-6">
             <div className="mb-4">
-                <h2 className="text-2xl font-bold text-[var(--rs-text-primary)] mb-2">
+                <h2 className="text-sm font-semibold text-[var(--rs-text-primary)] mb-2">
                     {translation.importExport.databaseTitle}
                 </h2>
                 <p className="text-[var(--rs-text-secondary)]">
