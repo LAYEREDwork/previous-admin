@@ -14,8 +14,8 @@ import { cfgToJson, jsonToCfg } from '../config-schema/converter';
 describe('CFG Converter', () => {
   // Test schema
   const testSchema: ConfigSchema = {
-    sections: {
-      ConfigDialog: {
+    sections: [
+      {
         name: 'ConfigDialog',
         displayName: 'Config Dialog',
         translationKey: 'configEditor.sections.ConfigDialog',
@@ -39,7 +39,7 @@ describe('CFG Converter', () => {
           }
         ]
       },
-      System: {
+      {
         name: 'System',
         displayName: 'System',
         translationKey: 'configEditor.sections.System',
@@ -63,7 +63,7 @@ describe('CFG Converter', () => {
           }
         ]
       }
-    }
+    ]
   };
 
   describe('cfgToJson', () => {

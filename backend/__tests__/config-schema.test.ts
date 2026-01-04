@@ -96,10 +96,11 @@ bShowDialog = TRUE
 
       const rawConfig = parseCfgFile(cfgContent);
       const schema = extractSchema(rawConfig);
-      const param = schema.sections.ConfigDialog.parameters[0];
+      const configDialog = schema.sections.find(s => s.name === 'ConfigDialog');
+      const param = configDialog?.parameters[0];
 
-      expect(param.type).toBe('boolean');
-      expect(param.default).toBe(true);
+      expect(param?.type).toBe('boolean');
+      expect(param?.default).toBe(true);
     });
 
     it('should interpret number types from comments', () => {
@@ -113,10 +114,11 @@ nMachineType = 0
 
       const rawConfig = parseCfgFile(cfgContent);
       const schema = extractSchema(rawConfig);
-      const param = schema.sections.System.parameters[0];
+      const system = schema.sections.find(s => s.name === 'System');
+      const param = system?.parameters[0];
 
-      expect(param.type).toBe('number');
-      expect(param.default).toBe(0);
+      expect(param?.type).toBe('number');
+      expect(param?.default).toBe(0);
     });
 
     it('should interpret enum types from possible values', () => {
@@ -130,10 +132,11 @@ nMachineType = 0
 
       const rawConfig = parseCfgFile(cfgContent);
       const schema = extractSchema(rawConfig);
-      const param = schema.sections.System.parameters[0];
+      const system = schema.sections.find(s => s.name === 'System');
+      const param = system?.parameters[0];
 
-      expect(param.type).toBe('enum');
-      expect(param.possibleValues).toEqual(['0', '1', '2']);
+      expect(param?.type).toBe('enum');
+      expect(param?.possibleValues).toEqual(['0', '1', '2']);
     });
 
     it('should interpret range types from range notation', () => {
@@ -147,11 +150,12 @@ nMemorySize = 16
 
       const rawConfig = parseCfgFile(cfgContent);
       const schema = extractSchema(rawConfig);
-      const param = schema.sections.Memory.parameters[0];
+      const memory = schema.sections.find(s => s.name === 'Memory');
+      const param = memory?.parameters[0];
 
-      expect(param.type).toBe('range');
-      expect(param.min).toBe(0);
-      expect(param.max).toBe(32);
+      expect(param?.type).toBe('range');
+      expect(param?.min).toBe(0);
+      expect(param?.max).toBe(32);
     });
 
     it('should generate translation keys correctly', () => {
@@ -163,10 +167,11 @@ bShowDialog = TRUE
 
       const rawConfig = parseCfgFile(cfgContent);
       const schema = extractSchema(rawConfig);
-      const param = schema.sections.ConfigDialog.parameters[0];
+      const configDialog = schema.sections.find(s => s.name === 'ConfigDialog');
+      const param = configDialog?.parameters[0];
 
-      expect(param.translationKey).toBe('configEditor.parameters.bShowDialog');
-      expect(schema.sections.ConfigDialog.translationKey).toBe('configEditor.sections.ConfigDialog');
+      expect(param?.translationKey).toBe('configEditor.parameters.bShowDialog');
+      expect(configDialog?.translationKey).toBe('configEditor.sections.ConfigDialog');
     });
 
     it('should convert section names to display names', () => {
@@ -183,8 +188,10 @@ nValue = 0
       const rawConfig = parseCfgFile(cfgContent);
       const schema = extractSchema(rawConfig);
 
-      expect(schema.sections.ConfigDialog.displayName).toBe('Config Dialog');
-      expect(schema.sections.SystemSettings.displayName).toBe('System Settings');
+      const configDialog = schema.sections.find(s => s.name === 'ConfigDialog');
+      const systemSettings = schema.sections.find(s => s.name === 'SystemSettings');
+      expect(configDialog?.displayName).toBe('Config Dialog');
+      expect(systemSettings?.displayName).toBe('System Settings');
     });
 
     it('should apply symbol mapping', () => {
@@ -198,7 +205,8 @@ bShowDialog = TRUE
       const symbolMapping = { ConfigDialog: 'gearshape.fill' };
       const schema = extractSchema(rawConfig, symbolMapping);
 
-      expect(schema.sections.ConfigDialog.sfSymbol).toBe('gearshape.fill');
+      const configDialogSection = schema.sections.find(s => s.name === 'ConfigDialog');
+      expect(configDialogSection?.sfSymbol).toBe('gearshape.fill');
     });
 
     it('should use default symbol if not in mapping', () => {
@@ -211,7 +219,8 @@ bValue = TRUE
       const rawConfig = parseCfgFile(cfgContent);
       const schema = extractSchema(rawConfig, {});
 
-      expect(schema.sections.UnknownSection.sfSymbol).toBe('gearshape.fill');
+      const unknownSection = schema.sections.find(s => s.name === 'UnknownSection');
+      expect(unknownSection?.sfSymbol).toBe('gearshape.fill');
     });
   });
 
@@ -230,8 +239,8 @@ bValue = TRUE
 
   describe('validateConfigValue', () => {
     const testSchema = {
-      sections: {
-        System: {
+      sections: [
+        {
           name: 'System',
           displayName: 'System',
           translationKey: 'configEditor.sections.System',
@@ -263,7 +272,7 @@ bValue = TRUE
             }
           ]
         }
-      }
+      ]
     };
 
     it('should validate boolean values', () => {
@@ -301,8 +310,8 @@ bValue = TRUE
 
   describe('validateConfiguration', () => {
     const testSchema = {
-      sections: {
-        System: {
+      sections: [
+        {
           name: 'System',
           displayName: 'System',
           translationKey: 'configEditor.sections.System',
@@ -326,7 +335,7 @@ bValue = TRUE
             }
           ]
         }
-      }
+      ]
     };
 
     it('should validate complete configuration object', () => {

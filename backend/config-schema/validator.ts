@@ -40,7 +40,7 @@ export function validateConfigValue(
   schema: ConfigSchema
 ): ValidationResult {
   // Find section
-  const section = schema.sections[sectionName];
+  const section = schema.sections.find(s => s.name === sectionName);
   if (!section) {
     return {
       valid: false,
