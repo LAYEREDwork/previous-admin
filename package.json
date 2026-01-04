@@ -16,6 +16,7 @@
     "test:backend": "jest",
     "screenshots": "node scripts/generate_screenshots.mjs",
     "generate:sfsymbols": "tsx scripts/generate-sf-symbols.ts",
+    "generate:schema": "bash scripts/generate-config-schema.sh",
     "import-example-db": "tsx scripts/import-example-database.ts"
   },
   "dependencies": {
@@ -34,16 +35,17 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
+    "@tailwindcss/postcss": "^4.0.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.1",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/ini": "^4.1.1",
+    "@types/jest": "^30.0.0",
     "@types/node": "^25.0.2",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@types/ws": "^8.18.1",
-    "@tailwindcss/postcss": "^4.0.0",
     "@vitejs/plugin-react": "^5.1.2",
     "eslint": "^9.9.1",
     "eslint-plugin-import": "^2.32.0",

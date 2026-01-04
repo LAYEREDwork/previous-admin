@@ -27,3 +27,9 @@ PROJECT_ANALYSIS.md
 
 # Auto Claude data directory
 .auto-claude/
+
+# Generated config schema (shared between Backend & Frontend)
+shared/previous-config/schema.json
+
+# Generated documentation (not part of version control)
+EDITOR_MIGRATION.md
