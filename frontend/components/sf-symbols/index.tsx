@@ -11,6 +11,7 @@
 import { createSFIcon } from './SFIcon';
 
 export const SFArrowDownDocumentFill = createSFIcon('ArrowDownDocumentFill');
+export const SFArrowTrianglehead2ClockwiseRotate90 = createSFIcon('ArrowTrianglehead2ClockwiseRotate90');
 export const SFArrowTrianglehead2ClockwiseRotate90Circle = createSFIcon('ArrowTrianglehead2ClockwiseRotate90Circle');
 export const SFArrowTrianglehead2ClockwiseRotate90CircleFill = createSFIcon('ArrowTrianglehead2ClockwiseRotate90CircleFill');
 export const SFArrowUpDocumentFill = createSFIcon('ArrowUpDocumentFill');
@@ -47,6 +48,7 @@ export const SFDocumentOnDocument = createSFIcon('DocumentOnDocument');
 export const SFDocumentOnDocumentFill = createSFIcon('DocumentOnDocumentFill');
 export const SFDocumentOnTrashFill = createSFIcon('DocumentOnTrashFill');
 export const SFExclamationmarkArrowTrianglehead2ClockwiseRotate90 = createSFIcon('ExclamationmarkArrowTrianglehead2ClockwiseRotate90');
+export const SFExclamationmarkBubbleFill = createSFIcon('ExclamationmarkBubbleFill');
 export const SFExternaldrive = createSFIcon('Externaldrive');
 export const SFExternaldriveConnectedToLineBelow = createSFIcon('ExternaldriveConnectedToLineBelow');
 export const SFExternaldriveConnectedToLineBelowFill = createSFIcon('ExternaldriveConnectedToLineBelowFill');
@@ -70,6 +72,7 @@ export const SFKeyboardBadgeEllipsis = createSFIcon('KeyboardBadgeEllipsis');
 export const SFKeyboardBadgeEllipsisFill = createSFIcon('KeyboardBadgeEllipsisFill');
 export const SFKeyboardFill = createSFIcon('KeyboardFill');
 export const SFKeyboardMacwindow = createSFIcon('KeyboardMacwindow');
+export const SFLinkIcloud = createSFIcon('LinkIcloud');
 export const SFListBulletClipboard = createSFIcon('ListBulletClipboard');
 export const SFListBulletClipboardFill = createSFIcon('ListBulletClipboardFill');
 export const SFLockDocumentFill = createSFIcon('LockDocumentFill');

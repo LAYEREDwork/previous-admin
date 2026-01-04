@@ -12,6 +12,7 @@ interface PACardProps {
   expanded?: boolean;
   defaultExpanded?: boolean;
   onToggle?: (expanded: boolean) => void;
+  onDoubleClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 /**
@@ -35,7 +36,8 @@ export function PACard({
   collapsible = false,
   expanded,
   defaultExpanded = true,
-  onToggle
+  onToggle,
+  onDoubleClick
 }: PACardProps) {
   const [isExpanded, setIsExpanded] = useState(expanded !== undefined ? expanded : defaultExpanded);
 
@@ -91,16 +93,20 @@ export function PACard({
   const finalStyle = {
     backgroundColor: scheme.backgroundColor,
     border: `1px solid ${scheme.borderColor}`,
-    borderRadius: '6px',
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+    borderRadius: '8px',
+    boxShadow: '0 3px 8px rgba(0, 0, 0, 0.1)',
     ...style
   } as React.CSSProperties;
 
   // Build header with optional collapse toggle
+  const chevronColor = bgColorScheme === 'default' || bgColorScheme === 'surface' 
+    ? 'var(--rs-text-secondary)' 
+    : scheme.borderColor;
+
   const headerContent = collapsible ? (
     <div className="flex items-center justify-between w-full cursor-pointer py-2 px-4" onClick={handleToggle}>
       <div className="flex items-center gap-2 flex-1">{header}</div>
-      <div className="flex-shrink-0 ml-2 flex items-center transition-transform duration-300 ease-out" style={{ transform: `rotate(${isExpanded ? -180 : 0}deg)` }}>
+      <div className="flex-shrink-0 ml-2 flex items-center transition-transform duration-300 ease-out" style={{ transform: `rotate(${isExpanded ? -180 : 0}deg)`, color: chevronColor }}>
         <SFChevronDown size={18} />
       </div>
     </div>
@@ -112,7 +118,7 @@ export function PACard({
   const showHeaderBorder = false; // Border between header and content disabled
 
   return (
-    <div className={`pa-card ${className}`} style={finalStyle}>
+    <div className={`pa-card ${className}`} style={finalStyle} onDoubleClick={onDoubleClick}>
       {/* Header */}
       {headerContent && (
         <div

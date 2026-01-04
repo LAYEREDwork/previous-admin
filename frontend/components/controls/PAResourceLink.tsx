@@ -1,4 +1,4 @@
-import { BiLinkExternal } from 'react-icons/bi';
+import { SFLinkIcloud } from "@frontend/components/sf-symbols";
 
 export interface PAResourceLinkProps {
   href: string;
@@ -27,7 +27,7 @@ export function PAResourceLink({ href, label, domain }: PAResourceLinkProps) {
         />
         {label}
       </span>
-      <BiLinkExternal
+      <SFLinkIcloud
         size={22}
         className="text-[var(--rs-text-secondary)] group-hover:text-[var(--rs-primary-500)]"
       />

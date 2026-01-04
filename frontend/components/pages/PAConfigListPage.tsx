@@ -24,6 +24,9 @@ export function PAConfigList({ onEdit }: ConfigListProps) {
   const { translation } = useLanguage();
   const controlSize = useResponsiveControlSize(PASize.md);
 
+  // Track which context menu is open
+  const [openContextMenuId, setOpenContextMenuId] = useState<string | null>(null);
+
   // Duplicate modal states
   const [showDuplicateModal, setShowDuplicateModal] = useState(false);
   const [duplicateConfigName, setDuplicateConfigName] = useState('');
@@ -145,6 +148,9 @@ export function PAConfigList({ onEdit }: ConfigListProps) {
             onDragEnd={handleDragEnd}
             onDragLeave={handleDragLeave}
             isDragOver={dragOverIndex === index}
+            isContextMenuOpen={openContextMenuId === config.id}
+            onContextMenuOpen={() => setOpenContextMenuId(config.id)}
+            onContextMenuClose={() => setOpenContextMenuId(null)}
           />
         ))}
       </div>
