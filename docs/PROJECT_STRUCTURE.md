@@ -8,217 +8,98 @@ Previous Admin follows a modular structure separating frontend, backend, and sha
 
 ```
 previous-admin/
-├── docs/                                # Project documentation
-│   ├── INSTALLATION.md                 # Installation guide
-│   ├── DEVELOPMENT.md                  # Development setup and commands
-│   ├── TECHNOLOGY_STACK.md             # Technology overview
-│   ├── ARCHITECTURE.md                 # Architecture patterns and design decisions
-│   ├── CI.md                          # GitHub Actions CI/CD pipeline
-│   ├── TRANSLATION_de.md               # German translation system documentation
-│   ├── TRANSLATION_en.md               # English translation system documentation
-│   └── SCREENSHOTS.md                  # Documentation screenshots
-│
-├── backend/                            # Node.js/Express server
-│   ├── index.ts                        # Server entry point with Express setup
-│   ├── metrics.ts                      # System metrics collection
-│   ├── websocket.ts                    # WebSocket connection handling
-│   ├── types.ts                        # Backend TypeScript types
-│   │
+├── .github/                           # GitHub workflows, CI/CD, and project instructions
+├── .vscode/                           # VS Code workspace settings
+├── backend/                           # Node.js/Express server
+│   ├── __tests__/                     # Backend test suite
 │   ├── api/                           # REST API endpoints
-│   │   ├── config.ts                  # Configuration endpoints
-│   │   ├── configurations.ts          # Configurations list management
-│   │   ├── database.ts                # Database query endpoints
-│   │   ├── system.ts                  # System information endpoints
-│   │   └── update.ts                  # Update checking endpoints
-│   │
 │   ├── config/                        # Configuration management layer
-│   │   ├── index.ts                   # Main configuration manager
-│   │   ├── base-config-manager.ts     # Abstract base class
-│   │   ├── config-manager-factory.ts  # Platform-specific factory
-│   │   ├── linux-config-manager.ts    # Linux implementation
-│   │   ├── macos-config-manager.ts    # macOS implementation
-│   │   ├── config-io.ts               # File I/O operations
-│   │   └── defaults.ts                # Default configuration values
-│   │
 │   ├── config-schema/                 # Configuration schema parsing
-│   │   ├── validator.ts               # Configuration validation
-│   │   ├── schema-extractor.ts        # Extract schema from config
-│   │   ├── config-parser.ts           # Parse configuration files
-│   │   ├── converter.ts               # Convert between formats
-│   │   ├── reference.cfg              # Reference configuration template
-│   │   └── section-symbols.json       # Configuration section metadata
-│   │
 │   ├── database/                      # SQLite database operations
-│   │   ├── index.ts                   # Database initialization
-│   │   ├── core.ts                    # Core database operations
-│   │   ├── configurations.ts          # Configurations table management
-│   │   └── maintenance.ts             # Database maintenance utilities
-│   │
-│   ├── platform/                      # Platform-specific operations
-│   │   ├── index.ts                   # Platform operations interface
-│   │   ├── platform-detector.ts       # Detect OS platform
-│   │   ├── system-info.ts             # Collect system information
-│   │   ├── types.ts                   # Platform types
+│   ├── platform/                      # Platform abstraction layer
 │   │   ├── linux/                     # Linux-specific implementations
 │   │   └── macos/                     # macOS-specific implementations
-│   │
-│   ├── previous-config/              # Previous emulator config parsing
-│   │   ├── index.ts                   # Config file operations
-│   │   └── types.ts                   # Configuration types
-│   │
-│   ├── services/                      # Business logic services
-│   │   └── configurationService.ts    # Configuration operations service
-│   │
-│   ├── __tests__/                     # Backend test suite
-│   │   ├── config-schema.test.ts      # Configuration schema tests
-│   │   ├── configurationService.test.ts # Service tests
-│   │   └── converter.test.ts          # Format conversion tests
-│   │
-│   └── tsconfig.json                  # TypeScript configuration
+│   ├── previous-config/               # Previous emulator config parsing
+│   └── services/                      # Business logic services
+│
+├── dist/                              # Production build output (generated)
+│
+├── docs/                              # Project documentation
+│   ├── INSTALLATION.md                # Installation guides
+│   ├── DEVELOPMENT.md                 # Development setup
+│   ├── TECHNOLOGY_STACK.md            # Technology overview
+│   ├── ARCHITECTURE.md                # Architecture and patterns
+│   ├── PROJECT_STRUCTURE.md           # Directory layout
+│   ├── CI.md                          # GitHub Actions pipeline
+│   ├── TRANSLATION_de.md              # German i18n documentation
+│   ├── TRANSLATION_en.md              # English i18n documentation
+│   └── SCREENSHOTS.md                 # Documentation screenshots
 │
 ├── frontend/                          # React web application
-│   ├── App.tsx                        # Root application component
-│   ├── main.tsx                       # Application entry point
-│   ├── index.css                      # Global styles
-│   ├── vite-env.d.ts                  # Vite type definitions
-│   │
-│   ├── components/                    # React UI components
-│   │   ├── PABooleanInput.tsx          # Boolean toggle input
-│   │   ├── PAConfigInput.tsx           # Configuration value input
-│   │   ├── PAStringInput.tsx           # String input field
-│   │   ├── PANumberRangeInput.tsx      # Number range slider
-│   │   ├── PAEnumInput.tsx             # Dropdown enum selector
-│   │   ├── PAConfigItemControlsPartial.tsx # Item action buttons
-│   │   ├── PAConfigItemContentPartial.tsx  # Item content display
-│   │   ├── PAConfigItemActionsPartial.tsx  # Item action panel
-│   │   ├── PAConfigListPage.tsx        # Configurations list page
-│   │   ├── PASystemPage.tsx            # System information page
-│   │   ├── PAAboutPage.tsx             # About page
-│   │   ├── PAErrorBoundary.tsx         # Error boundary component
-│   │   ├── charts/                    # Metrics visualization
-│   │   │   ├── PACpuLoadChart.tsx     # CPU load chart
-│   │   │   ├── PAMemoryChart.tsx      # Memory usage chart
-│   │   │   ├── PANetworkTrafficChart.tsx # Network traffic chart
-│   │   │   └── PADiskIOChart.tsx      # Disk I/O chart
-│   │   └── ...other components...
-│   │
-│   ├── contexts/                      # React Context for global state
-│   │   ├── AuthContext.tsx            # User session state
-│   │   ├── SettingsContext.tsx        # User settings
-│   │   ├── NotificationContext.tsx    # Toast notifications
-│   │   └── WebSocketContext.tsx       # WebSocket connection state
-│   │
-│   ├── hooks/                         # Custom React hooks
-│   │   ├── useConfigActions.ts        # Configuration operations
-│   │   ├── useConfigList.ts           # Configuration list management
-│   │   ├── useWebSocket.ts            # WebSocket connection
-│   │   ├── useSystemMetrics.ts        # System metrics
-│   │   └── ...other hooks...
-│   │
-│   ├── lib/                           # Utilities and libraries
-│   │   ├── api/                       # API client functions
-│   │   │   ├── config.ts              # Configuration API calls
-│   │   │   ├── system.ts              # System API calls
-│   │   │   └── database.ts            # Database API calls
-│   │   │
-│   │   ├── database.ts                # Frontend database operations
-│   │   ├── utils.ts                   # Helper functions
-│   │   ├── constants.ts               # Application constants
-│   │   │
-│   │   ├── i18n/                      # Internationalization
-│   │   │   ├── locales/              # Translation files
-│   │   │   │   ├── de.ts             # German translations
-│   │   │   │   ├── en.ts             # English translations
-│   │   │   │   ├── es.ts             # Spanish translations
-│   │   │   │   ├── fr.ts             # French translations
-│   │   │   │   └── it.ts             # Italian translations
-│   │   │   └── index.ts              # i18n setup
-│   │   │
-│   │   ├── icons/                    # Icon system
-│   │   │   ├── index.tsx             # Icon component
-│   │   │   ├── icons-map.ts          # Icon name mapping
-│   │   │   └── icons-data.ts         # Icon data (109 SF Symbols)
-│   │   │
-│   │   ├── types/                    # TypeScript type definitions
-│   │   │   ├── sizes.ts              # PASize enum for component sizing
-│   │   │   └── ...other types...
-│   │   │
-│   │   └── styles/                   # Styling utilities
-│   │       └── theme.ts              # Theme configuration
-│   │
 │   ├── __tests__/                     # Frontend test suite
-│   │   ├── App.test.tsx               # App component tests
-│   │   ├── PAConfigInput.test.tsx     # Input component tests
-│   │   ├── PAConfigListPage.test.tsx  # Page tests
-│   │   ├── useAbout.test.tsx          # Hook tests
-│   │   └── ...more tests...
-│   │
-│   └── tsconfig.json                  # TypeScript configuration
+│   ├── components/                    # React UI components
+│   │   ├── charts/                    # Metrics visualization components
+│   │   ├── controls/                  # Reusable UI controls and widgets
+│   │   ├── pages/                     # Main application pages
+│   │   ├── partials/                  # Reusable layout partials
+│   │   └── sf-symbols/                # SF Symbols icon components
+│   ├── contexts/                      # React Context providers
+│   ├── hooks/                         # Custom React hooks
+│   └── lib/                           # Utilities and libraries
+│       ├── api/                       # API client functions
+│       ├── i18n/                      # Internationalization
+│       │   └── locales/               # Translation files (5 languages)
+│       ├── icons/                     # Icon system (SF Symbols)
+│       ├── types/                     # TypeScript type definitions
+│       └── styles/                    # Styling utilities
 │
-├── shared/                            # Shared code (frontend + backend)
-│   ├── types.ts                       # Shared TypeScript interfaces
-│   ├── api/                          # Shared API types
-│   └── previous-config/              # Shared configuration types
-│
-├── scripts/                           # Automation and generation scripts
-│   ├── install.sh                     # Automated installation script
-│   ├── uninstall.sh                   # Uninstall script
-│   ├── start-all.sh                   # Start dev servers
-│   ├── generate-config-schema.sh      # Schema extraction
-│   ├── generate-sf-symbols.ts         # SF Symbols generation
-│   ├── generate-translation-keys.ts   # Translation file generation
-│   ├── import-example-database.ts     # Example database import
-│   ├── update_badges.sh               # Badge generation
-│   └── update.ts                      # Update check script
+├── node_modules/                      # npm dependencies (generated)
 │
 ├── public/                            # Static assets
 │   ├── assets/                        # Images and media
-│   └── fonts/                         # Custom fonts
+│   └── fonts/                         # Font files
 │
-├── Root Configuration Files
-│   ├── package.json                   # npm dependencies and scripts
-│   ├── tsconfig.json                  # Root TypeScript config
-│   ├── vite.config.ts                 # Vite build configuration
-│   ├── vitest.config.ts               # Vitest test configuration
-│   ├── tailwind.config.js             # Tailwind CSS config
-│   ├── postcss.config.js              # PostCSS configuration
-│   ├── eslint.config.js               # ESLint configuration
-│   ├── index.html                     # HTML entry point
-│   ├── README.md                      # Project overview
-│   ├── EDITOR_MIGRATION.md            # Migration guide
-│   └── .github/
-│       └── workflows/                 # GitHub Actions CI/CD
+├── scripts/                           # Automation and generation scripts
 │
-└── Database
-    └── ~/.previous-admin/
-        └── previous-admin.db          # SQLite database (created at runtime)
+├── shared/                            # Shared code (frontend + backend)
+│   ├── api/                           # Shared API types
+│   └── previous-config/               # Shared config types
+│
+├── src/                               # Additional source files
+│   └── test/                          # Test utilities and fixtures
+│
+├── .github/
+│   └── workflows/                     # GitHub Actions CI/CD workflows
+│
+└── Root Configuration Files
+    ├── package.json                   # npm dependencies and scripts
+    ├── tsconfig.json                  # Root TypeScript config
+    ├── vite.config.ts                 # Vite build configuration
+    ├── vitest.config.ts               # Vitest test configuration
+    ├── tailwind.config.js             # Tailwind CSS config
+    ├── postcss.config.js              # PostCSS configuration
+    ├── eslint.config.js               # ESLint configuration
+    ├── index.html                     # HTML entry point
+    ├── README.md                      # Project overview
+    └── EDITOR_MIGRATION.md            # Migration guide
+
+Generated at Runtime
+└── ~/.previous-admin/
+    └── previous-admin.db              # SQLite database
 ```
 
-## Key Characteristics
+## Architecture Overview
 
-### Clear Separation of Concerns
-- **Backend**: Server logic, database, configuration management
-- **Frontend**: User interface, real-time charts, state management
-- **Shared**: Common types and interfaces used by both
+The project is organized into three main layers:
 
-### Platform Abstraction
-- Configuration management handles macOS and Linux differences
-- Metrics collection uses platform-specific system calls
-- Platform detection at runtime
+- **Backend** (`backend/`) — Express.js server with REST API, WebSocket, configuration management, and database operations
+- **Frontend** (`frontend/`) — React application with UI components, state management via contexts, custom hooks, and utilities
+- **Shared** (`shared/`) — Common types and interfaces used by both frontend and backend
 
-### Modular Organization
-- Each feature has dedicated directories
-- Components are self-contained with their dependencies
-- Tests colocated with source code (`.test.ts` files)
+## Key Organizational Principles
 
-### Comprehensive Testing
-- 186 tests total (47 backend + 139 frontend)
-- Unit tests for utilities and services
-- Component and hook tests for UI
-- Integration tests for API functionality
-
-### Automated Code Generation
-- Configuration schema extraction from reference files
-- SF Symbols icon mapping (109 icons)
-- Translation key files from schema (5 languages)
-- Type definitions from configuration format
+- **Platform Abstraction** — Configuration and metrics collection handles macOS and Linux differences transparently
+- **Modular Structure** — Each feature has dedicated directories with clear responsibilities
+- **Colocated Tests** — Test files sit alongside source code (`.test.ts` files in same directories)
+- **Automated Generation** — Schema extraction, icon mapping, translation keys, and types all auto-generated
+- **Comprehensive Testing** — 186 tests total (47 backend + 139 frontend) covering all major functionality
