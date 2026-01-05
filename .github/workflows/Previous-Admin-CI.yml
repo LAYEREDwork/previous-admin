@@ -173,7 +173,7 @@ jobs:
         run: npm ci
 
       - name: Import Example Database
-        run: npm run import-example-db
+        run: npm run import:exampledb
 
       - name: Upload database artifact
         uses: actions/upload-artifact@v4
