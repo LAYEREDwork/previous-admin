@@ -27,7 +27,7 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
   return (
     <div className="min-h-screen transition-colors flex flex-col" style={{ backgroundColor: 'var(--rs-body)' }}>
       {/* Mobile Header - kompakter */}
-      <div className="md:hidden sticky top-0 z-50 border-b border-[var(--rs-border-primary)] px-4 py-3 transition-colors duration-200" style={{ backgroundColor: 'rgba(var(--rs-bg-card-rgb, 255 255 255), 0.7)', backdropFilter: 'blur(10px)' }}>
+      <div className="md:hidden sticky top-0 z-50 border-b border-[var(--rs-border-primary)] px-4 py-3 transition-colors duration-200" style={{ backgroundColor: 'var(--rs-bg-card)' }}>
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <div className="w-13 h-13 flex-shrink-0">
@@ -51,7 +51,7 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
         </div>
       </div>
 
-      <div className="hidden md:block md:sticky md:top-0 z-50 border-b border-[var(--rs-border-primary)] transition-colors duration-200" style={{backgroundColor: 'rgba(var(--rs-bg-card-rgb, 255 255 255), 0.7)', backdropFilter: 'blur(10px)'}}>
+      <div className="hidden md:block md:sticky md:top-0 z-50 border-b border-[var(--rs-border-primary)] transition-colors duration-200" style={{backgroundColor: 'var(--rs-bg-card)'}}>
         <header>
           <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-3 sm:py-6 gap-3 sm:gap-0">

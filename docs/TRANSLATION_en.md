@@ -1,0 +1,308 @@
+# Translation Keys Generation
+
+## Overview
+
+The script `scripts/generate-translation-keys.ts` automates the management of translation keys for the config editor. It ensures that all required translations in all supported languages (German, English, Spanish, French, Italian) are consistently maintained.
+
+## Purpose and Usage
+
+### Why are translation keys needed?
+
+Translation keys are unique identifiers for translatable text elements in the Previous Admin config editor. They are used to:
+
+- **Identify configuration sections**: Each section (e.g., "General", "Network", "Advanced") has its own translation key
+- **Identify configuration parameters**: Each parameter (e.g., "Port", "Timeout", "Debug Mode") has its own translation key
+- **Support multilingual UI**: Keys enable central management of translations for all languages
+
+### Where are the keys used?
+
+1. **In the Config Editor Frontend** (`frontend/components/partials/config-editor/`)
+   - When rendering section names
+   - When displaying parameter names
+   - In help and descriptions of configuration options
+
+2. **In translation files** (`frontend/lib/i18n/locales/`)
+   - `de.ts` - German translations
+   - `en.ts` - English translations
+   - `es.ts` - Spanish translations
+   - `fr.ts` - French translations
+   - `it.ts` - Italian translations
+
+3. **In runtime code**
+   - Translations are looked up at runtime
+   - The UI renders translated text based on the current language setting
+
+## How does the generation work?
+
+### Process Flow
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ 1. Load schema (schema.json)                            │
+│    - Read all sections and their parameters             │
+│    - Extract translationKey properties                  │
+└─────────────────────────────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────┐
+│ 2. Determine required keys                              │
+│    - Create list of all needed translation keys         │
+│    - Separate by sections and parameters                │
+└─────────────────────────────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────┐
+│ 3. For each language:                                   │
+│    a) Load existing translation                         │
+│    b) Merge keys (add new keys)                         │
+│    c) Save updated file                                 │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Detailed Function Explanation
+
+#### `loadSchema(): ConfigSchema`
+
+Reads the `schema.json` file and parses it into a TypeScript object. The schema contains the complete structure of all configuration sections and parameters.
+
+```typescript
+// Example schema structure:
+{
+  sections: {
+    general: {
+      name: "General",
+      translationKey: "sections.general",
+      parameters: [
+        {
+          name: "Port",
+          translationKey: "parameters.port"
+        }
+      ]
+    }
+  }
+}
+```
+
+#### `getRequiredTranslationKeys(schema: ConfigSchema)`
+
+Extracts all translation keys from the schema:
+
+- Iterates through all sections
+- Collects `translationKey` from each section
+- Iterates through all parameters in each section
+- Collects `translationKey` from each parameter
+- Returns a structured object separated by sections and parameters
+
+**Return value:**
+```typescript
+{
+  sections: {
+    "sections.general": "General",
+    "sections.network": "Network",
+    // ... more sections
+  },
+  parameters: {
+    "parameters.port": "Port",
+    "parameters.timeout": "Timeout",
+    // ... more parameters
+  }
+}
+```
+
+#### `loadTranslations(language: Language): TranslationStrings`
+
+Loads the existing translation file for a language:
+
+1. Reads the TypeScript file (e.g., `de.ts`)
+2. Uses regex to extract the export object
+3. Safely evaluates the JavaScript object (appName is injected)
+4. Returns the parsed object
+
+**Why is `eval()` used?**
+- Translation files use `appName` as a template variable
+- `eval()` is executed with a controlled context (only `appName` is injected)
+- This is safe because the code is generated by us
+
+#### `mergeTranslationKeys(existing, requiredKeys)`
+
+Merges new keys into existing translations:
+
+1. Deep-copy existing translations
+2. Ensure the `configEditor.sections` and `configEditor.parameters` structure exists
+3. For each required key:
+   - If the key doesn't exist yet → add it with the default value
+   - If the key exists → keep the existing translation
+4. Returns the updated object
+
+**Important:** Existing translations are never overwritten. Only new keys are added.
+
+#### `saveTranslations(language: Language, translations: TranslationStrings)`
+
+Saves the updated translations back to the file:
+
+1. Regenerates the import statements
+2. Converts the translation object to formatted TypeScript code
+3. Writes the complete file with proper formatting
+4. Escape sequences are handled correctly (quotes, backslashes, newlines)
+
+### Structure of Translation Files
+
+The translation files have a specific structure:
+
+```typescript
+import { appName } from '../../constants';
+import { Translations } from '.';
+
+export const de: Translations = {
+  appName: 'Previous Admin',
+  common: {
+    // ... common translations
+  },
+  configEditor: {
+    sections: {
+      'sections.general': 'Allgemein',
+      'sections.network': 'Netzwerk',
+      // ... more sections
+    },
+    parameters: {
+      'parameters.port': 'Port',
+      'parameters.timeout': 'Timeout',
+      // ... more parameters
+    }
+  }
+};
+```
+
+## Where do the original texts come from?
+
+### Sources of Translations
+
+1. **Schema Default Values**
+   - When a new translation key is generated, the display name or parameter name from the schema is used as the default text
+   - This is usually the English name (e.g., "Port", "Timeout")
+   - These defaults are placeholders - they should be replaced with real translations
+
+2. **Existing Manual Translations**
+   - After generation, all texts should be reviewed and correctly translated by native speakers
+   - Translations are manually maintained in the language files
+   - Each time the script is run, only new keys are added, never existing translations are overwritten
+
+3. **Schema Structure**
+   - Sections and parameters come from `schema.json`
+   - This is automatically generated by `scripts/generate-config-schema.sh`
+   - The schema is generated from `backend/config-schema/reference.cfg`
+   - The `reference.cfg` is the authoritative source of all configuration options
+
+## The Generation Chain: From Config to Translations
+
+There is an important dependency chain that should be understood:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ reference.cfg (Source of all config options)                   │
+│ - Sections and parameters defined                              │
+│ - Symbol mappings defined                                      │
+└─────────────────────────────────────────────────────────────────┘
+                            ↓
+           npm run generate:schema
+           scripts/generate-config-schema.sh
+                            ↓
+┌─────────────────────────────────────────────────────────────────┐
+│ schema.json (Auto-generated)                                   │
+│ - Structured JSON from reference.cfg                           │
+│ - Includes translationKey properties                           │
+│ - Input for translation key generation                         │
+└─────────────────────────────────────────────────────────────────┘
+                            ↓
+             npm run generate-translation-keys
+                            ↓
+┌─────────────────────────────────────────────────────────────────┐
+│ {de,en,es,fr,it}.ts (Translation files)                        │
+│ - Translation keys automatically synchronized                  │
+│ - New keys receive default values from schema                  │
+│ - Existing translations are preserved                          │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Important for Maintenance
+
+When new configuration options are added to Previous Config:
+
+1. **First**: Update `reference.cfg` (add sections/parameters)
+2. **Then**: Run `npm run generate:schema` (schema.json is regenerated)
+3. **After**: Run `npm run generate-translation-keys` (translation keys are synchronized)
+
+This ensures that all parts of the system stay synchronized.
+
+## Usage
+
+### Running the script
+
+```bash
+npm run generate-translation-keys
+```
+
+### Output
+
+The script provides an overview of the generation:
+
+```
+🔄 Generating translation keys...
+
+✅ Schema loaded
+✅ Found 17 sections and 143 parameters
+
+Processing de...
+  ✅ Updated de.ts
+Processing en...
+  ✅ Updated en.ts
+Processing es...
+  ✅ Updated es.ts
+Processing fr...
+  ✅ Updated fr.ts
+Processing it...
+  ✅ Updated it.ts
+
+✅ Translation keys generation completed!
+```
+
+## Best Practices
+
+### For Developers
+
+1. **After new config options**: When adding new sections or parameters to the schema, run `npm run generate-translation-keys` afterwards
+2. **Before release**: Always run the script before a release to ensure all keys are current
+3. **Don't edit manually**: Don't manually edit the auto-generated sections/parameters in translation files - these will be overwritten on the next run
+
+### For Translators
+
+1. **Only change manual fields**: Translators should only change the translation text (the values), not the keys
+2. **Keep all languages current**: When a translation is updated, all 5 language versions should be updated
+3. **Consistency**: Use consistent terminology across all translations (e.g., "Port" should be translated consistently in all languages)
+
+## Technical Details
+
+### File Format
+
+- **Input**: `shared/previous-config/schema.json`
+- **Input**: `frontend/lib/i18n/locales/{language}.ts` (for each language)
+- **Output**: `frontend/lib/i18n/locales/{language}.ts` (updated)
+
+### Dependencies
+
+The script uses only standard Node.js APIs:
+- `fs` - File system
+- `path` - Path management
+- `fileURLToPath` - URL-to-path conversion for ES modules
+
+### Performance
+
+- Script runtime: ~100-200ms (depends on number of keys and file size)
+- No external HTTP requests
+- All operations are synchronous (deliberate choice for simple maintenance)
+
+## Error Handling
+
+The script handles errors per language:
+
+- If a language cannot be processed, an error is displayed
+- Other languages are still processed
+- Invalid translation files result in a clear error message
