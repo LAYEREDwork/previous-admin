@@ -90,16 +90,16 @@ export function VersionInfoPartial({
                           </div>
                         }
                       >
-                        <div className="text-xs text-[var(--rs-text-primary)]">
+                        <div className="text-sm text-[var(--rs-text-primary)]">
                           <ReactMarkdown
                             components={{
-                              h1: ({ children }) => <h1 className="text-xs font-medium mt-0 mb-2 uppercase text-[var(--rs-text-primary)]">{children}</h1>,
-                              h2: ({ children }) => <h2 className="text-xs font-medium mt-0 mb-2 uppercase text-[var(--rs-text-primary)]">{children}</h2>,
-                              h3: ({ children }) => <h3 className="text-xs font-medium mt-6 mb-1 uppercase text-[var(--rs-text-primary)]">{children}</h3>,
-                              p: ({ children }) => <p className="mb-2">{children}</p>,
-                              ul: ({ children }) => <ul className="list-disc pl-8 mb-2">{children}</ul>,
-                              ol: ({ children }) => <ol className="list-decimal pl-8 mb-2">{children}</ol>,
-                              li: ({ children }) => <li className="mb-1">{children}</li>,
+                              h1: ({ children }) => <h1 className="text-base font-bold mt-0 mb-4 text-[var(--rs-text-primary)]">{children}</h1>,
+                              h2: ({ children }) => <h2 className="text-sm font-bold mt-0 mb-4 text-[var(--rs-text-primary)]">{children}</h2>,
+                              h3: ({ children }) => <h3 className="text-sm font-semibold mt-5 mb-3 text-[var(--rs-text-primary)]">{children}</h3>,
+                              p: ({ children }) => <p className="mb-4 leading-relaxed">{children}</p>,
+                              ul: ({ children }) => <ul className="list-disc pl-6 mb-4 space-y-2">{children}</ul>,
+                              ol: ({ children }) => <ol className="list-decimal pl-6 mb-4 space-y-2">{children}</ol>,
+                              li: ({ children }) => <li className="text-sm">{children}</li>,
                             }}
                           >
                             {versionInfo.releaseNotes}
