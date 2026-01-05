@@ -14,8 +14,8 @@ global.fetch = vi.fn();
 
 describe('useConfigSchema', () => {
   const mockSchema: ConfigSchema = {
-    sections: [
-      {
+    sections: {
+      System: {
         name: 'System',
         displayName: 'System Settings',
         description: 'Core system configuration',
@@ -33,7 +33,7 @@ describe('useConfigSchema', () => {
           },
         ],
       },
-    ],
+    },
   };
   
   beforeEach(() => {

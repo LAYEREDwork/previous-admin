@@ -1,5 +1,7 @@
 import { useLanguage } from '../contexts/PALanguageContext';
 
+import { PASize } from '../lib/types/sizes';
+
 import { PAEmptyView } from './controls/PAEmptyView';
 import { SFDocumentBadgePlusFill } from './sf-symbols';
 
@@ -9,15 +11,15 @@ import { SFDocumentBadgePlusFill } from './sf-symbols';
  *
  * @param {Object} props - Component props
  * @param {() => void} [props.onCreateNew] - Callback when the "Create New" button is clicked
- * @param {string} [props.buttonSize] - Size of the action button (default: 'md')
+ * @param {PASize} [props.buttonSize] - Size of the action button (default: PASize.md)
  * @returns {JSX.Element} The empty state component
  */
 export function PANoConfigurationsEmptyView({
   onCreateNew,
-  buttonSize = 'md',
+  buttonSize = PASize.md,
 }: {
   onCreateNew?: () => void;
-  buttonSize?: string;
+  buttonSize?: PASize;
 }) {
   const { translation } = useLanguage();
 

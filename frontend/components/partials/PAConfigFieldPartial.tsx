@@ -11,6 +11,7 @@ import { Form } from 'rsuite';
 
 import type { ParameterSchema } from '@shared/previous-config/schema-types';
 
+import { PASize } from '../../lib/types/sizes';
 import { PAConfigInput } from '../controls/PAConfigInput';
 
 interface PAConfigFieldPartialProps {
@@ -70,7 +71,7 @@ export function PAConfigFieldPartial({
             value={value}
             onChange={onChange}
             disabled={disabled}
-            size="md"
+            size={PASize.md}
           />
         )}
         errorMessage={errorMessage}

@@ -62,7 +62,7 @@ function parseTypeFromComments(comments: string[]): ParameterType {
 /**
  * Parse possible values from comments
  * 
- * Looks for "# Possible Values: A, B, C" or "# Possible Values: X-Y"
+ * Looks for "# Possible Values: A, B, C" or "# Possible Values: X-Y" or "# Possible Values: X/Y"
  * 
  * @param comments Array of comment lines
  * @returns Tuple of [values, labels, type] or [undefined, undefined, type]
@@ -82,8 +82,15 @@ function parsePossibleValuesFromComments(
         return [undefined, undefined, 'range'];
       }
       
-      // Parse comma-separated values
-      const values = valuesStr.split(',').map(v => v.trim()).filter(v => v);
+      // Parse values - support comma-separated (A, B) or slash-separated (A/B) format
+      let values: string[] = [];
+      
+      if (valuesStr.includes(',')) {
+        values = valuesStr.split(',').map(v => v.trim()).filter(v => v);
+      } else if (valuesStr.includes('/')) {
+        // Handle slash-separated values like "TRUE/FALSE"
+        values = valuesStr.split('/').map(v => v.trim()).filter(v => v);
+      }
       
       if (values.length > 0) {
         // Extract labels if format is "VALUE=Label"
@@ -157,8 +164,28 @@ function extractParameterSchema(rawParam: RawConfigParameter): ParameterSchema {
     rawParam.comments
   );
   
-  // Determine final type (enum/range take precedence)
-  const finalType: ParameterType = enumOrRangeType || baseType;
+  // Determine final type
+  // Special case: if baseType is boolean and possibleValues are TRUE/FALSE, keep it as boolean
+  let finalType: ParameterType;
+  let finalPossibleValues: string[] | undefined = possibleValues;
+  let finalLabels: string[] | undefined = labels;
+  
+  if (baseType === 'boolean' && possibleValues && possibleValues.length === 2) {
+    // Check if values are TRUE/FALSE (case-insensitive)
+    const normalizedValues = possibleValues.map(v => v.toUpperCase());
+    if ((normalizedValues.includes('TRUE') && normalizedValues.includes('FALSE'))) {
+      finalType = 'boolean';
+      // Don't include possibleValues and labels for boolean types
+      finalPossibleValues = undefined;
+      finalLabels = undefined;
+    } else {
+      // Not a true boolean enum, treat as regular enum
+      finalType = enumOrRangeType || baseType;
+    }
+  } else {
+    // For other types, enum/range take precedence
+    finalType = enumOrRangeType || baseType;
+  }
   
   // Parse default value
   const defaultStr = parseDefaultFromComments(rawParam.comments) || rawParam.value;
@@ -184,8 +211,8 @@ function extractParameterSchema(rawParam: RawConfigParameter): ParameterSchema {
     default: defaultValue,
     description: parseDescriptionFromComments(rawParam.comments),
     translationKey: `configEditor.parameters.${rawParam.name}`,
-    possibleValues,
-    labels,
+    possibleValues: finalPossibleValues,
+    labels: finalLabels,
     min,
     max
   };
@@ -237,5 +264,11 @@ export function extractSchema(
     });
   }
   
-  return { sections: sectionsArray };
+  // Convert array to Record with section names as keys
+  const sectionsRecord: Record<string, SectionSchema> = {};
+  for (const section of sectionsArray) {
+    sectionsRecord[section.name] = section;
+  }
+  
+  return { sections: sectionsRecord };
 }

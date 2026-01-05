@@ -9,6 +9,8 @@
 
 import type { ParameterSchema } from '@shared/previous-config/schema-types';
 
+import { PASize } from '../../lib/types/sizes';
+
 import { PABooleanInput } from './config-inputs/PABooleanInput';
 import { PAEnumInput } from './config-inputs/PAEnumInput';
 import { PANumberRangeInput } from './config-inputs/PANumberRangeInput';
@@ -28,7 +30,7 @@ interface PAConfigInputProps {
   disabled?: boolean;
   
   /** Input size (for applicable components) */
-  size?: 'xs' | 'sm' | 'md' | 'lg';
+  size?: PASize;
 }
 
 /**
@@ -51,7 +53,7 @@ export function PAConfigInput({
   value,
   onChange,
   disabled,
-  size = 'md',
+  size = PASize.md,
 }: PAConfigInputProps) {
   // Dispatch to type-specific component
   switch (schema.type) {

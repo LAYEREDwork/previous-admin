@@ -96,7 +96,7 @@ bShowDialog = TRUE
 
       const rawConfig = parseCfgFile(cfgContent);
       const schema = extractSchema(rawConfig);
-      const configDialog = schema.sections.find(s => s.name === 'ConfigDialog');
+      const configDialog = Object.values(schema.sections).find(s => s.name === 'ConfigDialog');
       const param = configDialog?.parameters[0];
 
       expect(param?.type).toBe('boolean');
@@ -114,7 +114,7 @@ nMachineType = 0
 
       const rawConfig = parseCfgFile(cfgContent);
       const schema = extractSchema(rawConfig);
-      const system = schema.sections.find(s => s.name === 'System');
+      const system = Object.values(schema.sections).find(s => s.name === 'System');
       const param = system?.parameters[0];
 
       expect(param?.type).toBe('number');
@@ -132,7 +132,7 @@ nMachineType = 0
 
       const rawConfig = parseCfgFile(cfgContent);
       const schema = extractSchema(rawConfig);
-      const system = schema.sections.find(s => s.name === 'System');
+      const system = Object.values(schema.sections).find(s => s.name === 'System');
       const param = system?.parameters[0];
 
       expect(param?.type).toBe('enum');
@@ -150,7 +150,7 @@ nMemorySize = 16
 
       const rawConfig = parseCfgFile(cfgContent);
       const schema = extractSchema(rawConfig);
-      const memory = schema.sections.find(s => s.name === 'Memory');
+      const memory = Object.values(schema.sections).find(s => s.name === 'Memory');
       const param = memory?.parameters[0];
 
       expect(param?.type).toBe('range');
@@ -167,7 +167,7 @@ bShowDialog = TRUE
 
       const rawConfig = parseCfgFile(cfgContent);
       const schema = extractSchema(rawConfig);
-      const configDialog = schema.sections.find(s => s.name === 'ConfigDialog');
+      const configDialog = Object.values(schema.sections).find(s => s.name === 'ConfigDialog');
       const param = configDialog?.parameters[0];
 
       expect(param?.translationKey).toBe('configEditor.parameters.bShowDialog');
@@ -188,8 +188,8 @@ nValue = 0
       const rawConfig = parseCfgFile(cfgContent);
       const schema = extractSchema(rawConfig);
 
-      const configDialog = schema.sections.find(s => s.name === 'ConfigDialog');
-      const systemSettings = schema.sections.find(s => s.name === 'SystemSettings');
+      const configDialog = Object.values(schema.sections).find(s => s.name === 'ConfigDialog');
+      const systemSettings = Object.values(schema.sections).find(s => s.name === 'SystemSettings');
       expect(configDialog?.displayName).toBe('Config Dialog');
       expect(systemSettings?.displayName).toBe('System Settings');
     });
@@ -205,7 +205,7 @@ bShowDialog = TRUE
       const symbolMapping = { ConfigDialog: 'gearshape.fill' };
       const schema = extractSchema(rawConfig, symbolMapping);
 
-      const configDialogSection = schema.sections.find(s => s.name === 'ConfigDialog');
+      const configDialogSection = Object.values(schema.sections).find(s => s.name === 'ConfigDialog');
       expect(configDialogSection?.sfSymbol).toBe('gearshape.fill');
     });
 
@@ -219,7 +219,7 @@ bValue = TRUE
       const rawConfig = parseCfgFile(cfgContent);
       const schema = extractSchema(rawConfig, {});
 
-      const unknownSection = schema.sections.find(s => s.name === 'UnknownSection');
+      const unknownSection = Object.values(schema.sections).find(s => s.name === 'UnknownSection');
       expect(unknownSection?.sfSymbol).toBe('gearshape.fill');
     });
   });
@@ -239,8 +239,8 @@ bValue = TRUE
 
   describe('validateConfigValue', () => {
     const testSchema = {
-      sections: [
-        {
+      sections: {
+        System: {
           name: 'System',
           displayName: 'System',
           translationKey: 'configEditor.sections.System',
@@ -272,7 +272,7 @@ bValue = TRUE
             }
           ]
         }
-      ]
+      }
     };
 
     it('should validate boolean values', () => {
@@ -310,8 +310,8 @@ bValue = TRUE
 
   describe('validateConfiguration', () => {
     const testSchema = {
-      sections: [
-        {
+      sections: {
+        System: {
           name: 'System',
           displayName: 'System',
           translationKey: 'configEditor.sections.System',
@@ -335,7 +335,7 @@ bValue = TRUE
             }
           ]
         }
-      ]
+      }
     };
 
     it('should validate complete configuration object', () => {

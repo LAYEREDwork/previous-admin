@@ -13,6 +13,8 @@ import { IconButton, Panel, Stack } from 'rsuite';
 
 import type { ParameterSchema, SectionSchema } from '@shared/previous-config/schema-types';
 
+import { PASize } from '../../lib/types/sizes';
+
 import { PAConfigFieldPartial } from './PAConfigFieldPartial';
 
 interface PAConfigSectionPartialProps {
@@ -93,7 +95,7 @@ export function PAConfigSectionPartial({
           <IconButton
             icon={expanded ? <MdExpandLess /> : <MdExpandMore />}
             appearance="subtle"
-            size="sm"
+            size={PASize.sm}
             circle
           />
         </Stack>

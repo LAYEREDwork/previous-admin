@@ -9,6 +9,8 @@
 
 import { Input } from 'rsuite';
 
+import { PASize } from '../../../lib/types/sizes';
+
 interface PAStringInputProps {
   /** Current string value */
   value: string;
@@ -20,7 +22,7 @@ interface PAStringInputProps {
   disabled?: boolean;
   
   /** Input size */
-  size?: 'xs' | 'sm' | 'md' | 'lg';
+  size?: PASize;
   
   /** Placeholder text */
   placeholder?: string;
@@ -44,7 +46,7 @@ export function PAStringInput({
   value,
   onChange,
   disabled,
-  size = 'md',
+  size = PASize.md,
   placeholder,
 }: PAStringInputProps) {
   return (

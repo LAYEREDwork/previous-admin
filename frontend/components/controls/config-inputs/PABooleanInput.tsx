@@ -9,6 +9,8 @@
 
 import { Toggle } from 'rsuite';
 
+import { PASize } from '../../../lib/types/sizes';
+
 interface PABooleanInputProps {
   /** Current boolean value */
   value: boolean;
@@ -36,7 +38,7 @@ export function PABooleanInput({ value, onChange, disabled }: PABooleanInputProp
       checked={value}
       onChange={(newValue) => onChange(newValue)}
       disabled={disabled}
-      size="md"
+      size={PASize.md}
     />
   );
 }

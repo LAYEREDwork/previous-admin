@@ -9,12 +9,17 @@
  */
 
 import { readFileSync } from 'fs';
-import { join } from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 import { Router, Request, Response } from 'express';
 
 import { apiPaths } from '../../shared/api/constants';
 import type { ConfigSchema } from '../../shared/previous-config/schema-types';
+
+// Define __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const router = Router();
 
@@ -33,10 +38,19 @@ function loadSchema(): ConfigSchema {
   }
 
   try {
-    const schemaPath = join(__dirname, '../../shared/previous-config/schema.json');
-    const schemaContent = readFileSync(schemaPath, 'utf-8');
-    schemaCache = JSON.parse(schemaContent) as ConfigSchema;
-    return schemaCache;
+    // Try multiple paths to handle both development and production
+    let schemaPath = join(__dirname, '../../shared/previous-config/schema.json');
+    try {
+      const schemaContent = readFileSync(schemaPath, 'utf-8');
+      schemaCache = JSON.parse(schemaContent) as ConfigSchema;
+      return schemaCache;
+    } catch {
+      // Try alternative path for built app
+      schemaPath = join(process.cwd(), 'shared/previous-config/schema.json');
+      const schemaContent = readFileSync(schemaPath, 'utf-8');
+      schemaCache = JSON.parse(schemaContent) as ConfigSchema;
+      return schemaCache;
+    }
   } catch (error) {
     console.error('Failed to load config schema:', error);
     throw new Error('Config schema not found. Run "npm run generate:schema" first.');

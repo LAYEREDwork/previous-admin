@@ -36,6 +36,7 @@
 - **Error Handling**: Use `PAErrorBoundary` component and notification context for user-facing errors.
 - **File Watching**: `backend/file-watcher.ts` monitors config file changes for auto-sync.
 - **Metrics Collection**: Real-time system metrics via `backend/metrics.ts` and WebSockets.
+- **Size Parameters**: ALWAYS use `PASize` enum constants (`PASize.xs`, `PASize.sm`, `PASize.md`, `PASize.lg`, `PASize.xl`) instead of magic string literals (`'xs'`, `'sm'`, `'md'`, etc.) in component `size` props and type definitions. The `PASize` enum is defined in `frontend/lib/types/sizes.ts`. Use type `PASize` for any size-related props and default values. This applies to all component size properties throughout the codebase.
 
 ## Key Files and Directories
 - `backend/index.ts`: Main server entry point with Express setup, routes, and WebSocket initialization.
