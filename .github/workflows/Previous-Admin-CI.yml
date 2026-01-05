@@ -12,7 +12,26 @@ permissions:
   contents: write
 
 jobs:
+  generate-sf-symbols:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate SF Symbols
+        run: npm run generate:sfsymbols
+
   lint-and-typecheck:
+    needs: generate-sf-symbols
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

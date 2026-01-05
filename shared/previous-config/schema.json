@@ -1,0 +1,1687 @@
+{
+  "sections": {
+    "ConfigDialog": {
+      "name": "ConfigDialog",
+      "displayName": "Config Dialog",
+      "translationKey": "configEditor.sections.ConfigDialog",
+      "sfSymbol": "gearshape.fill",
+      "parameters": [
+        {
+          "name": "bShowConfigDialogAtStartup",
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to show the configuration dialog at startup.",
+          "translationKey": "configEditor.parameters.bShowConfigDialogAtStartup"
+        }
+      ]
+    },
+    "Screen": {
+      "name": "Screen",
+      "displayName": "Screen",
+      "translationKey": "configEditor.sections.Screen",
+      "sfSymbol": "display",
+      "parameters": [
+        {
+          "name": "nMonitorType",
+          "type": "enum",
+          "default": "1",
+          "description": "Type of monitor to display.",
+          "translationKey": "configEditor.parameters.nMonitorType",
+          "possibleValues": [
+            "0",
+            "1",
+            "2"
+          ],
+          "labels": [
+            "MONITOR_TYPE_DUAL",
+            "MONITOR_TYPE_CPU",
+            "MONITOR_TYPE_DIMENSION"
+          ]
+        },
+        {
+          "name": "nMonitorNum",
+          "type": "enum",
+          "default": "0",
+          "description": "Show monitor of dimension board in slot. Valid if MONITOR_TYPE_DIMENSION is selected.",
+          "translationKey": "configEditor.parameters.nMonitorNum",
+          "possibleValues": [
+            "0",
+            "1",
+            "2"
+          ],
+          "labels": [
+            "slot 2",
+            "slot 4",
+            "slot 6"
+          ]
+        },
+        {
+          "name": "bFullScreen",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to run in fullscreen mode.",
+          "translationKey": "configEditor.parameters.bFullScreen"
+        },
+        {
+          "name": "bShowStatusbar",
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to show the status bar.",
+          "translationKey": "configEditor.parameters.bShowStatusbar"
+        },
+        {
+          "name": "bShowTitlebar",
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to show the title bar.",
+          "translationKey": "configEditor.parameters.bShowTitlebar"
+        },
+        {
+          "name": "bShowDriveLed",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to show drive LED (always FALSE for Previous).",
+          "translationKey": "configEditor.parameters.bShowDriveLed"
+        }
+      ]
+    },
+    "Keyboard": {
+      "name": "Keyboard",
+      "displayName": "Keyboard",
+      "translationKey": "configEditor.sections.Keyboard",
+      "sfSymbol": "keyboard",
+      "parameters": [
+        {
+          "name": "bSwapCmdAlt",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to swap Cmd and Alt keys.",
+          "translationKey": "configEditor.parameters.bSwapCmdAlt"
+        },
+        {
+          "name": "nKeymapType",
+          "type": "enum",
+          "default": "1",
+          "description": "Type of key mapping.",
+          "translationKey": "configEditor.parameters.nKeymapType",
+          "possibleValues": [
+            "0",
+            "1",
+            "2"
+          ],
+          "labels": [
+            "KEYMAP_SYMBOLIC",
+            "KEYMAP_SCANCODE",
+            "KEYMAP_LOADED"
+          ]
+        },
+        {
+          "name": "szMappingFileName",
+          "type": "string",
+          "default": "(empty)",
+          "description": "Path to custom key mapping file. This is only relevant if nKeymapType is set to KEYMAP_LOADED.",
+          "translationKey": "configEditor.parameters.szMappingFileName"
+        }
+      ]
+    },
+    "ShortcutsWithModifiers": {
+      "name": "ShortcutsWithModifiers",
+      "displayName": "Shortcuts With Modifiers",
+      "translationKey": "configEditor.sections.ShortcutsWithModifiers",
+      "sfSymbol": "gearshape.fill",
+      "parameters": [
+        {
+          "name": "kOptions",
+          "type": "number",
+          "default": 111,
+          "description": "Key for options menu.",
+          "translationKey": "configEditor.parameters.kOptions"
+        },
+        {
+          "name": "kFullScreen",
+          "type": "number",
+          "default": 102,
+          "description": "Key for fullscreen toggle.",
+          "translationKey": "configEditor.parameters.kFullScreen"
+        },
+        {
+          "name": "kMouseMode",
+          "type": "number",
+          "default": 109,
+          "description": "Key for mouse mode toggle.",
+          "translationKey": "configEditor.parameters.kMouseMode"
+        },
+        {
+          "name": "kColdReset",
+          "type": "number",
+          "default": 99,
+          "description": "Key for cold reset.",
+          "translationKey": "configEditor.parameters.kColdReset"
+        },
+        {
+          "name": "kScreenshot",
+          "type": "number",
+          "default": 103,
+          "description": "Key for screenshot.",
+          "translationKey": "configEditor.parameters.kScreenshot"
+        },
+        {
+          "name": "kRecord",
+          "type": "number",
+          "default": 114,
+          "description": "Key for recording toggle.",
+          "translationKey": "configEditor.parameters.kRecord"
+        },
+        {
+          "name": "kSound",
+          "type": "number",
+          "default": 115,
+          "description": "Key for sound toggle.",
+          "translationKey": "configEditor.parameters.kSound"
+        },
+        {
+          "name": "kPause",
+          "type": "number",
+          "default": 112,
+          "description": "Key for pause.",
+          "translationKey": "configEditor.parameters.kPause"
+        },
+        {
+          "name": "kDebuggerM68K",
+          "type": "number",
+          "default": 100,
+          "description": "Key for M68K debugger.",
+          "translationKey": "configEditor.parameters.kDebuggerM68K"
+        },
+        {
+          "name": "kDebuggerI860",
+          "type": "number",
+          "default": 105,
+          "description": "Key for I860 debugger.",
+          "translationKey": "configEditor.parameters.kDebuggerI860"
+        },
+        {
+          "name": "kQuit",
+          "type": "number",
+          "default": 113,
+          "description": "Key for quit.",
+          "translationKey": "configEditor.parameters.kQuit"
+        },
+        {
+          "name": "kDimension",
+          "type": "number",
+          "default": 110,
+          "description": "Key for Dimension toggle.",
+          "translationKey": "configEditor.parameters.kDimension"
+        },
+        {
+          "name": "kStatusbar",
+          "type": "number",
+          "default": 98,
+          "description": "Key for status bar toggle.",
+          "translationKey": "configEditor.parameters.kStatusbar"
+        },
+        {
+          "name": "kTitlebar",
+          "type": "number",
+          "default": 116,
+          "description": "Key for title bar toggle.",
+          "translationKey": "configEditor.parameters.kTitlebar"
+        }
+      ]
+    },
+    "ShortcutsWithoutModifiers": {
+      "name": "ShortcutsWithoutModifiers",
+      "displayName": "Shortcuts Without Modifiers",
+      "translationKey": "configEditor.sections.ShortcutsWithoutModifiers",
+      "sfSymbol": "gearshape.fill",
+      "parameters": [
+        {
+          "name": "kOptions",
+          "type": "number",
+          "default": 292,
+          "description": "Key for options menu (without modifiers).",
+          "translationKey": "configEditor.parameters.kOptions"
+        },
+        {
+          "name": "kFullScreen",
+          "type": "number",
+          "default": 293,
+          "description": "Key for fullscreen toggle (without modifiers).",
+          "translationKey": "configEditor.parameters.kFullScreen"
+        },
+        {
+          "name": "kMouseMode",
+          "type": "number",
+          "default": 0,
+          "description": "Key for mouse mode toggle (without modifiers).",
+          "translationKey": "configEditor.parameters.kMouseMode"
+        },
+        {
+          "name": "kColdReset",
+          "type": "number",
+          "default": 0,
+          "description": "Key for cold reset (without modifiers).",
+          "translationKey": "configEditor.parameters.kColdReset"
+        },
+        {
+          "name": "kScreenshot",
+          "type": "number",
+          "default": 294,
+          "description": "Key for screenshot (without modifiers).",
+          "translationKey": "configEditor.parameters.kScreenshot"
+        },
+        {
+          "name": "kRecord",
+          "type": "number",
+          "default": 295,
+          "description": "Key for recording toggle (without modifiers).",
+          "translationKey": "configEditor.parameters.kRecord"
+        },
+        {
+          "name": "kSound",
+          "type": "number",
+          "default": 0,
+          "description": "Key for sound toggle (without modifiers).",
+          "translationKey": "configEditor.parameters.kSound"
+        },
+        {
+          "name": "kPause",
+          "type": "number",
+          "default": 0,
+          "description": "Key for pause (without modifiers).",
+          "translationKey": "configEditor.parameters.kPause"
+        },
+        {
+          "name": "kDebuggerM68K",
+          "type": "number",
+          "default": 0,
+          "description": "Key for M68K debugger (without modifiers).",
+          "translationKey": "configEditor.parameters.kDebuggerM68K"
+        },
+        {
+          "name": "kDebuggerI860",
+          "type": "number",
+          "default": 0,
+          "description": "Key for I860 debugger (without modifiers).",
+          "translationKey": "configEditor.parameters.kDebuggerI860"
+        },
+        {
+          "name": "kQuit",
+          "type": "number",
+          "default": 0,
+          "description": "Key for quit (without modifiers).",
+          "translationKey": "configEditor.parameters.kQuit"
+        },
+        {
+          "name": "kDimension",
+          "type": "number",
+          "default": 0,
+          "description": "Key for Dimension toggle (without modifiers).",
+          "translationKey": "configEditor.parameters.kDimension"
+        },
+        {
+          "name": "kStatusbar",
+          "type": "number",
+          "default": 296,
+          "description": "Key for status bar toggle (without modifiers).",
+          "translationKey": "configEditor.parameters.kStatusbar"
+        },
+        {
+          "name": "kTitlebar",
+          "type": "number",
+          "default": 0,
+          "description": "Key for title bar toggle (without modifiers).",
+          "translationKey": "configEditor.parameters.kTitlebar"
+        }
+      ]
+    },
+    "Mouse": {
+      "name": "Mouse",
+      "displayName": "Mouse",
+      "translationKey": "configEditor.sections.Mouse",
+      "sfSymbol": "computermouse",
+      "parameters": [
+        {
+          "name": "bEnableAutoGrab",
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to auto-grab mouse.",
+          "translationKey": "configEditor.parameters.bEnableAutoGrab"
+        },
+        {
+          "name": "bEnableMapToKey",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to map mouse to keys.",
+          "translationKey": "configEditor.parameters.bEnableMapToKey"
+        },
+        {
+          "name": "bEnableMacClick",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to enable Mac click.",
+          "translationKey": "configEditor.parameters.bEnableMacClick"
+        },
+        {
+          "name": "fLinSpeedNormal",
+          "type": "number",
+          "default": 1,
+          "description": "Linear mouse speed in normal mode.",
+          "translationKey": "configEditor.parameters.fLinSpeedNormal"
+        },
+        {
+          "name": "fLinSpeedLocked",
+          "type": "number",
+          "default": 1,
+          "description": "Linear mouse speed in locked mode.",
+          "translationKey": "configEditor.parameters.fLinSpeedLocked"
+        },
+        {
+          "name": "fExpSpeedNormal",
+          "type": "number",
+          "default": 1,
+          "description": "Exponential mouse speed in normal mode.",
+          "translationKey": "configEditor.parameters.fExpSpeedNormal"
+        },
+        {
+          "name": "fExpSpeedLocked",
+          "type": "number",
+          "default": 1,
+          "description": "Exponential mouse speed in locked mode.",
+          "translationKey": "configEditor.parameters.fExpSpeedLocked"
+        }
+      ]
+    },
+    "Sound": {
+      "name": "Sound",
+      "displayName": "Sound",
+      "translationKey": "configEditor.sections.Sound",
+      "sfSymbol": "speaker.wave.2.fill",
+      "parameters": [
+        {
+          "name": "bEnableMicrophone",
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to enable microphone.",
+          "translationKey": "configEditor.parameters.bEnableMicrophone"
+        },
+        {
+          "name": "bEnableSound",
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to enable sound.",
+          "translationKey": "configEditor.parameters.bEnableSound"
+        }
+      ]
+    },
+    "Memory": {
+      "name": "Memory",
+      "displayName": "Memory",
+      "translationKey": "configEditor.sections.Memory",
+      "sfSymbol": "memorychip",
+      "parameters": [
+        {
+          "name": "nMemoryBankSize0",
+          "type": "enum",
+          "default": "16",
+          "description": "Size of memory bank 0 in MB.",
+          "translationKey": "configEditor.parameters.nMemoryBankSize0",
+          "possibleValues": [
+            "0",
+            "1",
+            "2",
+            "4",
+            "8",
+            "16",
+            "32 (depending on system)"
+          ],
+          "labels": [
+            "0",
+            "1",
+            "2",
+            "4",
+            "8",
+            "16",
+            "32 (depending on system)"
+          ]
+        },
+        {
+          "name": "nMemoryBankSize1",
+          "type": "number",
+          "default": 16,
+          "description": "Size of memory bank 1 in MB.",
+          "translationKey": "configEditor.parameters.nMemoryBankSize1"
+        },
+        {
+          "name": "nMemoryBankSize2",
+          "type": "number",
+          "default": 16,
+          "description": "Size of memory bank 2 in MB.",
+          "translationKey": "configEditor.parameters.nMemoryBankSize2"
+        },
+        {
+          "name": "nMemoryBankSize3",
+          "type": "number",
+          "default": 16,
+          "description": "Size of memory bank 3 in MB.",
+          "translationKey": "configEditor.parameters.nMemoryBankSize3"
+        },
+        {
+          "name": "nMemorySpeed",
+          "type": "enum",
+          "default": "1",
+          "description": "Memory speed.",
+          "translationKey": "configEditor.parameters.nMemorySpeed",
+          "possibleValues": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ],
+          "labels": [
+            "MEMORY_120NS",
+            "MEMORY_100NS",
+            "MEMORY_80NS",
+            "MEMORY_60NS"
+          ]
+        }
+      ]
+    },
+    "Boot": {
+      "name": "Boot",
+      "displayName": "Boot",
+      "translationKey": "configEditor.sections.Boot",
+      "sfSymbol": "gearshape.fill",
+      "parameters": [
+        {
+          "name": "nBootDevice",
+          "type": "enum",
+          "default": "0",
+          "description": "Boot device.",
+          "translationKey": "configEditor.parameters.nBootDevice",
+          "possibleValues": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "labels": [
+            "BOOT_ROM",
+            "BOOT_SCSI",
+            "BOOT_ETHERNET",
+            "BOOT_MO",
+            "BOOT_FLOPPY"
+          ]
+        },
+        {
+          "name": "bEnableDRAMTest",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to enable DRAM test.",
+          "translationKey": "configEditor.parameters.bEnableDRAMTest"
+        },
+        {
+          "name": "bEnablePot",
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to enable Power-On Test.",
+          "translationKey": "configEditor.parameters.bEnablePot"
+        },
+        {
+          "name": "bEnableSoundTest",
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to enable sound test.",
+          "translationKey": "configEditor.parameters.bEnableSoundTest"
+        },
+        {
+          "name": "bEnableSCSITest",
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to enable SCSI test.",
+          "translationKey": "configEditor.parameters.bEnableSCSITest"
+        },
+        {
+          "name": "bLoopPot",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to loop Power-On Test.",
+          "translationKey": "configEditor.parameters.bLoopPot"
+        },
+        {
+          "name": "bVerbose",
+          "type": "boolean",
+          "default": true,
+          "description": "Verbose boot output.",
+          "translationKey": "configEditor.parameters.bVerbose"
+        },
+        {
+          "name": "bExtendedPot",
+          "type": "boolean",
+          "default": false,
+          "description": "Extended Power-On Test.",
+          "translationKey": "configEditor.parameters.bExtendedPot"
+        },
+        {
+          "name": "bVisible",
+          "type": "boolean",
+          "default": false,
+          "description": "Visible boot process.",
+          "translationKey": "configEditor.parameters.bVisible"
+        }
+      ]
+    },
+    "SCSI": {
+      "name": "SCSI",
+      "displayName": "S C S I",
+      "translationKey": "configEditor.sections.SCSI",
+      "sfSymbol": "gearshape.fill",
+      "parameters": [
+        {
+          "name": "szImageName0",
+          "type": "string",
+          "default": "",
+          "description": "Path to hard disk image 0.",
+          "translationKey": "configEditor.parameters.szImageName0"
+        },
+        {
+          "name": "nDeviceType0",
+          "type": "enum",
+          "default": "0",
+          "description": "Device type 0.",
+          "translationKey": "configEditor.parameters.nDeviceType0",
+          "possibleValues": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ],
+          "labels": [
+            "SD_NONE",
+            "SD_HARDDISK",
+            "SD_CD",
+            "SD_FLOPPY"
+          ]
+        },
+        {
+          "name": "bDiskInserted0",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 0 is inserted.",
+          "translationKey": "configEditor.parameters.bDiskInserted0"
+        },
+        {
+          "name": "bWriteProtected0",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 0 is write-protected.",
+          "translationKey": "configEditor.parameters.bWriteProtected0"
+        },
+        {
+          "name": "szImageName1",
+          "type": "string",
+          "default": "",
+          "description": "Path to hard disk image 1.",
+          "translationKey": "configEditor.parameters.szImageName1"
+        },
+        {
+          "name": "nDeviceType1",
+          "type": "number",
+          "default": 0,
+          "description": "Device type 1.",
+          "translationKey": "configEditor.parameters.nDeviceType1"
+        },
+        {
+          "name": "bDiskInserted1",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 1 is inserted.",
+          "translationKey": "configEditor.parameters.bDiskInserted1"
+        },
+        {
+          "name": "bWriteProtected1",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 1 is write-protected.",
+          "translationKey": "configEditor.parameters.bWriteProtected1"
+        },
+        {
+          "name": "szImageName2",
+          "type": "string",
+          "default": "",
+          "description": "Path to hard disk image 2.",
+          "translationKey": "configEditor.parameters.szImageName2"
+        },
+        {
+          "name": "nDeviceType2",
+          "type": "number",
+          "default": 0,
+          "description": "Device type 2.",
+          "translationKey": "configEditor.parameters.nDeviceType2"
+        },
+        {
+          "name": "bDiskInserted2",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 2 is inserted.",
+          "translationKey": "configEditor.parameters.bDiskInserted2"
+        },
+        {
+          "name": "bWriteProtected2",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 2 is write-protected.",
+          "translationKey": "configEditor.parameters.bWriteProtected2"
+        },
+        {
+          "name": "szImageName3",
+          "type": "string",
+          "default": "",
+          "description": "Path to hard disk image 3.",
+          "translationKey": "configEditor.parameters.szImageName3"
+        },
+        {
+          "name": "nDeviceType3",
+          "type": "number",
+          "default": 0,
+          "description": "Device type 3.",
+          "translationKey": "configEditor.parameters.nDeviceType3"
+        },
+        {
+          "name": "bDiskInserted3",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 3 is inserted.",
+          "translationKey": "configEditor.parameters.bDiskInserted3"
+        },
+        {
+          "name": "bWriteProtected3",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 3 is write-protected.",
+          "translationKey": "configEditor.parameters.bWriteProtected3"
+        },
+        {
+          "name": "szImageName4",
+          "type": "string",
+          "default": "",
+          "description": "Path to hard disk image 4.",
+          "translationKey": "configEditor.parameters.szImageName4"
+        },
+        {
+          "name": "nDeviceType4",
+          "type": "number",
+          "default": 0,
+          "description": "Device type 4.",
+          "translationKey": "configEditor.parameters.nDeviceType4"
+        },
+        {
+          "name": "bDiskInserted4",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 4 is inserted.",
+          "translationKey": "configEditor.parameters.bDiskInserted4"
+        },
+        {
+          "name": "bWriteProtected4",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 4 is write-protected.",
+          "translationKey": "configEditor.parameters.bWriteProtected4"
+        },
+        {
+          "name": "szImageName5",
+          "type": "string",
+          "default": "",
+          "description": "Path to hard disk image 5.",
+          "translationKey": "configEditor.parameters.szImageName5"
+        },
+        {
+          "name": "nDeviceType5",
+          "type": "number",
+          "default": 0,
+          "description": "Device type 5.",
+          "translationKey": "configEditor.parameters.nDeviceType5"
+        },
+        {
+          "name": "bDiskInserted5",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 5 is inserted.",
+          "translationKey": "configEditor.parameters.bDiskInserted5"
+        },
+        {
+          "name": "bWriteProtected5",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 5 is write-protected.",
+          "translationKey": "configEditor.parameters.bWriteProtected5"
+        },
+        {
+          "name": "szImageName6",
+          "type": "string",
+          "default": "",
+          "description": "Path to hard disk image 6.",
+          "translationKey": "configEditor.parameters.szImageName6"
+        },
+        {
+          "name": "nDeviceType6",
+          "type": "number",
+          "default": 0,
+          "description": "Device type 6.",
+          "translationKey": "configEditor.parameters.nDeviceType6"
+        },
+        {
+          "name": "bDiskInserted6",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 6 is inserted.",
+          "translationKey": "configEditor.parameters.bDiskInserted6"
+        },
+        {
+          "name": "bWriteProtected6",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 6 is write-protected.",
+          "translationKey": "configEditor.parameters.bWriteProtected6"
+        },
+        {
+          "name": "nWriteProtection",
+          "type": "enum",
+          "default": "0",
+          "description": "Global write protection.",
+          "translationKey": "configEditor.parameters.nWriteProtection",
+          "possibleValues": [
+            "0",
+            "1",
+            "2"
+          ],
+          "labels": [
+            "WRITEPROT_OFF",
+            "WRITEPROT_ON",
+            "WRITEPROT_AUTO"
+          ]
+        }
+      ]
+    },
+    "MagnetoOptical": {
+      "name": "MagnetoOptical",
+      "displayName": "Magneto Optical",
+      "translationKey": "configEditor.sections.MagnetoOptical",
+      "sfSymbol": "gearshape.fill",
+      "parameters": [
+        {
+          "name": "szImageName0",
+          "type": "string",
+          "default": "",
+          "description": "Path to MO image 0.",
+          "translationKey": "configEditor.parameters.szImageName0"
+        },
+        {
+          "name": "bDriveConnected0",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether drive 0 is connected.",
+          "translationKey": "configEditor.parameters.bDriveConnected0"
+        },
+        {
+          "name": "bDiskInserted0",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 0 is inserted.",
+          "translationKey": "configEditor.parameters.bDiskInserted0"
+        },
+        {
+          "name": "bWriteProtected0",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 0 is write-protected.",
+          "translationKey": "configEditor.parameters.bWriteProtected0"
+        },
+        {
+          "name": "szImageName1",
+          "type": "string",
+          "default": "",
+          "description": "Path to MO image 1.",
+          "translationKey": "configEditor.parameters.szImageName1"
+        },
+        {
+          "name": "bDriveConnected1",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether drive 1 is connected.",
+          "translationKey": "configEditor.parameters.bDriveConnected1"
+        },
+        {
+          "name": "bDiskInserted1",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 1 is inserted.",
+          "translationKey": "configEditor.parameters.bDiskInserted1"
+        },
+        {
+          "name": "bWriteProtected1",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 1 is write-protected.",
+          "translationKey": "configEditor.parameters.bWriteProtected1"
+        }
+      ]
+    },
+    "Floppy": {
+      "name": "Floppy",
+      "displayName": "Floppy",
+      "translationKey": "configEditor.sections.Floppy",
+      "sfSymbol": "gearshape.fill",
+      "parameters": [
+        {
+          "name": "szImageName0",
+          "type": "string",
+          "default": "",
+          "description": "Path to floppy image 0.",
+          "translationKey": "configEditor.parameters.szImageName0"
+        },
+        {
+          "name": "bDriveConnected0",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether drive 0 is connected.",
+          "translationKey": "configEditor.parameters.bDriveConnected0"
+        },
+        {
+          "name": "bDiskInserted0",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 0 is inserted.",
+          "translationKey": "configEditor.parameters.bDiskInserted0"
+        },
+        {
+          "name": "bWriteProtected0",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 0 is write-protected.",
+          "translationKey": "configEditor.parameters.bWriteProtected0"
+        },
+        {
+          "name": "szImageName1",
+          "type": "string",
+          "default": "",
+          "description": "Path to floppy image 1.",
+          "translationKey": "configEditor.parameters.szImageName1"
+        },
+        {
+          "name": "bDriveConnected1",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether drive 1 is connected.",
+          "translationKey": "configEditor.parameters.bDriveConnected1"
+        },
+        {
+          "name": "bDiskInserted1",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 1 is inserted.",
+          "translationKey": "configEditor.parameters.bDiskInserted1"
+        },
+        {
+          "name": "bWriteProtected1",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 1 is write-protected.",
+          "translationKey": "configEditor.parameters.bWriteProtected1"
+        },
+        {
+          "name": "szImageName2",
+          "type": "string",
+          "default": "",
+          "description": "Path to floppy image 2.",
+          "translationKey": "configEditor.parameters.szImageName2"
+        },
+        {
+          "name": "bDriveConnected2",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether drive 2 is connected.",
+          "translationKey": "configEditor.parameters.bDriveConnected2"
+        },
+        {
+          "name": "bDiskInserted2",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 2 is inserted.",
+          "translationKey": "configEditor.parameters.bDiskInserted2"
+        },
+        {
+          "name": "bWriteProtected2",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 2 is write-protected.",
+          "translationKey": "configEditor.parameters.bWriteProtected2"
+        },
+        {
+          "name": "szImageName3",
+          "type": "string",
+          "default": "",
+          "description": "Path to floppy image 3.",
+          "translationKey": "configEditor.parameters.szImageName3"
+        },
+        {
+          "name": "bDriveConnected3",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether drive 3 is connected.",
+          "translationKey": "configEditor.parameters.bDriveConnected3"
+        },
+        {
+          "name": "bDiskInserted3",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 3 is inserted.",
+          "translationKey": "configEditor.parameters.bDiskInserted3"
+        },
+        {
+          "name": "bWriteProtected3",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether disk 3 is write-protected.",
+          "translationKey": "configEditor.parameters.bWriteProtected3"
+        }
+      ]
+    },
+    "Ethernet": {
+      "name": "Ethernet",
+      "displayName": "Ethernet",
+      "translationKey": "configEditor.sections.Ethernet",
+      "sfSymbol": "gearshape.fill",
+      "parameters": [
+        {
+          "name": "bEthernetConnected",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether Ethernet is connected.",
+          "translationKey": "configEditor.parameters.bEthernetConnected"
+        },
+        {
+          "name": "bTwistedPair",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to use twisted pair.",
+          "translationKey": "configEditor.parameters.bTwistedPair"
+        },
+        {
+          "name": "nHostInterface",
+          "type": "enum",
+          "default": "0",
+          "description": "Host interface type.",
+          "translationKey": "configEditor.parameters.nHostInterface",
+          "possibleValues": [
+            "0",
+            "1"
+          ],
+          "labels": [
+            "ENET_SLIRP",
+            "ENET_PCAP"
+          ]
+        },
+        {
+          "name": "szInterfaceName",
+          "type": "string",
+          "default": "",
+          "description": "Interface name for PCAP.",
+          "translationKey": "configEditor.parameters.szInterfaceName"
+        },
+        {
+          "name": "bNetworkTime",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to use network time.",
+          "translationKey": "configEditor.parameters.bNetworkTime"
+        },
+        {
+          "name": "szNFSPathName0",
+          "type": "string",
+          "default": "",
+          "description": "NFS path 0.",
+          "translationKey": "configEditor.parameters.szNFSPathName0"
+        },
+        {
+          "name": "szNFSHostName0",
+          "type": "string",
+          "default": "nfs0",
+          "description": "NFS hostname 0.",
+          "translationKey": "configEditor.parameters.szNFSHostName0"
+        },
+        {
+          "name": "szNFSPathName1",
+          "type": "string",
+          "default": "",
+          "description": "NFS path 1.",
+          "translationKey": "configEditor.parameters.szNFSPathName1"
+        },
+        {
+          "name": "szNFSHostName1",
+          "type": "string",
+          "default": "nfs1",
+          "description": "NFS hostname 1.",
+          "translationKey": "configEditor.parameters.szNFSHostName1"
+        },
+        {
+          "name": "szNFSPathName2",
+          "type": "string",
+          "default": "",
+          "description": "NFS path 2.",
+          "translationKey": "configEditor.parameters.szNFSPathName2"
+        },
+        {
+          "name": "szNFSHostName2",
+          "type": "string",
+          "default": "nfs2",
+          "description": "NFS hostname 2.",
+          "translationKey": "configEditor.parameters.szNFSHostName2"
+        },
+        {
+          "name": "szNFSPathName3",
+          "type": "string",
+          "default": "",
+          "description": "NFS path 3.",
+          "translationKey": "configEditor.parameters.szNFSPathName3"
+        },
+        {
+          "name": "szNFSHostName3",
+          "type": "string",
+          "default": "nfs3",
+          "description": "NFS hostname 3.",
+          "translationKey": "configEditor.parameters.szNFSHostName3"
+        }
+      ]
+    },
+    "ROM": {
+      "name": "ROM",
+      "displayName": "R O M",
+      "translationKey": "configEditor.sections.ROM",
+      "sfSymbol": "gearshape.fill",
+      "parameters": [
+        {
+          "name": "szRom030FileName",
+          "type": "string",
+          "default": "",
+          "description": "Path to 68030 ROM.",
+          "translationKey": "configEditor.parameters.szRom030FileName"
+        },
+        {
+          "name": "szRom040FileName",
+          "type": "string",
+          "default": "",
+          "description": "Path to 68040 ROM.",
+          "translationKey": "configEditor.parameters.szRom040FileName"
+        },
+        {
+          "name": "szRomTurboFileName",
+          "type": "string",
+          "default": "",
+          "description": "Path to Turbo ROM.",
+          "translationKey": "configEditor.parameters.szRomTurboFileName"
+        },
+        {
+          "name": "bUseCustomMac",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to use custom MAC.",
+          "translationKey": "configEditor.parameters.bUseCustomMac"
+        },
+        {
+          "name": "nRomCustomMac0",
+          "type": "range",
+          "default": 0,
+          "description": "first byte of custom MAC address",
+          "translationKey": "configEditor.parameters.nRomCustomMac0",
+          "min": 0,
+          "max": 255
+        },
+        {
+          "name": "nRomCustomMac1",
+          "type": "range",
+          "default": 0,
+          "description": "second byte of custom MAC address",
+          "translationKey": "configEditor.parameters.nRomCustomMac1",
+          "min": 0,
+          "max": 255
+        },
+        {
+          "name": "nRomCustomMac2",
+          "type": "number",
+          "default": 15,
+          "description": "? (HELP needed from Andreas)",
+          "translationKey": "configEditor.parameters.nRomCustomMac2"
+        },
+        {
+          "name": "nRomCustomMac3",
+          "type": "number",
+          "default": 0,
+          "description": "? (HELP needed from Andreas)",
+          "translationKey": "configEditor.parameters.nRomCustomMac3"
+        },
+        {
+          "name": "nRomCustomMac4",
+          "type": "number",
+          "default": 0,
+          "description": "? (HELP needed from Andreas)",
+          "translationKey": "configEditor.parameters.nRomCustomMac4"
+        },
+        {
+          "name": "nRomCustomMac5",
+          "type": "number",
+          "default": 0,
+          "description": "? (HELP needed from Andreas)",
+          "translationKey": "configEditor.parameters.nRomCustomMac5"
+        }
+      ]
+    },
+    "Printer": {
+      "name": "Printer",
+      "displayName": "Printer",
+      "translationKey": "configEditor.sections.Printer",
+      "sfSymbol": "gearshape.fill",
+      "parameters": [
+        {
+          "name": "bPrinterConnected",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether printer is connected.",
+          "translationKey": "configEditor.parameters.bPrinterConnected"
+        },
+        {
+          "name": "nPaperSize",
+          "type": "enum",
+          "default": "0",
+          "description": "Paper size.",
+          "translationKey": "configEditor.parameters.nPaperSize",
+          "possibleValues": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ],
+          "labels": [
+            "PAPER_A4",
+            "PAPER_LETTER",
+            "PAPER_B5",
+            "PAPER_LEGAL"
+          ]
+        },
+        {
+          "name": "szPrintToFileName",
+          "type": "string",
+          "default": "",
+          "description": "Path to print output file.",
+          "translationKey": "configEditor.parameters.szPrintToFileName"
+        }
+      ]
+    },
+    "System": {
+      "name": "System",
+      "displayName": "System",
+      "translationKey": "configEditor.sections.System",
+      "sfSymbol": "server.rack",
+      "parameters": [
+        {
+          "name": "nMachineType",
+          "type": "enum",
+          "default": "0",
+          "description": "Machine type.",
+          "translationKey": "configEditor.parameters.nMachineType",
+          "possibleValues": [
+            "0",
+            "1",
+            "2"
+          ],
+          "labels": [
+            "NEXT_CUBE030",
+            "NEXT_CUBE040",
+            "NEXT_STATION"
+          ]
+        },
+        {
+          "name": "bColor",
+          "type": "boolean",
+          "default": false,
+          "description": "Color mode.",
+          "translationKey": "configEditor.parameters.bColor"
+        },
+        {
+          "name": "bTurbo",
+          "type": "boolean",
+          "default": false,
+          "description": "Turbo mode.",
+          "translationKey": "configEditor.parameters.bTurbo"
+        },
+        {
+          "name": "bNBIC",
+          "type": "boolean",
+          "default": true,
+          "description": "NBIC enabled.",
+          "translationKey": "configEditor.parameters.bNBIC"
+        },
+        {
+          "name": "bADB",
+          "type": "boolean",
+          "default": false,
+          "description": "Has ADB.",
+          "translationKey": "configEditor.parameters.bADB"
+        },
+        {
+          "name": "nSCSI",
+          "type": "enum",
+          "default": "0",
+          "description": "SCSI chip type.",
+          "translationKey": "configEditor.parameters.nSCSI",
+          "possibleValues": [
+            "0",
+            "1"
+          ],
+          "labels": [
+            "NCR53C90",
+            "NCR53C90A"
+          ]
+        },
+        {
+          "name": "nRTC",
+          "type": "enum",
+          "default": "0",
+          "description": "RTC chip type.",
+          "translationKey": "configEditor.parameters.nRTC",
+          "possibleValues": [
+            "0",
+            "1"
+          ],
+          "labels": [
+            "MC68HC68T1",
+            "MCCS1850"
+          ]
+        },
+        {
+          "name": "nCpuLevel",
+          "type": "enum",
+          "default": "3",
+          "description": "CPU level (68030/68040).",
+          "translationKey": "configEditor.parameters.nCpuLevel",
+          "possibleValues": [
+            "3",
+            "4"
+          ],
+          "labels": [
+            "68030",
+            "68040"
+          ]
+        },
+        {
+          "name": "nCpuFreq",
+          "type": "enum",
+          "default": "25",
+          "description": "CPU frequency in MHz.",
+          "translationKey": "configEditor.parameters.nCpuFreq",
+          "possibleValues": [
+            "25",
+            "33",
+            "40"
+          ],
+          "labels": [
+            "25",
+            "33",
+            "40"
+          ]
+        },
+        {
+          "name": "bCompatibleCpu",
+          "type": "boolean",
+          "default": false,
+          "description": "Compatible CPU mode (Prefetch mode).",
+          "translationKey": "configEditor.parameters.bCompatibleCpu"
+        },
+        {
+          "name": "bRealtime",
+          "type": "boolean",
+          "default": false,
+          "description": "TRUE if realtime sources shoud be used",
+          "translationKey": "configEditor.parameters.bRealtime"
+        },
+        {
+          "name": "nDSPType",
+          "type": "enum",
+          "default": "2",
+          "description": "Describes how the DSP should be \"emulated\".",
+          "translationKey": "configEditor.parameters.nDSPType",
+          "possibleValues": [
+            "0",
+            "1",
+            "2"
+          ],
+          "labels": [
+            "DSP_TYPE_NONE",
+            "DSP_TYPE_ACCURATE",
+            "DSP_TYPE_EMU"
+          ]
+        },
+        {
+          "name": "bDSPMemoryExpansion",
+          "type": "boolean",
+          "default": false,
+          "description": "Determines whether DSP memory expansion is available or not.",
+          "translationKey": "configEditor.parameters.bDSPMemoryExpansion"
+        },
+        {
+          "name": "n_FPUType",
+          "type": "enum",
+          "default": "68882",
+          "description": "FPU type.",
+          "translationKey": "configEditor.parameters.n_FPUType",
+          "possibleValues": [
+            "0",
+            "68881",
+            "68882",
+            "68040"
+          ],
+          "labels": [
+            "FPU_NONE",
+            "68881",
+            "68882",
+            "FPU_CPU"
+          ]
+        },
+        {
+          "name": "bCompatibleFPU",
+          "type": "boolean",
+          "default": true,
+          "description": "Determines whether a more compatible FPU should be used or not.",
+          "translationKey": "configEditor.parameters.bCompatibleFPU"
+        },
+        {
+          "name": "bMMU",
+          "type": "boolean",
+          "default": true,
+          "description": "Determines whether MMU is enabled or not.",
+          "translationKey": "configEditor.parameters.bMMU"
+        }
+      ]
+    },
+    "Dimension": {
+      "name": "Dimension",
+      "displayName": "Dimension",
+      "translationKey": "configEditor.sections.Dimension",
+      "sfSymbol": "gearshape.fill",
+      "parameters": [
+        {
+          "name": "bI860Thread",
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to use thread for I860.",
+          "translationKey": "configEditor.parameters.bI860Thread"
+        },
+        {
+          "name": "bMainDisplay",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether Dimension is main display.",
+          "translationKey": "configEditor.parameters.bMainDisplay"
+        },
+        {
+          "name": "nMainDisplay",
+          "type": "range",
+          "default": 0,
+          "description": "Main display board.",
+          "translationKey": "configEditor.parameters.nMainDisplay",
+          "min": 0,
+          "max": 2
+        },
+        {
+          "name": "bEnabled0",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether board 0 is enabled.",
+          "translationKey": "configEditor.parameters.bEnabled0"
+        },
+        {
+          "name": "nMemoryBankSize00",
+          "type": "enum",
+          "default": "4",
+          "description": "Memory bank size 0 for board 0 in MB.",
+          "translationKey": "configEditor.parameters.nMemoryBankSize00",
+          "possibleValues": [
+            "0",
+            "4",
+            "16"
+          ],
+          "labels": [
+            "0",
+            "4",
+            "16"
+          ]
+        },
+        {
+          "name": "nMemoryBankSize01",
+          "type": "enum",
+          "default": "4",
+          "description": "Memory bank size 1 for board 0 in MB.",
+          "translationKey": "configEditor.parameters.nMemoryBankSize01",
+          "possibleValues": [
+            "0",
+            "4",
+            "16"
+          ],
+          "labels": [
+            "0",
+            "4",
+            "16"
+          ]
+        },
+        {
+          "name": "nMemoryBankSize02",
+          "type": "enum",
+          "default": "4",
+          "description": "Memory bank size 2 for board 0 in MB.",
+          "translationKey": "configEditor.parameters.nMemoryBankSize02",
+          "possibleValues": [
+            "0",
+            "4",
+            "16"
+          ],
+          "labels": [
+            "0",
+            "4",
+            "16"
+          ]
+        },
+        {
+          "name": "nMemoryBankSize03",
+          "type": "enum",
+          "default": "4",
+          "description": "Memory bank size 3 for board 0 in MB.",
+          "translationKey": "configEditor.parameters.nMemoryBankSize03",
+          "possibleValues": [
+            "0",
+            "4",
+            "16"
+          ],
+          "labels": [
+            "0",
+            "4",
+            "16"
+          ]
+        },
+        {
+          "name": "szRomFileName0",
+          "type": "string",
+          "default": "",
+          "description": "Path to ROM file for board 0.",
+          "translationKey": "configEditor.parameters.szRomFileName0"
+        },
+        {
+          "name": "bEnabled1",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether board 1 is enabled.",
+          "translationKey": "configEditor.parameters.bEnabled1"
+        },
+        {
+          "name": "nMemoryBankSize10",
+          "type": "enum",
+          "default": "4",
+          "description": "Memory bank size 0 for board 1 in MB.",
+          "translationKey": "configEditor.parameters.nMemoryBankSize10",
+          "possibleValues": [
+            "0",
+            "4",
+            "16"
+          ],
+          "labels": [
+            "0",
+            "4",
+            "16"
+          ]
+        },
+        {
+          "name": "nMemoryBankSize11",
+          "type": "enum",
+          "default": "4",
+          "description": "Memory bank size 1 for board 1 in MB.",
+          "translationKey": "configEditor.parameters.nMemoryBankSize11",
+          "possibleValues": [
+            "0",
+            "4",
+            "16"
+          ],
+          "labels": [
+            "0",
+            "4",
+            "16"
+          ]
+        },
+        {
+          "name": "nMemoryBankSize12",
+          "type": "enum",
+          "default": "4",
+          "description": "Memory bank size 2 for board 1 in MB.",
+          "translationKey": "configEditor.parameters.nMemoryBankSize12",
+          "possibleValues": [
+            "0",
+            "4",
+            "16"
+          ],
+          "labels": [
+            "0",
+            "4",
+            "16"
+          ]
+        },
+        {
+          "name": "nMemoryBankSize13",
+          "type": "enum",
+          "default": "4",
+          "description": "Memory bank size 3 for board 1 in MB.",
+          "translationKey": "configEditor.parameters.nMemoryBankSize13",
+          "possibleValues": [
+            "0",
+            "4",
+            "16"
+          ],
+          "labels": [
+            "0",
+            "4",
+            "16"
+          ]
+        },
+        {
+          "name": "szRomFileName1",
+          "type": "string",
+          "default": "",
+          "description": "Path to ROM file for board 1.",
+          "translationKey": "configEditor.parameters.szRomFileName1"
+        },
+        {
+          "name": "bEnabled2",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether board 2 is enabled.",
+          "translationKey": "configEditor.parameters.bEnabled2"
+        },
+        {
+          "name": "nMemoryBankSize20",
+          "type": "enum",
+          "default": "4",
+          "description": "Memory bank size 0 for board 2 in MB.",
+          "translationKey": "configEditor.parameters.nMemoryBankSize20",
+          "possibleValues": [
+            "0",
+            "4",
+            "16"
+          ],
+          "labels": [
+            "0",
+            "4",
+            "16"
+          ]
+        },
+        {
+          "name": "nMemoryBankSize21",
+          "type": "enum",
+          "default": "4",
+          "description": "Memory bank size 1 for board 2 in MB.",
+          "translationKey": "configEditor.parameters.nMemoryBankSize21",
+          "possibleValues": [
+            "0",
+            "4",
+            "16"
+          ],
+          "labels": [
+            "0",
+            "4",
+            "16"
+          ]
+        },
+        {
+          "name": "nMemoryBankSize22",
+          "type": "enum",
+          "default": "4",
+          "description": "Memory bank size 2 for board 2 in MB.",
+          "translationKey": "configEditor.parameters.nMemoryBankSize22",
+          "possibleValues": [
+            "0",
+            "4",
+            "16"
+          ],
+          "labels": [
+            "0",
+            "4",
+            "16"
+          ]
+        },
+        {
+          "name": "nMemoryBankSize23",
+          "type": "enum",
+          "default": "4",
+          "description": "Memory bank size 3 for board 2 in MB.",
+          "translationKey": "configEditor.parameters.nMemoryBankSize23",
+          "possibleValues": [
+            "0",
+            "4",
+            "16"
+          ],
+          "labels": [
+            "0",
+            "4",
+            "16"
+          ]
+        },
+        {
+          "name": "szRomFileName2",
+          "type": "string",
+          "default": "",
+          "description": "Path to ROM file for board 2.",
+          "translationKey": "configEditor.parameters.szRomFileName2"
+        }
+      ]
+    }
+  }
+}
