@@ -112,7 +112,6 @@ export function PAEditorDropdownPartial({
         transition: 'border-color 0.2s, background-color 0.2s',
       }}
     >
-      <option value="">Select...</option>
       {possibleValues.map((val, idx) => (
         <option key={val} value={val}>
           {labels?.[idx] || val}

@@ -5,9 +5,7 @@ import type { PreviousConfig } from '@shared/previous-config/types';
 import { useConfigSchema } from '../../../hooks/useConfigSchema';
 import { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types';
-import { 
-    SFCpu,
-} from '../../sf-symbols';
+import { getSectionIcon } from '../../../lib/utils/section-icon-mapper';
 
 import { PAEditorDropdownPartial } from './PAEditorDropdownPartial';
 import { EditorFieldPartial } from './PAEditorFieldPartial';
@@ -103,17 +101,22 @@ export function EditorViewPartial({
 
     return (
         <div className="grid gap-4">
-            {Object.values(schema.sections).map((section) => (
-                <EditorSectionPartial
-                    key={section.name}
-                    title={section.translationKey ? translation.configEditor.sections[section.translationKey.split('.').pop() || ''] : section.displayName}
-                    expanded={expandedSections[section.name]}
-                    onToggle={(expanded) => setExpandedSections((prev) => ({ ...prev, [section.name]: expanded }))}
-                    icon={<SFCpu size={22} />} // TODO: Use section.sfSymbol
-                >
-                    {section.parameters.map((param) => renderParameter(section.name, param))}
-                </EditorSectionPartial>
-            ))}
+            {Object.values(schema.sections)
+                .sort((sectionA, sectionB) => sectionA.name.localeCompare(sectionB.name))
+                .map((section) => {
+                const IconComponent = getSectionIcon(section.sfSymbol);
+                return (
+                    <EditorSectionPartial
+                        key={section.name}
+                        title={section.translationKey ? translation.configEditor.sections[section.translationKey.split('.').pop() || ''] : section.displayName}
+                        expanded={expandedSections[section.name]}
+                        onToggle={(expanded) => setExpandedSections((prev) => ({ ...prev, [section.name]: expanded }))}
+                        icon={IconComponent ? <IconComponent size={22} /> : undefined}
+                    >
+                        {section.parameters.map((param) => renderParameter(section.name, param))}
+                    </EditorSectionPartial>
+                );
+            })}
         </div>
     );
 }
