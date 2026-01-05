@@ -11,6 +11,8 @@ import { InputNumber } from 'rsuite';
 
 import type { ParameterSchema } from '@shared/previous-config/schema-types';
 
+import { PASize } from '../../../lib/types/sizes';
+
 interface PANumberRangeInputProps {
   /** Parameter schema with range metadata */
   schema: ParameterSchema;
@@ -25,7 +27,7 @@ interface PANumberRangeInputProps {
   disabled?: boolean;
   
   /** Input size */
-  size?: 'xs' | 'sm' | 'md' | 'lg';
+  size?: PASize;
 }
 
 /**
@@ -47,8 +49,11 @@ export function PANumberRangeInput({
   value,
   onChange,
   disabled,
-  size = 'md',
+  size = PASize.md,
 }: PANumberRangeInputProps) {
+  // Map PASize to RSuite-compatible size (InputNumber doesn't support 'xl')
+  const rsuiteSize = size === PASize.xl ? PASize.lg : size;
+
   // Use default value if value is null or undefined
   const displayValue = value ?? (typeof schema.default === 'number' ? schema.default : 0);
 
@@ -80,7 +85,7 @@ export function PANumberRangeInput({
       value={displayValue}
       onChange={handleChange}
       disabled={disabled}
-      size={size}
+      size={rsuiteSize}
       min={schema.min}
       max={schema.max}
       step={1}

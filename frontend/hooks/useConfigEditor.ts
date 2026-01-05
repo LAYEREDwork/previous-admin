@@ -10,6 +10,7 @@ import { convertToConfigFile } from '../lib/config';
 import { database } from '../lib/database';
 
 import { useConfigMetadataEditor } from './useConfigMetadataEditor';
+import { useConfigSchema } from './useConfigSchema';
 
 // Types
 
@@ -34,6 +35,37 @@ export function useConfigEditor(configId?: string | null) {
 
   const { translation } = useLanguage();
   const { showSuccess, showError } = useNotification();
+  const { schema } = useConfigSchema();
+
+  const validateValue = useCallback((sectionName: string, paramName: string, value: any): boolean => {
+    if (!schema) return true; // No schema, allow
+
+    const section = schema.sections[sectionName];
+    if (!section) return true;
+
+    const param = section.parameters.find(p => p.name === paramName);
+    if (!param) return true;
+
+    // Basic type validation
+    switch (param.type) {
+      case 'boolean':
+        return typeof value === 'boolean';
+      case 'number':
+        if (typeof value !== 'number') return false;
+        if (param.min !== undefined && value < param.min) return false;
+        if (param.max !== undefined && value > param.max) return false;
+        return true;
+      case 'enum': {
+        // Convert value to string for comparison since possibleValues are always strings
+        const stringValue = value?.toString() ?? '';
+        return param.possibleValues?.includes(stringValue) ?? true;
+      }
+      case 'string':
+        return typeof value === 'string';
+      default:
+        return true;
+    }
+  }, [schema]);
 
   const [configData, setConfigData] = useState<PreviousConfig | null>(null);
   const [saving, setSaving] = useState(false);
@@ -63,23 +95,66 @@ export function useConfigEditor(configId?: string | null) {
     }
     return defaultSections;
   });
+  // Track if we've initialized expanded sections from schema
+  const [sectionsInitialized, setSectionsInitialized] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('configEditorSectionsExpanded', JSON.stringify(expandedSections));
   }, [expandedSections]);
 
+  // Initialize expanded sections from schema when it first loads
+  useEffect(() => {
+    if (schema && !sectionsInitialized) {
+      const newExpandedSections: Record<string, boolean> = {};
+      const sectionNames = Object.keys(schema.sections);
+      
+      // Get saved state
+      const saved = localStorage.getItem('configEditorSectionsExpanded');
+      let savedState: Record<string, boolean> = {};
+      if (saved) {
+        try {
+          savedState = JSON.parse(saved);
+        } catch (e) {
+          console.error('Error parsing saved expanded sections', e);
+        }
+      }
+      
+      // Initialize each section from schema
+      sectionNames.forEach((sectionName, index) => {
+        // Use saved state if available, otherwise expand first section, collapse others
+        newExpandedSections[sectionName] = savedState[sectionName] !== undefined ? savedState[sectionName] : index === 0;
+      });
+      
+      setExpandedSections(newExpandedSections);
+      setSectionsInitialized(true);
+    }
+  }, [schema, sectionsInitialized]);
+
   const toggleAllSections = useCallback(() => {
     setExpandedSections(prev => {
-      const allExpanded = Object.values(prev).every(expanded => expanded);
+      // Get all section names from schema
+      const sectionNames = schema ? Object.keys(schema.sections) : Object.keys(prev);
+      
+      // Check if all sections are currently expanded
+      const allExpanded = sectionNames.every(name => prev[name]);
       const newState = !allExpanded;
-      // Create new state object with all current sections set to the new state
+      
+      // Create new state object with all sections (from schema or previous state)
       const newExpandedSections: Record<string, boolean> = {};
-      Object.keys(prev).forEach(key => {
-        newExpandedSections[key] = newState;
+      sectionNames.forEach(sectionName => {
+        newExpandedSections[sectionName] = newState;
       });
+      
+      // Keep any other sections from previous state that aren't in schema
+      Object.keys(prev).forEach(key => {
+        if (!Object.prototype.hasOwnProperty.call(newExpandedSections, key)) {
+          newExpandedSections[key] = prev[key];
+        }
+      });
+      
       return newExpandedSections;
     });
-  }, []);
+  }, [schema]);
 
   const {
     localName,
@@ -144,19 +219,46 @@ export function useConfigEditor(configId?: string | null) {
   };
 
   const updateConfigField = useCallback((path: string[], value: string | number | boolean) => {
+    if (path.length < 2) return;
+
+    const [sectionName, paramName] = path;
+    
+    if (!validateValue(sectionName, paramName, value)) {
+      showError(`Invalid value for ${paramName}`);
+      return;
+    }
     setConfigData((prev: PreviousConfig | null) => {
       if (!prev) return prev;
-      const newConfig = { ...prev };
-      let current: any = newConfig;
-
-      for (let i = 0; i < path.length - 1; i++) {
-        current = current[path[i]];
+      
+      // Create a new copy of the entire config
+      const newConfig: any = {};
+      
+      // Copy all sections
+      for (const key in prev) {
+        if (Object.prototype.hasOwnProperty.call(prev, key)) {
+          if (key === sectionName) {
+            // For the section we're updating, create a new copy of that section
+            newConfig[key] = {
+              ...(prev[key as keyof PreviousConfig] as any),
+              [paramName]: value
+            };
+          } else {
+            // For other sections, just copy the reference
+            newConfig[key] = prev[key as keyof PreviousConfig];
+          }
+        }
       }
-
-      current[path[path.length - 1]] = value;
-      return newConfig;
+      
+      // If the section doesn't exist yet, create it with the new parameter
+      if (!Object.prototype.hasOwnProperty.call(newConfig, sectionName)) {
+        newConfig[sectionName] = {
+          [paramName]: value
+        };
+      }
+      
+      return newConfig as PreviousConfig;
     });
-  }, []);
+  }, [validateValue, showError]);
 
   const copyToClipboard = async () => {
     if (!configData) return;

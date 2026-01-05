@@ -38,7 +38,7 @@ export function cfgToJson(cfgContent: string, schema: ConfigSchema): ConfigObjec
   const config: ConfigObject = {};
 
   for (const section of rawConfig.sections) {
-    const sectionSchema = schema.sections.find(s => s.name === section.name);
+    const sectionSchema = Object.values(schema.sections).find(s => s.name === section.name);
     if (!sectionSchema) {
       // Section not in schema - skip or store as-is
       console.warn(`Section not found in schema: ${section.name}`);
@@ -90,7 +90,7 @@ export function jsonToCfg(config: ConfigObject, schema: ConfigSchema): string {
   lines.push('');
 
   // Iterate through sections in schema order
-  for (const sectionSchema of schema.sections) {
+  for (const sectionSchema of Object.values(schema.sections)) {
     const sectionData = config[sectionSchema.name];
 
     if (!sectionData) {

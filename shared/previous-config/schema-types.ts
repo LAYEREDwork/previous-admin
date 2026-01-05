@@ -87,8 +87,8 @@ export interface SectionSchema {
  * Used by both backend (type validation) and frontend (UI generation).
  */
 export interface ConfigSchema {
-  /** All sections as array */
-  sections: SectionSchema[];
+  /** All sections as object keyed by section name */
+  sections: Record<string, SectionSchema>;
 }
 
 /**

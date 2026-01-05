@@ -94,15 +94,8 @@ export interface Translations {
     save: string;
     saveMetadata: string;
     saving: string;
-    sections: {
-      boot: string;
-      display: string;
-      input: string;
-      network: string;
-      scsi: string;
-      sound: string;
-      system: string;
-    };
+    sections: Record<string, string>;
+    parameters: Record<string, string>;
     sectionsCollapseAll: string;
     sectionsExpandAll: string;
     title: string;

@@ -11,6 +11,8 @@ import { SelectPicker } from 'rsuite';
 
 import type { ParameterSchema } from '@shared/previous-config/schema-types';
 
+import { PASize } from '../../../lib/types/sizes';
+
 interface PAEnumInputProps {
   /** Parameter schema with enum metadata */
   schema: ParameterSchema;
@@ -23,6 +25,9 @@ interface PAEnumInputProps {
   
   /** Whether input is disabled */
   disabled?: boolean;
+  
+  /** Input size - Note: RSuite SelectPicker only supports 'xs', 'sm', 'md', 'lg' */
+  size?: PASize;
 }
 
 /**
@@ -38,10 +43,13 @@ interface PAEnumInputProps {
  *   onChange={(val) => updateConfig('nMachineType', val)}
  * />
  */
-export function PAEnumInput({ schema, value, onChange, disabled }: PAEnumInputProps) {
+export function PAEnumInput({ schema, value, onChange, disabled, size = PASize.md }: PAEnumInputProps) {
   if (!schema.possibleValues || schema.possibleValues.length === 0) {
     return <div className="text-gray-500">No options available</div>;
   }
+
+  // Map PASize to RSuite-compatible size (SelectPicker doesn't support 'xl')
+  const rsuiteSize = size === PASize.xl ? PASize.lg : size;
 
   // Create data items for SelectPicker
   const data = schema.possibleValues.map((val, index) => ({
@@ -61,7 +69,7 @@ export function PAEnumInput({ schema, value, onChange, disabled }: PAEnumInputPr
       disabled={disabled}
       cleanable={false}
       searchable={false}
-      size="md"
+      size={rsuiteSize}
       className="w-full"
     />
   );

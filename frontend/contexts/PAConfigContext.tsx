@@ -32,52 +32,21 @@ function mergeWithDefaults(loadedConfig: Partial<PreviousConfig> | null): Previo
     return defaultConfig;
   }
 
-  return {
-    system: {
-      ...defaultConfig.system,
-      ...loadedConfig.system,
-    },
-    display: {
-      ...defaultConfig.display,
-      ...loadedConfig.display,
-    },
-    scsi: {
-      ...defaultConfig.scsi,
-      ...loadedConfig.scsi,
-    },
-    network: {
-      ...defaultConfig.network,
-      ...loadedConfig.network,
-    },
-    ethernet: {
-      enabled: false,
-      type: 'ethernet',
-      ...defaultConfig.ethernet,
-      ...loadedConfig.ethernet,
-    },
-    sound: {
-      ...defaultConfig.sound,
-      ...loadedConfig.sound,
-    },
-    printer: {
-      enabled: false,
-      type: 'parallel',
-      ...defaultConfig.printer,
-      ...loadedConfig.printer,
-    },
-    boot: {
-      ...defaultConfig.boot,
-      ...loadedConfig.boot,
-    },
-    keyboard: {
-      ...defaultConfig.keyboard,
-      ...loadedConfig.keyboard,
-    },
-    mouse: {
-      ...defaultConfig.mouse,
-      ...loadedConfig.mouse,
-    },
-  };
+  // Start with default config as base
+  const merged: any = { ...defaultConfig };
+  
+  // Merge all sections from loaded config (including any that might not be in defaults)
+  for (const sectionKey in loadedConfig) {
+    if (Object.prototype.hasOwnProperty.call(loadedConfig, sectionKey)) {
+      const sectionName = sectionKey as keyof PreviousConfig;
+      merged[sectionName] = {
+        ...(merged[sectionName] || {}),
+        ...(loadedConfig[sectionName] || {})
+      };
+    }
+  }
+  
+  return merged as PreviousConfig;
 }
 
 export function PAConfigProvider({ children }: { children: ReactNode }) {
