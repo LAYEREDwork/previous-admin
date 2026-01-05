@@ -4,20 +4,20 @@
  * Tests business logic in configurationService.ts
  */
 
-import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 import type { PreviousConfig } from '@shared/previous-config/types';
 
 // Mock the database functions
-jest.mock('../database/configurations', () => ({
-  getConfigurations: jest.fn(),
-  getConfiguration: jest.fn(),
-  createConfiguration: jest.fn(),
-  updateConfiguration: jest.fn(),
-  deleteConfiguration: jest.fn(),
-  setActiveConfiguration: jest.fn(),
-  updateConfigurationsOrder: jest.fn(),
-  getActiveConfiguration: jest.fn(),
+vi.mock('../database/configurations', () => ({
+  getConfigurations: vi.fn(),
+  getConfiguration: vi.fn(),
+  createConfiguration: vi.fn(),
+  updateConfiguration: vi.fn(),
+  deleteConfiguration: vi.fn(),
+  setActiveConfiguration: vi.fn(),
+  updateConfigurationsOrder: vi.fn(),
+  getActiveConfiguration: vi.fn(),
 }));
 
 import {
@@ -46,13 +46,13 @@ import type { Configuration, CreateConfigurationRequest, UpdateConfigurationRequ
 
 describe('ConfigurationService', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('getConfigurations', () => {
     it('should return configurations for user', () => {
       const mockConfigs: Configuration[] = [{ id: '1', name: 'Test' } as Configuration];
-      (dbGetConfigurations as jest.MockedFunction<typeof dbGetConfigurations>).mockReturnValue(mockConfigs);
+      vi.mocked(dbGetConfigurations).mockReturnValue(mockConfigs);
 
       const result = getConfigurations();
       expect(result).toEqual(mockConfigs);
@@ -63,7 +63,7 @@ describe('ConfigurationService', () => {
   describe('getConfigurationById', () => {
     it('should return configuration by id', () => {
       const mockConfig: Configuration = { id: '1', name: 'Test' } as Configuration;
-      (dbGetConfiguration as jest.MockedFunction<typeof dbGetConfiguration>).mockReturnValue(mockConfig);
+      vi.mocked(dbGetConfiguration).mockReturnValue(mockConfig);
 
       const result = getConfigurationById('1');
       expect(result).toEqual(mockConfig);
@@ -74,11 +74,11 @@ describe('ConfigurationService', () => {
   describe('createConfiguration', () => {
     // Suppress console.warn during schema validation fallback tests
     beforeEach(() => {
-      jest.spyOn(console, 'warn').mockImplementation(() => {});
+      vi.spyOn(console, 'warn').mockImplementation(() => {});
     });
 
     afterEach(() => {
-      jest.restoreAllMocks();
+      vi.restoreAllMocks();
     });
 
     it('should create configuration with valid data', () => {
@@ -92,7 +92,7 @@ describe('ConfigurationService', () => {
         } as PreviousConfig
       };
       const mockConfig: Configuration = { id: '1', name: 'Test Config' } as Configuration;
-      (dbCreateConfiguration as jest.MockedFunction<typeof dbCreateConfiguration>).mockReturnValue(mockConfig);
+      vi.mocked(dbCreateConfiguration).mockReturnValue(mockConfig);
 
       const result = createConfiguration(request);
       expect(result).toEqual(mockConfig);
@@ -123,8 +123,8 @@ describe('ConfigurationService', () => {
     it('should update existing configuration', () => {
       const request: UpdateConfigurationRequest = { name: 'Updated Name' };
       const mockConfig: Configuration = { id: '1', name: 'Updated Name' } as Configuration;
-      (dbGetConfiguration as jest.MockedFunction<typeof dbGetConfiguration>).mockReturnValue(mockConfig);
-      (dbUpdateConfiguration as jest.MockedFunction<typeof dbUpdateConfiguration>).mockReturnValue(mockConfig);
+      vi.mocked(dbGetConfiguration).mockReturnValue(mockConfig);
+      vi.mocked(dbUpdateConfiguration).mockReturnValue(mockConfig);
 
       const result = updateConfiguration('1', request);
       expect(result).toEqual(mockConfig);
@@ -132,7 +132,7 @@ describe('ConfigurationService', () => {
     });
 
     it('should throw error if configuration not found', () => {
-      (dbGetConfiguration as jest.MockedFunction<typeof dbGetConfiguration>).mockReturnValue(undefined);
+      vi.mocked(dbGetConfiguration).mockReturnValue(undefined);
 
       expect(() => updateConfiguration('1', { name: 'Test' })).toThrow('Configuration not found');
     });
@@ -141,8 +141,8 @@ describe('ConfigurationService', () => {
   describe('deleteConfiguration', () => {
     it('should delete configuration if not active', () => {
       const mockConfig: Configuration = { id: '1', name: 'Test' } as Configuration;
-      (dbGetConfiguration as jest.MockedFunction<typeof dbGetConfiguration>).mockReturnValue(mockConfig);
-      (dbGetActiveConfiguration as jest.MockedFunction<typeof dbGetActiveConfiguration>).mockReturnValue(null);
+      vi.mocked(dbGetConfiguration).mockReturnValue(mockConfig);
+      vi.mocked(dbGetActiveConfiguration).mockReturnValue(null);
 
       deleteConfiguration('1');
       expect(dbDeleteConfiguration).toHaveBeenCalledWith('1');
@@ -150,8 +150,8 @@ describe('ConfigurationService', () => {
 
     it('should delete active configuration without error', () => {
       const mockConfig: Configuration = { id: '1', name: 'Test' } as Configuration;
-      (dbGetConfiguration as jest.MockedFunction<typeof dbGetConfiguration>).mockReturnValue(mockConfig);
-      (dbGetActiveConfiguration as jest.MockedFunction<typeof dbGetActiveConfiguration>).mockReturnValue(mockConfig);
+      vi.mocked(dbGetConfiguration).mockReturnValue(mockConfig);
+      vi.mocked(dbGetActiveConfiguration).mockReturnValue(mockConfig);
 
       deleteConfiguration('1');
       expect(dbDeleteConfiguration).toHaveBeenCalledWith('1');
@@ -161,14 +161,14 @@ describe('ConfigurationService', () => {
   describe('setActiveConfiguration', () => {
     it('should set active configuration', () => {
       const mockConfig: Configuration = { id: '1', name: 'Test' } as Configuration;
-      (dbGetConfiguration as jest.MockedFunction<typeof dbGetConfiguration>).mockReturnValue(mockConfig);
+      vi.mocked(dbGetConfiguration).mockReturnValue(mockConfig);
 
       setActiveConfiguration('1');
       expect(dbSetActiveConfiguration).toHaveBeenCalledWith('1');
     });
 
     it('should throw error if configuration not found', () => {
-      (dbGetConfiguration as jest.MockedFunction<typeof dbGetConfiguration>).mockReturnValue(undefined);
+      vi.mocked(dbGetConfiguration).mockReturnValue(undefined);
 
       expect(() => setActiveConfiguration('1')).toThrow('Configuration not found');
     });
@@ -185,7 +185,7 @@ describe('ConfigurationService', () => {
   describe('getActiveConfiguration', () => {
     it('should return active configuration', () => {
       const mockConfig: Configuration = { id: '1', name: 'Test' } as Configuration;
-      (dbGetActiveConfiguration as jest.MockedFunction<typeof dbGetActiveConfiguration>).mockReturnValue(mockConfig);
+      vi.mocked(dbGetActiveConfiguration).mockReturnValue(mockConfig);
 
       const result = getActiveConfiguration();
       expect(result).toEqual(mockConfig);

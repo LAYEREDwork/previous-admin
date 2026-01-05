@@ -147,7 +147,7 @@ npm run test       # Run all tests (frontend + backend)
 - **Frontend**: `http://localhost:2342` with hot module reload
 - **Backend**: `http://localhost:3001` serving REST API at `/api/*`
 - **Database**: SQLite at `~/.previous-admin/previous-admin.db`
-- **Testing**: Vitest (frontend), Jest (backend)
+- **Testing**: Vitest (frontend and backend)
 - **Production**: Single server on port 2342 with built frontend bundled
 
 ### Project Structure

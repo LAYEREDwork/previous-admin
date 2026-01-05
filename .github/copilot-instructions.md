@@ -22,7 +22,7 @@
 ## Development Workflows
 - **Start Development**: Run `npm run backend` in one terminal (starts backend on :3001) and `npm run dev` in another (starts frontend on :2342).
 - **Build**: `npm run build` creates production frontend build served by backend on :2342.
-- **Testing**: `npm run test` runs both frontend (Vitest) and backend (Jest) tests.
+- **Testing**: `npm run test` runs both frontend and backend tests with Vitest. Use `npm run test:frontend` or `npm run test:backend` to test separately.
 - **Code Quality**: `npm run lint` (ESLint), `npm run typecheck` (TypeScript check).
 - **Update Process**: Never use `git pull`; download and extract new versions from GitHub releases (see `scripts/update.ts`).
 - **Production Setup**: Use `sudo ./install.sh` for automated installation with systemd services and Avahi/Bonjour discovery.
