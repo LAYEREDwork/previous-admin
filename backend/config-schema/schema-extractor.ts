@@ -35,6 +35,94 @@ export function toDisplayName(camelCaseName: string): string {
 }
 
 /**
+ * Intelligently map section names to SF Symbols
+ * 
+ * Analyzes section names using semantic keyword matching to determine appropriate symbols.
+ * Includes synonyms, related terms, and phonetic similarities.
+ * Uses .fill variants when available for better visual consistency.
+ * Falls back to gearshape.fill as default.
+ * 
+ * @param sectionName The configuration section name
+ * @returns Appropriate SF Symbol name
+ * 
+ * @example
+ * getSymbolForSection("Sound") // "speaker.fill"
+ * getSymbolForSection("AudioOutput") // "speaker.fill"
+ * getSymbolForSection("Keyboard") // "keyboard.fill"
+ * getSymbolForSection("Network") // "network"
+ */
+function getSymbolForSection(sectionName: string): string {
+  const lowerName = sectionName.toLowerCase();
+  
+  // Semantic keyword groups with synonyms and related terms
+  // Order matters: more specific groups should come before generic ones
+  const symbolMappings: Array<{ keywords: string[]; symbol: string }> = [
+    // Mouse/Input Device - synonyms and related: mouse, pointer, cursor, trackpad, touchpad
+    {
+      keywords: ['mouse', 'computermouse', 'pointer', 'cursor', 'trackpad', 'touchpad', 'trackball'],
+      symbol: 'computermouse.fill'
+    },
+    // Audio/Sound - synonyms and related: audio, sound, speaker, voice, music, tone, volume, mic, microphone
+    {
+      keywords: ['sound', 'audio', 'speaker', 'voice', 'music', 'tone', 'sox', 'volume', 'mic', 'microphone', 'output', 'hifi', 'acoustic'],
+      symbol: 'hifispeaker.fill'
+    },
+    // Printer - synonyms and related: printer, print, output, printout, document, paper, laser, inkjet
+    {
+      keywords: ['printer', 'print', 'output', 'printout', 'document', 'paper', 'laser', 'inkjet', 'plotter'],
+      symbol: 'printer.fill'
+    },
+    // Keyboard/Input - synonyms and related: keyboard, input, keys, shortcuts, control, modifier, keypad, keymap
+    {
+      keywords: ['keyboard', 'input', 'keys', 'shortcuts', 'control', 'modifier', 'keypad', 'keymap', 'hotkey', 'accelerator'],
+      symbol: 'keyboard.fill'
+    },
+    // Display/Screen - synonyms and related: display, screen, monitor, graphics, resolution, video, render, lcd, led, panel, viewport, framebuffer, 3d, card, dimension
+    {
+      keywords: ['display', 'screen', 'monitor', 'graphics', 'resolution', 'video', 'render', 'lcd', 'led', 'panel', 'viewport', 'framebuffer', 'vram', '3d', 'card', 'dimension'],
+      symbol: 'display.fill'
+    },
+    // Optical Drive - synonyms and related: optical, cd, dvd, disc, cd-rom, dvd-rom, magneto, blu-ray, blueray
+    {
+      keywords: ['optical', 'cd', 'dvd', 'disc', 'cd-rom', 'dvd-rom', 'magneto', 'blu-ray', 'blueray', 'rom-drive'],
+      symbol: 'opticaldisc.fill'
+    },
+    // Network - synonyms and related: network, ethernet, wifi, internet, connection, tcp, ip, lan, wan, modem, router, bridge
+    {
+      keywords: ['network', 'ethernet', 'wifi', 'internet', 'connection', 'tcp', 'ip', 'lan', 'wan', 'modem', 'router', 'bridge', 'hub', 'adapter', 'nic'],
+      symbol: 'network'
+    },
+    // Storage/Drive - synonyms and related: scsi, drive, disk, storage, hd, ssd, volume, hard, ide, ata, sata, nvme
+    {
+      keywords: ['scsi', 'drive', 'disk', 'storage', 'hd', 'ssd', 'volume', 'hard', 'ide', 'ata', 'sata', 'nvme', 'raid', 'partition'],
+      symbol: 'externaldrive.fill'
+    },
+    // Boot - synonyms and related: boot, startup, launch, initialization, loader, bootloader, firmware, bios
+    {
+      keywords: ['boot', 'startup', 'launch', 'initialization', 'loader', 'bootloader', 'firmware', 'bios', 'uefi'],
+      symbol: 'bolt.fill'
+    },
+    // System/General - synonyms and related: system, config, general, settings, preferences, options, setup
+    {
+      keywords: ['system', 'config', 'general', 'settings', 'preferences', 'options', 'setup', 'configuration', 'parameters', 'properties'],
+      symbol: 'gearshape.fill'
+    }
+  ];
+  
+  // Try to find matching symbol by checking each keyword group
+  for (const mapping of symbolMappings) {
+    for (const keyword of mapping.keywords) {
+      if (lowerName.includes(keyword)) {
+        return mapping.symbol;
+      }
+    }
+  }
+  
+  // Default fallback
+  return 'gearshape.fill';
+}
+
+/**
  * Parse type from comment
  * 
  * Looks for "# Type: X" pattern in comments
@@ -255,11 +343,14 @@ export function extractSchema(
     const sectionName = rawSection.name;
     const parameters = rawSection.parameters.map(extractParameterSchema);
     
+    // Use provided mapping first, then fall back to intelligent detection
+    const sfSymbol = symbolMapping[sectionName] || getSymbolForSection(sectionName);
+    
     sectionsArray.push({
       name: sectionName,
       displayName: toDisplayName(sectionName),
       translationKey: `configEditor.sections.${sectionName}`,
-      sfSymbol: symbolMapping[sectionName] || 'gearshape.fill',
+      sfSymbol,
       parameters
     });
   }

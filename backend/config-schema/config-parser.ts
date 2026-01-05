@@ -38,6 +38,9 @@ export interface RawConfigSection {
  * Complete raw configuration data structure
  */
 export interface RawConfigData {
+  /** Header comments (metadata like version and creation date) */
+  headerComments: string[];
+  
   /** All sections from the config file */
   sections: RawConfigSection[];
 }
@@ -80,9 +83,11 @@ export interface RawConfigData {
 export function parseCfgFile(cfgContent: string): RawConfigData {
   const lines = cfgContent.split('\n');
   const sections: RawConfigSection[] = [];
+  const headerComments: string[] = [];
   
   let currentSection: RawConfigSection | null = null;
   let currentComments: string[] = [];
+  let headerProcessed = false;
   
   for (const line of lines) {
     const trimmedLine = line.trim();
@@ -98,6 +103,7 @@ export function parseCfgFile(cfgContent: string): RawConfigData {
     
     // Detect section header [SectionName]
     if (trimmedLine.startsWith('[') && trimmedLine.endsWith(']')) {
+      headerProcessed = true; // No more header comments after first section
       const sectionName = trimmedLine.slice(1, -1);
       currentSection = {
         name: sectionName,
@@ -110,12 +116,17 @@ export function parseCfgFile(cfgContent: string): RawConfigData {
     
     // Detect comment lines (# or //)
     if (trimmedLine.startsWith('#') || trimmedLine.startsWith('//')) {
-      currentComments.push(trimmedLine);
+      if (!headerProcessed) {
+        headerComments.push(trimmedLine);
+      } else {
+        currentComments.push(trimmedLine);
+      }
       continue;
     }
     
     // Detect parameter (key = value)
     if (trimmedLine.includes('=') && currentSection) {
+      headerProcessed = true; // No more header comments after first parameter
       const eqIndex = trimmedLine.indexOf('=');
       const paramName = trimmedLine.slice(0, eqIndex).trim();
       const paramValue = trimmedLine.slice(eqIndex + 1).trim();
@@ -132,7 +143,7 @@ export function parseCfgFile(cfgContent: string): RawConfigData {
     }
   }
   
-  return { sections };
+  return { headerComments, sections };
 }
 
 /**

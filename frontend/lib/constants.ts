@@ -16,20 +16,12 @@ export const backendPort = 3001;
 /**
  * Base URL for API requests
  *
- * Dynamically constructs API endpoint based on current hostname.
- * Backend server must be running on the configured backendPort.
- * Uses HTTP protocol (browser may upgrade to HTTPS automatically).
- *
+ * In development, the Vite dev server proxies /api requests to the backend.
+ * In production, the backend serves both frontend and API from the same origin.
+ * 
  * @type {string}
- *
- * @example
- * // If accessing from 'example.com':
- * // apiBaseUrl = 'http://example.com:3001'
- *
- * // If accessing from 'localhost':
- * // apiBaseUrl = 'http://localhost:3001'
  */
-export const apiBaseUrl = `http://${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}:${backendPort}`;
+export const apiBaseUrl = typeof window !== 'undefined' ? '' : `http://localhost:${backendPort}`;
 
 /**
  * WebSocket URL for real-time metrics

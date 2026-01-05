@@ -12,13 +12,57 @@
  * @requires config - Unified config manager
  */
 
+import { readFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
 import express, { Request } from 'express';
 
 import { apiPaths } from '@shared/api/constants';
+import type { ConfigSchema } from '@shared/previous-config/schema-types';
 import type { PreviousConfig } from '@shared/previous-config/types';
 
 import { getConfigManager, getDefaultConfig } from '@backend/config/index';
+import { jsonToCfg } from '@backend/config-schema/converter';
 import { TypedResponse } from '@backend/types';
+
+// Define __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Cache for schema (loaded once on startup)
+let schemaCache: ConfigSchema | null = null;
+
+/**
+ * Load schema from generated JSON file
+ * 
+ * @returns {ConfigSchema} The loaded configuration schema
+ * @throws {Error} If schema file cannot be found or parsed
+ */
+function loadSchema(): ConfigSchema {
+  if (schemaCache) {
+    return schemaCache;
+  }
+
+  try {
+    // Try multiple paths to handle both development and production
+    let schemaPath = join(__dirname, '../../shared/previous-config/schema.json');
+    try {
+      const schemaContent = readFileSync(schemaPath, 'utf-8');
+      schemaCache = JSON.parse(schemaContent) as ConfigSchema;
+      return schemaCache;
+    } catch {
+      // Try alternative path for built app
+      schemaPath = join(process.cwd(), 'shared/previous-config/schema.json');
+      const schemaContent = readFileSync(schemaPath, 'utf-8');
+      schemaCache = JSON.parse(schemaContent) as ConfigSchema;
+      return schemaCache;
+    }
+  } catch (error) {
+    console.error('Failed to load config schema:', error);
+    throw new Error('Config schema not found. Run "npm run generate:schema" first.');
+  }
+}
 
 const router = express.Router();
 const configManager = getConfigManager();
@@ -54,7 +98,7 @@ router.get(apiPaths.Config.get.relative, async (req: Request, res: TypedResponse
     res.json({ config });
   } catch (error) {
     console.error('Error reading config:', error);
-    res.status(500).json({ error: 'Failed to read configuration' });
+    res.status(500).json({ error: 'Failed to read configuration' } as any);
   }
 });
 
@@ -89,7 +133,8 @@ router.put(apiPaths.Config.put.relative, async (req: Request, res: TypedResponse
     const { config }: { config: PreviousConfig } = req.body;
 
     if (!config) {
-      return res.status(400).json({ error: 'Config data required' });
+      res.status(400).json({ error: 'Config data required' } as any);
+      return;
     }
 
     await configManager.writeConfig(config);
@@ -102,7 +147,58 @@ router.put(apiPaths.Config.put.relative, async (req: Request, res: TypedResponse
     res.json({ success: true, config });
   } catch (error) {
     console.error('Error writing config:', error);
-    res.status(500).json({ error: 'Failed to write configuration' });
+    res.status(500).json({ error: 'Failed to write configuration' } as any);
+  }
+});
+
+/**
+ * POST /api/config/convert-to-cfg
+ *
+ * Convert JSON configuration to CFG file format
+ *
+ * Takes a configuration object and converts it to the Previous emulator's
+ * native CFG format. Used by the config editor to show the raw file preview.
+ *
+ * @route POST /api/config/convert-to-cfg
+ *
+ * @param {Object} req.body
+ *   - config {PreviousConfig}: Configuration object to convert
+ *
+ * @returns {Object}
+ *   - cfgContent {string}: Configuration in CFG file format
+ *
+ * @throws {400} If config data is missing
+ * @throws {500} If conversion fails
+ *
+ * @example
+ * const res = await fetch('/api/config/convert-to-cfg', {
+ *   method: 'POST',
+ *   body: JSON.stringify({ config: { system: { cpu_type: '68040' } } })
+ * });
+ * const { cfgContent } = await res.json();
+ */
+router.post(apiPaths.Config.convertToCfg.relative, async (req: Request, res: TypedResponse<{ cfgContent: string }>) => {
+  try {
+    const { config }: { config: PreviousConfig } = req.body;
+
+    if (!config) {
+      res.status(400).json({ error: 'Config data required' } as any);
+      return;
+    }
+
+    // Get schema for proper type conversion
+    const schema = loadSchema();
+
+    // Get application version from package.json
+    const appVersion = '1.0.1';
+
+    // Convert to CFG format using backend converter with version info
+    const cfgContent = jsonToCfg(config as any, schema, appVersion);
+
+    res.json({ cfgContent });
+  } catch (error) {
+    console.error('Error converting config to CFG:', error);
+    res.status(500).json({ error: 'Failed to convert configuration' } as any);
   }
 });
 

@@ -18,6 +18,7 @@ export const apiPaths = {
   Config: {
     get: { full: '/api/config', relative: '' },
     put: { full: '/api/config', relative: '' },
+    convertToCfg: { full: '/api/config/convert-to-cfg', relative: '/config/convert-to-cfg' },
   },
   ConfigSchema: {
     get: { full: '/api/config/schema', relative: '/config/schema' },

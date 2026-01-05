@@ -4,7 +4,7 @@
       "name": "ConfigDialog",
       "displayName": "Config Dialog",
       "translationKey": "configEditor.sections.ConfigDialog",
-      "sfSymbol": "gearshape.fill",
+      "sfSymbol": "checkmark.app.fill",
       "parameters": [
         {
           "name": "bShowConfigDialogAtStartup",
@@ -89,7 +89,7 @@
       "name": "Keyboard",
       "displayName": "Keyboard",
       "translationKey": "configEditor.sections.Keyboard",
-      "sfSymbol": "keyboard",
+      "sfSymbol": "keyboard.fill",
       "parameters": [
         {
           "name": "bSwapCmdAlt",
@@ -128,7 +128,7 @@
       "name": "ShortcutsWithModifiers",
       "displayName": "Shortcuts With Modifiers",
       "translationKey": "configEditor.sections.ShortcutsWithModifiers",
-      "sfSymbol": "gearshape.fill",
+      "sfSymbol": "keyboard.fill",
       "parameters": [
         {
           "name": "kOptions",
@@ -234,7 +234,7 @@
       "name": "ShortcutsWithoutModifiers",
       "displayName": "Shortcuts Without Modifiers",
       "translationKey": "configEditor.sections.ShortcutsWithoutModifiers",
-      "sfSymbol": "gearshape.fill",
+      "sfSymbol": "keyboard.fill",
       "parameters": [
         {
           "name": "kOptions",
@@ -340,7 +340,7 @@
       "name": "Mouse",
       "displayName": "Mouse",
       "translationKey": "configEditor.sections.Mouse",
-      "sfSymbol": "computermouse",
+      "sfSymbol": "computermouse.fill",
       "parameters": [
         {
           "name": "bEnableAutoGrab",
@@ -397,7 +397,7 @@
       "name": "Sound",
       "displayName": "Sound",
       "translationKey": "configEditor.sections.Sound",
-      "sfSymbol": "speaker.wave.2.fill",
+      "sfSymbol": "hifispeaker.fill",
       "parameters": [
         {
           "name": "bEnableMicrophone",
@@ -492,7 +492,7 @@
       "name": "Boot",
       "displayName": "Boot",
       "translationKey": "configEditor.sections.Boot",
-      "sfSymbol": "gearshape.fill",
+      "sfSymbol": "autostartstop",
       "parameters": [
         {
           "name": "nBootDevice",
@@ -577,7 +577,7 @@
       "name": "SCSI",
       "displayName": "S C S I",
       "translationKey": "configEditor.sections.SCSI",
-      "sfSymbol": "gearshape.fill",
+      "sfSymbol": "externaldrive.fill",
       "parameters": [
         {
           "name": "szImageName0",
@@ -810,7 +810,7 @@
       "name": "MagnetoOptical",
       "displayName": "Magneto Optical",
       "translationKey": "configEditor.sections.MagnetoOptical",
-      "sfSymbol": "gearshape.fill",
+      "sfSymbol": "opticaldisc.fill",
       "parameters": [
         {
           "name": "szImageName0",
@@ -874,7 +874,7 @@
       "name": "Floppy",
       "displayName": "Floppy",
       "translationKey": "configEditor.sections.Floppy",
-      "sfSymbol": "gearshape.fill",
+      "sfSymbol": "externaldrive.fill",
       "parameters": [
         {
           "name": "szImageName0",
@@ -994,7 +994,7 @@
       "name": "Ethernet",
       "displayName": "Ethernet",
       "translationKey": "configEditor.sections.Ethernet",
-      "sfSymbol": "gearshape.fill",
+      "sfSymbol": "network",
       "parameters": [
         {
           "name": "bEthernetConnected",
@@ -1101,7 +1101,7 @@
       "name": "ROM",
       "displayName": "R O M",
       "translationKey": "configEditor.sections.ROM",
-      "sfSymbol": "gearshape.fill",
+      "sfSymbol": "memorychip",
       "parameters": [
         {
           "name": "szRom030FileName",
@@ -1183,7 +1183,7 @@
       "name": "Printer",
       "displayName": "Printer",
       "translationKey": "configEditor.sections.Printer",
-      "sfSymbol": "gearshape.fill",
+      "sfSymbol": "printer.fill",
       "parameters": [
         {
           "name": "bPrinterConnected",
@@ -1410,7 +1410,7 @@
       "name": "Dimension",
       "displayName": "Dimension",
       "translationKey": "configEditor.sections.Dimension",
-      "sfSymbol": "gearshape.fill",
+      "sfSymbol": "display",
       "parameters": [
         {
           "name": "bI860Thread",

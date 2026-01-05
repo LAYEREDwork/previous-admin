@@ -1,12 +1,20 @@
 {
-  "ConfigDialog": "gearshape.fill",
+  "ConfigDialog": "checkmark.app.fill",
   "Screen": "display",
-  "Keyboard": "keyboard",
-  "Mouse": "computermouse",
+  "Keyboard": "keyboard.fill",
+  "ShortcutsWithModifiers": "keyboard.fill",
+  "ShortcutsWithoutModifiers": "keyboard.fill",
+  "Mouse": "computermouse.fill",
+  "Sound": "hifispeaker.fill",
   "System": "server.rack",
   "Network": "network",
-  "Storage": "externaldrive.fill",
+  "SCSI": "externaldrive.fill",
+  "Floppy": "externaldrive.fill",
+  "MagnetoOptical": "opticaldisc.fill",
+  "Printer": "printer.fill",
   "Memory": "memorychip",
-  "Display": "display",
-  "Sound": "speaker.wave.2.fill"
+  "ROM": "memorychip",
+  "Ethernet": "network",
+  "Boot": "autostartstop",
+  "Dimension": "display"
 }

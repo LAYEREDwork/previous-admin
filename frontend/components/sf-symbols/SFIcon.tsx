@@ -1,5 +1,6 @@
 import { ReactElement } from 'react';
 
+import type { AvailableSFSymbol } from './available-sfsymbols';
 import { sfIconsData, sfIconsViewBox } from './icons-data';
 
 interface SFIconProps {
@@ -39,7 +40,7 @@ interface SFIconProps {
  * @param iconName - The name of the icon to render
  * @returns A React component that renders the SF Symbol icon
  */
-export function createSFIcon(iconName: keyof typeof sfIconsData) {
+export function createSFIcon(iconName: AvailableSFSymbol) {
   /**
    * SF Symbol Icon Component
    *

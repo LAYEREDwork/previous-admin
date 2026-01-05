@@ -34,6 +34,11 @@ export function ConfigItemContent({
       <span className="text-sm text-[var(--rs-text-secondary)]">
         {config.description}
       </span>
+      {config.created_at && (
+        <span className="text-xs text-[var(--rs-text-tertiary)]">
+          Created: {new Date(config.created_at).toLocaleDateString('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+        </span>
+      )}
       {/* Mobile: Action Buttons unter Description */}
       <div className="sm:hidden">
         <ConfigListActionsPartial

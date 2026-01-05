@@ -260,9 +260,12 @@ export function useConfigEditor(configId?: string | null) {
     });
   }, [validateValue, showError]);
 
-  const copyToClipboard = async () => {
+  // Memoized converter function to maintain stable reference for child components
+  const memoizedConvertToConfigFile = useCallback(convertToConfigFile, []);
+
+  const copyToClipboard = useCallback(async () => {
     if (!configData) return;
-    const configText = convertToConfigFile(configData);
+    const configText = await convertToConfigFile(configData);
 
     try {
       if (navigator.clipboard?.writeText) {
@@ -288,7 +291,7 @@ export function useConfigEditor(configId?: string | null) {
         showError(translation.configEditor.failedToCopy);
       }
     }
-  };
+  }, [configData, showSuccess, showError, translation.configEditor.copiedToClipboard, translation.configEditor.failedToCopy]);
 
   return {
     // State
@@ -320,7 +323,7 @@ export function useConfigEditor(configId?: string | null) {
     refreshConfig,
 
     // Utilities
-    convertToConfigFile,
+    convertToConfigFile: memoizedConvertToConfigFile,
 
     // Translations
     translation,

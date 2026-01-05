@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:prod": "npm run generate:prod && npm run build",
     "lint": "eslint .",
     "preview": "vite preview",
     "backend": "tsx --tsconfig backend/tsconfig.json backend/index.ts",
@@ -15,6 +16,7 @@
     "test:frontend": "vitest run --run frontend",
     "test:backend": "vitest run --run backend",
     "generate": "npm run generate:sfsymbols && npm run generate:schema && npm run generate:translationkeys && npm run generate:screenshots",
+    "generate:prod": "npm run generate:sfsymbols && npm run generate:schema && npm run generate:translationkeys",
     "generate:sfsymbols": "tsx scripts/generate-sfsymbols.ts",
     "generate:schema": "bash scripts/generate-config-schema.sh",
     "generate:screenshots": "node scripts/generate-screenshots.mjs",

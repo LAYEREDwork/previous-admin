@@ -24,6 +24,7 @@ npx tsx << 'EOF'
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { parseCfgFile } from './backend/config-schema/config-parser';
 import { extractSchema } from './backend/config-schema/schema-extractor';
+import { validateSymbols, reportValidationResults } from './backend/config-schema/validate-symbols';
 
 const configFile = process.env.CONFIG_FILE || './backend/config-schema/reference.cfg';
 const schemaFile = process.env.SCHEMA_FILE || './shared/previous-config/schema.json';
@@ -41,6 +42,10 @@ try {
   if (existsSync(symbolMappingFile)) {
     const mappingContent = readFileSync(symbolMappingFile, 'utf-8');
     symbolMapping = JSON.parse(mappingContent);
+    
+    // Validate symbols before generating schema
+    const validationResult = validateSymbols(symbolMapping);
+    reportValidationResults(validationResult);
   }
   
   // Extract schema with type interpretation

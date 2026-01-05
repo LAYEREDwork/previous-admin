@@ -31,12 +31,28 @@
 ## Project-Specific Patterns
 - **Config Management**: Use `ConfigManager` class (`backend/config/index.ts`) for reading/writing Previous emulator config files. Platform-specific implementations in `linux-config-manager.ts`/`macos-config-manager.ts`.
 - **Database Operations**: Import from `backend/database/` modules; configurations stored with order, active status, and metadata.
-- **API Routes**: REST endpoints in `backend/api/`, WebSocket setup in `backend/websocket.ts`.
+- **API Routes**: REST endpoints in `backend/api/`. NEVER use magic string literals for endpoints! Always define them in `shared/api/constants.ts` in the `apiPaths` object and use them consistently across backend (relative paths) and frontend (full paths). Example: Use `apiPaths.Config.convertToCfg.relative` in backend routes and `apiPaths.Config.convertToCfg.full` in frontend fetch calls.
 - **Custom Hooks**: Business logic extracted into hooks like `useConfigActions`, `useConfigList` for reusable frontend logic.
 - **Error Handling**: Use `PAErrorBoundary` component and notification context for user-facing errors.
 - **File Watching**: `backend/file-watcher.ts` monitors config file changes for auto-sync.
 - **Metrics Collection**: Real-time system metrics via `backend/metrics.ts` and WebSockets.
 - **Size Parameters**: ALWAYS use `PASize` enum constants (`PASize.xs`, `PASize.sm`, `PASize.md`, `PASize.lg`, `PASize.xl`) instead of magic string literals (`'xs'`, `'sm'`, `'md'`, etc.) in component `size` props and type definitions. The `PASize` enum is defined in `frontend/lib/types/sizes.ts`. Use type `PASize` for any size-related props and default values. This applies to all component size properties throughout the codebase.
+- **SF Symbol Architecture** (**SOURCE OF TRUTH**): 
+  - **Source of Truth**: `frontend/components/sf-symbols/available-symbols.ts` - Enum generated from actual SVG filenames, guarantees all symbols exist
+  - **Symbol Validation**: Integrated into schema generation pipeline (`backend/config-schema/validate-symbols.ts`) - prevents broken references at generation time
+  - **Semantic Keyword Matching**: Use intelligent section symbol recognition via keyword groups in `backend/config-schema/schema-extractor.ts`. When config section names contain keywords, corresponding symbols are assigned (case-insensitive substring match). Order matters - more specific groups checked first:
+    - **Mouse/Input Device** → `computermouse.fill`: Keywords: `[mouse, computermouse, pointer, cursor, trackpad, touchpad, trackball]`
+    - **Audio/Sound** → `hifispeaker.fill`: Keywords: `[sound, audio, speaker, voice, music, tone, sox, volume, mic, microphone, output, hifi, acoustic]`
+    - **Printer** → `printer.fill`: Keywords: `[printer, print, output, printout, document, paper, laser, inkjet, plotter]`
+    - **Keyboard/Input** → `keyboard.fill`: Keywords: `[keyboard, input, keys, shortcuts, control, modifier, keypad, keymap, hotkey, accelerator]`
+    - **Display/Screen** → `display`: Keywords: `[display, screen, monitor, graphics, resolution, video, render, lcd, led, panel, viewport, framebuffer, vram, 3d, card, dimension]`
+    - **Optical Drive** → `opticaldisc.fill`: Keywords: `[optical, cd, dvd, disc, cd-rom, dvd-rom, magneto, blu-ray, blueray, rom-drive]`
+    - **Network** → `network`: Keywords: `[network, ethernet, wifi, internet, connection, tcp, ip, lan, wan, modem, router, bridge, hub, adapter, nic]`
+    - **Storage/Drive** → `externaldrive.fill`: Keywords: `[scsi, drive, disk, storage, hd, ssd, volume, hard, ide, ata, sata, nvme, raid, partition]`
+    - **Boot** → `autostartstop`: Keywords: `[boot, startup, launch, initialization, loader, bootloader, firmware, bios, uefi]`
+    - **System/General** → `checkmark.app.fill`: Keywords: `[system, config, general, settings, preferences, options, setup, configuration, parameters, properties]` (default fallback)
+  - **Symbol Mappings**: All section-to-symbol mappings in `backend/config-schema/section-symbols.json` are validated at generation time to ensure they reference symbols that exist in `available-symbols.ts`
+  - **Pipeline**: `scripts/generate-sfsymbols.ts` → generates `available-symbols.ts` (SOURCE OF TRUTH) → other symbol files use this enum → schema generation validates all mappings
 
 ## Key Files and Directories
 - `backend/index.ts`: Main server entry point with Express setup, routes, and WebSocket initialization.
