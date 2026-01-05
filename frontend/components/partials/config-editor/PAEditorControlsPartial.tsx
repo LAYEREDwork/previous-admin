@@ -1,13 +1,13 @@
-import { Translations } from '../../../lib/translations';
-import { PASize } from '../../../lib/types/sizes';
-import { PAButton } from '../../controls/PAButton';
-import { PASegmentedControl } from '../../controls/PASegmentedControl';
+import { Translations } from '@frontend/lib/translations';
+import { PASize } from '@frontend/lib/types/sizes';
+import { PAButton } from '@frontend/components/controls/PAButton';
+import { PASegmentedControl } from '@frontend/components/controls/PASegmentedControl';
 import { 
     SFChevronDownCircleFill, 
     SFLongTextPageAndPencilFill, 
     SFSquareAndArrowDownOnSquareFill, 
     SFTextRectangleFill 
-} from '../../sf-symbols';
+} from '@frontend/components/sf-symbols';
 
 interface EditorControlsPartialProps {
     viewMode: 'editor' | 'raw';

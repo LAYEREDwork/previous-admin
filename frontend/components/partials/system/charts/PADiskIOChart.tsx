@@ -1,10 +1,10 @@
-import { BiHdd } from 'react-icons/bi';
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 import { Metrics } from '../../../../hooks/useSystemMetrics';
 import { Translations } from '../../../../lib/translations';
 import { padDataToWindow, getOptimalUnit } from '../../../../lib/utils';
 import { PACard } from '../../../controls/PACard';
+import { SFExternaldrive } from '@frontend/components/sf-symbols';
 
 interface DiskIOChartProps {
   metrics: Metrics | null;
@@ -20,7 +20,7 @@ export function DiskIOChart({ metrics, translation }: DiskIOChartProps) {
       bgColorScheme="surface"
       header={
         <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] flex items-center gap-2 m-0 leading-none">
-          <BiHdd size={20} className="text-[var(--rs-primary-500)]" />
+          <SFExternaldrive size="md" className="text-[var(--rs-text-primary)]" />
           Disk I/O
         </h3>
       }

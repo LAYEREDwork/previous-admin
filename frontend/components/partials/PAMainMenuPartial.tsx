@@ -1,14 +1,14 @@
 import { Nav } from 'rsuite';
 
-import { useLanguage } from '../../contexts/PALanguageContext';
-import { PATabBar } from '../controls/PATabBar';
+import { useLanguage } from '@frontend/contexts/PALanguageContext';
+import { PATabBar } from '@frontend/components/controls/PATabBar';
 import { 
     SFDocumentOnDocumentFill, 
     SFLongTextPageAndPencilFill, 
     SFSquareAndArrowUpFill,
     SFDesktopcomputer,
     SFInfoBubbleFill
-} from '../sf-symbols';
+} from '@frontend/components/sf-symbols';
 
 interface MainMenuProps {
     currentTab: string;

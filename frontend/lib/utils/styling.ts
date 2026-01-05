@@ -5,7 +5,7 @@
 
 import { StylingKey } from '@shared/previous-config/enums';
 
-import { PASize } from '../types';
+import { PAIconSize, PASize } from '../types';
 
 import { adjustLightness, hslToString, parseColorToHsl } from './color';
 import { computePalette, Palette } from './palette';
@@ -167,13 +167,11 @@ export const fontSizesCSS = {
   [PASize.xl]: 'text-lg',
 };
 
-export const iconSizesPixel = {
-  [PASize.xs]: 12,
-  [PASize.sm]: 14,
-  [PASize.md]: 16,
-  [PASize.lg]: 18,
-  [PASize.xl]: 20,
-};
+/**
+ * Use PAIconSize from types/sizes.ts instead of iconSizesPixel
+ * This centralized constant ensures consistent icon sizing across the application
+ */
+export { PAIconSize as iconSizesPixel } from '../types/sizes';
 
 export const containerHeightsPixel = {
   [PASize.xs]: 28,

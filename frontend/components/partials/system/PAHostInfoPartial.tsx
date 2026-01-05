@@ -1,9 +1,8 @@
-import { BiHdd, BiChip, BiGlobe, BiDesktop } from 'react-icons/bi';
-
-import { SystemInfo } from '../../../../shared/previous-config/types';
-import { Translations } from '../../../lib/translations';
-import { formatUptime } from '../../../lib/utils';
-import { PACard } from '../../controls/PACard';
+import { SystemInfo } from '@shared/previous-config/types';
+import { Translations } from '@frontend/lib/translations';
+import { formatUptime } from '@frontend/lib/utils';
+import { PACard } from '@frontend/components/controls/PACard';
+import { SFInternaldrive, SFCpu, SFNetwork, SFDisplay } from '@frontend/components/sf-symbols';
 
 interface HostInfoPartialProps {
     systemInfo: SystemInfo;
@@ -15,8 +14,10 @@ export function HostInfoPartial({ systemInfo, translation }: HostInfoPartialProp
         <PACard
             header={
                 <div className="flex items-center gap-2 m-0 leading-none">
-                    <BiHdd size={20} className="text-[var(--rs-text-secondary)]" />
-                    {translation.system.hostInfo}
+                    <SFInternaldrive size="lg" className="text-[var(--rs-text-primary)]" />
+                    <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] m-0">
+                        {translation.system.hostInfo}
+                    </h3>
                 </div>
             }
         >
@@ -54,8 +55,8 @@ export function HostInfoPartial({ systemInfo, translation }: HostInfoPartialProp
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-[var(--rs-border-primary)] pt-4">
                     <div>
-                        <h4 className="text-sm font-semibold text-[var(--rs-text-primary)] mb-2 flex items-center gap-2">
-                            <BiChip size={16} className="text-[var(--rs-primary-500)]" />
+                        <h4 className="text-lg font-semibold text-[var(--rs-text-primary)] mb-2 flex items-center gap-2">
+                            <SFCpu size="md" className="text-[var(--rs-text-primary)]" />
                             {translation.system.cpu}
                         </h4>
                         <div className="grid grid-cols-3 gap-3">
@@ -76,8 +77,8 @@ export function HostInfoPartial({ systemInfo, translation }: HostInfoPartialProp
 
                     {systemInfo.gpu && systemInfo.gpu.length > 0 && systemInfo.gpu[0] !== 'N/A' && (
                         <div>
-                            <h4 className="text-sm font-semibold text-[var(--rs-text-primary)] mb-2 flex items-center gap-2">
-                                <BiChip size={16} className="text-[var(--rs-primary-500)]" />
+                            <h4 className="text-lg font-semibold text-[var(--rs-text-primary)] mb-2 flex items-center gap-2">
+                                <SFCpu size="md" className="text-[var(--rs-text-primary)]" />
                                 {translation.system.gpu}
                             </h4>
                             <div className="space-y-2">
@@ -94,8 +95,8 @@ export function HostInfoPartial({ systemInfo, translation }: HostInfoPartialProp
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-[var(--rs-border-primary)] pt-4">
                         {systemInfo.ipAddresses && systemInfo.ipAddresses.length > 0 && (
                             <div>
-                                <h4 className="text-sm font-semibold text-[var(--rs-text-primary)] mb-2 flex items-center gap-2">
-                                    <BiGlobe size={16} className="text-[var(--rs-primary-500)]" />
+                                <h4 className="text-lg font-semibold text-[var(--rs-text-primary)] mb-2 flex items-center gap-2">
+                                <SFNetwork size="md" className="text-[var(--rs-text-primary)]" />
                                     {translation.system.ipAddresses}
                                 </h4>
                                 <div className="flex flex-wrap gap-4">
@@ -111,8 +112,8 @@ export function HostInfoPartial({ systemInfo, translation }: HostInfoPartialProp
 
                         {systemInfo.monitorResolution && (
                             <div>
-                                <h4 className="text-sm font-semibold text-[var(--rs-text-primary)] mb-2 flex items-center gap-2">
-                                    <BiDesktop size={16} className="text-[var(--rs-primary-500)]" />
+                                <h4 className="text-lg font-semibold text-[var(--rs-text-primary)] mb-2 flex items-center gap-2">
+                                    <SFDisplay size="md" className="text-[var(--rs-text-primary)]" />
                                     {translation.system.display}
                                 </h4>
                                 <div className="grid grid-cols-2 gap-3">

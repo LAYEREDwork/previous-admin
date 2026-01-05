@@ -1,17 +1,17 @@
 import ReactMarkdown from 'react-markdown';
 
-import { useLanguage } from '../../../contexts/PALanguageContext';
-import { useResponsiveControlSize } from '../../../hooks/useResponsiveControlSize';
-import { type VersionInfo } from '../../../lib/version';
-import { PAButton } from '../../controls/PAButton';
-import { PACard } from '../../controls/PACard';
+import { useLanguage } from '@frontend/contexts/PALanguageContext';
+import { useResponsiveControlSize } from '@frontend/hooks/useResponsiveControlSize';
+import { type VersionInfo } from '@frontend/lib/version';
+import { PAButton } from '@frontend/components/controls/PAButton';
+import { PACard } from '@frontend/components/controls/PACard';
 import { 
   SFArrowTrianglehead2ClockwiseRotate90, 
   SFCheckmarkSeal, 
   SFDocumentOnDocumentFill, 
   SFExclamationmarkBubbleFill, 
   SFInfoBubbleFill
-} from '../../sf-symbols';
+} from '@frontend/components/sf-symbols';
 
 interface VersionInfoPartialProps {
   versionInfo: VersionInfo | null;

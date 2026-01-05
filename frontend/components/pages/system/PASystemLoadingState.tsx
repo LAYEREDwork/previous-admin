@@ -1,6 +1,7 @@
+import { Loader } from 'rsuite';
+
 import type { Translations } from '../../../lib/translations';
 import { PACard } from '../../controls/PACard';
-import { SFArrowTrianglehead2ClockwiseRotate90CircleFill } from '../../sf-symbols';
 
 interface SystemLoadingStateProps {
   translation: Translations;
@@ -8,13 +9,13 @@ interface SystemLoadingStateProps {
 
 /**
  * Loading state component for the system page
+ * Displays a vertical RSuite Loader with slow spinning animation
  */
 export function SystemLoadingState({ translation }: SystemLoadingStateProps) {
   return (
     <PACard>
-      <div className="flex items-center gap-2 text-[var(--rs-primary-500)]">
-        <SFArrowTrianglehead2ClockwiseRotate90CircleFill size={16} className="animate-spin" />
-        <span className="text-sm">{translation.system.loading}</span>
+      <div className="flex items-center justify-center py-8">
+        <Loader size="md" speed="slow" vertical content={translation.system.loading} />
       </div>
     </PACard>
   );

@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 
-import { useLanguage } from '../../../contexts/PALanguageContext';
-import { useResponsiveControlSize } from '../../../hooks/useResponsiveControlSize';
-import { database, Configuration } from '../../../lib/database';
-import { PASize } from '../../../lib/types/sizes';
-import { PAButton } from '../../controls/PAButton';
-import { PACard } from '../../controls/PACard';
+import { useLanguage } from '@frontend/contexts/PALanguageContext';
+import { useResponsiveControlSize } from '@frontend/hooks/useResponsiveControlSize';
+import { database, Configuration } from '@frontend/lib/database';
+import { PASize } from '@frontend/lib/types/sizes';
+import { PAButton } from '@frontend/components/controls/PAButton';
+import { PACard } from '@frontend/components/controls/PACard';
 import { 
   SFArrowTrianglehead2ClockwiseRotate90Circle, 
   SFCheckmarkSealFill, 
   SFInfoCircleFill, 
   SFTrayAndArrowDownFill, 
   SFTrayAndArrowUpFill 
-} from '../../sf-symbols';
+} from '@frontend/components/sf-symbols';
 
 export function ConfigFileSyncPartial() {
   const { translation } = useLanguage();

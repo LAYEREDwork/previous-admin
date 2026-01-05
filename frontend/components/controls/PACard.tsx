@@ -1,6 +1,6 @@
 import { ReactNode, useState, useEffect } from 'react';
 
-import { SFChevronDown } from '../sf-symbols';
+import { SFChevronDown } from '@frontend/components/sf-symbols';
 
 interface PACardProps {
   children?: ReactNode;

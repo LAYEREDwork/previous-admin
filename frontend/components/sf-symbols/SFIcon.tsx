@@ -1,11 +1,12 @@
 import { ReactElement } from 'react';
 
+import { PAIconSize } from '@frontend/lib/types/sizes';
 import type { AvailableSFSymbol } from './available-sfsymbols';
 import { sfIconsData, sfIconsViewBox } from './icons-data';
 
 interface SFIconProps {
   /**
-   * Size of the icon in pixels
+   * Size of the icon - either a pixel value (number/string) or a size preset (xs, sm, md, lg, xl)
    * @default 24
    */
   size?: number | string;
@@ -65,7 +66,16 @@ export function createSFIcon(iconName: AvailableSFSymbol) {
     strokeWidth = 1,
     ...rest
   }: SFIconProps): ReactElement {
-    const numSize = typeof size === 'string' ? parseInt(size, 10) : size;
+    // Convert size to numeric pixels - handle both preset sizes (xs, sm, md, lg, xl) and numeric values
+    let numSize: number;
+    
+    if (typeof size === 'string') {
+      // Check if it's a preset size
+      numSize = PAIconSize[size.toLowerCase()] ?? parseInt(size, 10);
+    } else {
+      numSize = size;
+    }
+
     const svgContent = sfIconsData[iconName];
     const viewBox = sfIconsViewBox[iconName] || '0 0 24 24';
 

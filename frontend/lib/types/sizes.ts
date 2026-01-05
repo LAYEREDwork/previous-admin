@@ -12,6 +12,18 @@ export const PASize = {
   xl: 'xl',
 } as const;
 
+/**
+ * Icon sizes mapping from PASize to pixel values
+ * Used consistently across all icon components (SF Symbols, etc.)
+ */
+export const PAIconSize: Record<string, number> = {
+  xs: 12,
+  sm: 16,
+  md: 20,
+  lg: 24,
+  xl: 32,
+} as const;
+
 // Typography Size Enum (xs through 6xl)
 export const PATypographySize = {
   xs: 'xs',

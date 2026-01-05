@@ -1,10 +1,10 @@
-import { BiChip } from 'react-icons/bi';
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 import { Metrics } from '../../../../hooks/useSystemMetrics';
 import { Translations } from '../../../../lib/translations';
 import { padDataToWindow } from '../../../../lib/utils';
 import { PACard } from '../../../controls/PACard';
+import { SFCpu } from '@frontend/components/sf-symbols';
 
 interface CpuLoadChartProps {
   metrics: Metrics | null;
@@ -21,7 +21,7 @@ export function CpuLoadChart({ metrics, translation }: CpuLoadChartProps) {
       header={
         <div className="flex items-center justify-between w-full">
           <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] flex items-center gap-2 m-0 leading-none">
-            <BiChip size={20} className="text-[var(--rs-primary-500)]" />
+            <SFCpu size="md" className="text-[var(--rs-text-primary)]" />
             {translation.system.cpuLoadAverage}
           </h3>
           <div className="text-right">

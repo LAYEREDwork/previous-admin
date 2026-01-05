@@ -1,27 +1,27 @@
 import { useState, useRef } from 'react';
 
-import { useConfigActions } from '../../hooks/useConfigActions';
-import { useConfigEditor } from '../../hooks/useConfigEditor';
-import { useResponsiveControlSize } from '../../hooks/useResponsiveControlSize';
-import { PASize } from '../../lib/types/sizes';
-import { PAButton } from '../controls/PAButton';
+import { useConfigActions } from '@frontend/hooks/useConfigActions';
+import { useConfigEditor } from '@frontend/hooks/useConfigEditor';
+import { useResponsiveControlSize } from '@frontend/hooks/useResponsiveControlSize';
+import { PASize } from '@frontend/lib/types/sizes';
+import { PAButton } from '@frontend/components/controls/PAButton';
 
 // Components
-import { PAEmptyView } from '../controls/PAEmptyView';
+import { PAEmptyView } from '@frontend/components/controls/PAEmptyView';
 
 // Partials
-import { PANoConfigurationsEmptyView } from '../PANoConfigurationsEmptyView';
-import { ConfigDetailsPartial } from '../partials/config-editor/PAConfigDetailsPartial';
-import { EditorControlsPartial } from '../partials/config-editor/PAEditorControlsPartial';
-import { EditorViewPartial } from '../partials/config-editor/PAEditorViewPartial';
-import { RawViewPartial } from '../partials/config-editor/PARawViewPartial';
-import { PANewConfigModalPartial } from '../partials/config-list/PANewConfigModalPartial';
+import { PANoConfigurationsEmptyView } from '@frontend/components/PANoConfigurationsEmptyView';
+import { ConfigDetailsPartial } from '@frontend/components/partials/config-editor/PAConfigDetailsPartial';
+import { EditorControlsPartial } from '@frontend/components/partials/config-editor/PAEditorControlsPartial';
+import { EditorViewPartial } from '@frontend/components/partials/config-editor/PAEditorViewPartial';
+import { RawViewPartial } from '@frontend/components/partials/config-editor/PARawViewPartial';
+import { PANewConfigModalPartial } from '@frontend/components/partials/config-list/PANewConfigModalPartial';
 
 // Hooks
 import { 
   SFArrowTrianglehead2ClockwiseRotate90CircleFill, 
   SFLongTextPageAndPencilFill 
-} from '../sf-symbols';
+} from '@frontend/components/sf-symbols';
 
 export function PAConfigEditor({ configId, onTabChange }: { configId?: string | null; onTabChange?: (tab: string) => void }) {
   // Modal states for creating new configuration

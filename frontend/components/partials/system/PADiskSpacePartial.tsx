@@ -1,9 +1,8 @@
-import { BiHdd } from 'react-icons/bi';
-
-import { SystemInfo } from '../../../../shared/previous-config/types';
-import { Translations } from '../../../lib/translations';
-import { PACard } from '../../controls/PACard';
-import { PADiskSpace } from '../../controls/PADiskSpace';
+import { SystemInfo } from '@shared/previous-config/types';
+import { Translations } from '@frontend/lib/translations';
+import { PACard } from '@frontend/components/controls/PACard';
+import { PADiskSpace } from '@frontend/components/controls/PADiskSpace';
+import { SFExternaldrive } from '@frontend/components/sf-symbols';
 
 interface DiskSpacePartialProps {
     disks: SystemInfo['disks'];
@@ -21,8 +20,10 @@ export function DiskSpacePartial({ disks, translation }: DiskSpacePartialProps) 
         <PACard
             header={
                 <div className="flex items-center gap-2 m-0 leading-none">
-                    <BiHdd size={20} className="text-[var(--rs-primary-500)]" />
-                    {translation.system.disks}
+                    <SFExternaldrive size="lg" className="text-[var(--rs-text-primary)]" />
+                    <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] m-0">
+                        {translation.system.disks}
+                    </h3>
                 </div>
             }
         >

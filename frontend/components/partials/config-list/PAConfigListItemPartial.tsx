@@ -1,16 +1,16 @@
 import { useState } from 'react';
 
-import { Configuration } from '../../../lib/database';
-import type { Translations } from '../../../lib/translations';
-import { PACard } from '../../controls/PACard';
-import { PAContextMenu, type PAContextMenuItem } from '../../controls/PAContextMenu';
-import { PAContextMenuItemActionType } from '../../controls/PAContextMenuItem';
+import { Configuration } from '@frontend/lib/database';
+import type { Translations } from '@frontend/lib/translations';
+import { PACard } from '@frontend/components/controls/PACard';
+import { PAContextMenu, type PAContextMenuItem } from '@frontend/components/controls/PAContextMenu';
+import { PAContextMenuItemActionType } from '@frontend/components/controls/PAContextMenuItem';
 import { 
   SFArrowUpDocumentFill, 
   SFDocumentOnDocumentFill, 
   SFDocumentOnTrashFill, 
   SFLongTextPageAndPencilFill 
-} from '../../sf-symbols';
+} from '@frontend/components/sf-symbols';
 
 import { ConfigItemActions } from './PAConfigItemActionsPartial';
 import { ConfigItemContent } from './PAConfigItemContentPartial';

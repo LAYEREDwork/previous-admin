@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { ButtonGroup, Button } from 'rsuite';
 
-import { PASize } from '../../lib/types/sizes';
+import { PAIconSize, PASize } from '@frontend/lib/types/sizes';
 
 interface SegmentOption<T extends string> {
   value: T;
@@ -36,15 +36,6 @@ export function PASegmentedControl<T extends string>({
   // Map PASize to RSuite size
   const rsuiteSize = size === PASize.xl ? PASize.lg : size;
 
-  // Precise height mapping
-  const iconSizes = {
-    xs: 14,
-    sm: 16,
-    md: 18,
-    lg: 20,
-    xl: 22,
-  };
-
   return (
     <ButtonGroup
       className={className}
@@ -64,7 +55,7 @@ export function PASegmentedControl<T extends string>({
 
           if (typeof option.icon === 'function') {
             const IconComponent = option.icon as React.ComponentType<any>;
-            return <IconComponent size={iconSizes[size]} />;
+            return <IconComponent size={PAIconSize[size]} />;
           }
 
           return option.icon;
