@@ -1,4 +1,4 @@
-/// <reference types="jest" />
+/// <reference types="vitest" />
 /**
  * Tests for config schema generation pipeline
  * 
@@ -8,6 +8,7 @@
  * 3. validateConfigValue - value validation
  */
 
+import { describe, it, expect } from 'vitest';
 import { parseCfgFile, validateRawConfigStructure } from '../config-schema/config-parser';
 import { extractSchema, toDisplayName } from '../config-schema/schema-extractor';
 import { validateConfigValue, validateConfiguration } from '../config-schema/validator';

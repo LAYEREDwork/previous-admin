@@ -1,4 +1,4 @@
-/// <reference types="jest" />
+/// <reference types="vitest" />
 /**
  * Tests for CFG converter and config-schema API endpoint
  * 
@@ -8,6 +8,7 @@
  * 3. Round-trip conversion (CFG → JSON → CFG)
  */
 
+import { describe, it, expect } from 'vitest';
 import type { ConfigSchema } from '../../shared/previous-config/schema-types';
 import { cfgToJson, jsonToCfg } from '../config-schema/converter';
 
@@ -138,7 +139,7 @@ sModelName = NeXT
     });
 
     it('should warn about sections not in schema', () => {
-      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+      const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
       
       const cfgContent = `
 [UnknownSection]

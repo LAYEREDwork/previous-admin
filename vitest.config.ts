@@ -13,14 +13,29 @@ export default defineConfig({
   plugins: [react()],
   test: {
     globals: true,
+    // Use jsdom for frontend tests, node for backend tests
     environment: 'jsdom',
-    setupFiles: ['./src/test/setup.ts'], // Optional: Setup file
-    include: ['frontend/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    setupFiles: ['./src/test/setup.ts'],
+    include: [
+      'frontend/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
+      'backend/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
+    ],
+    exclude: [
+      'node_modules',
+      'dist',
+      '.idea',
+      '.git',
+      '.cache',
+    ],
+    // Configure for both frontend and backend
+    testTimeout: 10000,
+    hookTimeout: 10000,
   },
   resolve: {
     alias: {
       '@shared': resolve(__dirname, './shared'),
       '@frontend': resolve(__dirname, './frontend'),
+      '@backend': resolve(__dirname, './backend'),
       '@': '/src',
     },
   },
