@@ -1,4 +1,3 @@
-
 import { Translations } from '.';
 
 export const it: Translations = {

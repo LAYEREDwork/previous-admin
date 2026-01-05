@@ -4,7 +4,7 @@
  * Tests business logic in configurationService.ts
  */
 
-import { describe, it, expect, beforeEach, jest } from '@jest/globals';
+import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
 
 import type { PreviousConfig } from '@shared/previous-config/types';
 
@@ -72,6 +72,15 @@ describe('ConfigurationService', () => {
   });
 
   describe('createConfiguration', () => {
+    // Suppress console.warn during schema validation fallback tests
+    beforeEach(() => {
+      jest.spyOn(console, 'warn').mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+
     it('should create configuration with valid data', () => {
       const request: CreateConfigurationRequest = {
         name: 'Test Config',

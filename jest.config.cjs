@@ -7,15 +7,6 @@ module.exports = {
     '^@shared/(.*)$': '<rootDir>/shared/$1',
     '^@backend/(.*)$': '<rootDir>/backend/$1',
   },
-  globals: {
-    'ts-jest': {
-      tsconfig: {
-        types: ['jest', 'node'],
-        esModuleInterop: true,
-        allowSyntheticDefaultImports: true,
-      },
-    },
-  },
   transform: {
     '^.+\\.ts$': ['ts-jest', {
       tsconfig: {
@@ -24,6 +15,9 @@ module.exports = {
           '@shared/*': ['shared/*'],
           '@backend/*': ['backend/*'],
         },
+        types: ['jest', 'node'],
+        esModuleInterop: true,
+        allowSyntheticDefaultImports: true,
       },
     }],
   },

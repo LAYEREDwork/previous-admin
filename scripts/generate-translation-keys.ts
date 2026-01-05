@@ -95,8 +95,7 @@ function saveTranslations(language: Language, translations: TranslationStrings):
   // We need to recreate the TypeScript file with proper formatting
   // This is complex, so we use a simpler approach: replace just the translation object
 
-  // Generate proper import statement
-  const importLine = "import { appName } from '../../constants';";
+  // Generate proper import statements
   const importType = "import { Translations } from '.';";
   const exportStatement = `export const ${language}: Translations = `;
 
@@ -128,7 +127,7 @@ function saveTranslations(language: Language, translations: TranslationStrings):
   };
 
   const content =
-    `${importLine}\n\n${importType}\n\n${exportStatement}{\n` +
+    `${importType}\n\n${exportStatement}{\n` +
     stringifyObject(translations as Record<string, unknown>, 1) +
     '\n};\n';
 
@@ -221,12 +220,8 @@ function main(): void {
       // Merge missing keys
       const updated = mergeTranslationKeys(existing, requiredKeys);
 
-      // Read original file to preserve formatting
-      const filePath = path.join(LOCALES_DIR, `${language}.ts`);
-      const originalContent = fs.readFileSync(filePath, 'utf-8');
-
       // Save updated translations
-      saveTranslations(language, updated, originalContent);
+      saveTranslations(language, updated);
       console.log(`  ✅ Updated ${language}.ts`);
     } catch (error) {
       console.error(`  ❌ Error processing ${language}:`, (error as Error).message);
