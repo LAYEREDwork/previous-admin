@@ -1,8 +1,9 @@
 import { SystemInfo } from '@shared/previous-config/types';
-import { Translations } from '@frontend/lib/translations';
+
 import { PACard } from '@frontend/components/controls/PACard';
 import { PADiskSpace } from '@frontend/components/controls/PADiskSpace';
 import { SFExternaldrive } from '@frontend/components/sf-symbols';
+import { Translations } from '@frontend/lib/translations';
 
 interface DiskSpacePartialProps {
     disks: SystemInfo['disks'];
@@ -21,7 +22,7 @@ export function DiskSpacePartial({ disks, translation }: DiskSpacePartialProps) 
             header={
                 <div className="flex items-center gap-2 m-0 leading-none">
                     <SFExternaldrive size="lg" className="text-[var(--rs-text-primary)]" />
-                    <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] m-0">
+                    <h3 className="text-base font-semibold text-[var(--rs-text-primary)] m-0">
                         {translation.system.disks}
                     </h3>
                 </div>

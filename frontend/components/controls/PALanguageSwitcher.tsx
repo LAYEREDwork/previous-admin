@@ -1,12 +1,9 @@
-import { FaCheck } from 'react-icons/fa';
 import { Dropdown, Button } from 'rsuite';
 
-// Hooks
-import { useLanguage } from '../../contexts/PALanguageContext';
-
-// Types/Utilities
-import { Language } from '../../lib/translations';
-import { PASize } from '../../lib/types/sizes';
+import { SFCheckmarkCircle } from '@frontend/components/sf-symbols';
+import { useLanguage } from '@frontend/contexts/PALanguageContext';
+import { Language } from '@frontend/lib/translations';
+import { PASize, PASizeConfig } from '@frontend/lib/types/sizes';
 
 const languageNames: Record<Language, string> = {
   en: 'English',
@@ -26,10 +23,13 @@ const languageFlags: Record<Language, string> = {
 
 /**
  * Language Switcher Component
- * Now using RSuite Dropdown.
+ * Now using RSuite Dropdown with configurable sizing.
+ * 
+ * @param size The size of the language switcher (xs, sm, md, lg, xl)
  */
-export function PALanguageSwitcher() {
+export function PALanguageSwitcher({ size = PASize.sm }: { size?: typeof PASize[keyof typeof PASize] } = {}) {
   const { language, setLanguage } = useLanguage();
+  const config = PASizeConfig[size as keyof typeof PASizeConfig];
 
   const sortedLanguages = (Object.keys(languageNames) as Language[]).sort((a, b) =>
     languageNames[a].localeCompare(languageNames[b])
@@ -43,12 +43,10 @@ export function PALanguageSwitcher() {
           {...props}
           ref={ref}
           appearance="default"
-          size={PASize.sm}
+          size={config.buttonSize}
+          title="Language switcher"
         >
-          <div className="flex items-center gap-2">
-            <span className="text-lg">{languageFlags[language]}</span>
-            <span className="text-sm">{languageNames[language]}</span>
-          </div>
+          <span style={{ fontSize: `${config.iconSize}px` }}>{languageFlags[language]}</span>
         </Button>
       )}
     >
@@ -60,11 +58,11 @@ export function PALanguageSwitcher() {
         >
           <div className="flex items-center justify-between gap-3 min-w-[140px]">
             <div className="flex items-center gap-2">
-              <span className="text-lg">{languageFlags[lang]}</span>
+              <span style={{ fontSize: `${config.iconSize}px` }}>{languageFlags[lang]}</span>
               <span>{languageNames[lang]}</span>
             </div>
             {language === lang && (
-              <FaCheck size={12} />
+              <SFCheckmarkCircle size={config.iconSize} color="currentColor" className="flex-shrink-0" />
             )}
           </div>
         </Dropdown.Item>

@@ -1,10 +1,11 @@
 import { Input } from 'rsuite';
 
+import { SFLongTextPageAndPencilFill, SFSquareAndArrowDownFill } from '@frontend/components/sf-symbols';
+
 import { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
 import { PAButton } from '../../controls/PAButton';
 import { PACard } from '../../controls/PACard';
-import { SFLongTextPageAndPencilFill, SFSquareAndArrowDownFill } from '@frontend/components/sf-symbols';
 
 interface ConfigDetailsPartialProps {
     localName: string;

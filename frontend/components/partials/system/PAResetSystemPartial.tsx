@@ -1,8 +1,8 @@
-import { Translations } from '@frontend/lib/translations';
-import { PASize } from '@frontend/lib/types/sizes';
 import { PAButton } from '@frontend/components/controls/PAButton';
 import { PACard } from '@frontend/components/controls/PACard';
 import { SFRestartCircle } from '@frontend/components/sf-symbols';
+import { Translations } from '@frontend/lib/translations';
+import { PASize } from '@frontend/lib/types/sizes';
 
 interface ResetSystemPartialProps {
     onResetClick: () => void;
@@ -23,7 +23,7 @@ export function ResetSystemPartial({
                 header={
                     <div className="flex items-center gap-2 m-0 leading-none">
                         <SFRestartCircle size="lg" className="text-[var(--rs-text-error)]" />
-                        <h3 className="text-lg font-semibold text-[var(--rs-text-error)] m-0">
+                        <h3 className="text-base font-semibold text-[var(--rs-text-error)] m-0">
                             {translation.system.resetTitle}
                         </h3>
                     </div>

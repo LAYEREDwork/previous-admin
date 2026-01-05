@@ -1,8 +1,9 @@
 import { IconButton } from 'rsuite';
 
+import { SFCheckmarkCircle, SFCircle } from '@frontend/components/sf-symbols';
+
 import type { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
-import { SFCheckmarkCircle, SFCircle } from '@frontend/components/sf-symbols';
 
 interface ConfigItemControlsProps {
   isActive?: boolean;

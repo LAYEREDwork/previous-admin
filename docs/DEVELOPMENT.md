@@ -47,6 +47,9 @@ Frontend runs on `http://localhost:2342`
 ### Code Generation
 - `npm run generate` - Run all generation commands (meta-script)
 - `npm run generate:schema` - Generate TypeScript types from JSON schema
+- `npm run generate:sfsymbols` - Generate SF Symbols icon components
+- `npm run generate:fontlist` - Generate available fonts list from /public/fonts
+- `npm run generate:translationkeys` - Generate translation key types
 - `npm run generate:screenshots` - Generate documentation screenshots
 - `npm run generate:sfsymbols` - Generate SF Symbols icon mappings
 - `npm run generate:translationkeys` - Generate translation key files

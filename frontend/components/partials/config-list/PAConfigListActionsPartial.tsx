@@ -1,6 +1,3 @@
-import { Configuration } from '@frontend/lib/database';
-import { Translations } from '@frontend/lib/translations';
-import { PASize } from '@frontend/lib/types/sizes';
 import { PAButton } from '@frontend/components/controls/PAButton';
 import { 
   SFArrowUpDocumentFill, 
@@ -8,6 +5,9 @@ import {
   SFDocumentOnTrashFill, 
   SFLongTextPageAndPencilFill 
 } from '@frontend/components/sf-symbols';
+import { Configuration } from '@frontend/lib/database';
+import { Translations } from '@frontend/lib/translations';
+import { PASize } from '@frontend/lib/types/sizes';
 
 interface ConfigListActionsPartialProps {
   config: Configuration;

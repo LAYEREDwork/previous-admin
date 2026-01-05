@@ -5,7 +5,7 @@
 
 import { StylingKey } from '@shared/previous-config/enums';
 
-import { PAIconSize, PASize } from '../types';
+import { PASize } from '../types';
 
 import { adjustLightness, hslToString, parseColorToHsl } from './color';
 import { computePalette, Palette } from './palette';

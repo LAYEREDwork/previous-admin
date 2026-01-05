@@ -24,6 +24,19 @@ export const PAIconSize: Record<string, number> = {
   xl: 32,
 } as const;
 
+/**
+ * Comprehensive size configuration mapping PASize to multiple CSS properties
+ * Centralizes font sizes, icon sizes, and button sizes for consistent UI scaling
+ * Used throughout the application for size-dependent components
+ */
+export const PASizeConfig = {
+  xs: { fontSize: 11, iconSize: 12, buttonSize: 'xs' as const },
+  sm: { fontSize: 12, iconSize: 14, buttonSize: 'sm' as const },
+  md: { fontSize: 14, iconSize: 16, buttonSize: 'md' as const },
+  lg: { fontSize: 16, iconSize: 20, buttonSize: 'lg' as const },
+  xl: { fontSize: 18, iconSize: 24, buttonSize: 'lg' as const }, // RSuite doesn't have 'xl', use 'lg'
+} as const;
+
 // Typography Size Enum (xs through 6xl)
 export const PATypographySize = {
   xs: 'xs',

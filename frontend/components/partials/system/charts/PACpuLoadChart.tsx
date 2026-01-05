@@ -1,10 +1,11 @@
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
+import { SFCpu } from '@frontend/components/sf-symbols';
+
 import { Metrics } from '../../../../hooks/useSystemMetrics';
 import { Translations } from '../../../../lib/translations';
 import { padDataToWindow } from '../../../../lib/utils';
 import { PACard } from '../../../controls/PACard';
-import { SFCpu } from '@frontend/components/sf-symbols';
 
 interface CpuLoadChartProps {
   metrics: Metrics | null;
@@ -20,7 +21,7 @@ export function CpuLoadChart({ metrics, translation }: CpuLoadChartProps) {
       bgColorScheme="surface"
       header={
         <div className="flex items-center justify-between w-full">
-          <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] flex items-center gap-2 m-0 leading-none">
+          <h3 className="text-base font-semibold text-[var(--rs-text-primary)] flex items-center gap-2 m-0 leading-none">
             <SFCpu size="md" className="text-[var(--rs-text-primary)]" />
             {translation.system.cpuLoadAverage}
           </h3>

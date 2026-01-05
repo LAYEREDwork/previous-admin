@@ -1,8 +1,5 @@
 import ReactMarkdown from 'react-markdown';
 
-import { useLanguage } from '@frontend/contexts/PALanguageContext';
-import { useResponsiveControlSize } from '@frontend/hooks/useResponsiveControlSize';
-import { type VersionInfo } from '@frontend/lib/version';
 import { PAButton } from '@frontend/components/controls/PAButton';
 import { PACard } from '@frontend/components/controls/PACard';
 import { 
@@ -12,6 +9,9 @@ import {
   SFExclamationmarkBubbleFill, 
   SFInfoBubbleFill
 } from '@frontend/components/sf-symbols';
+import { useLanguage } from '@frontend/contexts/PALanguageContext';
+import { useResponsiveControlSize } from '@frontend/hooks/useResponsiveControlSize';
+import { type VersionInfo } from '@frontend/lib/version';
 
 interface VersionInfoPartialProps {
   versionInfo: VersionInfo | null;

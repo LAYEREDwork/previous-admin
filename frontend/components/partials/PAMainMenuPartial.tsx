@@ -1,6 +1,5 @@
 import { Nav } from 'rsuite';
 
-import { useLanguage } from '@frontend/contexts/PALanguageContext';
 import { PATabBar } from '@frontend/components/controls/PATabBar';
 import { 
     SFDocumentOnDocumentFill, 
@@ -9,6 +8,7 @@ import {
     SFDesktopcomputer,
     SFInfoBubbleFill
 } from '@frontend/components/sf-symbols';
+import { useLanguage } from '@frontend/contexts/PALanguageContext';
 
 interface MainMenuProps {
     currentTab: string;

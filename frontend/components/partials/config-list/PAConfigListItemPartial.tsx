@@ -1,7 +1,5 @@
 import { useState } from 'react';
 
-import { Configuration } from '@frontend/lib/database';
-import type { Translations } from '@frontend/lib/translations';
 import { PACard } from '@frontend/components/controls/PACard';
 import { PAContextMenu, type PAContextMenuItem } from '@frontend/components/controls/PAContextMenu';
 import { PAContextMenuItemActionType } from '@frontend/components/controls/PAContextMenuItem';
@@ -11,6 +9,8 @@ import {
   SFDocumentOnTrashFill, 
   SFLongTextPageAndPencilFill 
 } from '@frontend/components/sf-symbols';
+import { Configuration } from '@frontend/lib/database';
+import type { Translations } from '@frontend/lib/translations';
 
 import { ConfigItemActions } from './PAConfigItemActionsPartial';
 import { ConfigItemContent } from './PAConfigItemContentPartial';

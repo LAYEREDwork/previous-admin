@@ -15,10 +15,11 @@
     "test": "npm run test:frontend && npm run test:backend",
     "test:frontend": "vitest run --run frontend",
     "test:backend": "vitest run --run backend",
-    "generate": "npm run generate:sfsymbols && npm run generate:schema && npm run generate:translationkeys && npm run generate:screenshots",
-    "generate:prod": "npm run generate:sfsymbols && npm run generate:schema && npm run generate:translationkeys",
+    "generate": "npm run generate:sfsymbols && npm run generate:schema && npm run generate:translationkeys && npm run generate:fontlist && npm run generate:screenshots",
+    "generate:prod": "npm run generate:sfsymbols && npm run generate:schema && npm run generate:translationkeys && npm run generate:fontlist",
     "generate:sfsymbols": "tsx scripts/generate-sfsymbols.ts",
     "generate:schema": "bash scripts/generate-config-schema.sh",
+    "generate:fontlist": "tsx scripts/generate-fontlist.ts",
     "generate:screenshots": "node scripts/generate-screenshots.mjs",
     "generate:translationkeys": "tsx scripts/generate-translation-keys.ts",
     "import:exampledb": "tsx scripts/import-example-database.ts"

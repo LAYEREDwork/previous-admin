@@ -1,9 +1,5 @@
 import { useState, useEffect } from 'react';
 
-import { useLanguage } from '@frontend/contexts/PALanguageContext';
-import { useResponsiveControlSize } from '@frontend/hooks/useResponsiveControlSize';
-import { database, Configuration } from '@frontend/lib/database';
-import { PASize } from '@frontend/lib/types/sizes';
 import { PAButton } from '@frontend/components/controls/PAButton';
 import { PACard } from '@frontend/components/controls/PACard';
 import { 
@@ -13,6 +9,10 @@ import {
   SFTrayAndArrowDownFill, 
   SFTrayAndArrowUpFill 
 } from '@frontend/components/sf-symbols';
+import { useLanguage } from '@frontend/contexts/PALanguageContext';
+import { useResponsiveControlSize } from '@frontend/hooks/useResponsiveControlSize';
+import { database, Configuration } from '@frontend/lib/database';
+import { PASize } from '@frontend/lib/types/sizes';
 
 export function ConfigFileSyncPartial() {
   const { translation } = useLanguage();

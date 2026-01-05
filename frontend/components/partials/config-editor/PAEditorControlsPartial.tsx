@@ -1,5 +1,3 @@
-import { Translations } from '@frontend/lib/translations';
-import { PASize } from '@frontend/lib/types/sizes';
 import { PAButton } from '@frontend/components/controls/PAButton';
 import { PASegmentedControl } from '@frontend/components/controls/PASegmentedControl';
 import { 
@@ -8,6 +6,8 @@ import {
     SFSquareAndArrowDownOnSquareFill, 
     SFTextRectangleFill 
 } from '@frontend/components/sf-symbols';
+import { Translations } from '@frontend/lib/translations';
+import { PASize } from '@frontend/lib/types/sizes';
 
 interface EditorControlsPartialProps {
     viewMode: 'editor' | 'raw';

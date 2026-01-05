@@ -1,8 +1,9 @@
 import { SystemInfo } from '@shared/previous-config/types';
-import { Translations } from '@frontend/lib/translations';
-import { formatUptime } from '@frontend/lib/utils';
+
 import { PACard } from '@frontend/components/controls/PACard';
 import { SFInternaldrive, SFCpu, SFNetwork, SFDisplay } from '@frontend/components/sf-symbols';
+import { Translations } from '@frontend/lib/translations';
+import { formatUptime } from '@frontend/lib/utils';
 
 interface HostInfoPartialProps {
     systemInfo: SystemInfo;
@@ -15,7 +16,7 @@ export function HostInfoPartial({ systemInfo, translation }: HostInfoPartialProp
             header={
                 <div className="flex items-center gap-2 m-0 leading-none">
                     <SFInternaldrive size="lg" className="text-[var(--rs-text-primary)]" />
-                    <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] m-0">
+                    <h3 className="text-base font-semibold text-[var(--rs-text-primary)] m-0">
                         {translation.system.hostInfo}
                     </h3>
                 </div>

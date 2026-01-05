@@ -10,7 +10,7 @@ The GitHub Actions CI/CD pipeline for Previous Admin orchestrates a complex work
 
 ```mermaid
 graph TD
-    A("🚀 generate-sf-symbols<br/>(ubuntu-latest)<br/>Generate SF Symbols") --> B("✅ lint-and-typecheck<br/>(ubuntu-latest)<br/>ESLint + TypeScript Check")
+    A("🚀 generate-resources<br/>(ubuntu-latest)<br/>SF Symbols + Font List") --> B("✅ lint-and-typecheck<br/>(ubuntu-latest)<br/>ESLint + TypeScript Check")
     B --> C("🔨 build<br/>(ubuntu-latest)<br/>Create Production Build")
     C --> D("🧪 frontend-test<br/>(ubuntu-latest)<br/>React/Frontend Tests")
     C --> E("🧪 backend-test matrix<br/>macOS + Ubuntu<br/>Node.js Backend Tests")
@@ -25,14 +25,18 @@ graph TD
 
 ## Job Details
 
-### 1. **generate-sf-symbols** (Entry Point)
+### 1. **generate-resources** (Entry Point)
 - **Platform**: ubuntu-latest
-- **Purpose**: Generate and update SF Symbols from reference.cfg
-- **Output**: `icons-data.ts`, `icons-map.ts`, `index.tsx`
+- **Purpose**: Generate resources used by the build:
+  - SF Symbols from reference.cfg
+  - Available fonts list from /public/fonts directory
+- **Output**: 
+  - `icons-data.ts`, `icons-map.ts`, `index.tsx` (SF Symbols)
+  - `frontend/lib/fonts.ts` (Font List)
 - **Dependencies**: None (can start in parallel)
 - **Condition**: Runs always
 
-### 2. **lint-and-typecheck** (Depends on: generate-sf-symbols)
+### 2. **lint-and-typecheck** (Depends on: generate-resources)
 - **Platform**: ubuntu-latest
 - **Purpose**: Validate code quality
 - **Steps**:
@@ -90,7 +94,7 @@ graph TD
 ## Execution Flow
 
 ### On Every Push/PR:
-1. **generate-sf-symbols** starts (parallel to nothing)
+1. **generate-resources** starts (parallel to nothing) - generates SF Symbols and Font List
 2. **lint-and-typecheck** waits for step 1
 3. **build** waits for step 2
 4. **frontend-test** and **backend-test** run in parallel (wait for step 3)

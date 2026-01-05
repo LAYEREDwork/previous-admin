@@ -1,9 +1,5 @@
 import { useState, useRef } from 'react';
 
-import { useConfigActions } from '@frontend/hooks/useConfigActions';
-import { useConfigEditor } from '@frontend/hooks/useConfigEditor';
-import { useResponsiveControlSize } from '@frontend/hooks/useResponsiveControlSize';
-import { PASize } from '@frontend/lib/types/sizes';
 import { PAButton } from '@frontend/components/controls/PAButton';
 
 // Components
@@ -22,6 +18,10 @@ import {
   SFArrowTrianglehead2ClockwiseRotate90CircleFill, 
   SFLongTextPageAndPencilFill 
 } from '@frontend/components/sf-symbols';
+import { useConfigActions } from '@frontend/hooks/useConfigActions';
+import { useConfigEditor } from '@frontend/hooks/useConfigEditor';
+import { useResponsiveControlSize } from '@frontend/hooks/useResponsiveControlSize';
+import { PASize } from '@frontend/lib/types/sizes';
 
 export function PAConfigEditor({ configId, onTabChange }: { configId?: string | null; onTabChange?: (tab: string) => void }) {
   // Modal states for creating new configuration

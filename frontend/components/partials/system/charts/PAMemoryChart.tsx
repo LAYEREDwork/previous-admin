@@ -1,10 +1,11 @@
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
+import { SFMemorychip } from '@frontend/components/sf-symbols';
+
 import { Metrics } from '../../../../hooks/useSystemMetrics';
 import { Translations } from '../../../../lib/translations';
 import { padDataToWindow, formatBytes } from '../../../../lib/utils';
 import { PACard } from '../../../controls/PACard';
-import { SFMemorychip } from '@frontend/components/sf-symbols';
 
 interface MemoryChartProps {
   metrics: Metrics | null;
@@ -20,7 +21,7 @@ export function MemoryChart({ metrics, translation }: MemoryChartProps) {
       bgColorScheme="surface"
       header={
         <div className="flex items-center justify-between w-full">
-          <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] flex items-center gap-2 m-0 leading-none">
+          <h3 className="text-base font-semibold text-[var(--rs-text-primary)] flex items-center gap-2 m-0 leading-none">
             <SFMemorychip size="md" className="text-[var(--rs-text-primary)]" />
             {translation.system.memory}
           </h3>

@@ -20,9 +20,13 @@ The application runs as a self-contained web service on Linux or macOS, allowing
 - **Configuration Management** — Create, edit, organize, and reorder multiple emulator configurations
 - **Import/Export** — Export individual configs or complete database backups; import from JSON files
 - **Multi-Language** — Full internationalization support (German, English, Spanish, French, Italian)
-- **Real-Time Monitoring** — Live system metrics including CPU, memory, disk, and network statistics
+- **Font Selection** — Choose between multiple font families (Roboto Flex, Barlow Semi Condensed) with instant live preview
+- **Real-Time Monitoring** — Live system metrics including CPU, memory, disk, and network statistics with SF Symbols
 - **Responsive Design** — Clean, modern UI optimized for desktop, tablet, and mobile devices
 - **Dark Mode** — NeXT-inspired dark theme with automatic system preference detection
+- **SF Symbols** — Consistent, modern icon system throughout the application with centralized icon sizing
+- **Path Alias Standardization** — Cleaner imports using `@frontend/*` and `@shared/*` aliases
+- **Centralized Font & Icon Sizing** — Single source of truth for consistent styling across components
 
 See more details and screenshots in [docs/SCREENSHOTS.md](docs/SCREENSHOTS.md).
 

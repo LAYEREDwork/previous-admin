@@ -12,7 +12,7 @@ permissions:
   contents: write
 
 jobs:
-  generate-sf-symbols:
+  generate-resources:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -30,8 +30,11 @@ jobs:
       - name: Generate SF Symbols
         run: npm run generate:sfsymbols
 
+      - name: Generate Font List
+        run: npm run generate:fontlist
+
   lint-and-typecheck:
-    needs: generate-sf-symbols
+    needs: generate-resources
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

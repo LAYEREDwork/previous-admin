@@ -1,10 +1,11 @@
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
+import { SFNetwork } from '@frontend/components/sf-symbols';
+
 import { Metrics } from '../../../../hooks/useSystemMetrics';
 import { Translations } from '../../../../lib/translations';
 import { padDataToWindow, getOptimalUnit } from '../../../../lib/utils';
 import { PACard } from '../../../controls/PACard';
-import { SFNetwork } from '@frontend/components/sf-symbols';
 
 interface NetworkTrafficChartProps {
   metrics: Metrics | null;
@@ -19,7 +20,7 @@ export function NetworkTrafficChart({ metrics, translation }: NetworkTrafficChar
     <PACard
       bgColorScheme="surface"
       header={
-        <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] flex items-center gap-2 m-0 leading-none">
+        <h3 className="text-base font-semibold text-[var(--rs-text-primary)] flex items-center gap-2 m-0 leading-none">
           <SFNetwork size="md" className="text-[var(--rs-text-primary)]" />
           {translation.system.networkTraffic}
         </h3>

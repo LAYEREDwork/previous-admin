@@ -1,8 +1,9 @@
+import { SFTrayAndArrowDownFill, SFTrayAndArrowUpFill } from '@frontend/components/sf-symbols';
+
 import { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
 import { PAButton } from '../../controls/PAButton';
 import { PACard } from '../../controls/PACard';
-import { SFTrayAndArrowDownFill, SFTrayAndArrowUpFill } from '@frontend/components/sf-symbols';
 
 interface DatabaseImportExportPartialProps {
     databaseImporting: boolean;

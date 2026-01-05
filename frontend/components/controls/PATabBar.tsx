@@ -25,7 +25,7 @@ export function PATabBar<T extends string>({
 }: PATabBarProps<T>) {
   return (
     <nav
-      className={`fixed bottom-0 left-0 right-0 z-50 border-t border-[var(--rs-border-primary)] transition-colors duration-200 safe-area-inset-bottom portrait-only ${className}`}
+      className={`fixed bottom-0 left-0 right-0 z-50 border-t border-[var(--rs-border-primary)] transition-colors duration-200 safe-area-inset-bottom portrait-only md:hidden ${className}`}
       style={{ backgroundColor: 'var(--rs-bg-card)' }}
     >
       <div className="flex items-stretch justify-around h-20">

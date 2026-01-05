@@ -15,6 +15,13 @@ Previous Admin is built with modern, production-ready technologies focusing on p
 - **Tailwind CSS** - Utility-first CSS framework for responsive design
 - **Rsuite UI 5.70.x** - React component library with built-in themes
 
+### Icons & Fonts
+- **SF Symbols** - San Francisco Symbol system for consistent, modern icons
+- **Variable Fonts**: Roboto Flex (main), Barlow Semi Condensed (alternative)
+- **Font Switching**: Runtime font selection with instant live preview
+- **Centralized Icon Sizing**: Standardized icon dimensions (xs: 12px to xl: 32px)
+- **Path Aliases**: Cleaner imports using `@frontend/*` and `@shared/*`
+
 ### Real-Time Communication
 - **WebSocket** - Native browser WebSockets for real-time metrics
 - Automatic reconnection and fallback handling

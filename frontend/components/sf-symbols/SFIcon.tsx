@@ -1,6 +1,7 @@
 import { ReactElement } from 'react';
 
 import { PAIconSize } from '@frontend/lib/types/sizes';
+
 import type { AvailableSFSymbol } from './available-sfsymbols';
 import { sfIconsData, sfIconsViewBox } from './icons-data';
 

@@ -1,7 +1,7 @@
-import { ReactNode, useState, useEffect } from 'react';
+import { ReactNode } from 'react';
 
 import { useLanguage } from '../../contexts/PALanguageContext';
-import { getCurrentVersion } from '../../lib/version';
+import { PAFontSwitcher } from '../controls/PAFontSwitcher';
 import { PALanguageSwitcher } from '../controls/PALanguageSwitcher';
 import { PANeXTLogo } from '../controls/PANeXTLogo';
 import { PAThemeSwitcher } from '../controls/PAThemeSwitcher';
@@ -18,11 +18,6 @@ interface LayoutProps {
 
 export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
   const { translation } = useLanguage();
-  const [version, setVersion] = useState<string>('');
-
-  useEffect(() => {
-    getCurrentVersion().then(setVersion);
-  }, []);
 
   return (
     <div className="min-h-screen transition-colors flex flex-col" style={{ backgroundColor: 'var(--rs-body)' }}>
@@ -37,15 +32,11 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
               <h1 className="text-sm font-semibold text-[var(--rs-text-primary)]">
                 {translation.layout.title}
               </h1>
-              {version && (
-                <span className="text-xs text-[var(--rs-text-secondary)] font-mono">
-                  v{version}
-                </span>
-              )}
             </div>
           </div>
           <div className="flex items-center gap-2 portrait-controls-layout md:gap-0">
             <PALanguageSwitcher />
+            <PAFontSwitcher />
             <PAThemeSwitcher />
           </div>
         </div>
@@ -64,11 +55,6 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
                     <h1 className="text-sm sm:text-base font-bold text-[var(--rs-text-primary)] truncate">
                       {translation.layout.title}
                     </h1>
-                    {version && (
-                      <span className="text-xs text-[var(--rs-text-secondary)] font-mono flex-shrink-0">
-                        v{version}
-                      </span>
-                    )}
                   </div>
                   <p className="text-xs text-[var(--rs-text-secondary)] truncate">
                     {translation.layout.subtitle}
@@ -78,6 +64,7 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
               <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
                 <div className="flex items-center gap-1.5 sm:gap-2">
                   <PALanguageSwitcher />
+                  <PAFontSwitcher />
                   <PAThemeSwitcher />
 
                 </div>
@@ -85,8 +72,6 @@ export function Layout({ children, currentTab, onTabChange }: LayoutProps) {
             </div>
           </div>
         </header>
-
-        <MainMenuPartial currentTab={currentTab} onTabChange={onTabChange} />
       </div>
 
       <main className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 flex-grow w-full pb-8">

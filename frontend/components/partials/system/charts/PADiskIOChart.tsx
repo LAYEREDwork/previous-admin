@@ -1,10 +1,11 @@
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
+import { SFExternaldrive } from '@frontend/components/sf-symbols';
+
 import { Metrics } from '../../../../hooks/useSystemMetrics';
 import { Translations } from '../../../../lib/translations';
 import { padDataToWindow, getOptimalUnit } from '../../../../lib/utils';
 import { PACard } from '../../../controls/PACard';
-import { SFExternaldrive } from '@frontend/components/sf-symbols';
 
 interface DiskIOChartProps {
   metrics: Metrics | null;
@@ -19,7 +20,7 @@ export function DiskIOChart({ metrics, translation }: DiskIOChartProps) {
     <PACard
       bgColorScheme="surface"
       header={
-        <h3 className="text-lg font-semibold text-[var(--rs-text-primary)] flex items-center gap-2 m-0 leading-none">
+        <h3 className="text-base font-semibold text-[var(--rs-text-primary)] flex items-center gap-2 m-0 leading-none">
           <SFExternaldrive size="md" className="text-[var(--rs-text-primary)]" />
           Disk I/O
         </h3>

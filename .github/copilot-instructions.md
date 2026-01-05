@@ -9,6 +9,11 @@
 - Always communicate in German.
 - When adding features or making changes, always run linter, typecheck and build commands to ensure code quality. If there are any errors, always fix them before proceeding.
 - When creating new colours, always ensure that they are theme-aware. This means that they should work in both light and dark mode.
+- **CRITICAL - DRY Principle**: Before creating new types, constants, or configurations, ALWAYS search the codebase for similar or existing implementations. If something similar already exists:
+  - Use the existing implementation instead of creating duplicates
+  - If the existing implementation needs extension, refactor it to be more general/reusable
+  - Never create redundant constants, mappings, or type definitions
+  - Examples: Size configurations (`PASizeConfig`), icon mappings, color schemes, font settings, etc.
 
 ## Architecture Overview
 - **Frontend**: React 19.2.3 + TypeScript app built with Vite, using Tailwind CSS and Rsuite UI components. Runs on port 2342 in development, served by backend in production.

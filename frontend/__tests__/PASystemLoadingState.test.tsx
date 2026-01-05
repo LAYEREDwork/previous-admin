@@ -16,15 +16,16 @@ describe('SystemLoadingState', () => {
     expect(screen.getByText('Loading system information...')).toBeInTheDocument();
   });
 
-  it('should render spinning refresh icon', () => {
+  it('should render RSuite Loader component', () => {
     render(<SystemLoadingState translation={mockTranslation} />);
-    const icon = document.querySelector('.animate-spin');
-    expect(icon).toBeInTheDocument();
+    // RSuite Loader renders as a div with class rs-loader-box
+    const loader = document.querySelector('.rs-loader-box');
+    expect(loader).toBeInTheDocument();
   });
 
-  it('should have correct text color', () => {
-    render(<SystemLoadingState translation={mockTranslation} />);
-    const textContainer = screen.getByText('Loading system information...').closest('div');
-    expect(textContainer).toHaveClass('text-[var(--rs-primary-500)]');
+  it('should have correct layout with flex center', () => {
+    const { container } = render(<SystemLoadingState translation={mockTranslation} />);
+    const flexContainer = container.querySelector('.flex.items-center.justify-center');
+    expect(flexContainer).toBeInTheDocument();
   });
 });

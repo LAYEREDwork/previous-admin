@@ -9,6 +9,7 @@ import { PAImportExport } from './components/pages/PAImportExportPage';
 import { PASystem } from './components/pages/PASystemPage';
 import { Layout } from './components/partials/PALayoutPartial';
 import { PAConfigProvider } from './contexts/PAConfigContext';
+import { FontProvider } from './contexts/PAFontContext';
 import { PALanguageProvider } from './contexts/PALanguageContext';
 import { PANotificationProvider } from './contexts/PANotificationContext';
 import { ThemeProvider, useTheme } from './contexts/PAThemeContext';
@@ -53,15 +54,17 @@ function PAAppContent() {
 function App() {
   return (
     <PAErrorBoundary>
-      <PALanguageProvider>
-        <PANotificationProvider>
-          <PAConfigProvider>
-            <ThemeProvider>
-              <PAAppContent />
-            </ThemeProvider>
-          </PAConfigProvider>
-        </PANotificationProvider>
-      </PALanguageProvider>
+      <FontProvider>
+        <PALanguageProvider>
+          <PANotificationProvider>
+            <PAConfigProvider>
+              <ThemeProvider>
+                <PAAppContent />
+              </ThemeProvider>
+            </PAConfigProvider>
+          </PANotificationProvider>
+        </PALanguageProvider>
+      </FontProvider>
     </PAErrorBoundary>
   );
 }
