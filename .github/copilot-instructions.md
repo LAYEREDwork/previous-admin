@@ -6,18 +6,18 @@
 - Always format code with proper indentation and spacing for better readability.
 - Always add JSDoc documentation comments for all functions and classes in English.
 - Never change code on your own without my explicit request.
-- Always communicate in German when discussing internal logic or UI strings.
+- Always communicate in German.
 - When adding features or making changes, always run linter, typecheck and build commands to ensure code quality. If there are any errors, always fix them before proceeding.
 - When creating new colours, always ensure that they are theme-aware. This means that they should work in both light and dark mode.
 
 ## Architecture Overview
-- **Frontend**: React 18 + TypeScript app built with Vite, using Tailwind CSS and Rsuite UI components. Runs on port 2342 in development, served by backend in production.
+- **Frontend**: React 19.2.3 + TypeScript app built with Vite, using Tailwind CSS and Rsuite UI components. Runs on port 2342 in development, served by backend in production.
 - **Backend**: Node.js + Express server with TypeScript, handling REST API (`/api/*`), WebSocket connections, and platform-specific operations. Runs on port 3001 in development, 2342 in production.
 - **Database**: SQLite database stored in `~/.previous-admin/previous-admin.db` with automatic schema initialization.
 - **Communication**: Frontend communicates with backend via HTTP API and WebSockets for real-time system metrics.
 - **Platform Support**: Platform-specific config managers for macOS and Linux (see `backend/config/` and `backend/platform/`).
 - **State Management**: React contexts (`contexts/`) for global state, custom hooks (`hooks/`) for business logic.
-- **Internationalization**: Full i18n support with German, English, Spanish, French, Italian translations in `frontend/lib/translations/`.
+- **Internationalization**: Full i18n support with German, English, Spanish, French, Italian translations in `frontend/lib/i18n/locales/`.
 
 ## Development Workflows
 - **Start Development**: Run `npm run backend` in one terminal (starts backend on :3001) and `npm run dev` in another (starts frontend on :2342).
