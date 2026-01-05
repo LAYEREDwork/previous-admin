@@ -149,6 +149,7 @@ npm run test       # Run all tests (frontend + backend)
 - **Database**: SQLite at `~/.previous-admin/previous-admin.db`
 - **Testing**: Vitest (frontend and backend)
 - **Production**: Single server on port 2342 with built frontend bundled
+- **CI/CD**: See [docs/CI.md](docs/CI.md) for detailed GitHub Actions pipeline documentation
 
 ### Project Structure
 
