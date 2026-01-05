@@ -1,4 +1,3 @@
-/// <reference types="vitest" />
 /**
  * Tests for CFG converter and config-schema API endpoint
  * 
@@ -9,7 +8,9 @@
  */
 
 import { describe, it, expect } from 'vitest';
+
 import type { ConfigSchema } from '../../shared/previous-config/schema-types';
+
 import { cfgToJson, jsonToCfg } from '../config-schema/converter';
 
 describe('CFG Converter', () => {
