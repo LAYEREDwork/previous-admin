@@ -14,13 +14,21 @@ const FontContext = createContext<FontContextType | undefined>(undefined);
  * Manages global font selection and persistence
  */
 export function FontProvider({ children }: { children: React.ReactNode }) {
-  const [font, setFontState] = useState<FontFamily>('Roboto Flex');
+  // Initialize with first available font or fallback to Roboto Flex
+  const getInitialFont = (): FontFamily => {
+    if (AVAILABLE_FONTS && AVAILABLE_FONTS.length > 0) {
+      return AVAILABLE_FONTS.includes('Roboto Flex' as FontFamily) ? 'Roboto Flex' : AVAILABLE_FONTS[0];
+    }
+    return 'Roboto Flex';
+  };
+
+  const [font, setFontState] = useState<FontFamily>(getInitialFont);
 
   // Initialize font from localStorage on mount
   useEffect(() => {
     // Safety check for AVAILABLE_FONTS
-    if (!AVAILABLE_FONTS) {
-      console.error('PAFontContext: AVAILABLE_FONTS is not properly defined');
+    if (!AVAILABLE_FONTS || AVAILABLE_FONTS.length === 0) {
+      console.error('PAFontContext: AVAILABLE_FONTS is not properly defined or empty');
       applyFont('Roboto Flex');
       return;
     }
@@ -30,7 +38,12 @@ export function FontProvider({ children }: { children: React.ReactNode }) {
       setFontState(savedFont);
       applyFont(savedFont);
     } else {
-      applyFont('Roboto Flex');
+      // Try to use "Roboto Flex" as default, otherwise use first available font
+      const defaultFont = AVAILABLE_FONTS.includes('Roboto Flex' as FontFamily) 
+        ? 'Roboto Flex' 
+        : AVAILABLE_FONTS[0];
+      setFontState(defaultFont);
+      applyFont(defaultFont);
     }
   }, []);
 

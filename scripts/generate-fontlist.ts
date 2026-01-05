@@ -26,6 +26,16 @@ function extractFontName(filename: string): string | null {
   // Remove .ttf extension
   const nameWithoutExt = filename.replace(/\.ttf$/, '');
   
+  // Handle variable fonts (e.g., "Inter-VariableFont_opsz,wght.ttf" -> "Inter")
+  if (nameWithoutExt.includes('-VariableFont')) {
+    const baseName = nameWithoutExt.split('-VariableFont')[0];
+    if (!baseName) return null;
+    
+    // Add spaces before capitals (CamelCase to spaces)
+    const spaced = baseName.replace(/([A-Z])/g, ' $1').trim();
+    return spaced;
+  }
+  
   // Remove weight suffix (e.g., -Bold, -Regular, -Italic, -Black)
   let baseName = nameWithoutExt
     .replace(/-(?:Bold|Regular|Italic|Black|Light|Thin|Medium|SemiBold|ExtraLight|ExtraBold)(?:Italic)?$/i, '');
@@ -35,7 +45,7 @@ function extractFontName(filename: string): string | null {
   if (baseName === nameWithoutExt && !nameWithoutExt.includes('-')) {
     baseName = nameWithoutExt;
   } else if (baseName === nameWithoutExt) {
-    // If nothing changed and it has a dash, skip it
+    // If nothing changed and it has a dash, skip it (unless it's a variable font, which we handled above)
     return null;
   }
 

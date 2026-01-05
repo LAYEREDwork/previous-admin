@@ -1,9 +1,8 @@
 import { Nav } from 'rsuite';
 
-import { PATabBar } from '@frontend/components/controls/PATabBar';
-import { 
-    SFDocumentOnDocumentFill, 
-    SFLongTextPageAndPencilFill, 
+import {
+    SFDocumentOnDocumentFill,
+    SFLongTextPageAndPencilFill,
     SFSquareAndArrowUpFill,
     SFDesktopcomputer,
     SFInfoBubbleFill
@@ -27,51 +26,26 @@ export function MainMenuPartial({ currentTab, onTabChange }: MainMenuProps) {
         { value: 'about', label: translation.tabs.about, icon: <SFInfoBubbleFill size={23} /> },
     ];
 
-    // Mobile tabs with short labels
-    const mobileTabs = [
-        { value: 'configs', label: translation.tabs.mobile.savedConfigs, icon: <SFDocumentOnDocumentFill size={23} /> },
-        { value: 'editor', label: translation.tabs.mobile.configEditor, icon: <SFLongTextPageAndPencilFill size={23} /> },
-        { value: 'import-export', label: translation.tabs.mobile.importExport, icon: <SFSquareAndArrowUpFill size={23} /> },
-        { value: 'system', label: translation.tabs.mobile.system, icon: <SFDesktopcomputer size={23} /> },
-        { value: 'about', label: translation.tabs.mobile.about, icon: <SFInfoBubbleFill size={23} /> },
-    ];
-
     return (
-        <>
-            {/* Desktop Navigation - RSuite Nav */}
-            <div className="hidden md:block">
-                <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8">
-                    <Nav
-                        activeKey={currentTab}
-                        onSelect={onTabChange}
-                        appearance="subtle"
-                        justified
-                        className="w-full"
+        <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8">
+            <Nav
+                activeKey={currentTab}
+                onSelect={onTabChange}
+                appearance="subtle"
+                justified
+                className="w-full"
+            >
+                {desktopTabs.map((tab) => (
+                    <Nav.Item
+                        key={tab.value}
+                        eventKey={tab.value}
+                        className="flex items-center gap-2 text-base font-medium"
                     >
-                        {desktopTabs.map((tab) => (
-                            <Nav.Item
-                                key={tab.value}
-                                eventKey={tab.value}
-                                className="flex items-center gap-2 text-base font-medium"
-                            >
-                                {tab.icon}
-                                <span>{tab.label}</span>
-                            </Nav.Item>
-                        ))}
-                    </Nav>
-                </div>
-            </div>
-
-            {/* Mobile Bottom Tabbar - iOS-style */}
-            <PATabBar
-                options={mobileTabs.map(tab => ({
-                    value: tab.value,
-                    label: tab.label,
-                    icon: tab.icon
-                }))}
-                value={currentTab}
-                onChange={onTabChange}
-            />
-        </>
+                        {tab.icon}
+                        <span>{tab.label}</span>
+                    </Nav.Item>
+                ))}
+            </Nav>
+        </div>
     );
 }

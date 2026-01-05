@@ -22,7 +22,7 @@ export function DashboardPartial({
             header={
                 <div className="flex items-center gap-2 m-0 leading-none">
                     <SFDesktopcomputer size="lg" className="text-[var(--rs-text-primary)]" />
-                    <h3 className="text-base font-semibold text-[var(--rs-text-primary)] m-0">
+                    <h3 className="text-sm font-semibold text-[var(--rs-text-primary)] m-0">
                         Dashboard
                     </h3>
                 </div>

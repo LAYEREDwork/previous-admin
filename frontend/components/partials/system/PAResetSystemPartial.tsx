@@ -23,7 +23,7 @@ export function ResetSystemPartial({
                 header={
                     <div className="flex items-center gap-2 m-0 leading-none">
                         <SFRestartCircle size="lg" className="text-[var(--rs-text-error)]" />
-                        <h3 className="text-base font-semibold text-[var(--rs-text-error)] m-0">
+                        <h3 className="text-sm font-semibold text-[var(--rs-text-error)] m-0">
                             {translation.system.resetTitle}
                         </h3>
                     </div>

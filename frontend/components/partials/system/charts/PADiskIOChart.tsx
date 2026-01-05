@@ -20,10 +20,10 @@ export function DiskIOChart({ metrics, translation }: DiskIOChartProps) {
     <PACard
       bgColorScheme="surface"
       header={
-        <h3 className="text-base font-semibold text-[var(--rs-text-primary)] flex items-center gap-2 m-0 leading-none">
+        <h4 className="text-base font-semibold text-[var(--rs-text-primary)] flex items-center gap-2 m-0 leading-none">
           <SFExternaldrive size="md" className="text-[var(--rs-text-primary)]" />
           Disk I/O
-        </h3>
+        </h4>
       }
     >
       <div className="p-2">

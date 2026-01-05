@@ -9,6 +9,8 @@
 - Always communicate in German.
 - When adding features or making changes, always run linter, typecheck and build commands to ensure code quality. If there are any errors, always fix them before proceeding.
 - When creating new colours, always ensure that they are theme-aware. This means that they should work in both light and dark mode.
+- Always use "@" imports for internal modules instead of relative paths.
+- Always follow the existing project structure and coding conventions.
 - **CRITICAL - DRY Principle**: Before creating new types, constants, or configurations, ALWAYS search the codebase for similar or existing implementations. If something similar already exists:
   - Use the existing implementation instead of creating duplicates
   - If the existing implementation needs extension, refactor it to be more general/reusable

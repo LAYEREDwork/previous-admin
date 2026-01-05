@@ -16,7 +16,7 @@ export function HostInfoPartial({ systemInfo, translation }: HostInfoPartialProp
             header={
                 <div className="flex items-center gap-2 m-0 leading-none">
                     <SFInternaldrive size="lg" className="text-[var(--rs-text-primary)]" />
-                    <h3 className="text-base font-semibold text-[var(--rs-text-primary)] m-0">
+                    <h3 className="text-sm font-semibold text-[var(--rs-text-primary)] m-0">
                         {translation.system.hostInfo}
                     </h3>
                 </div>

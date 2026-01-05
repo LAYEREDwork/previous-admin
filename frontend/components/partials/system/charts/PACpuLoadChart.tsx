@@ -21,10 +21,10 @@ export function CpuLoadChart({ metrics, translation }: CpuLoadChartProps) {
       bgColorScheme="surface"
       header={
         <div className="flex items-center justify-between w-full">
-          <h3 className="text-base font-semibold text-[var(--rs-text-primary)] flex items-center gap-2 m-0 leading-none">
+          <h4 className="text-base font-semibold text-[var(--rs-text-primary)] flex items-center gap-2 m-0 leading-none">
             <SFCpu size="md" className="text-[var(--rs-text-primary)]" />
             {translation.system.cpuLoadAverage}
-          </h3>
+          </h4>
           <div className="text-right">
             <p className="text-sm font-semibold flex items-center justify-end gap-2">
               <span style={{ color: '#ea580c' }}>{metrics?.cpuLoad.current.fifteenMin.toFixed(2)}</span>

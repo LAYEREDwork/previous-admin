@@ -7,6 +7,6 @@
 /**
  * Available fonts in the application
  */
-export const PA_AVAILABLE_FONTS = ['Barlow Semi Condensed', 'Exo2', 'Roboto Flex', 'Share Tech'] as const;
+export const PA_AVAILABLE_FONTS = ['Barlow Semi Condensed', 'Exo2', 'Inter', 'Noto Sans', 'Nunito', 'Roboto Flex', 'Share Tech'] as const;
 
 export type PAFontFamily = (typeof PA_AVAILABLE_FONTS)[number];

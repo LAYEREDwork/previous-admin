@@ -22,7 +22,7 @@ export function DiskSpacePartial({ disks, translation }: DiskSpacePartialProps) 
             header={
                 <div className="flex items-center gap-2 m-0 leading-none">
                     <SFExternaldrive size="lg" className="text-[var(--rs-text-primary)]" />
-                    <h3 className="text-base font-semibold text-[var(--rs-text-primary)] m-0">
+                    <h3 className="text-sm font-semibold text-[var(--rs-text-primary)] m-0">
                         {translation.system.disks}
                     </h3>
                 </div>
@@ -42,7 +42,7 @@ export function DiskSpacePartial({ disks, translation }: DiskSpacePartialProps) 
                                     disk={disk}
                                     strokeWidth={10}
                                     size={120}
-                                    sublabel="used"
+                                    sublabel={translation.system.used}
                                 />
                             </div>
                         );

@@ -211,8 +211,16 @@
     line-height: inherit !important;
   }
 
-  h3, h4, h5, h6 {
+  h3, h5, h6 {
     font-size: 1.5rem !important;
+    font-weight: inherit !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: inherit !important;
+  }
+
+  h4 {
+    font-size: 1.25rem !important;
     font-weight: inherit !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -341,38 +349,6 @@
 }
 
 @layer utilities {
-  /* Portrait-only utility for mobile navigation */
-  .portrait-only {
-    display: none;
-  }
-
-  @media (orientation: portrait) {
-    .portrait-only {
-      display: block;
-    }
-  }
-
-  /* Spacer for portrait-mode tab bar */
-  .portrait-tab-bar-spacer {
-    height: 0;
-  }
-
-  @media (orientation: portrait) {
-    .portrait-tab-bar-spacer {
-      height: 80px;
-    }
-  }
-
-  /* Portrait mode controls layout - language switch left, theme switch right */
-  .portrait-controls-layout {
-    justify-content: flex-start;
-  }
-
-  @media (orientation: portrait) {
-    .portrait-controls-layout {
-      justify-content: space-between;
-    }
-  }
 
   @keyframes fade-in {
     0% {

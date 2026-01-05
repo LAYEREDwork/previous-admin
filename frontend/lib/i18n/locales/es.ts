@@ -562,14 +562,7 @@ export const es: Translations = {
     'configEditor': 'Editor de Configuración',
     'importExport': 'Importar/Exportar',
     'savedConfigs': 'Configuraciones',
-    'system': 'Sistema',
-    'mobile': {
-      'about': 'Info',
-      'configEditor': 'Editor',
-      'importExport': 'Transfer',
-      'savedConfigs': 'Configs',
-      'system': 'System'
-    }
+    'system': 'Sistema'
   },
   'theme': {
     'light': 'Claro',

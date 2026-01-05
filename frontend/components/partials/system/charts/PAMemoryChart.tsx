@@ -21,10 +21,10 @@ export function MemoryChart({ metrics, translation }: MemoryChartProps) {
       bgColorScheme="surface"
       header={
         <div className="flex items-center justify-between w-full">
-          <h3 className="text-base font-semibold text-[var(--rs-text-primary)] flex items-center gap-2 m-0 leading-none">
+          <h4 className="text-base font-semibold text-[var(--rs-text-primary)] flex items-center gap-2 m-0 leading-none">
             <SFMemorychip size="md" className="text-[var(--rs-text-primary)]" />
             {translation.system.memory}
-          </h3>
+          </h4>
           <div className="text-right">
             <p className="text-2xl font-bold text-[var(--rs-text-success)]">{metrics?.memory.current}%</p>
             <p className="text-xs text-[var(--rs-text-secondary)]">{formatBytes(metrics?.memory.used || 0)} / {formatBytes(metrics?.memory.total || 0)}</p>

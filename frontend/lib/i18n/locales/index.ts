@@ -259,13 +259,6 @@ export interface Translations {
     importExport: string;
     savedConfigs: string;
     system: string;
-    mobile: {
-      about: string;
-      configEditor: string;
-      importExport: string;
-      savedConfigs: string;
-      system: string;
-    };
   };
   theme: {
     light: string;
