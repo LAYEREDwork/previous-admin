@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 import { PACard } from '@frontend/components/controls/PACard';
-import { PAContextMenu, type PAContextMenuItem } from '@frontend/components/controls/PAContextMenu';
-import { PAContextMenuItemActionType } from '@frontend/components/controls/PAContextMenuItem';
+import { PAContextMenu } from '@frontend/components/controls/PAContextMenu';
+import { PAContextMenuItemActionType, type PAContextMenuItem } from '@frontend/components/controls/PAContextMenuItem';
 import { 
   SFArrowUpDocumentFill, 
   SFDocumentOnDocumentFill, 
@@ -77,31 +77,45 @@ export function ConfigListItemPartial({
     onContextMenuOpen();
   };
 
-  const contextMenuItems: PAContextMenuItem[] = [
-    {
-      label: translation.configList.export,
-      icon: <SFArrowUpDocumentFill size={24} />,
-      onClick: () => exportSingleConfig(config),
-      actionType: PAContextMenuItemActionType.default,
-    },
-    {
-      label: translation.configList.duplicate,
-      icon: <SFDocumentOnDocumentFill size={24} />,
-      onClick: () => duplicateConfig(config),
-      actionType: PAContextMenuItemActionType.default,
-    },
-    {
-      label: translation.configList.edit,
-      icon: <SFLongTextPageAndPencilFill size={24} />,
-      onClick: () => onEdit(config),
-      actionType: PAContextMenuItemActionType.default,
-    },
-    {
-      label: translation.configList.delete,
-      icon: <SFDocumentOnTrashFill size={24} />,
-      onClick: () => deleteConfig(config.id),
-      actionType: PAContextMenuItemActionType.destructive,
-    },
+  // Define individual context menu items
+  const editMenuItem: PAContextMenuItem = {
+    label: translation.configList.edit,
+    iconLeft: <SFLongTextPageAndPencilFill size={24} />,
+    onClick: () => onEdit(config),
+    itemType: PAContextMenuItemActionType.default,
+  };
+
+  const exportMenuItem: PAContextMenuItem = {
+    label: translation.configList.export,
+    iconLeft: <SFArrowUpDocumentFill size={24} />,
+    onClick: () => exportSingleConfig(config),
+    itemType: PAContextMenuItemActionType.default,
+  };
+
+  const duplicateMenuItem: PAContextMenuItem = {
+    label: translation.configList.duplicate,
+    iconLeft: <SFDocumentOnDocumentFill size={24} />,
+    onClick: () => duplicateConfig(config),
+    itemType: PAContextMenuItemActionType.default,
+  };
+
+  const deleteMenuSeparator: PAContextMenuItem = {
+    itemType: PAContextMenuItemActionType.separator,
+  };
+
+  const deleteMenuItem: PAContextMenuItem = {
+    label: translation.configList.delete,
+    iconLeft: <SFDocumentOnTrashFill size={24} />,
+    onClick: () => deleteConfig(config.id),
+    itemType: PAContextMenuItemActionType.destructive,
+  };
+
+  const contextMenuItems = [
+    editMenuItem,
+    exportMenuItem,
+    duplicateMenuItem,
+    deleteMenuSeparator,
+    deleteMenuItem,
   ];
 
   return (
@@ -152,13 +166,29 @@ export function ConfigListItemPartial({
       </PACard>
 
       {/* Context Menu */}
-      <PAContextMenu
-        items={contextMenuItems}
-        isOpen={isContextMenuOpen}
-        onClose={onContextMenuClose}
-        position={contextMenuPosition}
-        title={config.name}
-      />
+      {isContextMenuOpen && (
+        <div
+          className="fixed z-50"
+          style={{
+            left: `${contextMenuPosition.x}px`,
+            top: `${contextMenuPosition.y}px`,
+          }}
+        >
+          <PAContextMenu
+            items={contextMenuItems}
+            title={config.name}
+          />
+        </div>
+      )}
+      
+      {/* Close menu on outside click */}
+      {isContextMenuOpen && (
+        <div
+          className="fixed inset-0 z-40"
+          onClick={onContextMenuClose}
+          onKeyDown={(e) => e.key === 'Escape' && onContextMenuClose()}
+        />
+      )}
     </div>
   );
 }

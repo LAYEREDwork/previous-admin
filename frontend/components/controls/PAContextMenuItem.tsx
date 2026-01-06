@@ -1,39 +1,63 @@
-import { Button } from 'rsuite';
-
 import { PAContextMenuItemActionType } from './PAContextMenuItemActionType';
+import { PAContextMenuItemContent } from './PAContextMenuItemContent';
+import { PAContextMenuSeparator } from './PAContextMenuSeparator';
 
 export { PAContextMenuItemActionType };
 
-interface PAContextMenuItemProps {
-  label: string;
-  icon?: React.ReactNode;
-  onClick: () => void;
+export interface PAContextMenuItem {
+  label?: string;
+  // Icon displayed on the left side of the label (optional)
+  iconLeft?: React.ReactNode;
+  // Icon displayed on the right side of the label (optional)
+  iconRight?: React.ReactNode;
+  onClick?: () => void;
   disabled?: boolean;
-  actionType?: PAContextMenuItemActionType;
+  itemType?: PAContextMenuItemActionType;
+}
+
+interface PAContextMenuItemProps {
+  label?: string;
+  iconLeft?: React.ReactNode;
+  iconRight?: React.ReactNode;
+  onClick?: () => void;
+  disabled?: boolean;
+  itemType?: PAContextMenuItemActionType;
+  // If true, reserve space for left icon even if this item doesn't have one
+  hasLeftIcons?: boolean;
+  // Position-specific padding: 'first' for top padding, 'last' for bottom padding, 'middle' for normal
+  position?: 'first' | 'last' | 'middle';
 }
 
 /**
- * Individual context menu item with icon, label, and action handling
+ * Context menu item wrapper that renders either a separator or item content
+ * based on the itemType parameter
  */
 export function PAContextMenuItem({
-  label,
-  icon,
-  onClick,
+  label = '',
+  iconLeft,
+  iconRight,
+  onClick = () => {},
   disabled = false,
-  actionType = PAContextMenuItemActionType.default,
+  itemType = PAContextMenuItemActionType.default,
+  hasLeftIcons = false,
+  position = 'middle',
 }: PAContextMenuItemProps) {
-  // Determine styling based on action type
-  const isDestructive = actionType === PAContextMenuItemActionType.destructive;
+  // Render separator if itemType is separator
+  if (itemType === PAContextMenuItemActionType.separator) {
+    return <PAContextMenuSeparator />;
+  }
 
+  // Render item content for default and destructive types
   return (
-    <Button
+    <PAContextMenuItemContent
+      label={label}
+      iconLeft={iconLeft}
+      iconRight={iconRight}
       onClick={onClick}
       disabled={disabled}
-      appearance="subtle"
-      className={`group w-full flex items-center gap-4 justify-start px-5 py-2 text-left transition-colors text-base ${!disabled ? (isDestructive ? 'hover:bg-[var(--rs-message-error-bg)]' : 'hover:bg-[color-mix(in_srgb,var(--rs-bg-card),black_8%)]') : ''}`}
-    >
-      {icon && <span className={`flex-shrink-0 ${isDestructive ? 'text-[var(--rs-text-error)] group-hover:text-[var(--rs-text-error)]' : 'text-[var(--rs-text-primary)] group-hover:text-[var(--rs-text-primary)]'}`}>{icon}</span>}
-      <span className={`flex-1 font-medium ${isDestructive ? 'text-[var(--rs-text-error)] group-hover:text-[var(--rs-text-error)]' : 'text-[var(--rs-text-primary)] group-hover:text-[var(--rs-text-primary)]'}`}>{label}</span>
-    </Button>
+      itemType={itemType}
+      hasLeftIcons={hasLeftIcons}
+      position={position}
+    />
   );
 }

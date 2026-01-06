@@ -14,9 +14,11 @@ export interface Metrics {
     history: Array<{ timestamp: number; value: number }>;
   };
   diskIO: {
+    current?: { read: number; write: number };
     history: Array<{ timestamp: number; read?: number; write?: number }>;
   };
   networkTraffic: {
+    current?: { received: number; sent: number };
     history: Array<{ timestamp: number; received?: number; sent?: number }>;
   };
 }

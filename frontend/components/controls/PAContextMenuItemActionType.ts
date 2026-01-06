@@ -10,4 +10,8 @@ export enum PAContextMenuItemActionType {
    * Destructive action (e.g., delete) with prominent warning styling
    */
   destructive = 'destructive',
+  /**
+   * Separator line for visual grouping
+   */
+  separator = 'separator',
 }

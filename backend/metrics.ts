@@ -447,6 +447,10 @@ export async function getMetricsSnapshot() {
   };
   const memoryPercent = Math.round((memory.used / memory.total) * 100);
 
+  // Get current disk IO and network traffic
+  const currentDiskIO = await getDiskIO();
+  const currentNetworkTraffic = await getNetworkTraffic();
+
   return {
     cpuLoad: {
       current: currentCpuLoad,
@@ -459,9 +463,11 @@ export async function getMetricsSnapshot() {
       history: metricsHistory.memory
     },
     diskIO: {
+      current: currentDiskIO,
       history: metricsHistory.diskIO
     },
     networkTraffic: {
+      current: currentNetworkTraffic,
       history: metricsHistory.networkTraffic
     }
   };
