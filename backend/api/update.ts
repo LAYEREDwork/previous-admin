@@ -3,27 +3,13 @@
  * Handles pulling latest changes from git and restarting application
  */
 
-import express from 'express';
+import fs from 'fs';
+
 import fs from 'fs';
 import path from 'path';
+import path from 'path';
 
-import { apiPaths } from '@shared/api/constants';
-
-import packageJson from '../../package.json';
-
-import { execAsync } from './helpers';
-
-// API base URL for internal requests
-const API_BASE_URL = 'http://localhost:3001';
-
-interface VersionInfo {
-  currentVersion: string;
-  latestVersion: string | null;
-  updateAvailable: boolean;
-  releaseUrl: string | null;
-  releaseNotes: string | null;
-  currentReleaseNotes: string | null;
-}
+import express from 'express';
 
 const router = express.Router();
 
