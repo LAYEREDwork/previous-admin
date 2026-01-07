@@ -15,7 +15,7 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 2342,
-    allowedHosts: ['cube.local', 'next.local', 'localhost', '127.0.0.1'],
+    allowedHosts: ['previous-admin.local', 'next.local', 'localhost', '127.0.0.1'],
     proxy: {
       '/api': {
         target: 'http://localhost:3001',
@@ -27,7 +27,7 @@ export default defineConfig({
   preview: {
     host: '0.0.0.0',
     port: 2342,
-    allowedHosts: ['cube.local', 'next.local', 'localhost', '127.0.0.1'],
+    allowedHosts: ['previous-admin.local', 'next.local', 'localhost', '127.0.0.1'],
   },
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.json'],

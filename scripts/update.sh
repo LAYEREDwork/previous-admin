@@ -25,10 +25,19 @@ fi
 
 # Fetch latest release info
 echo -e "${GREEN}Fetching latest release from GitHub...${NC}"
-RELEASE_DATA=$(curl -s "https://api.github.com/repos/$REPO/releases/latest")
+# Use explicit headers to avoid GitHub API issues
+RELEASE_DATA=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "User-Agent: Previous-Admin-Updater" "https://api.github.com/repos/$REPO/releases/latest")
 
 VERSION=$(echo "$RELEASE_DATA" | jq -r '.tag_name' | sed 's/^v//')
-ASSET_URL=$(echo "$RELEASE_DATA" | jq -r '.assets[0].browser_download_url')
+# Try to read an uploaded asset first; if none present, fallback to tarball/zipball
+ASSET_URL=$(echo "$RELEASE_DATA" | jq -r '.assets[0].browser_download_url // empty')
+if [ -z "$ASSET_URL" ] || [ "$ASSET_URL" = "null" ]; then
+    # fallback to tarball_url or zipball_url
+    ASSET_URL=$(echo "$RELEASE_DATA" | jq -r '.tarball_url // .zipball_url // empty')
+    ASSET_FALLBACK=true
+else
+    ASSET_FALLBACK=false
+fi
 
 if [ -z "$VERSION" ] || [ "$VERSION" = "null" ] || [ -z "$ASSET_URL" ] || [ "$ASSET_URL" = "null" ]; then
     echo -e "${RED}Error: Could not fetch release data from GitHub${NC}"
@@ -37,6 +46,9 @@ fi
 
 echo -e "${GREEN}Updating to version: $VERSION${NC}"
 echo -e "${GREEN}Asset URL: $ASSET_URL${NC}"
+if [ "$ASSET_FALLBACK" = true ]; then
+    echo -e "${YELLOW}No uploaded assets found — using tarball/zipball fallback${NC}"
+fi
 
 # Download and extract
 echo -e "${GREEN}Downloading and extracting update...${NC}"
@@ -44,17 +56,20 @@ TEMP_DIR="/tmp/previous-admin-update"
 rm -rf "$TEMP_DIR"
 mkdir -p "$TEMP_DIR"
 
-if [[ "$ASSET_URL" == *.tar.gz ]]; then
+if [[ "$ASSET_URL" == *"/tarball/"* ]] || [[ "$ASSET_URL" == *.tar.gz ]]; then
     curl -L -o "$TEMP_DIR/update.tar.gz" "$ASSET_URL"
     tar -xzf "$TEMP_DIR/update.tar.gz" -C "$TEMP_DIR"
     SOURCE_DIR=$(find "$TEMP_DIR" -mindepth 1 -maxdepth 1 -type d | head -1)
-elif [[ "$ASSET_URL" == *.zip ]]; then
+elif [[ "$ASSET_URL" == *"/zipball/"* ]] || [[ "$ASSET_URL" == *.zip ]]; then
     curl -L -o "$TEMP_DIR/update.zip" "$ASSET_URL"
     unzip -q "$TEMP_DIR/update.zip" -d "$TEMP_DIR"
     SOURCE_DIR=$(find "$TEMP_DIR" -mindepth 1 -maxdepth 1 -type d | head -1)
 else
-    echo -e "${RED}Error: Unsupported asset format${NC}"
-    exit 1
+    # Last resort: try downloading tarball by tag
+    echo -e "${YELLOW}Unknown asset URL format — attempting tarball download for tag $VERSION${NC}"
+    curl -L -o "$TEMP_DIR/update.tar.gz" "https://api.github.com/repos/$REPO/tarball/$VERSION"
+    tar -xzf "$TEMP_DIR/update.tar.gz" -C "$TEMP_DIR"
+    SOURCE_DIR=$(find "$TEMP_DIR" -mindepth 1 -maxdepth 1 -type d | head -1)
 fi
 
 # Create backup
