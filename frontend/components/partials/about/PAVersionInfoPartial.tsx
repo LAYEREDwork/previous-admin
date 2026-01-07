@@ -90,16 +90,29 @@ export function VersionInfoPartial({
                           </div>
                         }
                       >
-                        <div className="text-sm text-[var(--rs-text-primary)]">
+                        <div className="max-w-full px-3 sm:px-4">
                           <ReactMarkdown
                             components={{
-                              h1: ({ children }) => <h1 className="text-base font-bold mt-0 mb-4 text-[var(--rs-text-primary)]">{children}</h1>,
-                              h2: ({ children }) => <h2 className="text-sm font-bold mt-0 mb-4 text-[var(--rs-text-primary)]">{children}</h2>,
-                              h3: ({ children }) => <h3 className="text-sm font-semibold mt-5 mb-3 text-[var(--rs-text-primary)]">{children}</h3>,
-                              p: ({ children }) => <p className="mb-4 leading-relaxed">{children}</p>,
-                              ul: ({ children }) => <ul className="list-disc pl-6 mb-4 space-y-2">{children}</ul>,
-                              ol: ({ children }) => <ol className="list-decimal pl-6 mb-4 space-y-2">{children}</ol>,
-                              li: ({ children }) => <li className="text-sm">{children}</li>,
+                              h1: ({ children }) => (
+                                <h1 style={{ fontSize: '1.6rem', fontWeight: '600', marginTop: '0', marginBottom: '0.75rem', color: 'var(--rs-text-primary)' }}>{children}</h1>
+                              ),
+                              h2: ({ children }) => (
+                                <h2 style={{ fontSize: '1.4rem', fontWeight: '600', marginTop: '0.75rem', marginBottom: '1rem', color: 'var(--rs-text-primary)' }}>{children}</h2>
+                              ),
+                              h3: ({ children }) => (
+                                <h3 style={{ fontSize: '1.2rem', fontWeight: '600', marginTop: '1.1rem', marginBottom: '0.25rem', color: 'var(--rs-text-primary)' }}>{children}</h3>
+                              ),
+                              ul: ({ children }) => (
+                                <ul style={{ listStyleType: 'disc', paddingLeft: '1.25rem', marginBottom: '0.5rem', lineHeight: '1.5' }}>{children}</ul>
+                              ),
+                              ol: ({ children }) => (
+                                <ol style={{ listStyleType: 'decimal', paddingLeft: '1.25rem', marginBottom: '0.5rem', lineHeight: '1.5' }}>{children}</ol>
+                              ),
+                              li: ({ children }) => (
+                                <li style={{ marginBottom: '0.25rem' }}>
+                                  <span style={{ lineHeight: '1.2', fontSize: '0.95rem' }}>{children}</span>
+                                </li>
+                              ),
                             }}
                           >
                             {versionInfo.releaseNotes}

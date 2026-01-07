@@ -196,27 +196,27 @@
 
   /* Differentiated heading sizes - larger than body text but not oversized */
   h1 {
-    font-size: 2rem !important;
-    font-weight: inherit !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    line-height: inherit !important;
+    font-size: 2rem;
+    font-weight: inherit;
+    margin: 0;
+    padding: 0;
+    line-height: inherit;
   }
 
   h2 {
-    font-size: 1.625rem !important;
-    font-weight: inherit !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    line-height: inherit !important;
+    font-size: 1.625rem;
+    font-weight: inherit;
+    margin: 0;
+    padding: 0;
+    line-height: inherit;
   }
 
   h3, h5, h6 {
-    font-size: 1.5rem !important;
-    font-weight: inherit !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    line-height: inherit !important;
+    font-size: 1.5rem;
+    font-weight: inherit;
+    margin: 0;
+    padding: 0;
+    line-height: inherit;
   }
 
   h4 {
