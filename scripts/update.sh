@@ -13,8 +13,35 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 REPO="LAYEREDwork/previous-admin"
-PROJECT_DIR="$HOME/previous-admin"
-DATA_DIR="$HOME/.previous-admin"
+# Determine script and project directories robustly (works when invoked via sudo)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Project directory is parent of scripts directory
+PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+
+# Determine project owner and its home directory so DATA_DIR points to the install user's home
+PROJECT_OWNER=""
+if PROJECT_OWNER=$(stat -c '%U' "$PROJECT_DIR" 2>/dev/null); then
+    :
+elif PROJECT_OWNER=$(stat -f '%Su' "$PROJECT_DIR" 2>/dev/null); then
+    :
+fi
+
+# Resolve home for the project owner; fall back to ~owner expansion if getent is unavailable
+PROJECT_HOME=""
+if [ -n "$PROJECT_OWNER" ]; then
+    PROJECT_HOME=$(getent passwd "$PROJECT_OWNER" | cut -d: -f6 2>/dev/null || true)
+fi
+if [ -z "$PROJECT_HOME" ] && [ -n "$PROJECT_OWNER" ]; then
+    PROJECT_HOME=$(eval echo "~$PROJECT_OWNER")
+fi
+
+# Final DATA_DIR: prefer owner's home, otherwise fallback to current $HOME
+if [ -n "$PROJECT_HOME" ]; then
+    DATA_DIR="$PROJECT_HOME/.previous-admin"
+else
+    DATA_DIR="$HOME/.previous-admin"
+fi
+
 BACKUP_DIR="$DATA_DIR/backup/previous-admin-backup-$(date +%Y-%m-%d-%H-%M-%S)"
 
 # Check if jq is installed
