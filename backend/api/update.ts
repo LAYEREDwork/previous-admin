@@ -4,6 +4,8 @@
  */
 
 import express from 'express';
+import fs from 'fs';
+import path from 'path';
 
 import { apiPaths } from '@shared/api/constants';
 
@@ -27,88 +29,36 @@ const router = express.Router();
 
 /**
  * POST /api/update
- * Pull latest changes from git repository and restart application
+ * Trigger update process via shell script
  *
- * Performs git pull on the current repository and gracefully restarts
- * the application. The response is sent before restart begins.
- *
- * Requires a valid git repository.
+ * Runs the update script to download and install the latest version from GitHub.
+ * The response is sent immediately, update runs asynchronously.
  *
  * @returns {Object}
- *   - success {boolean}: true if update command succeeded
- *   - message {string}: Status message about restart
+ *   - success {boolean}: true if update script started successfully
+ *   - message {string}: Status message
  *
- * @throws {400} If not a git repository (git status fails)
- * @throws {500} If git pull fails or system error occurs
+ * @throws {500} If update script fails to start
  *
  * @side-effects
- *   - Pulls latest changes from git remote
- *   - Restarts the application process after 1 second delay
- *   - All active connections will be closed
+ *   - Downloads and installs latest version
+ *   - Restarts services
  *
  * @example
  * const res = await fetch('/api/update', { method: 'POST' });
  * const { success, message } = await res.json();
- * // Application will restart automatically
  */
 router.post(apiPaths.Update.update.relative, async (req: any, res: any) => {
   try {
-    const adminDir = process.cwd();
+    const scriptPath = `${process.cwd()}/scripts/update.sh`;
 
-    // Get latest version info
-    const versionResponse = await fetch(`${API_BASE_URL}${apiPaths.Update.version.full}`, {
-      headers: {
-        'Accept': 'application/json',
-      },
-      credentials: 'include',
-    });
+    // Run update script with sudo
+    await execAsync(`sudo bash ${scriptPath}`, { cwd: process.cwd() });
 
-    if (!versionResponse.ok) {
-      throw new Error('Failed to fetch version info');
-    }
-
-    const versionInfo = await versionResponse.json() as VersionInfo;
-    const latestVersion = versionInfo.latestVersion;
-
-    if (!latestVersion) {
-      throw new Error('No latest version available');
-    }
-
-    const zipUrl = `https://codeberg.org/phranck/previous-admin/archive/${latestVersion}.zip`;
-    const zipPath = `${adminDir}/update.zip`;
-    const extractDir = `${adminDir}/update_temp`;
-
-    // Download the ZIP
-    await execAsync(`curl -L -o ${zipPath} ${zipUrl}`, { cwd: adminDir });
-
-    // Create temp directory
-    await execAsync(`mkdir -p ${extractDir}`, { cwd: adminDir });
-
-    // Extract ZIP
-    await execAsync(`unzip -o ${zipPath} -d ${extractDir}`, { cwd: adminDir });
-
-    // Find the extracted directory (assuming it's named like previous-admin-1.0.0)
-    const { stdout: lsOutput } = await execAsync(`ls -d ${extractDir}/*`, { cwd: adminDir });
-    const sourceDir = lsOutput.trim().split('\n')[0];
-
-    // Backup current directory (optional, but safe)
-    await execAsync(`cp -r ${adminDir} ${adminDir}.backup`, { cwd: adminDir });
-
-    // Copy new files (exclude certain directories like node_modules, .git)
-    await execAsync(`rsync -av --exclude='node_modules' --exclude='.git' --exclude='update.zip' --exclude='update_temp' ${sourceDir}/ ${adminDir}/`, { cwd: adminDir });
-
-    // Clean up
-    await execAsync(`rm -rf ${zipPath} ${extractDir} ${adminDir}.backup`, { cwd: adminDir });
-
-    res.json({ success: true, message: 'Update completed. The application will restart shortly.' });
-
-    setTimeout(() => {
-      console.log('Restarting application after update...');
-      process.exit(0);
-    }, 1000);
+    res.json({ success: true, message: 'Update started successfully.' });
   } catch (error) {
-    console.error('Error updating application:', error);
-    res.status(500).json({ error: (error as Error).message || 'Failed to update application' });
+    console.error('Error starting update:', error);
+    res.status(500).json({ error: (error as Error).message || 'Failed to start update' });
   }
 });
 
@@ -128,20 +78,16 @@ router.get(apiPaths.Update.version.relative, async (req: any, res: any) => {
   const REPO_API_URL = 'https://api.github.com/repos/LAYEREDwork/previous-admin';
 
   try {
-    // Get current version from git tag
+    // Get current version from version.json
     let currentVersion = '1.0.0'; // fallback
     try {
-      const { stdout } = await execAsync('git describe --tags --always', { cwd: process.cwd() });
-      const tag = stdout.trim().replace(/^v/, '');
-      if (tag) {
-        currentVersion = tag;
-      }
+      const versionFile = path.join(process.env.HOME || '', '.previous-admin', 'version.json');
+      const versionData = JSON.parse(fs.readFileSync(versionFile, 'utf8'));
+      currentVersion = versionData.version || packageJson.version || '1.0.0';
     } catch {
-      // If git fails, use package.json as fallback
+      // If file doesn't exist, use package.json as fallback
       currentVersion = packageJson.version || '1.0.0';
     }
-
-    // Fetch releases from Codeberg API
     const releasesResponse = await fetch(`${REPO_API_URL}/releases`, {
       headers: {
         'Accept': 'application/json',

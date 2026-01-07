@@ -28,7 +28,7 @@ Update- und Release-Verfahren
 
 Custom Commands und Verhalten
 - `:arch`: Liefert eine kurze Zusammenfassung der Architektur des aktuellen Projekts. Wird der Befehl mit einem `>`-Symbol gefolgt von einem Dateinamen aufgerufen, schreibe die Anweisungen als Markdown in eine Datei mit diesem Namen im Projektstamm.
-- `:badges`: Führe das Skript `scripts/update_badges.sh` aus.
+- `:badges`: Führe das Skript `scripts/update-badges.sh` aus.
 - `:cm`: Erzeuge eine kompakte Commit-Message in englischer Sprache für die Änderungen seit dem letzten Commit. Es sollen nur kürzlich geänderte Dateien berücksichtigt werden (`git status`). Die Nachricht soll eine Überschrift und eine ungeordnete Liste enthalten, formatiert als Klartext in einem Codeblock.
 - `:dev-setup`: Liefere schrittweise Anweisungen zum Einrichten der Entwicklungsumgebung für das aktuelle Projekt. Wird der Befehl mit `>` und einem Dateinamen aufgerufen, schreibe die Anweisungen als Markdown in eine Datei mit diesem Namen im Projektstamm.
 - `:desc`: Erstelle eine vollständige funktionale Beschreibung des Projekts, unterteilt in Backend und Frontend, ohne technische Details, als Markdown. Wird der Befehl mit `>` und einem Dateinamen aufgerufen, schreibe den Text in die genannte Datei im Projektstamm. Enthält der Dateiname eine Sprach-Suffix wie `.de.md` oder `.en.md`, schreibe die Beschreibung in der entsprechenden Sprache.

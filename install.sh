@@ -145,6 +145,17 @@ setup_repository() {
     echo ""
 }
 
+# Sync versions from GitHub
+sync_versions() {
+    print_info "Syncing versions from GitHub..."
+    
+    cd "$INSTALL_DIR"
+    sudo -u "$TARGET_USER" bash scripts/install-version-sync.sh
+    print_success "Versions synced"
+
+    echo ""
+}
+
 # Install system dependencies
 install_dependencies() {
     print_info "Installing system dependencies..."
@@ -399,6 +410,7 @@ main() {
     check_tools
     setup_user
     setup_repository
+    sync_versions
     install_dependencies
     install_npm
     build_app
