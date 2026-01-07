@@ -3,13 +3,12 @@
  * Handles pulling latest changes from git and restarting application
  */
 
-import fs from 'fs';
-
-import fs from 'fs';
 import path from 'path';
-import path from 'path';
+import fs from 'fs';
 
 import express from 'express';
+
+import { apiPaths } from '@shared/api/constants';
 
 const router = express.Router();
 
