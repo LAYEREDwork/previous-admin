@@ -34,6 +34,7 @@ export const apiPaths = {
   System: {
     health: { full: '/api/system/health', relative: '/health' },
     systemInfo: { full: '/api/system/system-info', relative: '/system-info' },
+    networkCapacity: { full: '/api/system/network-capacity', relative: '/network-capacity' },
     metrics: { full: '/api/system/metrics', relative: '/metrics' },
     reset: { full: '/api/system/reset', relative: '/reset' },
   },

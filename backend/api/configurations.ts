@@ -240,10 +240,6 @@ router.put(apiPaths.Configuration.update.relative, (
       return res.status(404).json({ error: 'Configuration not found' });
     }
 
-    if (req.app.locals.broadcastConfigUpdate && updates.is_active) {
-      req.app.locals.broadcastConfigUpdate(config.config_data);
-    }
-
     res.json({
       configuration: config
     });
@@ -293,10 +289,6 @@ router.post(apiPaths.Configuration.activate.relative, (
 
     if (!config) {
       return res.status(404).json({ error: 'Configuration not found' });
-    }
-
-    if (req.app.locals.broadcastConfigUpdate) {
-      req.app.locals.broadcastConfigUpdate(config.config_data);
     }
 
     res.json({

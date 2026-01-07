@@ -20,6 +20,7 @@ import express, { Request, Response } from 'express';
 import { apiPaths } from '@shared/api/constants';
 
 import { DATABASE_PATH } from '@backend/database/core';
+import { metricsHistory } from '@backend/metrics';
 import { getSystemInfo } from '@backend/platform/system-info';
 
 import { closeDatabase, reinitializeDatabase } from '../database';
@@ -72,6 +73,48 @@ SYSTEM_ROUTER.get(apiPaths.System.systemInfo.relative, async (request: Request, 
       error: 'Failed to retrieve system information',
       errorCode: 'SYSTEM_INFO_ERROR',
     });
+  }
+});
+
+/**
+ * Get network capacity / percentile
+ *
+ * Query params:
+ * - window: number of recent samples to consider (default: 60)
+ * - percentile: percentile to compute (default: 95)
+ *
+ * Returns computed percentile for received/sent and combined max.
+ */
+SYSTEM_ROUTER.get(apiPaths.System.networkCapacity.relative, (request: Request, response: Response) => {
+  try {
+    const windowSize = Math.max(1, parseInt(String(request.query.window || '60'), 10));
+    const percentile = Math.max(1, Math.min(99, parseInt(String(request.query.percentile || '95'), 10)));
+
+    const samples = metricsHistory.networkTraffic.slice(-windowSize);
+    const receivedValues = samples.map(s => s.received || 0);
+    const sentValues = samples.map(s => s.sent || 0);
+    const maxValues = samples.map(s => Math.max(s.received || 0, s.sent || 0));
+
+    const computePercentile = (arr: number[], p: number) => {
+      if (!arr || arr.length === 0) return 0;
+      const sorted = arr.slice().sort((a, b) => a - b);
+      const idx = Math.floor((p / 100) * (sorted.length - 1));
+      return sorted[Math.max(0, Math.min(sorted.length - 1, idx))] || 0;
+    };
+
+    const result = {
+      window: windowSize,
+      percentile,
+      receivedPercentile: computePercentile(receivedValues, percentile),
+      sentPercentile: computePercentile(sentValues, percentile),
+      maxPercentile: computePercentile(maxValues, percentile),
+      samples: samples.length
+    };
+
+    response.json(result);
+  } catch (error) {
+    console.error('Error computing network capacity percentile:', error);
+    response.status(500).json({ error: 'Failed to compute network capacity percentile' });
   }
 });
 

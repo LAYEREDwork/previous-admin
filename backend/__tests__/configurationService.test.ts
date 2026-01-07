@@ -9,6 +9,18 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import type { PreviousConfig } from '@shared/previous-config/types';
 
 // Mock the database functions
+vi.mock('@backend/database/configurations', () => ({
+  getConfigurations: vi.fn(),
+  getConfiguration: vi.fn(),
+  createConfiguration: vi.fn(),
+  updateConfiguration: vi.fn(),
+  deleteConfiguration: vi.fn(),
+  setActiveConfiguration: vi.fn(),
+  updateConfigurationsOrder: vi.fn(),
+  getActiveConfiguration: vi.fn(),
+}));
+
+// Also mock the relative path variant to cover compiled tests in /dist
 vi.mock('../database/configurations', () => ({
   getConfigurations: vi.fn(),
   getConfiguration: vi.fn(),

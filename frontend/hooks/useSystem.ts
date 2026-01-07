@@ -6,9 +6,7 @@ import type { SystemInfo } from '@shared/previous-config/types';
 
 import { useLanguage } from '../contexts/PALanguageContext';
 import { useNotification } from '../contexts/PANotificationContext';
-import { apiBaseUrl, defaultMetricsUpdateFrequency } from '../lib/constants';
-
-import { useSystemMetrics } from './useSystemMetrics';
+import { apiBaseUrl } from '../lib/constants';
 
 // Utilities
 
@@ -28,8 +26,8 @@ export function useSystem() {
   const [showResetModal, setShowResetModal] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
 
-  // Metrics update frequency is fixed to 0.5 seconds
-  const metrics = useSystemMetrics(isSystemTabActive, defaultMetricsUpdateFrequency);
+  // Metrics removed per user request
+  const metrics = null;
 
   // Load static system info
   useEffect(() => {
@@ -93,5 +91,6 @@ export function useSystem() {
     setShowResetModal,
     isResetting,
     handleReset,
+    isSystemTabActive,
   };
 }

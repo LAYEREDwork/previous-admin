@@ -6,6 +6,4 @@ export type {
   TypedResponse,
   CreateConfigurationRequest,
   UpdateConfigurationRequest,
-  WebSocketMessage,
-  WebSocketClient,
 } from './types';

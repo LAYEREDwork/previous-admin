@@ -171,6 +171,34 @@ const linuxModule: PlatformModule = {
   },
 
   /**
+   * Get default network interface on Linux
+   */
+  async getDefaultNetworkInterface(): Promise<string | null> {
+    try {
+      const { stdout } = await execAsync("ip route get 8.8.8.8 2>/dev/null || ip route 2>/dev/null");
+      const match = stdout.match(/dev\s+(\S+)/);
+      if (match) return match[1];
+    } catch {
+      // ignore
+    }
+    return null;
+  },
+
+  /**
+   * Get interface speed (Mbps) from sysfs when available
+   */
+  async getInterfaceSpeed(interfaceName: string): Promise<number | null> {
+    try {
+      const { stdout } = await execAsync(`cat /sys/class/net/${interfaceName}/speed 2>/dev/null || echo ""`);
+      const value = parseInt(stdout.trim(), 10);
+      if (!isNaN(value) && value > 0) return value;
+    } catch {
+      // ignore
+    }
+    return null;
+  },
+
+  /**
    * Get platform-specific paths
    *
    * @returns {Object} Common paths for Linux

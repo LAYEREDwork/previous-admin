@@ -17,11 +17,11 @@ export function PASystem() {
     systemInfo,
     loadingSystemInfo,
     systemInfoError,
-    metrics,
     showResetModal,
     setShowResetModal,
     isResetting,
     handleReset,
+    isSystemTabActive,
   } = useSystem();
 
   return (
@@ -35,13 +35,13 @@ export function PASystem() {
       ) : systemInfo ? (
         <SystemContent
           systemInfo={systemInfo}
-          metrics={metrics}
           showResetModal={showResetModal}
           setShowResetModal={setShowResetModal}
           isResetting={isResetting}
           handleReset={handleReset}
           controlSize={controlSize}
           translation={translation}
+          isSystemTabActive={isSystemTabActive}
         />
       ) : (
         <SystemEmptyState />

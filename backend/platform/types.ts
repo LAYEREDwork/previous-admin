@@ -105,4 +105,16 @@ export interface PlatformModule {
     logsDir: string;
     cacheDir: string;
   };
+  /**
+   * Get default network interface name (e.g., 'eth0', 'en0')
+   * @returns Promise<string | null>
+   */
+  getDefaultNetworkInterface?: () => Promise<string | null>;
+
+  /**
+   * Get interface link speed in Mbps when available
+   * @param interfaceName - interface identifier
+   * @returns Promise<number | null> speed in Mbps or null if unknown
+   */
+  getInterfaceSpeed?: (interfaceName: string) => Promise<number | null>;
 }

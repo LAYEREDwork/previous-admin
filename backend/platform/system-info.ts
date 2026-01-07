@@ -30,6 +30,14 @@ export interface SystemInfo {
   disks: DiskInfo[];
   ipAddresses: NetworkInterface[];
   monitorResolution?: MonitorResolution;
+  /**
+   * Optional inferred network capacity info
+   */
+  networkCapacity?: {
+    defaultInterface?: string | null;
+    interfaceSpeedMbps?: number | null;
+    inferredFixedCapBytesPerSec?: number | null;
+  };
 }
 
 /**
@@ -97,6 +105,51 @@ export async function getSystemInfo(): Promise<SystemInfo> {
   } catch (error) {
     console.error('Error getting network info:', error);
     systemInfo.ipAddresses = [];
+  }
+
+  // Attempt to detect default interface and approximate capacity
+  try {
+    const platformModule = await platform;
+    let defaultInterface: string | null = null;
+    let interfaceSpeedMbps: number | null = null;
+
+    if (typeof platformModule.getDefaultNetworkInterface === 'function') {
+      try {
+        defaultInterface = await platformModule.getDefaultNetworkInterface();
+      } catch {
+        // ignore default interface detection errors
+      }
+    }
+
+    if (defaultInterface && typeof platformModule.getInterfaceSpeed === 'function') {
+      try {
+        interfaceSpeedMbps = await platformModule.getInterfaceSpeed(defaultInterface);
+      } catch {
+        // ignore interface speed lookup errors
+      }
+    }
+
+    // Fallback: try to pick first non-internal interface
+    if (!defaultInterface && systemInfo.ipAddresses.length > 0) {
+      defaultInterface = systemInfo.ipAddresses[0].interface;
+    }
+
+    // Convert Mbps to Bytes/s and apply a conservative factor
+    const safetyFactor = 0.9;
+    let inferredFixedCapBytesPerSec: number | null = null;
+    if (interfaceSpeedMbps && interfaceSpeedMbps > 0) {
+      inferredFixedCapBytesPerSec = Math.floor(interfaceSpeedMbps * 1024 * 1024 * safetyFactor);
+    } else {
+      inferredFixedCapBytesPerSec = null;
+    }
+
+    systemInfo.networkCapacity = {
+      defaultInterface,
+      interfaceSpeedMbps,
+      inferredFixedCapBytesPerSec
+    };
+  } catch (error) {
+    console.error('Error detecting network capacity:', error);
   }
 
   try {

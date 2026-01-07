@@ -33,18 +33,4 @@ export interface UpdateConfigurationRequest {
   is_active?: boolean;
 }
 
-/**
- * WebSocket message structure
- */
-export interface WebSocketMessage {
-  type: string;
-  data?: any;
-}
 
-/**
- * WebSocket client connection
- */
-export interface WebSocketClient {
-  id: string;
-  ws: WebSocket;
-}

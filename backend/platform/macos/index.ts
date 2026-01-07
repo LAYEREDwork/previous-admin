@@ -234,6 +234,36 @@ const macosModule: PlatformModule = {
   },
 
   /**
+   * Get default network interface on macOS
+   */
+  async getDefaultNetworkInterface(): Promise<string | null> {
+    try {
+      const { stdout } = await execAsync("route get default 2>/dev/null | awk '/interface:/{print $2}' || echo ''");
+      const iface = stdout.trim();
+      return iface || null;
+    } catch {
+      return null;
+    }
+  },
+
+  /**
+   * Get interface speed (Mbps) on macOS by parsing ifconfig media line
+   */
+  async getInterfaceSpeed(interfaceName: string): Promise<number | null> {
+    try {
+      const { stdout } = await execAsync(`ifconfig ${interfaceName} 2>/dev/null | grep media || echo ''`);
+      const match = stdout.match(/(\d+)(?:base|g?base)/i);
+      if (match) {
+        const value = parseInt(match[1], 10);
+        if (!isNaN(value) && value > 0) return value;
+      }
+    } catch {
+      // ignore
+    }
+    return null;
+  },
+
+  /**
    * Get platform-specific paths
    *
    * @returns {Object} Common paths for macOS

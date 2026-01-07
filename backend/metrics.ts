@@ -7,21 +7,20 @@
  * - macOS: BSD-style system commands (iostat, netstat, vm_stat)
  */
 
-import { exec, execSync } from 'child_process';
+import { exec } from 'child_process';
 
 import * as os from 'os';
 import { promisify } from 'util';
 
 const execAsync = promisify(exec);
 
-interface DiskStats {
-  read: number;
-  write: number;
-}
-
-interface NetworkStats {
-  received: number;
-  sent: number;
+/**
+ * Simple sleep helper used for short waits in serialization loops.
+ * @param {number} ms - Milliseconds to sleep
+ * @returns {Promise<void>}
+ */
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 interface CpuLoadEntry {
@@ -46,6 +45,7 @@ interface NetworkTrafficEntry {
   timestamp: number;
   received: number;
   sent: number;
+  heuristic?: boolean;
 }
 
 /**
@@ -71,9 +71,15 @@ export const metricsHistory = {
   diskIO: [] as DiskIOEntry[]
 };
 
-let lastDiskStats: DiskStats | null = null;
-let lastNetworkStats: NetworkStats | null = null;
 const MAX_HISTORY = 60;
+
+// New: background network sampler state
+let networkSamplerRunning = false;
+let networkPrevTotals: { received: number; sent: number; ts: number } | null = null;
+let networkCurrentRaw: { received: number; sent: number; timestamp: number } | null = null;
+let networkCurrentSmoothed: { received: number; sent: number; timestamp: number } | null = null;
+const NETWORK_SAMPLER_INTERVAL_MS = 1000; // 1s sampler
+const NETWORK_EMA_ALPHA = 0.4; // smoothing for server-side EMA
 
 /**
  * Get current CPU load averages
@@ -127,6 +133,18 @@ export async function getCpuLoad() {
 }
 
 /**
+ * Lightweight disk IO accessor used as a safe fallback.
+ * Returns the last cached disk IO result when available.
+ */
+export async function getDiskIO() {
+  try {
+    return (collectMetrics as any)._lastDiskIOResult || { read: 0, write: 0 };
+  } catch {
+    return { read: 0, write: 0 };
+  }
+}
+
+/**
  * Get disk IO statistics - Linux implementation
  * 
  * Reads /proc/diskstats and calculates delta since last call.
@@ -135,160 +153,122 @@ export async function getCpuLoad() {
  * @returns {Promise<{read: number, write: number}>} Disk IO rates in MB
  * @private
  */
-async function getDiskIOLinux() {
+async function getNetworkTrafficLinux() {
+  // Lightweight wrapper: prefer background sampler values when available
   try {
-    const { stdout } = await execAsync('cat /proc/diskstats 2>/dev/null || echo ""');
-    if (!stdout) return { read: 0, write: 0 };
-
-    const lines = stdout.trim().split('\n');
-    let totalRead = 0;
-    let totalWrite = 0;
-
-    lines.forEach(line => {
-      const parts = line.split(/\s+/);
-      if (parts.length >= 10) {
-        totalRead += parseInt(parts[6]) || 0;
-        totalWrite += parseInt(parts[10]) || 0;
-      }
-    });
-
-    if (lastDiskStats === null) {
-      lastDiskStats = { read: totalRead, write: totalWrite };
-      return { read: 0, write: 0 };
-    }
-
-    const diffRead = (totalRead - lastDiskStats.read) * 512;
-    const diffWrite = (totalWrite - lastDiskStats.write) * 512;
-
-    lastDiskStats = { read: totalRead, write: totalWrite };
-
-    return {
-      read: Math.max(0, diffRead),
-      write: Math.max(0, diffWrite)
-    };
-  } catch {
-    return { read: 0, write: 0 };
-  }
-}
-
-/**
- * Get disk IO statistics - macOS implementation
- * 
- * Uses vm_stat for page in/out statistics as proxy for disk activity.
- * Note: macOS doesn't provide easy access to disk I/O stats without admin rights.
- * This provides page statistics which correlate with disk activity.
- *
- * @returns {Promise<{read: number, write: number}>} Disk IO rates in MB/s
- * @private
- */
-async function getDiskIOMacOS() {
-  try {
-    // vm_stat provides page statistics (pages in/out from disk)
-    const { stdout } = await execAsync('vm_stat 2>/dev/null || echo ""');
-    if (!stdout) return { read: 0, write: 0 };
-
-    // Extract page size from first line
-    const pageSizeMatch = stdout.match(/page size of (\d+) bytes/);
-    const pageSize = pageSizeMatch ? parseInt(pageSizeMatch[1]) : 4096;
-
-    // Parse vm_stat output for pageins/pageouts
-    const pageinsMatch = stdout.match(/Pageins:\s+(\d+)/);
-    const pageoutsMatch = stdout.match(/Pageouts:\s+(\d+)/);
-    
-    if (!pageinsMatch || !pageoutsMatch) {
-      return { read: 0, write: 0 };
-    }
-
-    const pagesIn = parseInt(pageinsMatch[1]) || 0;
-    const pagesOut = parseInt(pageoutsMatch[1]) || 0;
-
-    if (lastDiskStats === null) {
-      lastDiskStats = { read: pagesIn, write: pagesOut };
-      return { read: 0, write: 0 };
-    }
-
-    const diffRead = (pagesIn - lastDiskStats.read) * pageSize;
-    const diffWrite = (pagesOut - lastDiskStats.write) * pageSize;
-
-    lastDiskStats = { read: pagesIn, write: pagesOut };
-
-    return {
-      read: Math.max(0, diffRead),
-      write: Math.max(0, diffWrite)
-    };
-  } catch {
-    return { read: 0, write: 0 };
-  }
-}
-
-/**
- * Get disk IO statistics (read/write rates in MB)
- * 
- * Platform-aware dispatcher for disk IO metrics.
- * Delegates to platform-specific implementation.
- *
- * @returns {Promise<{read: number, write: number}>} Disk IO rates in MB
- *   - read {number}: Megabytes read per interval (default: 0 on first call)
- *   - write {number}: Megabytes written per interval (default: 0 on first call)
- *
- * @example
- * const diskIO = await getDiskIO();
- * console.log(`Read: ${diskIO.read} MB, Write: ${diskIO.write} MB`);
- */
-export async function getDiskIO() {
-  if (IS_MACOS) {
-    return getDiskIOMacOS();
-  }
-  if (IS_LINUX) {
-    return getDiskIOLinux();
-  }
-  // Unsupported platform
-  return { read: 0, write: 0 };
-}
-
-/**
- * Get network traffic statistics - Linux implementation
- * 
- * Reads /proc/net/dev and calculates delta since last call.
- * Excludes loopback interface (lo).
- * First call returns {received: 0, sent: 0} to establish baseline.
- *
- * @returns {{received: number, sent: number}} Network traffic rates in MB
- * @private
- */
-function getNetworkTrafficLinux() {
-  try {
-    let totalReceived = 0;
-    let totalSent = 0;
-
-    const stdout = execSync('cat /proc/net/dev 2>/dev/null || echo ""', { encoding: 'utf-8' });
-    const lines = stdout.trim().split('\n');
-
-    lines.forEach(line => {
-      const match = line.match(/^\s*(\w+):\s+([\d\s]+)/);
-      if (match && !match[1].match(/^lo$/)) {
-        const parts = match[2].split(/\s+/).filter(p => p.length > 0);
-        totalReceived += parseInt(parts[0]) || 0;
-        totalSent += parseInt(parts[8]) || 0;
-      }
-    });
-
-    if (lastNetworkStats === null) {
-      lastNetworkStats = { received: totalReceived, sent: totalSent };
-      return { received: 0, sent: 0 };
-    }
-
-    const diffReceived = (totalReceived - lastNetworkStats.received) * 1;
-    const diffSent = (totalSent - lastNetworkStats.sent) * 1;
-
-    lastNetworkStats = { received: totalReceived, sent: totalSent };
-
-    return {
-      received: Math.max(0, diffReceived),
-      sent: Math.max(0, diffSent)
-    };
+    if (networkCurrentRaw) return { received: networkCurrentRaw.received, sent: networkCurrentRaw.sent };
+    // fallback to instant sample if sampler not ready
+    const instant = await computeInstantNetworkRate(300);
+    return { received: instant.received, sent: instant.sent };
   } catch {
     return { received: 0, sent: 0 };
+  }
+}
+
+/**
+ * Start a background sampler that reads interface counters every second,
+ * computes bytes/sec deltas and updates `networkCurrentRaw` and `networkCurrentSmoothed`.
+ * This decouples expensive reads from `collectMetrics()` and makes `getNetworkTraffic()` fast.
+ */
+async function startNetworkSampler() {
+  if (networkSamplerRunning) return;
+  networkSamplerRunning = true;
+
+  const readTotalsLinux = async () => {
+    try {
+      const { stdout } = await execAsync('cat /proc/net/dev 2>/dev/null || echo ""');
+      const lines = (stdout || '').trim().split('\n').filter(Boolean);
+      const ifaceMap: Record<string, { received: number; sent: number }> = {};
+      lines.forEach(line => {
+        const match = line.match(/^\s*(\w+):\s+([\d\s]+)/);
+        if (match) {
+          const iface = match[1];
+          if (iface.match(/^lo$/)) return;
+          const parts = match[2].split(/\s+/).filter(p => p.length > 0);
+          const ibytes = parseInt(parts[0]) || 0;
+          const obytes = parseInt(parts[8]) || 0;
+          ifaceMap[iface] = { received: ibytes, sent: obytes };
+        }
+      });
+      return ifaceMap;
+    } catch {
+      return {} as Record<string, { received: number; sent: number }>;
+    }
+  };
+
+  const readTotalsMac = async () => {
+    try {
+      const { stdout } = await execAsync('netstat -ib 2>/dev/null || echo ""');
+      const lines = (stdout || '').trim().split('\n');
+      const ifaceMap: Record<string, { received: number; sent: number }> = {};
+      lines.slice(1).forEach(line => {
+        const parts = line.split(/\s+/).filter(p => p.length > 0);
+        if (parts.length >= 10 && parts[0] && !parts[0].match(/^lo\d*$/)) {
+          const iface = parts[0];
+          const ibytes = parseInt(parts[6]) || 0;
+          const obytes = parseInt(parts[9]) || 0;
+          ifaceMap[iface] = { received: ibytes, sent: obytes };
+        }
+      });
+      return ifaceMap;
+    } catch {
+      return {} as Record<string, { received: number; sent: number }>;
+    }
+  };
+
+  while (networkSamplerRunning) {
+    try {
+      const samplerTs = Date.now();
+      let ifaceMap: Record<string, { received: number; sent: number }> = {};
+      if (IS_LINUX) ifaceMap = await readTotalsLinux();
+      else if (IS_MACOS) ifaceMap = await readTotalsMac();
+
+      // prefer default interface when available
+      let totalReceived = 0;
+      let totalSent = 0;
+      try {
+        const platform = await (await import('./platform')).getPlatform();
+        const defaultIface = platform.getDefaultNetworkInterface ? await platform.getDefaultNetworkInterface() : null;
+        if (defaultIface && ifaceMap[defaultIface]) {
+          totalReceived = ifaceMap[defaultIface].received;
+          totalSent = ifaceMap[defaultIface].sent;
+        } else {
+          Object.values(ifaceMap).forEach(v => { totalReceived += v.received; totalSent += v.sent });
+        }
+      } catch {
+        Object.values(ifaceMap).forEach(v => { totalReceived += v.received; totalSent += v.sent });
+      }
+
+      if (networkPrevTotals === null) {
+        networkPrevTotals = { received: totalReceived, sent: totalSent, ts: samplerTs };
+        // initialize raw and smoothed with zeros until next sample
+        networkCurrentRaw = { received: 0, sent: 0, timestamp: samplerTs };
+        networkCurrentSmoothed = { received: 0, sent: 0, timestamp: samplerTs };
+      } else {
+        const elapsedSec = Math.max(0.001, (samplerTs - networkPrevTotals.ts) / 1000);
+        const diffReceived = Math.max(0, Math.round((totalReceived - networkPrevTotals.received) / elapsedSec));
+        const diffSent = Math.max(0, Math.round((totalSent - networkPrevTotals.sent) / elapsedSec));
+
+        // update raw and EMA-smoothed values
+        networkCurrentRaw = { received: diffReceived, sent: diffSent, timestamp: samplerTs };
+        const prevSm = networkCurrentSmoothed || { received: diffReceived, sent: diffSent, timestamp: samplerTs };
+        const emaReceived = Math.round((NETWORK_EMA_ALPHA * diffReceived) + ((1 - NETWORK_EMA_ALPHA) * (prevSm.received || 0)));
+        const emaSent = Math.round((NETWORK_EMA_ALPHA * diffSent) + ((1 - NETWORK_EMA_ALPHA) * (prevSm.sent || 0)));
+        networkCurrentSmoothed = { received: emaReceived, sent: emaSent, timestamp: samplerTs };
+
+        // keep a simple lastNetworkStats for compatibility (avoid other code breakage)
+        lastNetworkStats = { received: totalReceived, sent: totalSent, timestamp: samplerTs };
+
+        networkPrevTotals = { received: totalReceived, sent: totalSent, ts: samplerTs };
+      }
+    } catch (err) {
+      // ignore sampler errors; next tick will retry
+      try { console.warn('Network sampler error:', err); } catch {
+        // ignore console errors
+      }
+    }
+
+    await sleep(NETWORK_SAMPLER_INTERVAL_MS);
   }
 }
 
@@ -303,44 +283,12 @@ function getNetworkTrafficLinux() {
  * @private
  */
 async function getNetworkTrafficMacOS() {
+  // Lightweight wrapper: prefer background sampler values when available
   try {
-    let totalReceived = 0;
-    let totalSent = 0;
-
-    // Use async execAsync instead of blocking execSync
-    const { stdout } = await execAsync('netstat -ib 2>/dev/null || echo ""');
-    if (!stdout) return { received: 0, sent: 0 };
-    
-    const lines = stdout.trim().split('\n');
-
-    // Skip header line
-    lines.slice(1).forEach(line => {
-      const parts = line.split(/\s+/).filter(p => p.length > 0);
-      // Column 0: interface name, Column 6: Ibytes, Column 9: Obytes
-      if (parts.length >= 10 && parts[0] && !parts[0].match(/^lo\d*$/)) {
-        const ibytes = parseInt(parts[6]) || 0;
-        const obytes = parseInt(parts[9]) || 0;
-        if (!isNaN(ibytes) && !isNaN(obytes)) {
-          totalReceived += ibytes;
-          totalSent += obytes;
-        }
-      }
-    });
-
-    if (lastNetworkStats === null) {
-      lastNetworkStats = { received: totalReceived, sent: totalSent };
-      return { received: 0, sent: 0 };
-    }
-
-    const diffReceived = totalReceived - lastNetworkStats.received;
-    const diffSent = totalSent - lastNetworkStats.sent;
-
-    lastNetworkStats = { received: totalReceived, sent: totalSent };
-
-    return {
-      received: Math.max(0, diffReceived),
-      sent: Math.max(0, diffSent)
-    };
+    if (networkCurrentRaw) return { received: networkCurrentRaw.received, sent: networkCurrentRaw.sent };
+    // fallback to instant sample if sampler not ready
+    const instant = await computeInstantNetworkRate(300);
+    return { received: instant.received, sent: instant.sent };
   } catch {
     return { received: 0, sent: 0 };
   }
@@ -362,15 +310,116 @@ async function getNetworkTrafficMacOS() {
  * const traffic = await getNetworkTraffic();
  * console.log(`Received: ${traffic.received} MB, Sent: ${traffic.sent} MB`);
  */
-export async function getNetworkTraffic() {
-  if (IS_MACOS) {
-    return await getNetworkTrafficMacOS();
+export async function getNetworkTraffic(updateBaseline: boolean = true) {
+  // Prefer fast background-sampled values when available
+  if (networkCurrentRaw) {
+    return { received: networkCurrentRaw.received, sent: networkCurrentRaw.sent };
   }
-  if (IS_LINUX) {
-    return getNetworkTrafficLinux();
-  }
-  // Unsupported platform
+
+  // Fallback to platform-specific immediate reader (retains compatibility)
+  if (IS_MACOS) return await getNetworkTrafficMacOS(updateBaseline);
+  if (IS_LINUX) return await getNetworkTrafficLinux(updateBaseline);
   return { received: 0, sent: 0 };
+}
+
+/**
+ * Compute an instantaneous network rate by reading raw interface counters twice.
+ * This bypasses the shared `lastNetworkStats` logic and is useful for startup seeding.
+ * Returns bytes/sec for received and sent.
+ */
+export async function computeInstantNetworkRate(sampleMs: number = 400): Promise<{ received: number; sent: number }> {
+  try {
+    if (IS_LINUX) {
+      const readTotals = async () => {
+        const { stdout } = await execAsync('cat /proc/net/dev 2>/dev/null || echo ""');
+        const lines = (stdout || '').trim().split('\n').filter(Boolean);
+        const ifaceMap: Record<string, { received: number; sent: number }> = {};
+        lines.forEach(line => {
+          const match = line.match(/^\s*(\w+):\s+([\d\s]+)/);
+          if (match) {
+            const iface = match[1];
+            if (iface.match(/^lo$/)) return;
+            const parts = match[2].split(/\s+/).filter(p => p.length > 0);
+            const ibytes = parseInt(parts[0]) || 0;
+            const obytes = parseInt(parts[8]) || 0;
+            ifaceMap[iface] = { received: ibytes, sent: obytes };
+          }
+        });
+        return ifaceMap;
+      };
+
+      const first = await readTotals();
+      await new Promise((r) => setTimeout(r, sampleMs));
+      const second = await readTotals();
+
+      // Prefer default interface when available
+      try {
+        const platform = await (await import('./platform')).getPlatform();
+        const defaultIface = platform.getDefaultNetworkInterface ? await platform.getDefaultNetworkInterface() : null;
+        let totalFirst = { received: 0, sent: 0 };
+        let totalSecond = { received: 0, sent: 0 };
+        if (defaultIface && first[defaultIface] && second[defaultIface]) {
+          totalFirst = first[defaultIface];
+          totalSecond = second[defaultIface];
+        } else {
+          Object.values(first).forEach(v => { totalFirst.received += v.received; totalFirst.sent += v.sent; });
+          Object.values(second).forEach(v => { totalSecond.received += v.received; totalSecond.sent += v.sent; });
+        }
+        const elapsedSec = Math.max(0.001, sampleMs / 1000);
+        const diffReceived = Math.max(0, Math.round((totalSecond.received - totalFirst.received) / elapsedSec));
+        const diffSent = Math.max(0, Math.round((totalSecond.sent - totalFirst.sent) / elapsedSec));
+        return { received: diffReceived, sent: diffSent };
+      } catch {
+        return { received: 0, sent: 0 };
+      }
+    }
+
+    if (IS_MACOS) {
+      const readTotalsMac = async () => {
+        const { stdout } = await execAsync('netstat -ib 2>/dev/null || echo ""');
+        const lines = (stdout || '').trim().split('\n');
+        const ifaceMap: Record<string, { received: number; sent: number }> = {};
+        lines.slice(1).forEach(line => {
+          const parts = line.split(/\s+/).filter(p => p.length > 0);
+          if (parts.length >= 10 && parts[0] && !parts[0].match(/^lo\d*$/)) {
+            const iface = parts[0];
+            const ibytes = parseInt(parts[6]) || 0;
+            const obytes = parseInt(parts[9]) || 0;
+            ifaceMap[iface] = { received: ibytes, sent: obytes };
+          }
+        });
+        return ifaceMap;
+      };
+
+      const first = await readTotalsMac();
+      await new Promise((r) => setTimeout(r, sampleMs));
+      const second = await readTotalsMac();
+
+      try {
+        const platform = await (await import('./platform')).getPlatform();
+        const defaultIface = platform.getDefaultNetworkInterface ? await platform.getDefaultNetworkInterface() : null;
+        let totalFirst = { received: 0, sent: 0 };
+        let totalSecond = { received: 0, sent: 0 };
+        if (defaultIface && first[defaultIface] && second[defaultIface]) {
+          totalFirst = first[defaultIface];
+          totalSecond = second[defaultIface];
+        } else {
+          Object.values(first).forEach(v => { totalFirst.received += v.received; totalFirst.sent += v.sent; });
+          Object.values(second).forEach(v => { totalSecond.received += v.received; totalSecond.sent += v.sent; });
+        }
+        const elapsedSec = Math.max(0.001, sampleMs / 1000);
+        const diffReceived = Math.max(0, Math.round((totalSecond.received - totalFirst.received) / elapsedSec));
+        const diffSent = Math.max(0, Math.round((totalSecond.sent - totalFirst.sent) / elapsedSec));
+        return { received: diffReceived, sent: diffSent };
+      } catch {
+        return { received: 0, sent: 0 };
+      }
+    }
+
+    return { received: 0, sent: 0 };
+  } catch {
+    return { received: 0, sent: 0 };
+  }
 }
 
 /**
@@ -388,29 +437,111 @@ export async function getNetworkTraffic() {
  */
 export async function collectMetrics() {
   const timestamp = Date.now();
-  const cpuLoad = await getCpuLoad();
-  const memory = {
-    total: os.totalmem(),
-    used: os.totalmem() - os.freemem(),
-    free: os.freemem()
-  };
-  const diskIO = await getDiskIO();
-  const networkTraffic = await getNetworkTraffic(); // Now async
 
-  metricsHistory.cpuLoad.push({ 
-    timestamp, 
-    oneMin: cpuLoad.oneMin,
-    fiveMin: cpuLoad.fiveMin,
-    fifteenMin: cpuLoad.fifteenMin
-  });
-  metricsHistory.memory.push({ timestamp, value: Math.round((memory.used / memory.total) * 100) });
-  metricsHistory.diskIO.push({ timestamp, read: diskIO.read, write: diskIO.write });
-  metricsHistory.networkTraffic.push({ timestamp, received: networkTraffic.received, sent: networkTraffic.sent });
+  // Disk IO sampling policy
+  const DISK_SAMPLE_MS = 5000; // sample disk IO every 5 seconds
+  if (!(collectMetrics as any)._lastDiskSampleMs) (collectMetrics as any)._lastDiskSampleMs = 0;
+  if (!(collectMetrics as any)._lastDiskIOResult) (collectMetrics as any)._lastDiskIOResult = { read: 0, write: 0 };
+
+  const now = Date.now();
+  const shouldSampleDisk = now - (collectMetrics as any)._lastDiskSampleMs >= DISK_SAMPLE_MS;
+
+  // Prepare immediate lightweight snapshot from cached/cheap values
+  const lastCpu = metricsHistory.cpuLoad.length > 0 ? metricsHistory.cpuLoad[metricsHistory.cpuLoad.length - 1] : null;
+  const quickCpu = lastCpu ? { oneMin: lastCpu.oneMin, fiveMin: lastCpu.fiveMin, fifteenMin: lastCpu.fifteenMin } : { oneMin: os.loadavg()[0], fiveMin: os.loadavg()[1], fifteenMin: os.loadavg()[2] };
+
+  const memoryTotal = os.totalmem();
+  const memoryUsed = os.totalmem() - os.freemem();
+  const quickMemoryPercent = Math.round((memoryUsed / memoryTotal) * 100);
+
+  const quickDisk = (collectMetrics as any)._lastDiskIOResult || { read: 0, write: 0 };
+
+  const quickNetwork = networkCurrentRaw
+    ? { timestamp: Date.now(), received: networkCurrentRaw.received, sent: networkCurrentRaw.sent }
+    : (metricsHistory.networkTraffic.length > 0 ? metricsHistory.networkTraffic[metricsHistory.networkTraffic.length - 1] : { timestamp: Date.now(), received: 0, sent: 0 });
+
+  // Push lightweight entries immediately so API returns fresh data without waiting
+  metricsHistory.cpuLoad.push({ timestamp, oneMin: quickCpu.oneMin, fiveMin: quickCpu.fiveMin, fifteenMin: quickCpu.fifteenMin });
+  metricsHistory.memory.push({ timestamp, value: quickMemoryPercent });
+  metricsHistory.diskIO.push({ timestamp, read: quickDisk.read, write: quickDisk.write });
+  // Use sampled network quick value when available (no heuristic placeholders)
+  metricsHistory.networkTraffic.push({ timestamp, received: quickNetwork.received, sent: quickNetwork.sent });
 
   if (metricsHistory.cpuLoad.length > MAX_HISTORY) metricsHistory.cpuLoad.shift();
   if (metricsHistory.memory.length > MAX_HISTORY) metricsHistory.memory.shift();
   if (metricsHistory.diskIO.length > MAX_HISTORY) metricsHistory.diskIO.shift();
   if (metricsHistory.networkTraffic.length > MAX_HISTORY) metricsHistory.networkTraffic.shift();
+
+  // Start actual measurements in parallel and update the last entries when ready
+  const cpuPromise = getCpuLoad();
+  // Use fast non-blocking sampled values from background sampler when available
+  const networkPromise = getNetworkTraffic(false).catch(() => ({ received: 0, sent: 0 }));
+  const diskPromise = shouldSampleDisk ? getDiskIO() : Promise.resolve((collectMetrics as any)._lastDiskIOResult);
+
+  Promise.all([cpuPromise, diskPromise, networkPromise])
+    .then(async ([cpuLoad, diskIO, networkTraffic]) => {
+      try {
+        const updateTimestamp = Date.now();
+
+        // update cached disk sampling
+        if (shouldSampleDisk) {
+          (collectMetrics as any)._lastDiskSampleMs = updateTimestamp;
+          (collectMetrics as any)._lastDiskIOResult = diskIO;
+        }
+
+        // Append measured values as new entries (do not overwrite the quick preview)
+        metricsHistory.cpuLoad.push({
+          timestamp: updateTimestamp,
+          oneMin: cpuLoad.oneMin,
+          fiveMin: cpuLoad.fiveMin,
+          fifteenMin: cpuLoad.fifteenMin
+        });
+
+        const memoryPercent = Math.round((os.totalmem() - os.freemem()) / os.totalmem() * 100);
+        metricsHistory.memory.push({ timestamp: updateTimestamp, value: memoryPercent });
+
+        metricsHistory.diskIO.push({ timestamp: updateTimestamp, read: diskIO.read, write: diskIO.write });
+
+        // If networkTraffic is zero but we only have heuristic placeholders, try an instant sampler
+        let finalNetworkTraffic = networkTraffic;
+        const hasHeuristicOnly = metricsHistory.networkTraffic.some((entry) => entry.heuristic);
+        if ((finalNetworkTraffic.received === 0 && finalNetworkTraffic.sent === 0) && hasHeuristicOnly) {
+          // detected heuristic-only entries and zero network measurement; attempting instant sampler
+          try {
+            const instantSample = await computeInstantNetworkRate(300);
+            // instant sampler result logged for debug during development
+            if (instantSample && (instantSample.received > 0 || instantSample.sent > 0)) {
+              finalNetworkTraffic = { received: instantSample.received, sent: instantSample.sent };
+              // instant sampler produced non-zero network rate, using it to replace heuristic
+            } else {
+              // instant sampler returned zero, keeping heuristic for now
+            }
+          } catch (err) {
+            console.warn('⚠️ collectMetrics: instant sampler failed:', err);
+          }
+        } else {
+          // network measurement present or no heuristics
+        }
+
+        // If this is a real measurement (non-zero), remove any heuristic placeholders
+        if ((finalNetworkTraffic.received && finalNetworkTraffic.received > 0) || (finalNetworkTraffic.sent && finalNetworkTraffic.sent > 0)) {
+          metricsHistory.networkTraffic = metricsHistory.networkTraffic.filter((entry) => !entry.heuristic);
+        }
+
+        metricsHistory.networkTraffic.push({ timestamp: updateTimestamp, received: finalNetworkTraffic.received, sent: finalNetworkTraffic.sent });
+
+        // Trim histories to MAX_HISTORY
+        if (metricsHistory.cpuLoad.length > MAX_HISTORY) metricsHistory.cpuLoad.shift();
+        if (metricsHistory.memory.length > MAX_HISTORY) metricsHistory.memory.shift();
+        if (metricsHistory.diskIO.length > MAX_HISTORY) metricsHistory.diskIO.shift();
+        if (metricsHistory.networkTraffic.length > MAX_HISTORY) metricsHistory.networkTraffic.shift();
+      } catch (err) {
+        console.error('Error updating metricsHistory after async collection:', err);
+      }
+    })
+    .catch(err => {
+      console.error('Background metrics collection failed:', err);
+    });
 }
 
 /**
@@ -439,36 +570,54 @@ export async function collectMetrics() {
  * console.log(snapshot.memory.current); // e.g., 45 (percentage)
  */
 export async function getMetricsSnapshot() {
-  const currentCpuLoad = await getCpuLoad();
-  const memory = {
-    total: os.totalmem(),
-    used: os.totalmem() - os.freemem(),
-    free: os.freemem()
-  };
-  const memoryPercent = Math.round((memory.used / memory.total) * 100);
+  // Lightweight snapshot: return the most recent values from metricsHistory
+  // This avoids running expensive system calls on-demand and keeps API responses fast.
 
-  // Get current disk IO and network traffic
-  const currentDiskIO = await getDiskIO();
-  const currentNetworkTraffic = await getNetworkTraffic();
+  const lastCpu = metricsHistory.cpuLoad.length > 0
+    ? metricsHistory.cpuLoad[metricsHistory.cpuLoad.length - 1]
+    : { timestamp: Date.now(), oneMin: os.loadavg()[0], fiveMin: os.loadavg()[1], fifteenMin: os.loadavg()[2] };
+
+  const memoryTotal = os.totalmem();
+  const memoryUsed = os.totalmem() - os.freemem();
+  const memoryPercent = Math.round((memoryUsed / memoryTotal) * 100);
+
+  const lastDisk = metricsHistory.diskIO.length > 0
+    ? metricsHistory.diskIO[metricsHistory.diskIO.length - 1]
+    : { timestamp: Date.now(), read: 0, write: 0 };
+
+  const lastNetwork = metricsHistory.networkTraffic.length > 0
+    ? metricsHistory.networkTraffic[metricsHistory.networkTraffic.length - 1]
+    : { timestamp: Date.now(), received: 0, sent: 0 };
 
   return {
     cpuLoad: {
-      current: currentCpuLoad,
+      current: {
+        oneMin: lastCpu.oneMin,
+        fiveMin: lastCpu.fiveMin,
+        fifteenMin: lastCpu.fifteenMin
+      },
       history: metricsHistory.cpuLoad
     },
     memory: {
       current: memoryPercent,
-      used: memory.used,
-      total: memory.total,
+      used: memoryUsed,
+      total: memoryTotal,
       history: metricsHistory.memory
     },
     diskIO: {
-      current: currentDiskIO,
+      current: lastDisk,
       history: metricsHistory.diskIO
     },
     networkTraffic: {
-      current: currentNetworkTraffic,
+      current: lastNetwork,
       history: metricsHistory.networkTraffic
     }
   };
+}
+
+// Start the background network sampler (non-blocking)
+try {
+  startNetworkSampler();
+} catch {
+  // ignore
 }

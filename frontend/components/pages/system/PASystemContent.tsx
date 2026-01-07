@@ -1,8 +1,6 @@
 import { SystemInfo } from '../../../../shared/previous-config/types';
-import { Metrics } from '../../../hooks/useSystemMetrics';
 import type { Translations } from '../../../lib/translations';
 import { PASize } from '../../../lib/types/sizes';
-import { DashboardPartial } from '../../partials/system/PADashboardPartial';
 import { DiskSpacePartial } from '../../partials/system/PADiskSpacePartial';
 import { HostInfoPartial } from '../../partials/system/PAHostInfoPartial';
 import { ResetModalPartial } from '../../partials/system/PAResetModalPartial';
@@ -10,13 +8,13 @@ import { ResetSystemPartial } from '../../partials/system/PAResetSystemPartial';
 
 interface SystemContentProps {
   systemInfo: SystemInfo;
-  metrics: Metrics | null;
   showResetModal: boolean;
   setShowResetModal: (show: boolean) => void;
   isResetting: boolean;
   handleReset: () => void;
   controlSize: PASize;
   translation: Translations;
+  isSystemTabActive?: boolean;
 }
 
 /**
@@ -24,7 +22,6 @@ interface SystemContentProps {
  */
 export function SystemContent({
   systemInfo,
-  metrics,
   showResetModal,
   setShowResetModal,
   isResetting,
@@ -40,11 +37,7 @@ export function SystemContent({
         translation={translation}
       />
 
-      {/* Server Dashboard */}
-      <DashboardPartial
-        metrics={metrics}
-        translation={translation}
-      />
+      {/* Dashboard removed per user request */}
 
       {/* Disk Space */}
       <DiskSpacePartial

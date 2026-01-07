@@ -239,6 +239,10 @@ export interface Translations {
     resolution: string;
     seconds: string;
     source: string;
+    read: string;
+    write: string;
+    received: string;
+    sent: string;
     subtitle: string;
     title: string;
     updateAvailable: string;

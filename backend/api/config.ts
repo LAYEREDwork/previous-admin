@@ -107,8 +107,7 @@ router.get(apiPaths.Config.get.relative, async (req: Request, res: TypedResponse
  *
  * Update emulator configuration file
  *
- * Writes updated config to disk and broadcasts changes to all
- * connected WebSocket clients for real-time synchronization.
+ * Writes updated config to disk.
  *
  * @route PUT /api/config
  *
@@ -138,11 +137,6 @@ router.put(apiPaths.Config.put.relative, async (req: Request, res: TypedResponse
     }
 
     await configManager.writeConfig(config);
-
-    // Broadcast update to connected clients
-    if (req.app.locals.broadcastConfigUpdate) {
-      req.app.locals.broadcastConfigUpdate(config);
-    }
 
     res.json({ success: true, config });
   } catch (error) {
