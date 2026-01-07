@@ -36,6 +36,7 @@ See more details and screenshots in [docs/SCREENSHOTS.md](docs/SCREENSHOTS.md).
 |-------|-------------|
 | [📦 Installation](docs/INSTALLATION.md) | Setup guides for Linux and macOS (quick, automated, or manual) |
 | [💻 Development](docs/DEVELOPMENT.md) | Development environment setup, commands, and testing |
+| [📜 Scripts](docs/SCRIPTS.md) | Overview of npm scripts and build commands |
 | [🏗️ Architecture](docs/ARCHITECTURE.md) | System architecture, design patterns, and data flows |
 | [🗂️ Project Structure](docs/PROJECT_STRUCTURE.md) | Directory layout and file organization |
 | [🛠️ Technology Stack](docs/TECHNOLOGY_STACK.md) | Frontend, backend, and tooling details |
