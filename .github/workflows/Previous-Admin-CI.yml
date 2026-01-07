@@ -133,7 +133,7 @@ jobs:
 
       - name: Update badges
         run: |
-          chmod +x scripts/update_badges.sh
+          chmod +x scripts/update-badges.sh
           ./scripts/update-badges.sh
           if ! git diff --quiet README.md; then
             git config --global user.name 'github-actions[bot]'
