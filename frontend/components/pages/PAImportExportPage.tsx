@@ -1,4 +1,6 @@
 // Components
+import { useEffect } from 'react';
+
 import { useLanguage } from '../../contexts/PALanguageContext';
 import { useImportExport } from '../../hooks/useImportExport';
 import { useResponsiveControlSize } from '../../hooks/useResponsiveControlSize';
@@ -26,11 +28,27 @@ export function PAImportExport() {
     exportConfig,
     exportAllConfigs,
     importConfig,
+    importConfigFromObject,
     exportDatabaseDump,
     importDatabaseDump,
   } = useImportExport();
 
   const controlSize = useResponsiveControlSize(PASize.lg);
+
+  // Handle config import from emulator
+  useEffect(() => {
+    const handleConfigImported = (event: CustomEvent) => {
+      const { config } = event.detail;
+      // Import as new config with default name
+      importConfigFromObject(config, 'Imported from Emulator');
+    };
+
+    window.addEventListener('configImported', handleConfigImported as EventListener);
+
+    return () => {
+      window.removeEventListener('configImported', handleConfigImported as EventListener);
+    };
+  }, [importConfigFromObject]);
 
   return (
     <div className="space-y-6">

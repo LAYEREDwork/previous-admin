@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 // Hooks
-import type { Configuration } from '@shared/previous-config/types';
+import type { Configuration, PreviousConfig } from '@shared/previous-config/types';
 
 import { useLanguage } from '../contexts/PALanguageContext';
 import { useNotification } from '../contexts/PANotificationContext';
@@ -213,6 +213,28 @@ export function useImportExport() {
   }
 
   /**
+   * Import a single configuration object directly
+   */
+  async function importConfigFromObject(config: PreviousConfig, name: string, description: string = '') {
+    setImporting(true);
+    try {
+      await database.createConfiguration(name, description, config, false);
+
+      showSuccess(translation.importExport.importedConfiguration);
+
+      // Reload configurations and refresh page
+      await loadConfigurations();
+      window.location.reload();
+    } catch (error) {
+      console.error('Error importing config from object:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      showError(translation.importExport.importFailed.replace('{error}', errorMessage));
+    } finally {
+      setImporting(false);
+    }
+  }
+
+  /**
    * Export complete database dump
    */
   async function exportDatabaseDump() {
@@ -281,6 +303,7 @@ export function useImportExport() {
     exportConfig,
     exportAllConfigs,
     importConfig,
+    importConfigFromObject,
     exportDatabaseDump,
     importDatabaseDump,
   };

@@ -58,9 +58,25 @@ export function ConfigFileSyncPartial() {
     setMessage(null);
 
     try {
+      const response = await fetch('/api/config/import-from-emulator', {
+        headers: {
+          'Accept': 'application/json',
+        },
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to import from emulator');
+      }
+
+      const { config } = await response.json();
+
+      // Emit event to notify parent component about imported config
+      window.dispatchEvent(new CustomEvent('configImported', { detail: { config } }));
+
       setMessage({
-        type: 'error',
-        text: 'Import from emulator is currently disabled',
+        type: 'success',
+        text: translation.importExport.importSuccess,
       });
     } catch (error) {
       console.error('Error loading from file:', error);

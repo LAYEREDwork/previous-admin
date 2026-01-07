@@ -3,8 +3,8 @@
  * Handles pulling latest changes from git and restarting application
  */
 
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
 
 import express from 'express';
 

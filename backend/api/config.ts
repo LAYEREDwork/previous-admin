@@ -196,4 +196,33 @@ router.post(apiPaths.Config.convertToCfg.relative, async (req: Request, res: Typ
   }
 });
 
+/**
+ * Import configuration from emulator
+ *
+ * Reads the current configuration from the Previous emulator and returns it
+ * for import into the application.
+ *
+ * @route GET /api/config/import-from-emulator
+ *
+ * @returns {Object}
+ *   - config {PreviousConfig}: Current emulator configuration
+ *
+ * @throws {500} If reading config fails
+ *
+ * @example
+ * const res = await fetch('/api/config/import-from-emulator');
+ * const { config } = await res.json();
+ */
+router.get(apiPaths.Config.importFromEmulator.relative, async (req: Request, res: TypedResponse<{ config: PreviousConfig }>) => {
+  try {
+    const configManager = getConfigManager();
+    const config = await configManager.readConfig();
+
+    res.json({ config });
+  } catch (error) {
+    console.error('Error importing config from emulator:', error);
+    res.status(500).json({ error: 'Failed to import configuration from emulator' } as any);
+  }
+});
+
 export default router;
