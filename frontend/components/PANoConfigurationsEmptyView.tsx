@@ -1,6 +1,6 @@
-import { useLanguage } from '../contexts/PALanguageContext';
+import { useLanguage } from '@frontend/contexts/PALanguageContext';
 
-import { PASize } from '../lib/types/sizes';
+import { PASize } from '@frontend/lib/types/sizes';
 
 import { PAEmptyView } from './controls/PAEmptyView';
 import { SFDocumentBadgePlusFill } from './sf-symbols';

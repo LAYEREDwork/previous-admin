@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { ButtonProps as RSuiteButtonProps } from 'rsuite';
 
-import { PASize } from '../../lib/types/sizes';
+import { PASize } from '@frontend/lib/types/sizes';
 
 import { PAButton } from './PAButton';
 

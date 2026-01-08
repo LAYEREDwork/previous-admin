@@ -16,7 +16,7 @@ import type {
   ParameterSchema, 
   SectionSchema, 
   ConfigSchema 
-} from '../../shared/previous-config/schema-types';
+} from '@shared/previous-config/schema-types';
 
 import type { RawConfigData, RawConfigParameter } from './config-parser';
 

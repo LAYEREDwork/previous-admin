@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-import { Language, Translations, translations, detectBrowserLanguage } from '../lib/translations';
+import { Language, Translations, translations, detectBrowserLanguage } from '@frontend/lib/translations';
 
 interface LanguageContextType {
   language: Language;

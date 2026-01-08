@@ -6,7 +6,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
-import { PAStringInput } from '../components/controls/config-inputs/PAStringInput';
+import { PAStringInput } from '@frontend/components/controls/config-inputs/PAStringInput';
 
 describe('PAStringInput', () => {
   it('renders input with correct initial value', () => {

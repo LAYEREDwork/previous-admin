@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
-import { SystemEmptyState } from '../components/pages/system/PASystemEmptyState';
+import { SystemEmptyState } from '@frontend/components/pages/system/PASystemEmptyState';
 
 describe('SystemEmptyState', () => {
   it('should render empty state message', () => {

@@ -2,10 +2,10 @@ import { Input, Toggle } from 'rsuite';
 
 import type { PreviousConfig } from '@shared/previous-config/types';
 
-import { useConfigSchema } from '../../../hooks/useConfigSchema';
-import { Translations } from '../../../lib/translations';
-import { PASize } from '../../../lib/types';
-import { getSectionIcon } from '../../../lib/utils/section-icon-mapper';
+import { useConfigSchema } from '@frontend/hooks/useConfigSchema';
+import { Translations } from '@frontend/lib/translations';
+import { PASize } from '@frontend/lib/types';
+import { getSectionIcon } from '@frontend/lib/utils/section-icon-mapper';
 
 import { PAEditorDropdownPartial } from './PAEditorDropdownPartial';
 import { EditorFieldPartial } from './PAEditorFieldPartial';

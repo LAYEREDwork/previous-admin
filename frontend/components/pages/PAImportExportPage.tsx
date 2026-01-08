@@ -1,10 +1,11 @@
 // Components
 import { useEffect } from 'react';
 
-import { useLanguage } from '../../contexts/PALanguageContext';
-import { useImportExport } from '../../hooks/useImportExport';
-import { useResponsiveControlSize } from '../../hooks/useResponsiveControlSize';
-import { PASize } from '../../lib/types/sizes';
+import { useLanguage } from '@frontend/contexts/PALanguageContext';
+import { useImportExport } from '@frontend/hooks/useImportExport';
+import { useResponsiveControlSize } from '@frontend/hooks/useResponsiveControlSize';
+import { PASize } from '@frontend/lib/types/sizes';
+
 import { ConfigFileSyncPartial } from '../partials/import-export/PAConfigFileSyncPartial';
 
 // Partials

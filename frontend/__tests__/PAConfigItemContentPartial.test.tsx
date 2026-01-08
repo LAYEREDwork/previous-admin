@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 
-import { ConfigItemContent } from '../components/partials/config-list/PAConfigItemContentPartial';
-import { Configuration } from '../lib/database';
-import type { Translations } from '../lib/translations';
+import { ConfigItemContent } from '@frontend/components/partials/config-list/PAConfigItemContentPartial';
+import { Configuration } from '@frontend/lib/database';
+import type { Translations } from '@frontend/lib/translations';
 
 const mockConfig: Configuration = {
   id: 'test-id',

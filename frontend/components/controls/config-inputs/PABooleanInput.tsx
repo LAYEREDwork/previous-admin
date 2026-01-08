@@ -9,7 +9,7 @@
 
 import { Toggle } from 'rsuite';
 
-import { PASize } from '../../../lib/types/sizes';
+import { PASize } from '@frontend/lib/types/sizes';
 
 interface PABooleanInputProps {
   /** Current boolean value */

@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import { Input } from 'rsuite';
 
-import { PASize } from '../../lib/types/sizes';
+import { PASize } from '@frontend/lib/types/sizes';
 
 export interface PAInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'onChange'> {
     size?: PASize;

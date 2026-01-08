@@ -19,9 +19,9 @@
 
 ## Architecture Overview
 - **Frontend**: React 19.2.3 + TypeScript app built with Vite, using Tailwind CSS and Rsuite UI components. Runs on port 2342 in development, served by backend in production.
-- **Backend**: Node.js + Express server with TypeScript, handling REST API (`/api/*`), WebSocket connections, and platform-specific operations. Runs on port 3001 in development, 2342 in production.
+- **Backend**: Node.js + Express server with TypeScript, handling REST API (`/api/*`) and platform-specific operations. Runs on port 3001 in development, 2342 in production.
 - **Database**: SQLite database stored in `~/.previous-admin/previous-admin.db` with automatic schema initialization.
-- **Communication**: Frontend communicates with backend via HTTP API and WebSockets for real-time system metrics.
+- **Communication**: Frontend communicates with backend via HTTP REST API.
 - **Platform Support**: Platform-specific config managers for macOS and Linux (see `backend/config/` and `backend/platform/`).
 - **State Management**: React contexts (`contexts/`) for global state, custom hooks (`hooks/`) for business logic.
 - **Internationalization**: Full i18n support with German, English, Spanish, French, Italian translations in `frontend/lib/i18n/locales/`.
@@ -42,7 +42,7 @@
 - **Custom Hooks**: Business logic extracted into hooks like `useConfigActions`, `useConfigList` for reusable frontend logic.
 - **Error Handling**: Use `PAErrorBoundary` component and notification context for user-facing errors.
 - **File Watching**: `backend/file-watcher.ts` monitors config file changes for auto-sync.
-- **Metrics Collection**: Real-time system metrics via `backend/metrics.ts` and WebSockets.
+- **Metrics Collection**: Real-time system metrics via `backend/metrics.ts`.
 - **Size Parameters**: ALWAYS use `PASize` enum constants (`PASize.xs`, `PASize.sm`, `PASize.md`, `PASize.lg`, `PASize.xl`) instead of magic string literals (`'xs'`, `'sm'`, `'md'`, etc.) in component `size` props and type definitions. The `PASize` enum is defined in `frontend/lib/types/sizes.ts`. Use type `PASize` for any size-related props and default values. This applies to all component size properties throughout the codebase.
 - **SF Symbol Architecture** (**SOURCE OF TRUTH**): 
   - **Source of Truth**: `frontend/components/sf-symbols/available-symbols.ts` - Enum generated from actual SVG filenames, guarantees all symbols exist
@@ -62,7 +62,7 @@
   - **Pipeline**: `scripts/generate-sfsymbols.ts` → generates `available-symbols.ts` (SOURCE OF TRUTH) → other symbol files use this enum → schema generation validates all mappings
 
 ## Key Files and Directories
-- `backend/index.ts`: Main server entry point with Express setup, routes, and WebSocket initialization.
+- `backend/index.ts`: Main server entry point with Express setup and routes.
 - `frontend/App.tsx`: Root component with context providers and tab-based navigation.
 - `shared/types.ts`: Shared TypeScript interfaces for Configuration, API responses.
 - `backend/platform/`: Platform abstraction layer for OS-specific operations.

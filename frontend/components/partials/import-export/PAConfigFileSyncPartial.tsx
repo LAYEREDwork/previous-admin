@@ -133,13 +133,13 @@ export function ConfigFileSyncPartial() {
       {message && (
         <div
           className={`flex items-center gap-2 p-3 rounded-lg border ${message.type === 'success'
-            ? 'border-[var(--rs-border-success)]'
-            : 'border-[var(--rs-border-error)]'
+            ? 'border-[var(--rs-message-success-border)]'
+            : 'border-[var(--rs-message-error-border)]'
             }`}
           style={{
             backgroundColor: message.type === 'success'
-              ? 'color-mix(in srgb, var(--rs-border-success), transparent 92%)'
-              : 'color-mix(in srgb, var(--rs-border-error), transparent 92%)',
+              ? 'color-mix(in srgb, var(--rs-bg-card), var(--rs-green-500) 15%)'
+              : 'color-mix(in srgb, var(--rs-bg-card), var(--rs-red-500) 15%)',
             color: message.type === 'success'
               ? 'var(--rs-text-success)'
               : 'var(--rs-text-error)'

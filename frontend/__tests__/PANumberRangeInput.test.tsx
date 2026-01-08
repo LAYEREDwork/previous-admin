@@ -8,7 +8,7 @@ import { describe, it, expect, vi } from 'vitest';
 
 import type { ParameterSchema } from '@shared/previous-config/schema-types';
 
-import { PANumberRangeInput } from '../components/controls/config-inputs/PANumberRangeInput';
+import { PANumberRangeInput } from '@frontend/components/controls/config-inputs/PANumberRangeInput';
 
 describe('PANumberRangeInput', () => {
   const mockSchema: ParameterSchema = {

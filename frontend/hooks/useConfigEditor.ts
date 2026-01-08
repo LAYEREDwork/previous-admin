@@ -3,11 +3,11 @@ import { useState, useEffect, useCallback } from 'react';
 // Hooks
 import type { PreviousConfig } from '@shared/previous-config/types';
 
-import { useConfig } from '../contexts/PAConfigContext';
-import { useLanguage } from '../contexts/PALanguageContext';
-import { useNotification } from '../contexts/PANotificationContext';
-import { convertToConfigFile } from '../lib/config';
-import { database } from '../lib/database';
+import { useConfig } from '@frontend/contexts/PAConfigContext';
+import { useLanguage } from '@frontend/contexts/PALanguageContext';
+import { useNotification } from '@frontend/contexts/PANotificationContext';
+import { convertToConfigFile } from '@frontend/lib/config';
+import { database } from '@frontend/lib/database';
 
 import { useConfigMetadataEditor } from './useConfigMetadataEditor';
 import { useConfigSchema } from './useConfigSchema';

@@ -8,7 +8,7 @@ import { describe, it, expect, vi } from 'vitest';
 
 import type { ParameterSchema } from '@shared/previous-config/schema-types';
 
-import { PAEnumInput } from '../components/controls/config-inputs/PAEnumInput';
+import { PAEnumInput } from '@frontend/components/controls/config-inputs/PAEnumInput';
 
 describe('PAEnumInput', () => {
   const mockSchema: ParameterSchema = {

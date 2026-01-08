@@ -1,7 +1,7 @@
 import { ReactNode, forwardRef } from 'react';
 import { Button, ButtonProps } from 'rsuite';
 
-import { PASize } from '../../lib/types/sizes';
+import { PASize } from '@frontend/lib/types/sizes';
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 

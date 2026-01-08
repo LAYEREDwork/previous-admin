@@ -1,14 +1,14 @@
 
 // Hooks
-import { useLanguage } from '../../contexts/PALanguageContext';
-import { useResponsiveControlSize } from '../../hooks/useResponsiveControlSize';
-import { useSystem } from '../../hooks/useSystem';
+import { useLanguage } from '@frontend/contexts/PALanguageContext';
+import { useResponsiveControlSize } from '@frontend/hooks/useResponsiveControlSize';
+import { useSystem } from '@frontend/hooks/useSystem';
 
-import { SystemContent } from './system/PASystemContent';
-import { SystemEmptyState } from './system/PASystemEmptyState';
-import { SystemErrorState } from './system/PASystemErrorState';
-import { SystemLoadingState } from './system/PASystemLoadingState';
-import { SystemPageHeader } from './system/PASystemPageHeader';
+import { SystemContent } from './PASystemContent';
+import { SystemEmptyState } from './PASystemEmptyState';
+import { SystemErrorState } from './PASystemErrorState';
+import { SystemLoadingState } from './PASystemLoadingState';
+import { SystemPageHeader } from './PASystemPageHeader';
 
 export function PASystem() {
   const { translation } = useLanguage();

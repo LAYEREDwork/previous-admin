@@ -1,8 +1,8 @@
 import { SFDesktopcomputer, SFMoonStars, SFSunMax } from '@frontend/components/sf-symbols';
 
-import { useLanguage } from '../../contexts/PALanguageContext';
-import { useTheme, ThemeMode } from '../../contexts/PAThemeContext';
-import { PASize } from '../../lib/types/sizes';
+import { useLanguage } from '@frontend/contexts/PALanguageContext';
+import { useTheme, ThemeMode } from '@frontend/contexts/PAThemeContext';
+import { PASize } from '@frontend/lib/types/sizes';
 
 import { PASegmentedControl } from './PASegmentedControl';
 

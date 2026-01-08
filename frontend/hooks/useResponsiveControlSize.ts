@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { PASize } from '../lib/types/sizes';
+import { PASize } from '@frontend/lib/types/sizes';
 
 /**
  * React hook that provides responsive sizing for UI components.

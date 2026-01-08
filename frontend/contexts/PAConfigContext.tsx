@@ -4,9 +4,9 @@ import { createContext, useContext, useEffect, useState, ReactNode, useCallback 
 // Utilities
 import type { PreviousConfig } from '@shared/previous-config/types';
 
-import { api } from '../lib/api';
-import { defaultConfig } from '../lib/config';
-import { database } from '../lib/database';
+import { api } from '@frontend/lib/api';
+import { defaultConfig } from '@frontend/lib/config';
+import { database } from '@frontend/lib/database';
 
 // Types
 

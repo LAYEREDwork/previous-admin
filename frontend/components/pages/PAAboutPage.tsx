@@ -1,6 +1,6 @@
 // Hooks
-import { useLanguage } from '../../contexts/PALanguageContext';
-import { useAboutLogic } from '../../hooks/useAbout';
+import { useLanguage } from '@frontend/contexts/PALanguageContext';
+import { useAboutLogic } from '@frontend/hooks/useAbout';
 
 // Components
 import { GeneralResourcesPartial } from '../partials/about/PAGeneralResourcesPartial';

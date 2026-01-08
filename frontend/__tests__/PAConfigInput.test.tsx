@@ -7,7 +7,7 @@ import { describe, it, expect, vi } from 'vitest';
 
 import type { ParameterSchema } from '@shared/previous-config/schema-types';
 
-import { PAConfigInput } from '../components/controls/PAConfigInput';
+import { PAConfigInput } from '@frontend/components/controls/PAConfigInput';
 
 describe('PAConfigInput', () => {
   it('renders PABooleanInput for boolean type', () => {

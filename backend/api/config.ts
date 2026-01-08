@@ -46,7 +46,7 @@ function loadSchema(): ConfigSchema {
 
   try {
     // Try multiple paths to handle both development and production
-    let schemaPath = join(__dirname, '../../shared/previous-config/schema.json');
+    let schemaPath = join(__dirname, '@shared/previous-config/schema.json');
     try {
       const schemaContent = readFileSync(schemaPath, 'utf-8');
       schemaCache = JSON.parse(schemaContent) as ConfigSchema;

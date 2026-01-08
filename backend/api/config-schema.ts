@@ -14,8 +14,8 @@ import { fileURLToPath } from 'url';
 
 import { Router, Request, Response } from 'express';
 
-import { apiPaths } from '../../shared/api/constants';
-import type { ConfigSchema } from '../../shared/previous-config/schema-types';
+import { apiPaths } from '@shared/api/constants';
+import type { ConfigSchema } from '@shared/previous-config/schema-types';
 
 // Define __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -39,7 +39,7 @@ function loadSchema(): ConfigSchema {
 
   try {
     // Try multiple paths to handle both development and production
-    let schemaPath = join(__dirname, '../../shared/previous-config/schema.json');
+    let schemaPath = join(__dirname, '@shared/previous-config/schema.json');
     try {
       const schemaContent = readFileSync(schemaPath, 'utf-8');
       schemaCache = JSON.parse(schemaContent) as ConfigSchema;

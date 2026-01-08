@@ -1,6 +1,6 @@
-import { useLanguage } from '../contexts/PALanguageContext';
-import { useNotification } from '../contexts/PANotificationContext';
-import { database, Configuration } from '../lib/database';
+import { useLanguage } from '@frontend/contexts/PALanguageContext';
+import { useNotification } from '@frontend/contexts/PANotificationContext';
+import { database, Configuration } from '@frontend/lib/database';
 
 import { useDragState } from './useDragState';
 

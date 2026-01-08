@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 
 import { StylingKey } from '@shared/previous-config/enums';
 
-import { PASize } from '../lib/types';
+import { PASize } from '@frontend/lib/types';
 import {
   stylingDefaults,
   getFrameShadow,
@@ -13,7 +13,7 @@ import {
   shadowConfig,
   activeGlowConfig,
   computeNeomorphControlCSS
-} from '../lib/utils/styling';
+} from '@frontend/lib/utils/styling';
 
 describe('Styling Utilities', () => {
   describe('stylingDefaults', () => {

@@ -1,6 +1,6 @@
-import { useLanguage } from '../../../contexts/PALanguageContext';
-import { PACard } from '../../controls/PACard';
-import { PAResourceLink } from '../../controls/PAResourceLink';
+import { PACard } from '@frontend/components/controls/PACard';
+import { PAResourceLink } from '@frontend/components/controls/PAResourceLink';
+import { useLanguage } from '@frontend/contexts/PALanguageContext';
 
 /**
  * Partial component for displaying general resources links.

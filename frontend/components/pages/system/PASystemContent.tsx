@@ -1,6 +1,7 @@
+import type { Translations } from '@frontend/lib/translations';
+import { PASize } from '@frontend/lib/types/sizes';
+
 import { SystemInfo } from '../../../../shared/previous-config/types';
-import type { Translations } from '../../../lib/translations';
-import { PASize } from '../../../lib/types/sizes';
 import { DiskSpacePartial } from '../../partials/system/PADiskSpacePartial';
 import { HostInfoPartial } from '../../partials/system/PAHostInfoPartial';
 import { ResetModalPartial } from '../../partials/system/PAResetModalPartial';

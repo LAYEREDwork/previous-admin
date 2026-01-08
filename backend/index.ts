@@ -17,7 +17,7 @@ import { createServer, Server as HttpServer } from 'http';
 import cors from 'cors';
 import express, { Express, Request, Response } from 'express';
 
-import { apiPaths } from '../shared/api/constants';
+import { apiPaths } from '@shared/api/constants';
 
 // Import database to initialize on startup
 

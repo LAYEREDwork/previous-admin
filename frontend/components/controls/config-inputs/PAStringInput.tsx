@@ -9,7 +9,7 @@
 
 import { Input } from 'rsuite';
 
-import { PASize } from '../../../lib/types/sizes';
+import { PASize } from '@frontend/lib/types/sizes';
 
 interface PAStringInputProps {
   /** Current string value */

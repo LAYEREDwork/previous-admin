@@ -22,10 +22,6 @@ Previous Admin is built with modern, production-ready technologies focusing on p
 - **Centralized Icon Sizing**: Standardized icon dimensions (xs: 12px to xl: 32px)
 - **Path Aliases**: Cleaner imports using `@frontend/*` and `@shared/*`
 
-### Real-Time Communication
-- **WebSocket** - Native browser WebSockets for real-time metrics
-- Automatic reconnection and fallback handling
-
 ### State Management
 - **React Context API** - Global state management for user session, settings, notifications
 - **Custom Hooks** - Business logic extracted into reusable hooks
@@ -51,9 +47,6 @@ Previous Admin is built with modern, production-ready technologies focusing on p
 - **SQLite** - Lightweight, embedded database
 - **better-sqlite3** - Fast, synchronous Node.js bindings for SQLite
 - Stored in: `~/.previous-admin/previous-admin.db`
-
-### Real-Time Communication
-- **WebSocket** - Bidirectional real-time communication with frontend
 
 ### Configuration Management
 - **Platform Abstraction Layer** - Handles macOS and Linux differences
@@ -113,7 +106,6 @@ Previous Admin is built with modern, production-ready technologies focusing on p
 
 ### Frontend-Backend Communication
 - **REST API**: HTTP endpoints for data operations
-- **WebSocket**: Real-time metrics streaming and updates
 - **Platform-specific handling**: Detected at runtime
 
 ### Configuration Management
@@ -127,7 +119,7 @@ Previous Admin is built with modern, production-ready technologies focusing on p
 - Memory usage tracking
 - Disk I/O statistics
 - Network traffic analysis
-- Streamed to frontend via WebSocket for live charts
+- Fetched via REST API for live charts
 
 ### Internationalization
 - Translation keys auto-generated from configuration schema

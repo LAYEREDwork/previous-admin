@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
-import { SystemErrorState } from '../components/pages/system/PASystemErrorState';
-import type { Translations } from '../lib/translations';
+import { SystemErrorState } from '@frontend/components/pages/system/PASystemErrorState';
+import type { Translations } from '@frontend/lib/translations';
 
 const mockTranslation: Translations = {
   system: {

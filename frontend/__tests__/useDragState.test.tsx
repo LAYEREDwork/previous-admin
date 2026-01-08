@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 
-import { useDragState } from '../hooks/useDragState';
+import { useDragState } from '@frontend/hooks/useDragState';
 
 describe('useDragState', () => {
   it('should initialize with null indices', () => {

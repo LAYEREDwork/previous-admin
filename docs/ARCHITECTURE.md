@@ -2,13 +2,13 @@
 
 ## System Architecture
 
-Previous Admin follows a **client-server architecture** with real-time bidirectional communication:
+Previous Admin follows a **client-server architecture**:
 
 ```
 ┌─────────────────┐                    ┌──────────────────┐
 │   Web Browser   │                    │  Express Server  │
 │                 │  ◄─────────────►   │                  │
-│   React App     │   HTTP + WebSocket │  Node.js/Backend │
+│   React App     │    HTTP/REST       │  Node.js/Backend │
 │   (Port 2342)   │                    │  (Port 2342/3001)│
 └─────────────────┘                    └──────────────────┘
                                                │
@@ -39,7 +39,6 @@ App (Root)
 ├── AuthContext Provider
 ├── SettingsContext Provider
 ├── NotificationContext Provider
-├── WebSocketContext Provider
 │
 └── TAB Navigation
     ├── Configuration List Page
@@ -68,20 +67,16 @@ Contexts (Global State)
 │   └── User session and authentication
 ├── SettingsContext
 │   └── User preferences and theme
-├── NotificationContext
-│   └── Toast notifications and alerts
-└── WebSocketContext
-    └── Real-time connection status
+└── NotificationContext
+    └── Toast notifications and alerts
 
 Custom Hooks (Business Logic)
 ├── useConfigActions()
 │   └── Create, update, delete configurations
 ├── useConfigList()
 │   └── Fetch and manage configuration list
-├── useWebSocket()
-│   └── Connect/reconnect WebSocket
 └── useSystemMetrics()
-    └── Receive and store system metrics
+    └── Fetch and store system metrics
 ```
 
 ### Communication Pattern
@@ -95,11 +90,7 @@ Custom Hook (useConfigActions, etc.)
     ▼
 API Client (lib/api/*)
     │
-    ├─► HTTP REST ──► Backend API
-    │
-    └─► WebSocket ──► Backend WebSocket Handler
-            │
-            └─► Real-time data updates
+    └─► HTTP REST ──► Backend API
 ```
 
 ## Backend Architecture
@@ -107,7 +98,7 @@ API Client (lib/api/*)
 ### Request Processing Pipeline
 
 ```
-HTTP Request / WebSocket Message
+HTTP Request
     │
     ▼
 Express Router
@@ -115,8 +106,7 @@ Express Router
     ├─► /api/configs ──► Configuration APIs
     ├─► /api/system ──► System Information APIs
     ├─► /api/database ──► Database Query APIs
-    ├─► /api/update ──► Update Check APIs
-    └─► WebSocket ──► Real-time Handlers
+    └─► /api/update ──► Update Check APIs
         │
         ▼
     Handler Function
@@ -175,13 +165,7 @@ ConfigManager (Abstract Interface)
 6. Database stores configuration metadata
                 │
                 ▼
-7. File Watcher detects external changes
-                │
-                ▼
-8. Broadcasts update via WebSocket
-                │
-                ▼
-9. Frontend receives and updates UI
+7. Returns success response to frontend
 ```
 
 ### Data Flow: Real-Time Metrics
@@ -189,27 +173,25 @@ ConfigManager (Abstract Interface)
 ```
 1. Frontend opens System page
     │
-    └─► WebSocket connects
+    └─► HTTP GET /api/system/metrics
         │
         ▼
-2. Backend WebSocket handler receives connect
+2. Backend metrics handler
     │
-    ├─► Starts metrics collection loop
+    ├─► Collects system metrics
     │   ├─► CPU load (via /proc or `sysctl`)
     │   ├─► Memory usage (via /proc or `vm_stat`)
     │   ├─► Disk I/O stats
     │   └─► Network traffic stats
     │
-    ├─► Collects every 1 second
-    │
-    └─► Broadcasts via WebSocket
+    └─► Returns JSON response
         │
         ▼
 3. Frontend receives metrics
     │
     ├─► Updates chart data
     ├─► Re-renders charts (React)
-    └─► Displays real-time visualization
+    └─► Displays visualization
 ```
 
 ## Database Schema
@@ -262,13 +244,6 @@ const operations = platform === 'darwin'
 - **Database**: Automatic schema initialization on first run
 - **Validation**: Schema validation before accepting configuration changes
 
-### Real-Time Synchronization
-
-- **WebSocket**: Bidirectional, persistent connection
-- **Heartbeat**: Regular connection health checks
-- **Reconnection**: Automatic fallback to HTTP polling if WebSocket fails
-- **Event Broadcasting**: Configuration changes broadcast to all connected clients
-
 ### File Watching
 
 - **Debounced Updates**: Prevents rapid consecutive file writes
@@ -284,7 +259,6 @@ const operations = platform === 'darwin'
 
 ### Backend
 - Stateless HTTP handlers allow horizontal scaling
-- WebSocket connections per-client for real-time updates
 - Database abstraction allows easy migration if needed
 - Platform-specific optimizations for system metrics collection
 
@@ -300,7 +274,6 @@ const operations = platform === 'darwin'
 - Metrics collected on background intervals
 - Configuration caching to reduce file I/O
 - Efficient database queries with proper indexing
-- Non-blocking WebSocket broadcasts
 
 ## Security Considerations
 
@@ -317,7 +290,7 @@ const operations = platform === 'darwin'
 1. Add collection logic to `backend/metrics.ts`
 2. Define new metric type in `shared/types.ts`
 3. Create new chart component in `frontend/components/charts/`
-4. Wire up WebSocket message in frontend
+4. Connect to metrics API endpoint in frontend
 
 ### Supporting New Platforms
 

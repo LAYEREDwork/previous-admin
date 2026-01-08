@@ -1,10 +1,10 @@
+import { PAButton } from '@frontend/components/controls/PAButton';
+import { PACard } from '@frontend/components/controls/PACard';
 import { SFTrayAndArrowDownFill, SFTrayAndArrowUpFill } from '@frontend/components/sf-symbols';
 
-import { Configuration } from '../../../lib/database';
-import { Translations } from '../../../lib/translations';
-import { PASize } from '../../../lib/types/sizes';
-import { PAButton } from '../../controls/PAButton';
-import { PACard } from '../../controls/PACard';
+import { Configuration } from '@frontend/lib/database';
+import { Translations } from '@frontend/lib/translations';
+import { PASize } from '@frontend/lib/types/sizes';
 
 interface ConfigImportExportPartialProps {
     importing: boolean;

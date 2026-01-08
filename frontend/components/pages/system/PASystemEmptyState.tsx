@@ -1,4 +1,4 @@
-import { PACard } from '../../controls/PACard';
+import { PACard } from '@frontend/components/controls/PACard';
 
 /**
  * Empty state component for the system page when no system information is available

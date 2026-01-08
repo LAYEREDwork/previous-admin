@@ -9,7 +9,7 @@
 
 import type { ParameterSchema } from '@shared/previous-config/schema-types';
 
-import { PASize } from '../../lib/types/sizes';
+import { PASize } from '@frontend/lib/types/sizes';
 
 import { PABooleanInput } from './config-inputs/PABooleanInput';
 import { PAEnumInput } from './config-inputs/PAEnumInput';

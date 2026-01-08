@@ -1,11 +1,11 @@
 import { renderHook, waitFor, act } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 
-import { useAboutLogic } from '../hooks/useAbout';
-import { checkForUpdates, updateApplication } from '../lib/version';
+import { useAboutLogic } from '@frontend/hooks/useAbout';
+import { checkForUpdates, updateApplication } from '@frontend/lib/version';
 
 // Mock the version functions
-vi.mock('../lib/version', () => ({
+vi.mock('@frontend/lib/version', () => ({
   checkForUpdates: vi.fn(),
   updateApplication: vi.fn(),
 }));

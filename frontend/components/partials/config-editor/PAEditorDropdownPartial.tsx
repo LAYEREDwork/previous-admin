@@ -7,7 +7,7 @@
  * @module frontend/components/partials/config-editor/PAEditorDropdownPartial
  */
 
-import { PASize } from '../../../lib/types/sizes';
+import { PASize } from '@frontend/lib/types/sizes';
 
 interface PAEditorDropdownPartialProps {
   /** Current selected value */

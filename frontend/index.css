@@ -405,13 +405,17 @@
     position: relative !important;
     top: auto !important;
     transform: none !important;
+    /* Ensure dialog corners are enforced even if RSuite sets them later */
+    border-radius: var(--rs-radius-2xl) !important;
+    overflow: hidden !important;
   }
 
   div.rs-modal div.rs-modal-content,
   .rs-modal .rs-modal-content,
   .rs-modal-content {
     margin: 0 !important;
-    border-radius: 1rem !important;
+    border-radius: var(--rs-radius-2xl) !important;
+    overflow: hidden !important;
     display: flex !important;
     flex-direction: column !important;
   }
@@ -419,8 +423,8 @@
   div.rs-modal div.rs-modal-header,
   .rs-modal .rs-modal-header,
   .rs-modal-header {
-    border-top-left-radius: 1rem !important;
-    border-top-right-radius: 1rem !important;
+    border-top-left-radius: var(--rs-radius-2xl) !important;
+    border-top-right-radius: var(--rs-radius-2xl) !important;
     flex-shrink: 0 !important;
   }
 
@@ -431,11 +435,18 @@
     flex: 1 1 auto !important;
   }
 
+  /* Allow specific modals to grow with content instead of scrolling */
+  .pa-reset-modal .rs-modal-body {
+    overflow: visible !important;
+    max-height: none !important;
+    flex: 0 0 auto !important;
+  }
+
   div.rs-modal div.rs-modal-footer,
   .rs-modal .rs-modal-footer,
   .rs-modal-footer {
-    border-bottom-left-radius: 1rem !important;
-    border-bottom-right-radius: 1rem !important;
+    border-bottom-left-radius: var(--rs-radius-2xl) !important;
+    border-bottom-right-radius: var(--rs-radius-2xl) !important;
     flex-shrink: 0 !important;
   }
 

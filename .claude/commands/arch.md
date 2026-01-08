@@ -18,7 +18,7 @@ Falls der Benutzer `> dateiname` angibt, schreibe die Zusammenfassung als Markdo
 ```
 ┌─────────────────┐                    ┌──────────────────┐
 │   Frontend      │  ◄─────────────►   │   Backend        │
-│   React/Vite    │  HTTP + WebSocket  │   Express/Node   │
+│   React/Vite    │     HTTP/REST      │   Express/Node   │
 └─────────────────┘                    └──────────────────┘
                                              │
                                              ▼

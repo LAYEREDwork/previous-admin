@@ -1,5 +1,5 @@
-import { Translations } from '../../../lib/translations';
-import { PACard } from '../../controls/PACard';
+import { PACard } from '@frontend/components/controls/PACard';
+import { Translations } from '@frontend/lib/translations';
 
 interface ImportExportNotesPartialProps {
     translation: Translations;

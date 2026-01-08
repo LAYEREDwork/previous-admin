@@ -7,7 +7,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 import type { ConfigSchema } from '@shared/previous-config/schema-types';
 
-import { useConfigSchema, useConfigSchemaReload } from '../hooks/useConfigSchema';
+import { useConfigSchema, useConfigSchemaReload } from '@frontend/hooks/useConfigSchema';
 
 // Mock fetch globally
 global.fetch = vi.fn();

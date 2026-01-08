@@ -548,7 +548,7 @@ export async function collectMetrics() {
  * Format current metrics snapshot
  *
  * Retrieves current system metrics combined with historical data.
- * Used for API responses and WebSocket updates.
+ * Used for API responses.
  *
  * @returns {Promise<Object>} Metrics snapshot object
  *   - cpuLoad {Object}

@@ -13,7 +13,7 @@ import { IconButton, Panel, Stack } from 'rsuite';
 
 import type { ParameterSchema, SectionSchema } from '@shared/previous-config/schema-types';
 
-import { PASize } from '../../lib/types/sizes';
+import { PASize } from '@frontend/lib/types/sizes';
 
 import { PAConfigFieldPartial } from './PAConfigFieldPartial';
 

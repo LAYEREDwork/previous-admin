@@ -1,5 +1,5 @@
-import { Configuration } from '../../../lib/database';
-import type { Translations } from '../../../lib/translations';
+import { Configuration } from '@frontend/lib/database';
+import type { Translations } from '@frontend/lib/translations';
 
 import { ConfigListActionsPartial } from './PAConfigListActionsPartial';
 

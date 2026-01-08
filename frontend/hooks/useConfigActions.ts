@@ -1,9 +1,9 @@
-import { useConfig } from '../contexts/PAConfigContext';
-import { useLanguage } from '../contexts/PALanguageContext';
-import { useNotification } from '../contexts/PANotificationContext';
-import { defaultConfig } from '../lib/config';
-import { Configuration, database } from '../lib/database';
-import { downloadFile, generateConfigFilename } from '../lib/utils';
+import { useConfig } from '@frontend/contexts/PAConfigContext';
+import { useLanguage } from '@frontend/contexts/PALanguageContext';
+import { useNotification } from '@frontend/contexts/PANotificationContext';
+import { defaultConfig } from '@frontend/lib/config';
+import { Configuration, database } from '@frontend/lib/database';
+import { downloadFile, generateConfigFilename } from '@frontend/lib/utils';
 
 /**
  * Hook to handle specialized actions for configurations like create, delete, duplicate, etc.

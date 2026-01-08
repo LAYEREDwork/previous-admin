@@ -92,7 +92,7 @@ Generated at Runtime
 
 The project is organized into three main layers:
 
-- **Backend** (`backend/`) — Express.js server with REST API, WebSocket, configuration management, and database operations
+- **Backend** (`backend/`) — Express.js server with REST API, configuration management, and database operations
 - **Frontend** (`frontend/`) — React application with UI components, state management via contexts, custom hooks, and utilities
 - **Shared** (`shared/`) — Common types and interfaces used by both frontend and backend
 

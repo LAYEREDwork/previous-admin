@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 
-import { useConfigSections } from '../hooks/useConfigSections';
+import { useConfigSections } from '@frontend/hooks/useConfigSections';
 
 describe('useConfigSections', () => {
   beforeEach(() => {

@@ -1,4 +1,4 @@
-import type { Translations } from '../../../lib/translations';
+import type { Translations } from '@frontend/lib/translations';
 
 interface SystemPageHeaderProps {
   translation: Translations;

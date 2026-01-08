@@ -11,8 +11,8 @@ import { Form } from 'rsuite';
 
 import type { ParameterSchema } from '@shared/previous-config/schema-types';
 
-import { PASize } from '../../lib/types/sizes';
-import { PAConfigInput } from '../controls/PAConfigInput';
+import { PAConfigInput } from '@frontend/components/controls/PAConfigInput';
+import { PASize } from '@frontend/lib/types/sizes';
 
 interface PAConfigFieldPartialProps {
   /** Parameter schema */

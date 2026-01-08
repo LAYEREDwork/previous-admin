@@ -11,7 +11,7 @@ import { SelectPicker } from 'rsuite';
 
 import type { ParameterSchema } from '@shared/previous-config/schema-types';
 
-import { PASize } from '../../../lib/types/sizes';
+import { PASize } from '@frontend/lib/types/sizes';
 
 interface PAEnumInputProps {
   /** Parameter schema with enum metadata */

@@ -7,7 +7,7 @@
  * @module backend/config-schema/converter
  */
 
-import type { ConfigSchema } from '../../shared/previous-config/schema-types';
+import type { ConfigSchema } from '@shared/previous-config/schema-types';
 
 import { parseCfgFile, type RawConfigData } from './config-parser';
 

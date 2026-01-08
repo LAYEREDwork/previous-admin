@@ -4,11 +4,11 @@ import { useState, useRef } from 'react';
 // Partials
 
 // Hooks
-import { useLanguage } from '../../contexts/PALanguageContext';
-import { useConfigListLogic } from '../../hooks/useConfigList';
-import { useResponsiveControlSize } from '../../hooks/useResponsiveControlSize';
-import { Configuration } from '../../lib/database';
-import { PASize } from '../../lib/types/sizes';
+import { useLanguage } from '@frontend/contexts/PALanguageContext';
+import { useConfigListLogic } from '@frontend/hooks/useConfigList';
+import { useResponsiveControlSize } from '@frontend/hooks/useResponsiveControlSize';
+import { Configuration } from '@frontend/lib/database';
+import { PASize } from '@frontend/lib/types/sizes';
 
 // Types
 import { PANoConfigurationsEmptyView } from '../PANoConfigurationsEmptyView';

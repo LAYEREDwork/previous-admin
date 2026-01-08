@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { CustomProvider } from 'rsuite';
 
+import { PASystem } from '@frontend/components/pages/system/PASystemPage';
+
 import { PAErrorBoundary } from './components/PAErrorBoundary';
 import { PAAbout } from './components/pages/PAAboutPage';
 import { PAConfigEditor } from './components/pages/PAConfigEditorPage';
 import { PAConfigList } from './components/pages/PAConfigListPage';
 import { PAImportExport } from './components/pages/PAImportExportPage';
-import { PASystem } from './components/pages/PASystemPage';
 import { Layout } from './components/partials/PALayoutPartial';
 import { PAConfigProvider } from './contexts/PAConfigContext';
 import { FontProvider } from './contexts/PAFontContext';

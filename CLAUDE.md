@@ -26,7 +26,7 @@ Bevor du neue Types, Konstanten oder Konfigurationen erstellst, durchsuche IMMER
 | Komponente | Beschreibung |
 |------------|--------------|
 | **Frontend** | React 19 + TypeScript, Vite, Tailwind CSS, Rsuite UI. Port 2342 (Dev), served by Backend (Prod) |
-| **Backend** | Node.js + Express + TypeScript. REST API (`/api/*`), WebSocket. Port 3001 (Dev), 2342 (Prod) |
+| **Backend** | Node.js + Express + TypeScript. REST API (`/api/*`). Port 3001 (Dev), 2342 (Prod) |
 | **Database** | SQLite in `~/.previous-admin/previous-admin.db` mit automatischer Schema-Initialisierung |
 | **Platform** | Plattform-spezifische Config-Manager für macOS und Linux (`backend/platform/`) |
 | **State** | React Contexts (`contexts/`) für globalen State, Custom Hooks (`hooks/`) für Business Logic |
@@ -114,7 +114,7 @@ Business Logic in Hooks extrahiert:
 
 | Datei | Beschreibung |
 |-------|--------------|
-| `backend/index.ts` | Server Entry Point, Express Setup, WebSocket |
+| `backend/index.ts` | Server Entry Point, Express Setup |
 | `frontend/App.tsx` | Root Component mit Context Providers |
 | `shared/api/constants.ts` | **SSoT** für alle API Endpoint Pfade |
 | `shared/types.ts` | Geteilte TypeScript Interfaces |

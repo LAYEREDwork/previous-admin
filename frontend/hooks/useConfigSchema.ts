@@ -12,7 +12,7 @@ import { useState, useEffect } from 'react';
 import { apiPaths } from '@shared/api/constants';
 import type { ConfigSchema } from '@shared/previous-config/schema-types';
 
-import { apiBaseUrl } from '../lib/constants';
+import { apiBaseUrl } from '@frontend/lib/constants';
 
 /**
  * Hook to fetch and manage configuration schema

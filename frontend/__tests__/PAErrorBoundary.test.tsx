@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
-import { PAErrorBoundary } from '../components/PAErrorBoundary';
+import { PAErrorBoundary } from '@frontend/components/PAErrorBoundary';
 
 describe('PAErrorBoundary', () => {
   // Component that throws an error

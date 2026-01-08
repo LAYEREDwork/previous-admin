@@ -10,6 +10,8 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
+import type { ConfigSchema } from '@shared/previous-config/schema-types';
+
 import { validateConfiguration as schemaValidateConfiguration } from '@backend/config-schema/validator';
 import {
   getConfigurations as dbGetConfigurations,
@@ -28,7 +30,6 @@ import type {
   PreviousConfig
 } from '@backend/types';
 
-import type { ConfigSchema } from '../../shared/previous-config/schema-types';
 
 // Cache for schema (loaded once)
 let schemaCache: ConfigSchema | null = null;
@@ -44,7 +45,7 @@ function loadSchema(): ConfigSchema {
   }
 
   try {
-    const schemaPath = join(__dirname, '../../shared/previous-config/schema.json');
+    const schemaPath = join(__dirname, '@shared/previous-config/schema.json');
     const schemaContent = readFileSync(schemaPath, 'utf-8');
     schemaCache = JSON.parse(schemaContent) as ConfigSchema;
     return schemaCache;

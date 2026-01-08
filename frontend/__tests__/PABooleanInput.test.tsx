@@ -6,7 +6,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
-import { PABooleanInput } from '../components/controls/config-inputs/PABooleanInput';
+import { PABooleanInput } from '@frontend/components/controls/config-inputs/PABooleanInput';
 
 describe('PABooleanInput', () => {
   it('renders toggle with correct initial state', () => {

@@ -11,7 +11,7 @@ import type { ComponentType } from 'react';
 
 import * as SFSymbols from '@frontend/components/sf-symbols';
 
-import { sfIconMap } from '../../components/sf-symbols/icons-map';
+import { sfIconMap } from '@frontend/components/sf-symbols/icons-map';
 
 interface IconMapperProps {
   size?: number;

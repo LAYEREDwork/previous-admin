@@ -11,7 +11,7 @@ import { InputNumber } from 'rsuite';
 
 import type { ParameterSchema } from '@shared/previous-config/schema-types';
 
-import { PASize } from '../../../lib/types/sizes';
+import { PASize } from '@frontend/lib/types/sizes';
 
 interface PANumberRangeInputProps {
   /** Parameter schema with range metadata */

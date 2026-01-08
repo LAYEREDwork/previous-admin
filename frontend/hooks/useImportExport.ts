@@ -3,12 +3,12 @@ import { useState, useEffect } from 'react';
 // Hooks
 import type { Configuration, PreviousConfig } from '@shared/previous-config/types';
 
-import { useLanguage } from '../contexts/PALanguageContext';
-import { useNotification } from '../contexts/PANotificationContext';
+import { useLanguage } from '@frontend/contexts/PALanguageContext';
+import { useNotification } from '@frontend/contexts/PANotificationContext';
 
 // Utilities
-import { database } from '../lib/database';
-import { downloadFile, generateConfigFilename } from '../lib/utils';
+import { database } from '@frontend/lib/database';
+import { downloadFile, generateConfigFilename } from '@frontend/lib/utils';
 
 // Types
 

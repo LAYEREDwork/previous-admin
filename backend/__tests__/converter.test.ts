@@ -9,7 +9,7 @@
 
 import { describe, it, expect } from 'vitest';
 
-import type { ConfigSchema } from '../../shared/previous-config/schema-types';
+import type { ConfigSchema } from '@shared/previous-config/schema-types';
 
 import { cfgToJson, jsonToCfg } from '../config-schema/converter';
 

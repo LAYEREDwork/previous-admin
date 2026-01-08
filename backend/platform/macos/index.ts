@@ -9,9 +9,9 @@
  * @module backend/platform/macos
  */
 
+import { execAsync } from '@backend/api/helpers';
 import type { PlatformModule, DiskInfo, HostModel, MonitorResolution } from '@backend/types';
 
-import { execAsync } from '../../api/helpers';
 
 /**
  * macOS platform module

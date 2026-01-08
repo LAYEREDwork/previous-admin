@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { PACard } from '../../controls/PACard';
+import { PACard } from '@frontend/components/controls/PACard';
 
 interface EditorSectionPartialProps {
     title: string;

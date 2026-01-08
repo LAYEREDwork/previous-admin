@@ -7,10 +7,13 @@ import fs from 'fs';
 import path from 'path';
 
 import express from 'express';
-import { execAsync } from './helpers';
-import packageJson from '../../package.json';
 
 import { apiPaths } from '@shared/api/constants';
+
+import packageJson from '../../package.json';
+
+import { execAsync } from './helpers';
+
 
 const router = express.Router();
 

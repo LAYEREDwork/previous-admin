@@ -1,10 +1,10 @@
 import { ReactNode } from 'react';
 
-import { useLanguage } from '../../contexts/PALanguageContext';
-import { PAFontSwitcher } from '../controls/PAFontSwitcher';
-import { PALanguageSwitcher } from '../controls/PALanguageSwitcher';
-import { PANeXTLogo } from '../controls/PANeXTLogo';
-import { PAThemeSwitcher } from '../controls/PAThemeSwitcher';
+import { PAFontSwitcher } from '@frontend/components/controls/PAFontSwitcher';
+import { PALanguageSwitcher } from '@frontend/components/controls/PALanguageSwitcher';
+import { PANeXTLogo } from '@frontend/components/controls/PANeXTLogo';
+import { PAThemeSwitcher } from '@frontend/components/controls/PAThemeSwitcher';
+import { useLanguage } from '@frontend/contexts/PALanguageContext';
 
 import { FooterPartial } from './PAFooterPartial';
 import { MainMenuPartial } from './PAMainMenuPartial';

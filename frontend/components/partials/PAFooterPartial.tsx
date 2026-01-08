@@ -1,4 +1,4 @@
-import { useLanguage } from '../../contexts/PALanguageContext';
+import { useLanguage } from '@frontend/contexts/PALanguageContext';
 
 export function FooterPartial() {
     const { translation } = useLanguage();

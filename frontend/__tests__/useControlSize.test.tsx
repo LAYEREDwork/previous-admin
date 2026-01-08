@@ -1,8 +1,8 @@
 import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 
-import { useResponsiveControlSize } from '../hooks/useResponsiveControlSize';
-import { PASize } from '../lib/types/sizes';
+import { useResponsiveControlSize } from '@frontend/hooks/useResponsiveControlSize';
+import { PASize } from '@frontend/lib/types/sizes';
 
 describe('useControlSize', () => {
   const originalInnerWidth = window.innerWidth;

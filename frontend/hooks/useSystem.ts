@@ -4,9 +4,9 @@ import { apiPaths } from '@shared/api/constants';
 // Hooks
 import type { SystemInfo } from '@shared/previous-config/types';
 
-import { useLanguage } from '../contexts/PALanguageContext';
-import { useNotification } from '../contexts/PANotificationContext';
-import { apiBaseUrl } from '../lib/constants';
+import { useLanguage } from '@frontend/contexts/PALanguageContext';
+import { useNotification } from '@frontend/contexts/PANotificationContext';
+import { apiBaseUrl } from '@frontend/lib/constants';
 
 // Utilities
 
