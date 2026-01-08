@@ -128,32 +128,34 @@ export function PAConfigList({ onEdit }: ConfigListProps) {
       />
 
       {/* Configurations List */}
-      <div className="grid gap-3">
-        {configs.map((config, index) => (
-          <ConfigListItemPartial
-            key={config.id}
-            config={config}
-            isMobile={false} /* Passe ggf. an, falls mobile Detection vorhanden */
-            isActive={config.is_active}
-            exportSingleConfig={exportSingleConfig}
-            duplicateConfig={handleDuplicateClick}
-            onEdit={onEdit}
-            deleteConfig={deleteConfig}
-            translation={translation}
-            setActiveConfig={setActiveConfig}
-            hasMultipleConfigs={configs.length > 1}
-            index={index}
-            onDragStart={handleDragStart}
-            onDragOver={handleDragOver}
-            onDragEnd={handleDragEnd}
-            onDragLeave={handleDragLeave}
-            isDragOver={dragOverIndex === index}
-            isContextMenuOpen={openContextMenuId === config.id}
-            onContextMenuOpen={() => setOpenContextMenuId(config.id)}
-            onContextMenuClose={() => setOpenContextMenuId(null)}
-          />
-        ))}
-      </div>
+      {configs.length > 0 && (
+        <div className="grid gap-3">
+          {configs.map((config, index) => (
+            <ConfigListItemPartial
+              key={config.id}
+              config={config}
+              isMobile={false} /* Passe ggf. an, falls mobile Detection vorhanden */
+              isActive={config.is_active}
+              exportSingleConfig={exportSingleConfig}
+              duplicateConfig={handleDuplicateClick}
+              onEdit={onEdit}
+              deleteConfig={deleteConfig}
+              translation={translation}
+              setActiveConfig={setActiveConfig}
+              hasMultipleConfigs={configs.length > 1}
+              index={index}
+              onDragStart={handleDragStart}
+              onDragOver={handleDragOver}
+              onDragEnd={handleDragEnd}
+              onDragLeave={handleDragLeave}
+              isDragOver={dragOverIndex === index}
+              isContextMenuOpen={openContextMenuId === config.id}
+              onContextMenuOpen={() => setOpenContextMenuId(config.id)}
+              onContextMenuClose={() => setOpenContextMenuId(null)}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Empty State */}
       {!loading && configs.length === 0 && !showNewConfig && (
