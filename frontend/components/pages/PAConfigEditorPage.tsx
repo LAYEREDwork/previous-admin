@@ -108,7 +108,12 @@ export function PAConfigEditor({ configId, onTabChange }: { configId?: string | 
     );
   }
 
-  // 2. Handle cases where no config is selected or none exists
+  // 2. Still loading saved configs state - show nothing to prevent flash
+  if (!configId && hasSavedConfigs === null) {
+    return null;
+  }
+
+  // 3. Handle cases where no config is selected or none exists
   if (!configId) {
     if (hasSavedConfigs === false) {
       return (
@@ -147,7 +152,7 @@ export function PAConfigEditor({ configId, onTabChange }: { configId?: string | 
     }
   }
 
-  // 3. Ensure we have config data before rendering the editor
+  // 4. Ensure we have config data before rendering the editor
   if (!config || !configData) {
     return null;
   }
