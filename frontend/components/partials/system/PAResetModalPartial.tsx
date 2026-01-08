@@ -1,7 +1,6 @@
-import { PAButton } from '@frontend/components/controls/PAButton';
 import { PAModal } from '@frontend/components/controls/PAModal';
 import { Translations } from '@frontend/lib/translations';
-import { PAModalType } from '@frontend/lib/types/modal';
+import { PAModalType, PAModalButton, PAModalButtonType } from '@frontend/lib/types/modal';
 import { PASize } from '@frontend/lib/types/sizes';
 
 interface ResetModalPartialProps {
@@ -21,6 +20,22 @@ export function ResetModalPartial({
     controlSize,
     translation
 }: ResetModalPartialProps) {
+    const cancelButton: PAModalButton = {
+        label: translation.common.cancel,
+        type: PAModalButtonType.cancel,
+        onClick: onClose,
+        disabled: isResetting,
+    };
+
+    const confirmButton: PAModalButton = {
+        label: isResetting ? translation.system.resetting : translation.system.resetConfirm,
+        type: PAModalButtonType.destructive,
+        onClick: onConfirm,
+        loading: isResetting,
+    };
+
+    const buttons: PAModalButton[] = [cancelButton, confirmButton];
+
     return (
         <PAModal
             open={open}
@@ -29,6 +44,7 @@ export function ResetModalPartial({
             controlSize={controlSize as any}
             type={PAModalType.alert}
             className="pa-reset-modal"
+            buttons={buttons}
         >
             <PAModal.Header><PAModal.Title>{translation.system.resetTitle}</PAModal.Title>
             </PAModal.Header>
@@ -44,26 +60,6 @@ export function ResetModalPartial({
                     </div>
                 </div>
             </PAModal.Body>
-            <PAModal.Footer>
-                <PAButton
-                    onClick={onClose}
-                    appearance="default"
-                    disabled={isResetting}
-                    size={controlSize}
-                >
-                    {translation.common.cancel}
-                </PAButton>
-                <PAButton
-                    onClick={onConfirm}
-                    appearance="primary"
-                    color="red"
-                    loading={isResetting}
-                    disabled={isResetting}
-                    size={controlSize}
-                >
-                    {isResetting ? translation.system.resetting : translation.system.resetConfirm}
-                </PAButton>
-            </PAModal.Footer>
         </PAModal>
     );
 }

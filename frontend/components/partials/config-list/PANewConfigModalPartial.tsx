@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { Input } from 'rsuite';
 
-import { PAButton } from '@frontend/components/controls/PAButton';
 import { PAModal } from '@frontend/components/controls/PAModal';
 import { SFDocumentBadgePlusFill } from '@frontend/components/sf-symbols';
 import { Translations } from '@frontend/lib/translations';
+import { PAModalButton, PAModalButtonType } from '@frontend/lib/types/modal';
 import { PASize } from '@frontend/lib/types/sizes';
 
 interface NewConfigModalPartialProps {
@@ -41,17 +41,33 @@ export function PANewConfigModalPartial({
             }, 100);
         }
     }, [open, nameRef]);
+
+    const cancelButton: PAModalButton = {
+        label: translation.common.cancel,
+        onClick: onClose,
+        type: PAModalButtonType.cancel,
+    };
+
+    const saveButton: PAModalButton = {
+        label: translation.common.save,
+        onClick: onSave,
+        type: PAModalButtonType.default,
+        disabled: !name.trim(),
+    };
+
+    const buttons: PAModalButton[] = [cancelButton, saveButton];
+
     return (
         <PAModal
             open={open}
             onClose={onClose}
             size={PASize.sm}
             controlSize={controlSize as any}
-            style={{ minHeight: '400px' }}
+            headerIcon={<SFDocumentBadgePlusFill />}
+            buttons={buttons}
         >
             <PAModal.Header closeButton={false}>
                 <PAModal.Title>
-                    <SFDocumentBadgePlusFill size={32} className="inline-block mr-2 -mt-0.5" />
                     {translation.configList.createNew}
                 </PAModal.Title>
             </PAModal.Header>
@@ -84,22 +100,6 @@ export function PANewConfigModalPartial({
                     </div>
                 </div>
             </PAModal.Body>
-            <PAModal.Footer>
-                <PAButton
-                    onClick={onClose}
-                    size={controlSize}
-                >
-                    {translation.common.cancel}
-                </PAButton>
-                <PAButton
-                    onClick={onSave}
-                    disabled={!name.trim()}
-                    size={controlSize}
-                    appearance={name.trim() ? "primary" : "default"}
-                >
-                    {translation.common.save}
-                </PAButton>
-            </PAModal.Footer>
         </PAModal>
     );
 }

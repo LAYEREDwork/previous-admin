@@ -20,3 +20,4 @@ applyTo: '**'
 - For this project, Previous Admin, never use `git pull` to implement the update process! Always use downloading and extracting the new version from the GitHub releases page.
 - Never modify files that have nothing to do with the requested task.
 - If I confirm that an implemented piece of code is working, it must never be changed without my explicit instruction.
+- Wenn Code hinzugefügt, gelöscht oder refaktoriert wird, anschließend immer `npm run lint`, `npm run typecheck`, `npm run build` und `npm run test` ausführen, bis keine Fehler mehr auftreten.

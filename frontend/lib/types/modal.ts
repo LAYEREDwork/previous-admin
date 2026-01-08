@@ -14,3 +14,37 @@ export enum PAModalType {
   /** Error modal with error icon - for error messages */
   error = 'error',
 }
+
+/**
+ * PAModalButtonType Enum
+ *
+ * Defines the visual type of a PAModal button, which determines its color.
+ */
+export enum PAModalButtonType {
+  /** Default button with primary color */
+  default = 'default',
+  /** Destructive button with red color */
+  destructive = 'destructive',
+  /** Cancel button with gray color */
+  cancel = 'cancel',
+}
+
+/**
+ * PAModalButton Interface
+ *
+ * Defines a button configuration for PAModal.
+ */
+export interface PAModalButton {
+  /** Button label text */
+  label: string;
+  /** Button type for styling */
+  type: PAModalButtonType;
+  /** Callback when button is clicked */
+  onClick: () => void;
+  /** Whether the button is disabled */
+  disabled?: boolean;
+  /** Whether the button shows loading state */
+  loading?: boolean;
+  /** Optional SF Symbol icon to display */
+  icon?: React.ReactNode;
+}
