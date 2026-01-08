@@ -42,7 +42,6 @@ export const apiPaths = {
   Update: {
     update: { full: '/api/update', relative: '' },
     version: { full: '/api/update/version', relative: '/version' },
-    stream: { full: '/api/update/stream', relative: '/stream' },
   },
   Health: {
     health: { full: '/api/health', relative: '/health' },

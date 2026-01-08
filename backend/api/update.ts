@@ -7,24 +7,12 @@ import fs from 'fs';
 import path from 'path';
 
 import express from 'express';
-import { spawn } from 'child_process';
+import { execAsync } from './helpers';
 import packageJson from '../../package.json';
 
 import { apiPaths } from '@shared/api/constants';
 
 const router = express.Router();
-
-// Simple in-memory broadcaster for update events
-let currentUpdaterProcess: import('child_process').ChildProcess | null = null;
-const sseClients: Array<express.Response> = [];
-
-function broadcastEvent(event: unknown) {
-  const payload = `data: ${JSON.stringify(event)}\n\n`;
-  sseClients.forEach((res) => {
-    try { res.write(payload); } catch (e) { /* ignore */ }
-  });
-}
-
 
 /**
  * POST /api/update
@@ -49,75 +37,16 @@ function broadcastEvent(event: unknown) {
  */
 router.post(apiPaths.Update.update.relative, async (req: any, res: any) => {
   try {
-    if (currentUpdaterProcess) {
-      return res.status(409).json({ success: false, message: 'Update already running' });
-    }
+    const scriptPath = `${process.cwd()}/scripts/update.sh`;
 
-    const tsxPath = `${process.cwd()}/node_modules/.bin/tsx`;
-    const updaterScript = `${process.cwd()}/scripts/updater.ts`;
-
-    // Spawn the TypeScript updater via tsx. Use sudo if caller needs elevated rights.
-    // To allow sudo without password, system administrator must configure sudoers.
-    const spawnCmd = tsxPath;
-    const spawnArgs = [updaterScript];
-
-    // If the environment requires sudo, caller may set USE_SUDO=true when starting backend.
-    if (process.env.USE_SUDO === 'true') {
-      // Use sudo to run tsx; provide full path to tsx
-      currentUpdaterProcess = spawn('sudo', [tsxPath, updaterScript], { cwd: process.cwd() });
-    } else {
-      currentUpdaterProcess = spawn(spawnCmd, spawnArgs, { cwd: process.cwd() });
-    }
-
-    // Pipe events from updater stdout/stderr
-    currentUpdaterProcess.stdout?.on('data', (chunk: Buffer) => {
-      const text = chunk.toString();
-      text.split(/\n/).filter(Boolean).forEach((line) => {
-        try { broadcastEvent(JSON.parse(line)); } catch (e) { broadcastEvent({ type: 'raw', message: line }); }
-      });
-    });
-    currentUpdaterProcess.stderr?.on('data', (chunk: Buffer) => {
-      const text = chunk.toString();
-      text.split(/\n/).filter(Boolean).forEach((line) => {
-        try { broadcastEvent(JSON.parse(line)); } catch (e) { broadcastEvent({ type: 'error', message: line }); }
-      });
-    });
-
-    currentUpdaterProcess.on('close', (code) => {
-      broadcastEvent({ type: 'complete', code });
-      currentUpdaterProcess = null;
-    });
-
-    currentUpdaterProcess.on('error', (err) => {
-      broadcastEvent({ type: 'error', message: err.message });
-      currentUpdaterProcess = null;
-    });
+    // Run update script with sudo
+    await execAsync(`sudo bash ${scriptPath}`, { cwd: process.cwd() });
 
     res.json({ success: true, message: 'Update started successfully.' });
   } catch (error) {
     console.error('Error starting update:', error);
     res.status(500).json({ error: (error as Error).message || 'Failed to start update' });
   }
-});
-
-/**
- * SSE endpoint: clients connect here to receive live update events
- */
-router.get(apiPaths.Update.stream.relative, (req: any, res: any) => {
-  res.setHeader('Content-Type', 'text/event-stream');
-  res.setHeader('Cache-Control', 'no-cache');
-  res.setHeader('Connection', 'keep-alive');
-  res.flushHeaders && res.flushHeaders();
-
-  // Send a welcome event
-  res.write(`data: ${JSON.stringify({ type: 'connected', timestamp: Date.now() })}\n\n`);
-
-  sseClients.push(res);
-
-  req.on('close', () => {
-    const idx = sseClients.indexOf(res);
-    if (idx >= 0) sseClients.splice(idx, 1);
-  });
 });
 
 /**
