@@ -5,7 +5,8 @@
       "Bash(grep:*)",
       "Bash(npm run lint)",
       "Bash(npm run build:*)",
-      "Bash(npm install)"
+      "Bash(npm install)",
+      "Bash(npm run generate:schema:*)"
     ]
   }
 }
