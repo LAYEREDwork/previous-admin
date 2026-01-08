@@ -20,8 +20,7 @@ import {
 } from '@frontend/components/sf-symbols';
 import { useConfigActions } from '@frontend/hooks/useConfigActions';
 import { useConfigEditor } from '@frontend/hooks/useConfigEditor';
-import { useResponsiveControlSize } from '@frontend/hooks/useResponsiveControlSize';
-import { PASize } from '@frontend/lib/types/sizes';
+import { usePageBase } from '@frontend/hooks/usePageBase';
 
 export function PAConfigEditor({ configId, onTabChange }: { configId?: string | null; onTabChange?: (tab: string) => void }) {
   // Modal states for creating new configuration
@@ -29,6 +28,8 @@ export function PAConfigEditor({ configId, onTabChange }: { configId?: string | 
   const [newConfigName, setNewConfigName] = useState('');
   const [newConfigDesc, setNewConfigDesc] = useState('');
   const newConfigNameRef = useRef<HTMLInputElement | null>(null);
+
+  const { controlSize } = usePageBase();
 
   const {
     config,
@@ -85,8 +86,6 @@ export function PAConfigEditor({ configId, onTabChange }: { configId?: string | 
     setNewConfigName('');
     setNewConfigDesc('');
   };
-
-  const controlSize = useResponsiveControlSize(PASize.md);
 
   // 1. Error state
   if (error) {

@@ -6,6 +6,7 @@
  */
 
 import { existsSync, readFileSync, writeFileSync } from 'fs';
+
 import { parseCfgFile } from '../backend/config-schema/config-parser';
 import { extractSchema } from '../backend/config-schema/schema-extractor';
 import { reportValidationResults, validateSymbols } from '../backend/config-schema/validate-symbols';

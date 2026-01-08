@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { CustomProvider } from 'rsuite';
 
 import { PASystem } from '@frontend/components/pages/system/PASystemPage';
@@ -14,21 +14,13 @@ import { FontProvider } from './contexts/PAFontContext';
 import { PALanguageProvider } from './contexts/PALanguageContext';
 import { PANotificationProvider } from './contexts/PANotificationContext';
 import { ThemeProvider, useTheme } from './contexts/PAThemeContext';
+import { useTabNavigation } from './hooks/useTabNavigation';
 import { Configuration } from './lib/database';
 
 function PAAppContent() {
   const { actualTheme } = useTheme();
-  const [currentTab, setCurrentTab] = useState(() => {
-    // Restore last active tab from localStorage
-    const savedTab = localStorage.getItem('currentTab');
-    return savedTab || 'configs';
-  });
+  const { currentTab, setCurrentTab } = useTabNavigation();
   const [editingConfigId, setEditingConfigId] = useState<string | null>(null);
-
-  // Save current tab to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem('currentTab', currentTab);
-  }, [currentTab]);
 
   function handleEditConfig(config: Configuration) {
     setEditingConfigId(config.id);

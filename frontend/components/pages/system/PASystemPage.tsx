@@ -1,7 +1,7 @@
 
 // Hooks
-import { useLanguage } from '@frontend/contexts/PALanguageContext';
-import { useResponsiveControlSize } from '@frontend/hooks/useResponsiveControlSize';
+import { PageWrapper } from '@frontend/components/controls/PAPageWrapper';
+import { usePageBase } from '@frontend/hooks/usePageBase';
 import { useSystem } from '@frontend/hooks/useSystem';
 
 import { SystemContent } from './PASystemContent';
@@ -11,8 +11,7 @@ import { SystemLoadingState } from './PASystemLoadingState';
 import { SystemPageHeader } from './PASystemPageHeader';
 
 export function PASystem() {
-  const { translation } = useLanguage();
-  const controlSize = useResponsiveControlSize();
+  const { translation, controlSize } = usePageBase();
   const {
     systemInfo,
     loadingSystemInfo,
@@ -25,7 +24,7 @@ export function PASystem() {
   } = useSystem();
 
   return (
-    <div className="space-y-6">
+    <PageWrapper>
       <SystemPageHeader translation={translation} />
 
       {loadingSystemInfo ? (
@@ -46,6 +45,6 @@ export function PASystem() {
       ) : (
         <SystemEmptyState />
       )}
-    </div>
+    </PageWrapper>
   );
 }

@@ -1,9 +1,9 @@
 // Components
 import { useEffect } from 'react';
 
-import { useLanguage } from '@frontend/contexts/PALanguageContext';
+import { PageWrapper } from '@frontend/components/controls/PAPageWrapper';
 import { useImportExport } from '@frontend/hooks/useImportExport';
-import { useResponsiveControlSize } from '@frontend/hooks/useResponsiveControlSize';
+import { usePageBase } from '@frontend/hooks/usePageBase';
 import { PASize } from '@frontend/lib/types/sizes';
 
 import { ConfigFileSyncPartial } from '../partials/import-export/PAConfigFileSyncPartial';
@@ -19,7 +19,7 @@ import { ImportExportNotesPartial } from '../partials/import-export/PAImportExpo
  * Import/Export page component
  */
 export function PAImportExport() {
-  const { translation } = useLanguage();
+  const { translation, controlSize } = usePageBase(PASize.lg);
   const {
     importing,
     exporting,
@@ -33,8 +33,6 @@ export function PAImportExport() {
     exportDatabaseDump,
     importDatabaseDump,
   } = useImportExport();
-
-  const controlSize = useResponsiveControlSize(PASize.lg);
 
   // Handle config import from emulator
   useEffect(() => {
@@ -52,7 +50,7 @@ export function PAImportExport() {
   }, [importConfigFromObject]);
 
   return (
-    <div className="space-y-6">
+    <PageWrapper>
       <div>
         <h2 className="text-sm font-semibold text-[var(--rs-text-primary)] mb-2">
           {translation.importExport.title}
@@ -89,6 +87,6 @@ export function PAImportExport() {
 
       {/* Notes Section */}
       <ImportExportNotesPartial translation={translation} />
-    </div>
+    </PageWrapper>
   );
 }

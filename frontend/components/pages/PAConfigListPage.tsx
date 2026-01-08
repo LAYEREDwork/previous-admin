@@ -4,9 +4,8 @@ import { useState, useRef } from 'react';
 // Partials
 
 // Hooks
-import { useLanguage } from '@frontend/contexts/PALanguageContext';
 import { useConfigListLogic } from '@frontend/hooks/useConfigList';
-import { useResponsiveControlSize } from '@frontend/hooks/useResponsiveControlSize';
+import { usePageBase } from '@frontend/hooks/usePageBase';
 import { Configuration } from '@frontend/lib/database';
 import { PASize } from '@frontend/lib/types/sizes';
 
@@ -21,8 +20,7 @@ interface ConfigListProps {
 }
 
 export function PAConfigList({ onEdit }: ConfigListProps) {
-  const { translation } = useLanguage();
-  const controlSize = useResponsiveControlSize(PASize.md);
+  const { translation, controlSize } = usePageBase(PASize.md);
 
   // Track which context menu is open
   const [openContextMenuId, setOpenContextMenuId] = useState<string | null>(null);

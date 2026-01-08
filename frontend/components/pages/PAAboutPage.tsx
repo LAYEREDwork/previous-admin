@@ -1,6 +1,7 @@
 // Hooks
-import { useLanguage } from '@frontend/contexts/PALanguageContext';
+import { PageWrapper } from '@frontend/components/controls/PAPageWrapper';
 import { useAboutLogic } from '@frontend/hooks/useAbout';
+import { usePageBase } from '@frontend/hooks/usePageBase';
 
 // Components
 import { GeneralResourcesPartial } from '../partials/about/PAGeneralResourcesPartial';
@@ -9,11 +10,11 @@ import { PreviousResourcesPartial } from '../partials/about/PAPreviousResourcesP
 import { VersionInfoPartial } from '../partials/about/PAVersionInfoPartial';
 
 export function PAAbout() {
-   const { translation } = useLanguage();
+   const { translation } = usePageBase();
    const { versionInfo, checking, updating, error, handleCheckForUpdates, handleUpdate } = useAboutLogic();
 
    return (
-      <div className="space-y-6">
+      <PageWrapper>
          <div>
             <h2 className="text-sm font-semibold text-[var(--rs-text-primary)] mb-2">
                {translation.about.title}
@@ -36,6 +37,6 @@ export function PAAbout() {
             <LayeredResourcesPartial />
             <GeneralResourcesPartial />
          </div>
-      </div>
+      </PageWrapper>
    );
 }
