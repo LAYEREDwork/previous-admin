@@ -42,12 +42,17 @@ export interface Translations {
   };
   common: {
     cancel: string;
+    close: string;
     confirm: string;
+    confirmation: string;
     error: string;
+    info: string;
     loading: string;
+    ok: string;
     reload: string;
     save: string;
     success: string;
+    warning: string;
   };
   configEditor: {
     configurationDescriptionPlaceholder: string;
@@ -108,6 +113,7 @@ export interface Translations {
     configurationDuplicatedSuccessfully: string;
     configurationExportedSuccessfully: string;
     confirmDelete: string;
+    confirmDeleteTitle: string;
     copySuffix: string;
     createNew: string;
     delete: string;

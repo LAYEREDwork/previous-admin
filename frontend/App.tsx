@@ -12,7 +12,7 @@ import { Layout } from './components/partials/PALayoutPartial';
 import { PAConfigProvider } from './contexts/PAConfigContext';
 import { FontProvider } from './contexts/PAFontContext';
 import { PALanguageProvider } from './contexts/PALanguageContext';
-import { PANotificationProvider } from './contexts/PANotificationContext';
+import { PAModalProvider } from './contexts/PAModalContext';
 import { ThemeProvider, useTheme } from './contexts/PAThemeContext';
 import { useTabNavigation } from './hooks/useTabNavigation';
 import { Configuration } from './lib/database';
@@ -49,13 +49,13 @@ function App() {
     <PAErrorBoundary>
       <FontProvider>
         <PALanguageProvider>
-          <PANotificationProvider>
+          <PAModalProvider>
             <PAConfigProvider>
               <ThemeProvider>
                 <PAAppContent />
               </ThemeProvider>
             </PAConfigProvider>
-          </PANotificationProvider>
+          </PAModalProvider>
         </PALanguageProvider>
       </FontProvider>
     </PAErrorBoundary>

@@ -5,7 +5,7 @@ import { apiPaths } from '@shared/api/constants';
 import type { SystemInfo } from '@shared/previous-config/types';
 
 import { useLanguage } from '@frontend/contexts/PALanguageContext';
-import { useNotification } from '@frontend/contexts/PANotificationContext';
+import { useModal } from '@frontend/contexts/PAModalContext';
 import { apiBaseUrl } from '@frontend/lib/constants';
 
 // Utilities
@@ -17,7 +17,7 @@ import { apiBaseUrl } from '@frontend/lib/constants';
  */
 export function useSystem() {
   const { translation } = useLanguage();
-  const { showError } = useNotification();
+  const { showError } = useModal();
 
   const [systemInfo, setSystemInfo] = useState<SystemInfo | null>(null);
   const [loadingSystemInfo, setLoadingSystemInfo] = useState(true);

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 
 // Hooks
 import { useLanguage } from '@frontend/contexts/PALanguageContext';
-import { useNotification } from '@frontend/contexts/PANotificationContext';
+import { useModal } from '@frontend/contexts/PAModalContext';
 import { database, Configuration } from '@frontend/lib/database';
 
 import { useConfigActions } from './useConfigActions';
@@ -16,7 +16,7 @@ import { useNewConfigModal } from './useNewConfigModal';
  * Orchestrates specialized hooks to provide a clean interface for the UI.
  */
 export function useConfigListLogic(onEdit: (config: Configuration) => void) {
-  const { showError } = useNotification();
+  const { showError } = useModal();
   const { translation } = useLanguage();
 
   const [configs, setConfigs] = useState<Configuration[]>([]);

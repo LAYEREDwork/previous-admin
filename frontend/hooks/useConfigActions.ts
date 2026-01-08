@@ -1,15 +1,16 @@
 import { useConfig } from '@frontend/contexts/PAConfigContext';
 import { useLanguage } from '@frontend/contexts/PALanguageContext';
-import { useNotification } from '@frontend/contexts/PANotificationContext';
+import { useModal } from '@frontend/contexts/PAModalContext';
 import { defaultConfig } from '@frontend/lib/config';
 import { Configuration, database } from '@frontend/lib/database';
 import { downloadFile, generateConfigFilename } from '@frontend/lib/utils';
+import { PAModalButtonType } from '@frontend/lib/types/modal';
 
 /**
  * Hook to handle specialized actions for configurations like create, delete, duplicate, etc.
  */
 export function useConfigActions(onRefreshList: () => Promise<void>) {
-  const { showSuccess, showError, showConfirm } = useNotification();
+  const { showSuccess, showError, showConfirmAdvanced } = useModal();
   const { translation } = useLanguage();
   const { refreshConfig } = useConfig();
 
@@ -28,15 +29,22 @@ export function useConfigActions(onRefreshList: () => Promise<void>) {
   }
 
   async function deleteConfig(id: string) {
-    showConfirm(translation.configList.confirmDelete, async () => {
-      try {
-        await database.deleteConfiguration(id);
-        await onRefreshList();
-        await refreshConfig();
-      } catch (error) {
-        console.error('Error deleting config:', error);
-        showError(translation.configList.errorDeletingConfiguration);
-      }
+    showConfirmAdvanced({
+      message: translation.configList.confirmDelete,
+      title: translation.configList.confirmDeleteTitle,
+      confirmLabel: translation.configList.delete,
+      cancelLabel: translation.common.cancel,
+      confirmType: PAModalButtonType.destructive,
+      onConfirm: async () => {
+        try {
+          await database.deleteConfiguration(id);
+          await onRefreshList();
+          await refreshConfig();
+        } catch (error) {
+          console.error('Error deleting config:', error);
+          showError(translation.configList.errorDeletingConfiguration);
+        }
+      },
     });
   }
 

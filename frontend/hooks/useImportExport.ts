@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import type { Configuration, PreviousConfig } from '@shared/previous-config/types';
 
 import { useLanguage } from '@frontend/contexts/PALanguageContext';
-import { useNotification } from '@frontend/contexts/PANotificationContext';
+import { useModal } from '@frontend/contexts/PAModalContext';
 
 // Utilities
 import { database } from '@frontend/lib/database';
@@ -18,7 +18,7 @@ import { downloadFile, generateConfigFilename } from '@frontend/lib/utils';
  */
 export function useImportExport() {
   const { translation } = useLanguage();
-  const { showSuccess, showError, showWarning } = useNotification();
+  const { showSuccess, showError, showWarning } = useModal();
 
   // Loading states
   const [importing, setImporting] = useState(false);

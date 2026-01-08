@@ -2,11 +2,12 @@ import { PAButton } from '@frontend/components/controls/PAButton';
 import { 
   SFArrowUpDocumentFill, 
   SFDocumentOnDocumentFill, 
-  SFDocumentOnTrashFill, 
-  SFLongTextPageAndPencilFill 
+  SFLongTextPageAndPencilFill, 
+  SFTrash
 } from '@frontend/components/sf-symbols';
 import { Configuration } from '@frontend/lib/database';
 import { Translations } from '@frontend/lib/translations';
+import { PAButtonType } from '@frontend/lib/types/button';
 import { PASize } from '@frontend/lib/types/sizes';
 
 interface ConfigListActionsPartialProps {
@@ -58,11 +59,11 @@ export function ConfigListActionsPartial({
         className="flex items-center justify-center"
       />
       <PAButton
-        icon={<SFDocumentOnTrashFill size={iconSize} />}
+        icon={<SFTrash size={iconSize} />}
         size={buttonSize}
         title={translation.configList.delete}
         onClick={() => deleteConfig(config.id)}
-        color="red"
+        buttonType={PAButtonType.destructive}
         className="flex items-center justify-center"
       />
     </div>

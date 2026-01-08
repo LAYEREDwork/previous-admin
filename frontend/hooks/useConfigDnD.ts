@@ -1,5 +1,5 @@
 import { useLanguage } from '@frontend/contexts/PALanguageContext';
-import { useNotification } from '@frontend/contexts/PANotificationContext';
+import { useModal } from '@frontend/contexts/PAModalContext';
 import { database, Configuration } from '@frontend/lib/database';
 
 import { useDragState } from './useDragState';
@@ -9,7 +9,7 @@ import { useDragState } from './useDragState';
  * Uses the generic useDragState hook and adds configuration-specific logic.
  */
 export function useConfigDnD(configs: Configuration[], onRefresh: () => Promise<void>) {
-  const { showError } = useNotification();
+  const { showError } = useModal();
   const { translation } = useLanguage();
 
   const {

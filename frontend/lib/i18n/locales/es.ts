@@ -17,12 +17,17 @@ export const es: Translations = {
   },
   'common': {
     'cancel': 'Cancelar',
+    'close': 'Cerrar',
     'confirm': 'Continuar',
+    'confirmation': 'Confirmación',
     'error': 'Error',
+    'info': 'Información',
     'loading': 'Cargando...',
+    'ok': 'OK',
     'reload': 'Recargar',
     'save': 'Guardar',
-    'success': 'Éxito'
+    'success': 'Éxito',
+    'warning': 'Advertencia'
   },
   'configEditor': {
     'configurationDescriptionPlaceholder': 'Introduce la descripción de la configuración',
@@ -409,7 +414,8 @@ export const es: Translations = {
   'configList': {
     'activate': 'Activar',
     'active': 'Activo',
-    'confirmDelete': '¿Eliminar esta configuración?',
+    'confirmDelete': '¿Realmente eliminar esta configuración? Esta acción no se puede deshacer y todos los datos se perderán permanentemente.',
+    'confirmDeleteTitle': 'Eliminar configuración',
     'copySuffix': ' - Copia',
     'createNew': 'Crear configuración',
     'delete': 'Eliminar',

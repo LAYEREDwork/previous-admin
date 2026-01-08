@@ -179,7 +179,7 @@ export function PAModal({
 }: PAModalProps) {
     // Apply slightly larger border radius and ensure overflow is hidden so content
     // cannot visually overlap rounded corners. We keep any incoming className/style.
-    const mergedClassName = `${className ?? ''} rounded-lg overflow-hidden`.trim();
+    const mergedClassName = `${className ?? ''} rounded-lg overflow-hidden min-w-[400px] max-w-[560px]`.trim();
     const mergedStyle = { ...style } as React.CSSProperties;
 
     // ESC key handler to close modal
@@ -203,36 +203,38 @@ export function PAModal({
 
     return (
         <PAModalContext.Provider value={{ type, headerIcon }}>
-            <Modal
-                centered
-                closeButton={false}
-                className={mergedClassName}
-                style={mergedStyle}
-                open={open}
-                onClose={onClose}
-                {...props}
-            >
-                {children}
-                {buttons && buttons.length > 0 && (
-                    <PAModal.Footer>
-                        {buttons.map((button, index) => (
-                            <Button
-                                key={index}
-                                appearance={getButtonAppearance(button.type)}
-                                color={getButtonColor(button.type)}
-                                size="md"
-                                disabled={button.disabled}
-                                loading={button.loading}
-                                className={getButtonClassName(button.type)}
-                                onClick={button.onClick}
-                            >
-                                {button.icon && <span className={`${button.label ? 'mr-2' : ''} inline-flex items-center justify-center`}>{button.icon}</span>}
-                                {button.label}
-                            </Button>
-                        ))}
-                    </PAModal.Footer>
-                )}
-            </Modal>
+            {open && (
+                <Modal
+                    centered
+                    closeButton={false}
+                    className={mergedClassName}
+                    style={mergedStyle}
+                    open={open}
+                    onClose={onClose}
+                    {...props}
+                >
+                    {children}
+                    {buttons && buttons.length > 0 && (
+                        <PAModal.Footer>
+                            {buttons.map((button, index) => (
+                                <Button
+                                    key={index}
+                                    appearance={getButtonAppearance(button.type)}
+                                    color={getButtonColor(button.type)}
+                                    size="md"
+                                    disabled={button.disabled}
+                                    loading={button.loading}
+                                    className={getButtonClassName(button.type)}
+                                    onClick={button.onClick}
+                                >
+                                    {button.icon && <span className={`${button.label ? 'mr-2' : ''} inline-flex items-center justify-center`}>{button.icon}</span>}
+                                    {button.label}
+                                </Button>
+                            ))}
+                        </PAModal.Footer>
+                    )}
+                </Modal>
+            )}
         </PAModalContext.Provider>
     );
 }
