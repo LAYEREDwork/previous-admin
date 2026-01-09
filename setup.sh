@@ -9,6 +9,16 @@
 
 set -e
 
+# Trap for clean exit on CTRL+C
+cleanup() {
+    # Reset terminal in case whiptail left it in a bad state
+    stty sane 2>/dev/null || true
+    clear 2>/dev/null || true
+    echo "Installation aborted."
+    exit 1
+}
+trap cleanup INT TERM
+
 # ============================================================================
 # Handle piped execution (curl ... | bash)
 # whiptail requires direct terminal access, so we show instructions instead
@@ -263,20 +273,20 @@ do_check_tools() {
     # Check and install git
     if ! command -v git &> /dev/null; then
         if [ "$OS" = "ubuntu" ] || [ "$OS" = "debian" ]; then
-            apt-get update -qq
-            apt-get install -y git
+            apt-get update -qq >/dev/null 2>&1
+            apt-get install -y git >/dev/null 2>&1
         elif [ "$OS" = "fedora" ] || [ "$OS" = "rhel" ] || [ "$OS" = "centos" ]; then
-            dnf install -y git
+            dnf install -y git >/dev/null 2>&1
         fi
     fi
 
     # Check and install Node.js
     if ! command -v node &> /dev/null; then
         if [ "$OS" = "ubuntu" ] || [ "$OS" = "debian" ]; then
-            curl -fsSL https://deb.nodesource.com/setup_22.x | bash - > /dev/null 2>&1
-            apt-get install -y nodejs
+            curl -fsSL https://deb.nodesource.com/setup_22.x 2>/dev/null | bash - >/dev/null 2>&1
+            apt-get install -y nodejs >/dev/null 2>&1
         elif [ "$OS" = "fedora" ] || [ "$OS" = "rhel" ] || [ "$OS" = "centos" ]; then
-            dnf install -y nodejs
+            dnf install -y nodejs >/dev/null 2>&1
         fi
     fi
 
@@ -298,10 +308,10 @@ do_setup_user() {
 do_setup_repository() {
     if [ -d "$INSTALL_DIR" ]; then
         cd "$INSTALL_DIR"
-        sudo -u "$TARGET_USER" git pull origin main 2>/dev/null || true
+        sudo -u "$TARGET_USER" git pull origin main >/dev/null 2>&1 || true
     else
         mkdir -p "$(dirname "$INSTALL_DIR")"
-        git clone "$REPO_URL" "$INSTALL_DIR"
+        git clone --quiet "$REPO_URL" "$INSTALL_DIR" >/dev/null 2>&1
         chown -R "$TARGET_USER:$TARGET_USER" "$INSTALL_DIR"
     fi
 }
@@ -310,7 +320,7 @@ do_setup_repository() {
 do_sync_versions() {
     cd "$INSTALL_DIR"
     if [ -f "scripts/install-version-sync.sh" ]; then
-        sudo -u "$TARGET_USER" bash scripts/install-version-sync.sh 2>/dev/null || true
+        sudo -u "$TARGET_USER" bash scripts/install-version-sync.sh >/dev/null 2>&1 || true
     fi
 }
 
@@ -318,17 +328,17 @@ do_sync_versions() {
 do_install_dependencies() {
     detect_os
     if [ "$OS" = "ubuntu" ] || [ "$OS" = "debian" ]; then
-        apt-get update -qq
+        apt-get update -qq >/dev/null 2>&1
         if [ "$INSTALL_AVAHI" = "true" ]; then
-            apt-get install -y avahi-daemon avahi-utils curl wget whiptail
+            apt-get install -y avahi-daemon avahi-utils curl wget whiptail >/dev/null 2>&1
         else
-            apt-get install -y curl wget whiptail
+            apt-get install -y curl wget whiptail >/dev/null 2>&1
         fi
     elif [ "$OS" = "fedora" ] || [ "$OS" = "rhel" ] || [ "$OS" = "centos" ]; then
         if [ "$INSTALL_AVAHI" = "true" ]; then
-            dnf install -y avahi avahi-tools curl wget newt
+            dnf install -y avahi avahi-tools curl wget newt >/dev/null 2>&1
         else
-            dnf install -y curl wget newt
+            dnf install -y curl wget newt >/dev/null 2>&1
         fi
     fi
 }
@@ -336,13 +346,13 @@ do_install_dependencies() {
 # Install npm dependencies
 do_install_npm() {
     cd "$INSTALL_DIR"
-    sudo -u "$TARGET_USER" npm install --prefer-offline 2>/dev/null
+    sudo -u "$TARGET_USER" npm install --prefer-offline >/dev/null 2>&1
 }
 
 # Build application
 do_build_app() {
     cd "$INSTALL_DIR"
-    sudo -u "$TARGET_USER" npm run build 2>/dev/null
+    sudo -u "$TARGET_USER" npm run build >/dev/null 2>&1
 }
 
 # Setup config directory
@@ -404,7 +414,7 @@ EOF
 
 # Enable lingering
 do_enable_lingering() {
-    loginctl enable-linger "$TARGET_USER" 2>/dev/null || true
+    loginctl enable-linger "$TARGET_USER" >/dev/null 2>&1 || true
 }
 
 # Setup Avahi
@@ -467,20 +477,20 @@ do_start_services() {
     TARGET_UID=$(id -u "$TARGET_USER")
 
     # User services
-    sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user daemon-reload
-    sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user enable previous-admin-backend.service
-    sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user enable previous-admin-frontend.service
-    sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user start previous-admin-backend.service
+    sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user daemon-reload >/dev/null 2>&1
+    sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user enable previous-admin-backend.service >/dev/null 2>&1
+    sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user enable previous-admin-frontend.service >/dev/null 2>&1
+    sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user start previous-admin-backend.service >/dev/null 2>&1
     sleep 2
-    sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user start previous-admin-frontend.service
+    sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user start previous-admin-frontend.service >/dev/null 2>&1
 
     # Avahi services
     if [ "$INSTALL_AVAHI" = "true" ]; then
-        systemctl daemon-reload
-        systemctl enable avahi-daemon.service 2>/dev/null || true
-        systemctl enable avahi-alias-previous-admin.service 2>/dev/null || true
-        systemctl restart avahi-daemon.service 2>/dev/null || true
-        systemctl restart avahi-alias-previous-admin.service 2>/dev/null || systemctl start avahi-alias-previous-admin.service 2>/dev/null || true
+        systemctl daemon-reload >/dev/null 2>&1
+        systemctl enable avahi-daemon.service >/dev/null 2>&1 || true
+        systemctl enable avahi-alias-previous-admin.service >/dev/null 2>&1 || true
+        systemctl restart avahi-daemon.service >/dev/null 2>&1 || true
+        systemctl restart avahi-alias-previous-admin.service >/dev/null 2>&1 || systemctl start avahi-alias-previous-admin.service >/dev/null 2>&1 || true
     fi
 }
 
@@ -628,7 +638,7 @@ run_update_tui() {
         echo "Running update script..."
         echo "XXX"
         if [ -f "$INSTALL_DIR/scripts/update.sh" ]; then
-            bash "$INSTALL_DIR/scripts/update.sh" 2>/dev/null || true
+            bash "$INSTALL_DIR/scripts/update.sh" >/dev/null 2>&1 || true
         fi
         echo 100
         echo "XXX"
@@ -672,7 +682,7 @@ run_uninstall_tui() {
         echo "Running uninstall script..."
         echo "XXX"
         if [ -f "$INSTALL_DIR/scripts/uninstall.sh" ]; then
-            bash "$INSTALL_DIR/scripts/uninstall.sh" 2>/dev/null || true
+            bash "$INSTALL_DIR/scripts/uninstall.sh" >/dev/null 2>&1 || true
         fi
 
         echo 80
