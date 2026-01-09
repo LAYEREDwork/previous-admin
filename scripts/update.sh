@@ -182,7 +182,7 @@ if [[ "$DEV_MODE" == "true" ]]; then
 else
     update_status "running" "dependencies" 60 "Installing dependencies (this may take a while)..." "$VERSION"
     cd "$PROJECT_DIR"
-    npm install --prefer-offline 2>/dev/null || npm install
+    npm install --prefer-offline >/dev/null 2>&1 || npm install >/dev/null 2>&1
 fi
 
 # Build application
@@ -192,7 +192,7 @@ if [[ "$DEV_MODE" == "true" ]]; then
 else
     update_status "running" "building" 75 "Building application..." "$VERSION"
     cd "$PROJECT_DIR"
-    npm run build 2>/dev/null
+    npm run build >/dev/null 2>&1
 fi
 
 # Start services
