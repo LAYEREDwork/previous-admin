@@ -95,53 +95,52 @@ run_step() {
     shift 3
     local cmd="$@"
 
+    local exit_code=0
+    local output=""
+    local tmpfile=$(mktemp)
+
     # Hide cursor
     tput civis 2>/dev/null || true
 
-    # Start spinner in background
-    local spin_pid
-    (
-        local i=0
-        local len=${#SPINNER_CHARS}
-        while true; do
-            local char="${SPINNER_CHARS:$i:1}"
-            # Line 1: Spinner + description
-            printf "\r\033[K${CYAN}%s${NC} %s" "$char" "$description"
-            # Line 2: Progress bar
-            printf "\n\033[K"
-            draw_progress_bar "$step_num" "$total_steps"
-            # Move cursor back to start of line 1
-            printf "\r\033[A"
-            i=$(( (i + 1) % len ))
-            sleep 0.1
-        done
-    ) &
-    spin_pid=$!
+    # Run command in background, save output to temp file
+    eval "$cmd" > "$tmpfile" 2>&1 &
+    local cmd_pid=$!
 
-    # Run the actual command, capture output and exit code
-    local output
-    local exit_code=0
-    output=$(eval "$cmd" 2>&1) || exit_code=$?
+    # Spinner loop while command runs
+    local i=0
+    local len=${#SPINNER_CHARS}
+    while kill -0 $cmd_pid 2>/dev/null; do
+        local char="${SPINNER_CHARS:$i:1}"
+        # Line 1: Spinner + description
+        printf "\r\033[K${CYAN}%s${NC} %s" "$char" "$description"
+        # Line 2: Progress bar
+        printf "\n\033[K"
+        draw_progress_bar "$step_num" "$total_steps"
+        # Move cursor back to start of line 1
+        printf "\033[A\r"
+        i=$(( (i + 1) % len ))
+        sleep 0.08
+    done
 
-    # Kill spinner
-    kill $spin_pid 2>/dev/null || true
-    wait $spin_pid 2>/dev/null || true
+    # Get exit code
+    wait $cmd_pid
+    exit_code=$?
+    output=$(cat "$tmpfile")
+    rm -f "$tmpfile"
 
     # Show cursor
     tput cnorm 2>/dev/null || true
 
-    # Print final result
+    # Clear both lines and print final result
+    printf "\r\033[K"  # Clear line 1
+    printf "\n\033[K"  # Clear line 2
+    printf "\033[A\r"  # Back to line 1
+
     if [ $exit_code -eq 0 ]; then
-        # Line 1: Replace with checkmark
-        printf "\r\033[K${GREEN}✓${NC} %s\n" "$description"
-        # Line 2: Clear it (progress bar moves down for next step)
-        printf "\033[K"
+        printf "${GREEN}✓${NC} %s\n" "$description"
         return 0
     else
-        # Line 1: Replace with X
-        printf "\r\033[K${RED}✗${NC} %s\n" "$description"
-        # Line 2: Clear it
-        printf "\033[K"
+        printf "${RED}✗${NC} %s\n" "$description"
         if [ -n "$output" ]; then
             echo -e "  ${DIM}${output}${NC}" | head -3
         fi
