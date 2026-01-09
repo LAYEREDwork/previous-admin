@@ -42,9 +42,13 @@ router.post(apiPaths.Update.update.relative, async (req: any, res: any) => {
   try {
     const scriptPath = `${process.cwd()}/scripts/update.sh`;
 
-    // Run update script (user-space services, no sudo required)
-    await execAsync(`bash ${scriptPath}`, { cwd: process.cwd() });
+    // Run update script asynchronously (fire-and-forget)
+    // Do NOT await - the script runs in background while frontend polls for status
+    execAsync(`bash ${scriptPath}`, { cwd: process.cwd() }).catch((error) => {
+      console.error('Update script error:', error);
+    });
 
+    // Response sent immediately, update runs in background
     res.json({ success: true, message: 'Update started successfully.' });
   } catch (error) {
     console.error('Error starting update:', error);
