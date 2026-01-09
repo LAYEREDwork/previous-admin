@@ -1,18 +1,20 @@
 import { renderHook, waitFor, act } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 import { useAboutLogic } from '@frontend/hooks/useAbout';
-import { checkForUpdates, updateApplication } from '@frontend/lib/version';
+import { checkForUpdates, updateApplication, getUpdateStatus } from '@frontend/lib/version';
 
 // Mock the version functions
 vi.mock('@frontend/lib/version', () => ({
   checkForUpdates: vi.fn(),
   updateApplication: vi.fn(),
+  getUpdateStatus: vi.fn(),
 }));
 
 describe('useAboutLogic', () => {
   const mockCheckForUpdates = vi.mocked(checkForUpdates);
   const mockUpdateApplication = vi.mocked(updateApplication);
+  const mockGetUpdateStatus = vi.mocked(getUpdateStatus);
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -79,7 +81,7 @@ describe('useAboutLogic', () => {
     });
 
     expect(mockUpdateApplication).toHaveBeenCalled();
-    expect(result.current.updating).toBe(false); // Should be set back to false after update
+    expect(result.current.updating).toBe(true); // Update has started
   });
 
   it('should handle manual check for updates', async () => {
