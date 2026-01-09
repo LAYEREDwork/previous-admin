@@ -52,9 +52,11 @@ These are executable scripts in the `scripts/` directory, run directly or via np
 
 ### Shell Scripts
 
+- **[`setup.sh`](setup.sh)**: Main setup script with TUI (whiptail). Provides menu-driven installation, update, uninstall, and configuration. Creates `previous_admin` CLI command after installation.
 - **[`generate-config-schema.sh`](scripts/generate-config-schema.sh)**: Bash script that processes config schema files. Called by `npm run generate:schema`.
 - **[`start-all.sh`](scripts/start-all.sh)**: Starts both frontend and backend servers. Useful for full development environment setup.
-- **[`uninstall.sh`](scripts/uninstall.sh)**: Uninstalls the application from the system. Used for cleanup after installation.
+- **[`uninstall.sh`](scripts/uninstall.sh)**: Uninstalls the application from the system. Supports dynamic user via `PA_TARGET_USER` environment variable.
+- **[`update.sh`](scripts/update.sh)**: Updates Previous Admin to the latest version. Supports dynamic user via `PA_TARGET_USER` environment variable.
 - **[`update_badges.sh`](scripts/update_badges.sh)**: Updates README badges (e.g., LOC, CI status). Called by CI pipeline.
 
 ### TypeScript/JavaScript Scripts

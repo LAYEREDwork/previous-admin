@@ -5,58 +5,112 @@
 The fastest way to install Previous Admin on a **Linux system** (Ubuntu/Debian/Fedora/Raspberry Pi):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/LAYEREDwork/previous-admin/main/install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/LAYEREDwork/previous-admin/main/setup.sh | sudo bash
 ```
 
-This single command will:
-- Download the latest version from GitHub
-- Install all system dependencies (Avahi, Node.js, etc.)
-- Configure systemd services and Bonjour/mDNS
-- Start the application automatically
+This will launch an interactive TUI (Text User Interface) similar to `raspi-config` where you can:
+- Configure ports, user, and Avahi/mDNS settings
+- Install, update, or uninstall Previous Admin
+- View service status
 
 After installation, access the admin interface at:
 - [http://next.local:2342](http://next.local:2342) (via Bonjour/mDNS)
 - `http://<your-ip>:2342`
 
-## Automated Installation (Local Setup)
+## TUI Setup Menu
 
-Alternatively, clone the repository and run the setup script:
+The setup script provides a menu-driven interface:
+
+```
+┌──────────────── Previous Admin Setup ─────────────────┐
+│                                                       │
+│  1. Install      - Complete installation              │
+│  2. Update       - Update to latest version           │
+│  3. Uninstall    - Remove Previous Admin              │
+│  4. Configure    - Change settings                    │
+│  5. Status       - Show service status                │
+│                                                       │
+└───────────────────────────────────────────────────────┘
+```
+
+### Configuration Options
+
+Under **Configure** you can adjust:
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| Frontend Port | 2342 | HTTP port for the web interface |
+| Backend Port | 3001 | API port |
+| Target User | next | Linux user for the services |
+| Avahi Hostname | next.local | mDNS hostname for network discovery |
+
+## CLI Command
+
+After installation, you can access the setup menu anytime:
+
+```bash
+sudo previous_admin
+```
+
+Or use direct commands without TUI:
+
+```bash
+sudo previous_admin install    # Direct installation
+sudo previous_admin update     # Update to latest version
+sudo previous_admin status     # Show service status
+sudo previous_admin uninstall  # Remove Previous Admin
+```
+
+## Local Installation
+
+Clone the repository and run the setup script:
 
 ```bash
 # Clone the repository
 git clone https://github.com/LAYEREDwork/previous-admin.git
 cd previous-admin
 
-# Run the automated setup script (requires root)
-sudo ./install.sh
+# Run the setup script (requires root)
+sudo ./setup.sh
 ```
 
 The setup script will automatically:
 - Install Node.js 22+ and required system dependencies
-- Create dedicated system user (`next`)
+- Create dedicated system user (default: `next`)
 - Build the application for production
-- Install and configure systemd services
-- Set up Avahi/Bonjour for network discovery (`next.local`)
+- Install and configure user-space systemd services
+- Set up Avahi/Bonjour for network discovery
+- Create the `previous_admin` CLI command
 - Start all services and display access information
 
 ## Uninstallation
 
-To completely remove Previous Admin from your system:
+Use the TUI menu or run directly:
 
 ```bash
-# Run the uninstall script (requires root)
-# Can be run from any directory (home, project root, or scripts folder)
+sudo previous_admin uninstall
+# or
 sudo scripts/uninstall.sh
 ```
 
-The uninstall script will:
+The uninstall process will:
 - Stop and disable all systemd services
 - Optionally backup your database
 - Remove installation directory
 - Remove configuration and database files
-- Optionally remove the 'next' user account
+- Remove the `previous_admin` CLI command
 - Clean up all system integration (Avahi, systemd)
 
-## Manual Installation
+## Environment Variables
 
-For advanced configuration options, you can customize the installation by running the script locally and modifying the configuration variables in [install.sh](../install.sh).
+You can override default settings via environment variables:
+
+```bash
+export PA_TARGET_USER="myuser"
+export PA_FRONTEND_PORT="8080"
+export PA_BACKEND_PORT="3000"
+export PA_MDNS_HOSTNAME="myhostname"
+export PA_INSTALL_AVAHI="true"
+
+sudo -E ./setup.sh install
+```

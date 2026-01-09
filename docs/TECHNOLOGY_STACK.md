@@ -71,7 +71,8 @@ Previous Admin is built with modern, production-ready technologies focusing on p
 
 ### Package Management
 - **npm** - Dependency and script management
-- Automated setup via `install.sh` (includes Node.js installation)
+- Automated setup via `setup.sh` with TUI (includes Node.js installation)
+- CLI command `previous_admin` for post-installation management
 
 ### Source Control
 - **GitHub** - Version control and release management
