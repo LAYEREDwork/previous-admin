@@ -455,6 +455,7 @@ run_install() {
     echo -e "  Avahi/mDNS:    ${CYAN}$INSTALL_AVAHI${NC}"
     if [ "$INSTALL_AVAHI" = "true" ]; then
         echo -e "  Hostname:      ${CYAN}${MDNS_HOSTNAME}.local${NC}"
+    fi
     echo ""
     echo -e "${YELLOW}⚠ This installation will definitely take a few minutes. Please be patient...${NC}"
     echo ""

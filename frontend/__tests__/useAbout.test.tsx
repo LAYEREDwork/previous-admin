@@ -1,8 +1,8 @@
 import { renderHook, waitFor, act } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 import { useAboutLogic } from '@frontend/hooks/useAbout';
-import { checkForUpdates, updateApplication, getUpdateStatus } from '@frontend/lib/version';
+import { checkForUpdates, updateApplication } from '@frontend/lib/version';
 
 // Mock the version functions
 vi.mock('@frontend/lib/version', () => ({
@@ -14,7 +14,6 @@ vi.mock('@frontend/lib/version', () => ({
 describe('useAboutLogic', () => {
   const mockCheckForUpdates = vi.mocked(checkForUpdates);
   const mockUpdateApplication = vi.mocked(updateApplication);
-  const mockGetUpdateStatus = vi.mocked(getUpdateStatus);
 
   beforeEach(() => {
     vi.clearAllMocks();
