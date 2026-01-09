@@ -52,7 +52,7 @@ These are executable scripts in the `scripts/` directory, run directly or via np
 
 ### Shell Scripts
 
-- **[`setup.sh`](setup.sh)**: Main setup script with TUI (whiptail). Provides menu-driven installation, update, uninstall, and configuration. Creates `previous_admin` CLI command after installation.
+- **[`setup.sh`](setup.sh)**: Main setup script for installation, update, uninstall, and status. Creates `previous_admin` CLI command after installation. Usage: `sudo bash setup.sh install|update|uninstall|status`
 - **[`generate-config-schema.sh`](scripts/generate-config-schema.sh)**: Bash script that processes config schema files. Called by `npm run generate:schema`.
 - **[`start-all.sh`](scripts/start-all.sh)**: Starts both frontend and backend servers. Useful for full development environment setup.
 - **[`uninstall.sh`](scripts/uninstall.sh)**: Uninstalls the application from the system. Supports dynamic user via `PA_TARGET_USER` environment variable.

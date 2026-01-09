@@ -1,50 +1,21 @@
 #!/bin/bash
 
-# Previous Admin - Setup Script with TUI
+# Previous Admin - Setup Script
 # Usage:
-#   curl -fsSL https://raw.githubusercontent.com/LAYEREDwork/previous-admin/main/setup.sh -o /tmp/pa-setup.sh
-#   sudo bash /tmp/pa-setup.sh
-# Or locally: sudo bash setup.sh
-# After installation: sudo previous_admin
+#   curl -fsSL https://raw.githubusercontent.com/LAYEREDwork/previous-admin/main/setup.sh | sudo bash -s -- install
+#   Or locally: sudo bash setup.sh install
+# After installation: sudo previous_admin status
 
 set -e
 
 # Trap for clean exit on CTRL+C
 cleanup() {
-    # Reset terminal in case whiptail left it in a bad state
-    stty sane 2>/dev/null || true
-    clear 2>/dev/null || true
+    tput cnorm 2>/dev/null || true  # Show cursor
+    echo ""
     echo "Installation aborted."
     exit 1
 }
 trap cleanup INT TERM
-
-# ============================================================================
-# Handle piped execution (curl ... | bash)
-# whiptail requires direct terminal access, so we show instructions instead
-# ============================================================================
-
-if [ ! -t 0 ]; then
-    # stdin is not a terminal (script is being piped)
-    # whiptail TUI cannot work without direct terminal access
-    echo ""
-    echo "=========================================="
-    echo "  Previous Admin Setup"
-    echo "=========================================="
-    echo ""
-    echo "The interactive TUI requires direct terminal access."
-    echo "Please run these commands instead:"
-    echo ""
-    echo "  curl -fsSL https://raw.githubusercontent.com/LAYEREDwork/previous-admin/main/setup.sh -o /tmp/pa-setup.sh"
-    echo "  sudo bash /tmp/pa-setup.sh"
-    echo ""
-    echo "Or for direct installation without TUI:"
-    echo ""
-    echo "  curl -fsSL https://raw.githubusercontent.com/LAYEREDwork/previous-admin/main/setup.sh -o /tmp/pa-setup.sh"
-    echo "  sudo bash /tmp/pa-setup.sh install"
-    echo ""
-    exit 0
-fi
 
 # ============================================================================
 # Configuration (can be overridden via environment variables)
@@ -58,26 +29,164 @@ MDNS_HOSTNAME="${PA_MDNS_HOSTNAME:-next}"
 INSTALL_AVAHI="${PA_INSTALL_AVAHI:-true}"
 INSTALL_DIR="/home/$TARGET_USER/previous-admin"
 
-# TUI dimensions
-TUI_WIDTH=70
-TUI_HEIGHT=20
-TUI_MENU_HEIGHT=10
-
-# Colors for non-TUI output
+# Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-ORANGE='\033[38;5;208m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+DIM='\033[2m'
 NC='\033[0m'
+
+# Spinner characters
+SPINNER_CHARS='⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'
 
 # ============================================================================
 # Helper Functions
 # ============================================================================
 
-print_success() { echo -e "${GREEN}✓ $1${NC}"; }
-print_error() { echo -e "${RED}✗ $1${NC}"; }
-print_warning() { echo -e "${YELLOW}⚠ $1${NC}"; }
-print_info() { echo -e "${ORANGE}ℹ $1${NC}"; }
+print_success() { echo -e "${GREEN}✓${NC} $1"; }
+print_error() { echo -e "${RED}✗${NC} $1"; }
+print_warning() { echo -e "${YELLOW}⚠${NC} $1"; }
+print_info() { echo -e "${BLUE}→${NC} $1"; }
+
+print_header() {
+    echo ""
+    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${CYAN}  $1${NC}"
+    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo ""
+}
+
+# Draw progress bar
+# Usage: draw_progress_bar current total
+draw_progress_bar() {
+    local current=$1
+    local total=$2
+    local width=30
+    local percentage=$((current * 100 / total))
+    local filled=$((current * width / total))
+    local empty=$((width - filled))
+
+    printf "["
+    printf "${GREEN}%${filled}s${NC}" | tr ' ' '█'
+    printf "${DIM}%${empty}s${NC}" | tr ' ' '░'
+    printf "] ${CYAN}%3d%%${NC}" "$percentage"
+}
+
+# Run installation step with progress update and spinner
+# Usage: run_step step_num total_steps "Description" command [args...]
+run_step() {
+    local step_num=$1
+    local total_steps=$2
+    local description="$3"
+    shift 3
+    local cmd="$@"
+
+    # Hide cursor
+    tput civis 2>/dev/null || true
+
+    # Start spinner in background
+    local spin_pid
+    (
+        local i=0
+        local len=${#SPINNER_CHARS}
+        while true; do
+            local char="${SPINNER_CHARS:$i:1}"
+            # Line 1: Spinner + description
+            printf "\r${CYAN}%s${NC} %s\n" "$char" "$description"
+            # Line 2: Progress bar
+            draw_progress_bar "$step_num" "$total_steps"
+            printf "\033[2A"  # Move cursor up 2 lines
+            i=$(( (i + 1) % len ))
+            sleep 0.1
+        done
+    ) &
+    spin_pid=$!
+
+    # Run the actual command, capture output and exit code
+    local output
+    local exit_code=0
+    output=$(eval "$cmd" 2>&1) || exit_code=$?
+
+    # Kill spinner
+    kill $spin_pid 2>/dev/null || true
+    wait $spin_pid 2>/dev/null || true
+
+    # Show cursor
+    tput cnorm 2>/dev/null || true
+
+    # Print final result
+    if [ $exit_code -eq 0 ]; then
+        # Line 1: Green checkmark + description
+        printf "\r${GREEN}✓${NC} %s\n" "$description"
+        # Line 2: Progress bar
+        draw_progress_bar "$step_num" "$total_steps"
+        printf "\n\n"
+        return 0
+    else
+        # Line 1: Red X + description
+        printf "\r${RED}✗${NC} %s\n" "$description"
+        # Line 2: Progress bar
+        draw_progress_bar "$step_num" "$total_steps"
+        printf "\n"
+        if [ -n "$output" ]; then
+            echo -e "  ${DIM}${output}${NC}" | head -3
+        fi
+        echo ""
+        print_error "Installation failed at: $description"
+        exit 1
+    fi
+}
+
+# Run a command with spinner (standalone, for uninstall etc.)
+# Usage: run_with_spinner "Description" command [args...]
+run_with_spinner() {
+    local description="$1"
+    shift
+    local cmd="$@"
+
+    # Hide cursor
+    tput civis 2>/dev/null || true
+
+    # Start spinner in background
+    local spin_pid
+    (
+        local i=0
+        local len=${#SPINNER_CHARS}
+        while true; do
+            local char="${SPINNER_CHARS:$i:1}"
+            printf "\r  ${CYAN}%s${NC}  %s " "$char" "$description"
+            i=$(( (i + 1) % len ))
+            sleep 0.1
+        done
+    ) &
+    spin_pid=$!
+
+    # Run the actual command, capture output and exit code
+    local output
+    local exit_code=0
+    output=$(eval "$cmd" 2>&1) || exit_code=$?
+
+    # Kill spinner
+    kill $spin_pid 2>/dev/null || true
+    wait $spin_pid 2>/dev/null || true
+
+    # Show cursor
+    tput cnorm 2>/dev/null || true
+
+    # Print result
+    if [ $exit_code -eq 0 ]; then
+        printf "\r  ${GREEN}✓${NC}  %s\n" "$description"
+        return 0
+    else
+        printf "\r  ${RED}✗${NC}  %s\n" "$description"
+        if [ -n "$output" ]; then
+            echo -e "      ${DIM}${output}${NC}" | head -3
+        fi
+        return 1
+    fi
+}
 
 # Check if running on Linux
 check_linux() {
@@ -92,31 +201,11 @@ check_linux() {
     fi
 }
 
-# Check if whiptail is available, install if needed
-check_whiptail() {
-    if ! command -v whiptail &> /dev/null; then
-        echo "Installing whiptail..."
-        if [ -f /etc/os-release ]; then
-            . /etc/os-release
-            if [ "$ID" = "ubuntu" ] || [ "$ID" = "debian" ]; then
-                apt-get update -qq && apt-get install -y whiptail
-            elif [ "$ID" = "fedora" ] || [ "$ID" = "rhel" ] || [ "$ID" = "centos" ]; then
-                dnf install -y newt
-            fi
-        fi
-        # Verify installation succeeded
-        if ! command -v whiptail &> /dev/null; then
-            print_error "Failed to install whiptail. Please install it manually."
-            exit 1
-        fi
-    fi
-}
-
 # Check if running as root
 check_root() {
     if [ "$EUID" -ne 0 ]; then
-        echo "This script must be run as root"
-        echo "Please run: sudo bash $0"
+        print_error "This script must be run as root"
+        echo "Please run: sudo bash $0 $*"
         exit 1
     fi
 }
@@ -132,145 +221,11 @@ detect_os() {
 }
 
 # ============================================================================
-# TUI Menu Functions
+# Installation Functions (silent - output suppressed)
 # ============================================================================
 
-# Main menu
-show_main_menu() {
-    while true; do
-        CHOICE=$(whiptail --title "Previous Admin Setup" \
-            --menu "Choose an option:" $TUI_HEIGHT $TUI_WIDTH $TUI_MENU_HEIGHT \
-            "1" "Install      - Complete installation" \
-            "2" "Update       - Update to latest version" \
-            "3" "Uninstall    - Remove Previous Admin" \
-            "4" "Configure    - Change settings" \
-            "5" "Status       - Show service status" \
-            3>&1 1>&2 2>&3)
-
-        EXIT_STATUS=$?
-        if [ $EXIT_STATUS -ne 0 ]; then
-            # User pressed Cancel or Escape
-            exit 0
-        fi
-
-        case $CHOICE in
-            1) run_install_tui ;;
-            2) run_update_tui ;;
-            3) run_uninstall_tui ;;
-            4) show_configure_menu ;;
-            5) show_status_tui ;;
-        esac
-    done
-}
-
-# Configure submenu
-show_configure_menu() {
-    while true; do
-        CHOICE=$(whiptail --title "Configuration" \
-            --menu "Choose an option:" $TUI_HEIGHT $TUI_WIDTH $TUI_MENU_HEIGHT \
-            "1" "Ports        - Configure ports ($FRONTEND_PORT/$BACKEND_PORT)" \
-            "2" "Avahi/mDNS   - Configure network discovery" \
-            "3" "User         - Target user ($TARGET_USER)" \
-            "4" "Show Config  - Display current settings" \
-            3>&1 1>&2 2>&3)
-
-        EXIT_STATUS=$?
-        if [ $EXIT_STATUS -ne 0 ]; then
-            # User pressed Cancel - return to main menu
-            return
-        fi
-
-        case $CHOICE in
-            1) configure_ports ;;
-            2) configure_avahi ;;
-            3) configure_user ;;
-            4) show_current_config ;;
-        esac
-    done
-}
-
-# Configure ports
-configure_ports() {
-    NEW_FRONTEND=$(whiptail --title "Frontend Port" \
-        --inputbox "Enter the frontend port (Web Interface):" 8 $TUI_WIDTH "$FRONTEND_PORT" \
-        3>&1 1>&2 2>&3)
-
-    if [ $? -eq 0 ] && [ -n "$NEW_FRONTEND" ]; then
-        FRONTEND_PORT="$NEW_FRONTEND"
-    fi
-
-    NEW_BACKEND=$(whiptail --title "Backend Port" \
-        --inputbox "Enter the backend port (API):" 8 $TUI_WIDTH "$BACKEND_PORT" \
-        3>&1 1>&2 2>&3)
-
-    if [ $? -eq 0 ] && [ -n "$NEW_BACKEND" ]; then
-        BACKEND_PORT="$NEW_BACKEND"
-    fi
-
-    whiptail --title "Ports Configured" \
-        --msgbox "Ports set to:\n\nFrontend: $FRONTEND_PORT\nBackend: $BACKEND_PORT" 10 $TUI_WIDTH
-}
-
-# Configure Avahi/mDNS
-configure_avahi() {
-    # Check if Avahi is already installed and running
-    if command -v avahi-daemon &> /dev/null && systemctl is-active --quiet avahi-daemon 2>/dev/null; then
-        CURRENT_HOST=$(hostname)
-        whiptail --title "Avahi Status" \
-            --msgbox "Avahi is already installed and running.\n\nYour device is reachable at:\n\n  http://${CURRENT_HOST}.local:${FRONTEND_PORT}\n\nTo change the hostname, edit /etc/hostname and reboot." 14 $TUI_WIDTH
-    else
-        if whiptail --title "Avahi/mDNS" \
-            --yesno "Avahi enables network discovery via .local hostnames.\n\nDo you want to install and configure Avahi?" 10 $TUI_WIDTH; then
-
-            INSTALL_AVAHI="true"
-
-            NEW_HOSTNAME=$(whiptail --title "mDNS Hostname" \
-                --inputbox "Enter the hostname (without .local):\n\nYour device will be reachable at <hostname>.local" 12 $TUI_WIDTH "$MDNS_HOSTNAME" \
-                3>&1 1>&2 2>&3)
-
-            if [ $? -eq 0 ] && [ -n "$NEW_HOSTNAME" ]; then
-                MDNS_HOSTNAME="$NEW_HOSTNAME"
-            fi
-
-            whiptail --title "Avahi Configured" \
-                --msgbox "Avahi will be installed.\n\nHostname: ${MDNS_HOSTNAME}.local" 10 $TUI_WIDTH
-        else
-            INSTALL_AVAHI="false"
-            whiptail --title "Avahi Skipped" \
-                --msgbox "Avahi will not be installed.\n\nYou can access Previous Admin via IP address." 10 $TUI_WIDTH
-        fi
-    fi
-}
-
-# Configure target user
-configure_user() {
-    NEW_USER=$(whiptail --title "Target User" \
-        --inputbox "Enter the Linux user for the installation:\n\n(User will be created if it doesn't exist)" 12 $TUI_WIDTH "$TARGET_USER" \
-        3>&1 1>&2 2>&3)
-
-    if [ $? -eq 0 ] && [ -n "$NEW_USER" ]; then
-        TARGET_USER="$NEW_USER"
-        INSTALL_DIR="/home/$TARGET_USER/previous-admin"
-        whiptail --title "User Configured" \
-            --msgbox "Target user set to: $TARGET_USER\n\nInstallation directory:\n$INSTALL_DIR" 12 $TUI_WIDTH
-    fi
-}
-
-# Show current configuration
-show_current_config() {
-    whiptail --title "Current Configuration" \
-        --msgbox "Target User:     $TARGET_USER\nInstall Dir:     $INSTALL_DIR\n\nFrontend Port:   $FRONTEND_PORT\nBackend Port:    $BACKEND_PORT\n\nAvahi:           $INSTALL_AVAHI\nmDNS Hostname:   ${MDNS_HOSTNAME}.local" 16 $TUI_WIDTH
-}
-
-# ============================================================================
-# Installation Functions
-# ============================================================================
-
-# Check and install required tools
 do_check_tools() {
     detect_os
-
-    # Check and install git
     if ! command -v git &> /dev/null; then
         if [ "$OS" = "ubuntu" ] || [ "$OS" = "debian" ]; then
             apt-get update -qq >/dev/null 2>&1
@@ -279,8 +234,6 @@ do_check_tools() {
             dnf install -y git >/dev/null 2>&1
         fi
     fi
-
-    # Check and install Node.js
     if ! command -v node &> /dev/null; then
         if [ "$OS" = "ubuntu" ] || [ "$OS" = "debian" ]; then
             curl -fsSL https://deb.nodesource.com/setup_22.x 2>/dev/null | bash - >/dev/null 2>&1
@@ -289,22 +242,15 @@ do_check_tools() {
             dnf install -y nodejs >/dev/null 2>&1
         fi
     fi
-
-    # Check npm
-    if ! command -v npm &> /dev/null; then
-        return 1
-    fi
-    return 0
+    command -v npm &> /dev/null
 }
 
-# Setup user account
 do_setup_user() {
     if ! id "$TARGET_USER" &>/dev/null; then
-        useradd -m -s /bin/bash "$TARGET_USER"
+        useradd -m -s /bin/bash "$TARGET_USER" >/dev/null 2>&1
     fi
 }
 
-# Clone or update repository
 do_setup_repository() {
     if [ -d "$INSTALL_DIR" ]; then
         cd "$INSTALL_DIR"
@@ -316,7 +262,6 @@ do_setup_repository() {
     fi
 }
 
-# Sync versions
 do_sync_versions() {
     cd "$INSTALL_DIR"
     if [ -f "scripts/install-version-sync.sh" ]; then
@@ -324,50 +269,44 @@ do_sync_versions() {
     fi
 }
 
-# Install system dependencies
 do_install_dependencies() {
     detect_os
     if [ "$OS" = "ubuntu" ] || [ "$OS" = "debian" ]; then
         apt-get update -qq >/dev/null 2>&1
         if [ "$INSTALL_AVAHI" = "true" ]; then
-            apt-get install -y avahi-daemon avahi-utils curl wget whiptail >/dev/null 2>&1
+            apt-get install -y avahi-daemon avahi-utils curl wget jq >/dev/null 2>&1
         else
-            apt-get install -y curl wget whiptail >/dev/null 2>&1
+            apt-get install -y curl wget jq >/dev/null 2>&1
         fi
     elif [ "$OS" = "fedora" ] || [ "$OS" = "rhel" ] || [ "$OS" = "centos" ]; then
         if [ "$INSTALL_AVAHI" = "true" ]; then
-            dnf install -y avahi avahi-tools curl wget newt >/dev/null 2>&1
+            dnf install -y avahi avahi-tools curl wget jq >/dev/null 2>&1
         else
-            dnf install -y curl wget newt >/dev/null 2>&1
+            dnf install -y curl wget jq >/dev/null 2>&1
         fi
     fi
 }
 
-# Install npm dependencies
 do_install_npm() {
     cd "$INSTALL_DIR"
     sudo -u "$TARGET_USER" npm install --prefer-offline >/dev/null 2>&1
 }
 
-# Build application
 do_build_app() {
     cd "$INSTALL_DIR"
     sudo -u "$TARGET_USER" npm run build >/dev/null 2>&1
 }
 
-# Setup config directory
 do_setup_config() {
-    sudo -u "$TARGET_USER" mkdir -p "/home/$TARGET_USER/.config/previous"
-    sudo -u "$TARGET_USER" mkdir -p "/home/$TARGET_USER/.previous-admin"
+    sudo -u "$TARGET_USER" mkdir -p "/home/$TARGET_USER/.config/previous" 2>/dev/null
+    sudo -u "$TARGET_USER" mkdir -p "/home/$TARGET_USER/.previous-admin" 2>/dev/null
 }
 
-# Setup systemd services
 do_setup_systemd() {
     TARGET_UID=$(id -u "$TARGET_USER")
     USER_SYSTEMD_DIR="/home/$TARGET_USER/.config/systemd/user"
     sudo -u "$TARGET_USER" mkdir -p "$USER_SYSTEMD_DIR"
 
-    # Backend service
     sudo -u "$TARGET_USER" tee "$USER_SYSTEMD_DIR/previous-admin-backend.service" > /dev/null << EOF
 [Unit]
 Description=Previous Admin Backend API
@@ -390,7 +329,6 @@ Environment=XDG_RUNTIME_DIR=/run/user/$TARGET_UID
 WantedBy=default.target
 EOF
 
-    # Frontend service
     sudo -u "$TARGET_USER" tee "$USER_SYSTEMD_DIR/previous-admin-frontend.service" > /dev/null << EOF
 [Unit]
 Description=Previous Admin Frontend
@@ -413,18 +351,15 @@ WantedBy=default.target
 EOF
 }
 
-# Enable lingering
 do_enable_lingering() {
     loginctl enable-linger "$TARGET_USER" >/dev/null 2>&1 || true
 }
 
-# Setup Avahi
 do_setup_avahi() {
     if [ "$INSTALL_AVAHI" != "true" ]; then
         return 0
     fi
 
-    # Create Avahi service file
     mkdir -p /etc/avahi/services
     cat > /etc/avahi/services/previous-admin.service << EOF
 <?xml version="1.0" standalone='no'?>
@@ -439,7 +374,6 @@ do_setup_avahi() {
 </service-group>
 EOF
 
-    # Create wrapper script
     mkdir -p /usr/local/bin
     cat > /usr/local/bin/avahi-alias-previous-admin.sh << SCRIPT
 #!/bin/bash
@@ -454,7 +388,6 @@ fi
 SCRIPT
     chmod +x /usr/local/bin/avahi-alias-previous-admin.sh
 
-    # Create systemd service
     cat > /etc/systemd/system/avahi-alias-previous-admin.service << EOF
 [Unit]
 Description=Avahi alias ${MDNS_HOSTNAME}.local for Previous Admin
@@ -473,11 +406,8 @@ WantedBy=multi-user.target
 EOF
 }
 
-# Start services
 do_start_services() {
     TARGET_UID=$(id -u "$TARGET_USER")
-
-    # User services
     sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user daemon-reload >/dev/null 2>&1
     sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user enable previous-admin-backend.service >/dev/null 2>&1
     sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user enable previous-admin-frontend.service >/dev/null 2>&1
@@ -485,7 +415,6 @@ do_start_services() {
     sleep 2
     sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user start previous-admin-frontend.service >/dev/null 2>&1
 
-    # Avahi services
     if [ "$INSTALL_AVAHI" = "true" ]; then
         systemctl daemon-reload >/dev/null 2>&1
         systemctl enable avahi-daemon.service >/dev/null 2>&1 || true
@@ -495,7 +424,6 @@ do_start_services() {
     fi
 }
 
-# Create CLI command symlink
 do_create_cli_command() {
     mkdir -p /usr/local/bin
     ln -sf "$INSTALL_DIR/setup.sh" /usr/local/bin/previous_admin
@@ -503,217 +431,123 @@ do_create_cli_command() {
 }
 
 # ============================================================================
-# TUI Installation with Progress Bar
+# Main Commands
 # ============================================================================
 
-run_install_tui() {
-    # Confirm installation
-    if ! whiptail --title "Install Previous Admin" \
-        --yesno "This will install Previous Admin with the following settings:\n\nUser: $TARGET_USER\nFrontend Port: $FRONTEND_PORT\nBackend Port: $BACKEND_PORT\nAvahi: $INSTALL_AVAHI\nHostname: ${MDNS_HOSTNAME}.local\n\nContinue?" 16 $TUI_WIDTH; then
-        return
+run_install() {
+    print_header "Installing Previous Admin"
+
+    echo -e "${DIM}Configuration:${NC}"
+    echo -e "  User:          ${CYAN}$TARGET_USER${NC}"
+    echo -e "  Frontend Port: ${CYAN}$FRONTEND_PORT${NC}"
+    echo -e "  Backend Port:  ${CYAN}$BACKEND_PORT${NC}"
+    echo -e "  Avahi/mDNS:    ${CYAN}$INSTALL_AVAHI${NC}"
+    if [ "$INSTALL_AVAHI" = "true" ]; then
+        echo -e "  Hostname:      ${CYAN}${MDNS_HOSTNAME}.local${NC}"
     fi
+    echo ""
 
-    # Run installation with progress bar
-    {
-        echo "XXX"
-        echo 5
-        echo "Checking dependencies..."
-        echo "XXX"
-        do_check_tools
+    local TOTAL=12
 
-        echo "XXX"
-        echo 10
-        echo "Setting up user account..."
-        echo "XXX"
-        do_setup_user
+    run_step 1 $TOTAL "Checking dependencies" do_check_tools
+    run_step 2 $TOTAL "Setting up user account" do_setup_user
+    run_step 3 $TOTAL "Cloning repository" do_setup_repository
+    run_step 4 $TOTAL "Syncing versions" do_sync_versions
+    run_step 5 $TOTAL "Installing system dependencies" do_install_dependencies
+    run_step 6 $TOTAL "Installing npm packages" do_install_npm
+    run_step 7 $TOTAL "Building application" do_build_app
+    run_step 8 $TOTAL "Setting up configuration" do_setup_config
+    run_step 9 $TOTAL "Setting up systemd services" do_setup_systemd
+    run_step 10 $TOTAL "Enabling user lingering" do_enable_lingering
+    run_step 11 $TOTAL "Setting up Avahi/mDNS" do_setup_avahi
+    run_step 12 $TOTAL "Starting services" do_start_services
 
-        echo "XXX"
-        echo 20
-        echo "Cloning repository..."
-        echo "XXX"
-        do_setup_repository
-
-        echo "XXX"
-        echo 25
-        echo "Syncing versions..."
-        echo "XXX"
-        do_sync_versions
-
-        echo "XXX"
-        echo 30
-        echo "Installing system dependencies..."
-        echo "XXX"
-        do_install_dependencies
-
-        echo "XXX"
-        echo 40
-        echo "Installing npm packages (this may take a while)..."
-        echo "XXX"
-        do_install_npm
-
-        echo "XXX"
-        echo 60
-        echo "Building application..."
-        echo "XXX"
-        do_build_app
-
-        echo "XXX"
-        echo 70
-        echo "Setting up configuration..."
-        echo "XXX"
-        do_setup_config
-
-        echo "XXX"
-        echo 75
-        echo "Setting up systemd services..."
-        echo "XXX"
-        do_setup_systemd
-
-        echo "XXX"
-        echo 80
-        echo "Enabling user lingering..."
-        echo "XXX"
-        do_enable_lingering
-
-        echo "XXX"
-        echo 85
-        echo "Setting up Avahi/mDNS..."
-        echo "XXX"
-        do_setup_avahi
-
-        echo "XXX"
-        echo 90
-        echo "Starting services..."
-        echo "XXX"
-        do_start_services
-
-        echo "XXX"
-        echo 95
-        echo "Creating CLI command..."
-        echo "XXX"
-        do_create_cli_command
-
-        echo "XXX"
-        echo 100
-        echo "Installation complete!"
-        echo "XXX"
-    } | whiptail --title "Installing Previous Admin" --gauge "Starting installation..." 8 $TUI_WIDTH 0
+    do_create_cli_command
 
     # Show completion message
     IP_ADDR=$(hostname -I 2>/dev/null | awk '{print $1}' || echo "unknown")
 
-    ACCESS_INFO="Installation completed successfully!\n\n"
-    ACCESS_INFO+="Access Previous Admin at:\n\n"
+    echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${GREEN}  Installation Complete!${NC}"
+    echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo ""
+    echo "Access Previous Admin at:"
     if [ "$INSTALL_AVAHI" = "true" ]; then
-        ACCESS_INFO+="  http://${MDNS_HOSTNAME}.local:${FRONTEND_PORT}\n"
+        echo -e "  ${CYAN}http://${MDNS_HOSTNAME}.local:${FRONTEND_PORT}${NC}"
     fi
-    ACCESS_INFO+="  http://${IP_ADDR}:${FRONTEND_PORT}\n\n"
-    ACCESS_INFO+="CLI Command:\n  sudo previous_admin"
-
-    whiptail --title "Installation Complete" --msgbox "$ACCESS_INFO" 18 $TUI_WIDTH
+    echo -e "  ${CYAN}http://${IP_ADDR}:${FRONTEND_PORT}${NC}"
+    echo ""
+    echo -e "CLI Command: ${DIM}sudo previous_admin${NC}"
+    echo ""
 }
 
-# ============================================================================
-# Update Function
-# ============================================================================
+run_update() {
+    print_header "Updating Previous Admin"
 
-run_update_tui() {
     if [ ! -d "$INSTALL_DIR" ]; then
-        whiptail --title "Error" --msgbox "Previous Admin is not installed.\n\nPlease run Install first." 10 $TUI_WIDTH
-        return
+        print_error "Previous Admin is not installed."
+        echo "Please run: sudo bash $0 install"
+        exit 1
     fi
 
-    if ! whiptail --title "Update Previous Admin" \
-        --yesno "This will update Previous Admin to the latest version.\n\nContinue?" 10 $TUI_WIDTH; then
-        return
-    fi
-
-    # Export config for update script
     export PA_TARGET_USER="$TARGET_USER"
-    export PA_FRONTEND_PORT="$FRONTEND_PORT"
-    export PA_BACKEND_PORT="$BACKEND_PORT"
 
-    {
-        echo "XXX"
-        echo 20
-        echo "Running update script..."
-        echo "XXX"
-        if [ -f "$INSTALL_DIR/scripts/update.sh" ]; then
-            bash "$INSTALL_DIR/scripts/update.sh" >/dev/null 2>&1 || true
-        fi
-        echo "XXX"
-        echo 100
-        echo "Update complete!"
-        echo "XXX"
-    } | whiptail --title "Updating Previous Admin" --gauge "Starting update..." 8 $TUI_WIDTH 0
-
-    whiptail --title "Update Complete" --msgbox "Previous Admin has been updated." 8 $TUI_WIDTH
+    if [ -f "$INSTALL_DIR/scripts/update.sh" ]; then
+        bash "$INSTALL_DIR/scripts/update.sh"
+    else
+        print_error "Update script not found."
+        exit 1
+    fi
 }
 
-# ============================================================================
-# Uninstall Function
-# ============================================================================
+run_uninstall() {
+    print_header "Uninstalling Previous Admin"
 
-run_uninstall_tui() {
     if [ ! -d "$INSTALL_DIR" ]; then
-        whiptail --title "Error" --msgbox "Previous Admin is not installed." 8 $TUI_WIDTH
-        return
+        print_error "Previous Admin is not installed."
+        exit 1
     fi
 
-    if ! whiptail --title "Uninstall Previous Admin" \
-        --yesno "This will completely remove Previous Admin.\n\nAll configuration and data will be deleted!\n\nAre you sure?" 12 $TUI_WIDTH; then
-        return
+    echo -e "${YELLOW}WARNING: This will completely remove Previous Admin!${NC}"
+    echo ""
+    read -p "Are you sure? (y/N) " -n 1 -r
+    echo ""
+
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "Aborted."
+        exit 0
     fi
 
-    # Backup database?
-    if whiptail --title "Backup" \
-        --yesno "Do you want to backup the database before uninstalling?" 8 $TUI_WIDTH; then
+    read -p "Do you want to backup the database first? (Y/n) " -n 1 -r
+    echo ""
+
+    if [[ ! $REPLY =~ ^[Nn]$ ]]; then
         BACKUP_DIR="/tmp/previous-admin-backup-$(date +%Y%m%d-%H%M%S)"
         mkdir -p "$BACKUP_DIR"
         cp -r "/home/$TARGET_USER/.previous-admin" "$BACKUP_DIR/" 2>/dev/null || true
-        whiptail --title "Backup Created" --msgbox "Database backed up to:\n\n$BACKUP_DIR" 10 $TUI_WIDTH
+        print_success "Database backed up to: $BACKUP_DIR"
     fi
 
-    # Export config for uninstall script
     export PA_TARGET_USER="$TARGET_USER"
 
-    {
-        echo "XXX"
-        echo 30
-        echo "Running uninstall script..."
-        echo "XXX"
-        if [ -f "$INSTALL_DIR/scripts/uninstall.sh" ]; then
-            bash "$INSTALL_DIR/scripts/uninstall.sh" >/dev/null 2>&1 || true
-        fi
+    echo ""
+    run_with_spinner "Stopping services" "bash '$INSTALL_DIR/scripts/uninstall.sh' 2>/dev/null || true"
+    run_with_spinner "Removing CLI command" "rm -f /usr/local/bin/previous_admin"
 
-        echo "XXX"
-        echo 80
-        echo "Removing CLI command..."
-        echo "XXX"
-        rm -f /usr/local/bin/previous_admin
-
-        echo "XXX"
-        echo 100
-        echo "Uninstall complete!"
-        echo "XXX"
-    } | whiptail --title "Uninstalling Previous Admin" --gauge "Starting uninstall..." 8 $TUI_WIDTH 0
-
-    whiptail --title "Uninstall Complete" --msgbox "Previous Admin has been removed." 8 $TUI_WIDTH
+    echo ""
+    print_success "Previous Admin has been removed."
 }
 
-# ============================================================================
-# Status Function
-# ============================================================================
+show_status() {
+    print_header "Previous Admin Status"
 
-show_status_tui() {
     if [ ! -d "$INSTALL_DIR" ]; then
-        whiptail --title "Status" --msgbox "Previous Admin is not installed." 8 $TUI_WIDTH
-        return
+        print_error "Previous Admin is not installed."
+        exit 1
     fi
 
     TARGET_UID=$(id -u "$TARGET_USER" 2>/dev/null || echo "0")
 
-    # Get service status
     BACKEND_STATUS=$(sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user is-active previous-admin-backend.service 2>/dev/null || echo "inactive")
     FRONTEND_STATUS=$(sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user is-active previous-admin-frontend.service 2>/dev/null || echo "inactive")
 
@@ -725,64 +559,59 @@ show_status_tui() {
 
     IP_ADDR=$(hostname -I 2>/dev/null | awk '{print $1}' || echo "unknown")
 
-    STATUS_MSG="Service Status:\n\n"
-    STATUS_MSG+="Backend:   $BACKEND_STATUS\n"
-    STATUS_MSG+="Frontend:  $FRONTEND_STATUS\n"
-    STATUS_MSG+="Avahi:     $AVAHI_STATUS\n\n"
-    STATUS_MSG+="Access URLs:\n\n"
-    if [ "$INSTALL_AVAHI" = "true" ] && [ "$AVAHI_STATUS" = "active" ]; then
-        STATUS_MSG+="  http://${MDNS_HOSTNAME}.local:${FRONTEND_PORT}\n"
+    echo "Services:"
+    if [ "$BACKEND_STATUS" = "active" ]; then
+        echo -e "  Backend:   ${GREEN}●${NC} $BACKEND_STATUS"
+    else
+        echo -e "  Backend:   ${RED}●${NC} $BACKEND_STATUS"
     fi
-    STATUS_MSG+="  http://${IP_ADDR}:${FRONTEND_PORT}"
 
-    whiptail --title "Previous Admin Status" --msgbox "$STATUS_MSG" 18 $TUI_WIDTH
-}
+    if [ "$FRONTEND_STATUS" = "active" ]; then
+        echo -e "  Frontend:  ${GREEN}●${NC} $FRONTEND_STATUS"
+    else
+        echo -e "  Frontend:  ${RED}●${NC} $FRONTEND_STATUS"
+    fi
 
-# ============================================================================
-# CLI Mode (non-TUI)
-# ============================================================================
+    if [ "$AVAHI_STATUS" = "active" ]; then
+        echo -e "  Avahi:     ${GREEN}●${NC} $AVAHI_STATUS"
+    elif [ "$AVAHI_STATUS" = "not installed" ]; then
+        echo -e "  Avahi:     ${YELLOW}●${NC} $AVAHI_STATUS"
+    else
+        echo -e "  Avahi:     ${RED}●${NC} $AVAHI_STATUS"
+    fi
 
-run_install_cli() {
-    print_info "Installing Previous Admin..."
-    check_root
-
-    do_check_tools && print_success "Dependencies checked" || { print_error "Failed to check dependencies"; exit 1; }
-    do_setup_user && print_success "User setup complete"
-    do_setup_repository && print_success "Repository cloned"
-    do_sync_versions && print_success "Versions synced"
-    do_install_dependencies && print_success "System dependencies installed"
-    do_install_npm && print_success "npm packages installed"
-    do_build_app && print_success "Application built"
-    do_setup_config && print_success "Configuration created"
-    do_setup_systemd && print_success "Systemd services configured"
-    do_enable_lingering && print_success "Lingering enabled"
-    do_setup_avahi && print_success "Avahi configured"
-    do_start_services && print_success "Services started"
-    do_create_cli_command && print_success "CLI command created"
-
-    print_success "Installation complete!"
-    IP_ADDR=$(hostname -I 2>/dev/null | awk '{print $1}' || echo "unknown")
     echo ""
-    print_info "Access Previous Admin at:"
-    if [ "$INSTALL_AVAHI" = "true" ]; then
+    echo "Access URLs:"
+    if [ "$INSTALL_AVAHI" = "true" ] && [ "$AVAHI_STATUS" = "active" ]; then
         echo "  http://${MDNS_HOSTNAME}.local:${FRONTEND_PORT}"
     fi
     echo "  http://${IP_ADDR}:${FRONTEND_PORT}"
+    echo ""
 }
 
-show_status_cli() {
-    if [ ! -d "$INSTALL_DIR" ]; then
-        print_error "Previous Admin is not installed."
-        exit 1
-    fi
-
-    TARGET_UID=$(id -u "$TARGET_USER" 2>/dev/null || echo "0")
-
-    print_info "Service Status:"
+show_help() {
+    echo "Previous Admin Setup Script"
     echo ""
-    sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user status previous-admin-backend.service --no-pager | head -5
+    echo -e "Usage: ${CYAN}sudo bash $0 <command>${NC}"
     echo ""
-    sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user status previous-admin-frontend.service --no-pager | head -5
+    echo "Commands:"
+    echo -e "  ${CYAN}install${NC}     Install Previous Admin"
+    echo -e "  ${CYAN}update${NC}      Update to latest version"
+    echo -e "  ${CYAN}uninstall${NC}   Remove Previous Admin"
+    echo -e "  ${CYAN}status${NC}      Show service status"
+    echo -e "  ${CYAN}help${NC}        Show this help message"
+    echo ""
+    echo "Environment Variables:"
+    echo -e "  ${DIM}PA_TARGET_USER${NC}      Target user (default: next)"
+    echo -e "  ${DIM}PA_FRONTEND_PORT${NC}    Frontend port (default: 2342)"
+    echo -e "  ${DIM}PA_BACKEND_PORT${NC}     Backend port (default: 3001)"
+    echo -e "  ${DIM}PA_MDNS_HOSTNAME${NC}    mDNS hostname (default: next)"
+    echo -e "  ${DIM}PA_INSTALL_AVAHI${NC}    Install Avahi (default: true)"
+    echo ""
+    echo "Examples:"
+    echo -e "  ${DIM}sudo bash setup.sh install${NC}"
+    echo -e "  ${DIM}PA_TARGET_USER=pi sudo bash setup.sh install${NC}"
+    echo ""
 }
 
 # ============================================================================
@@ -792,41 +621,30 @@ show_status_cli() {
 main() {
     check_linux
     check_root
-    check_whiptail
 
-    # Handle CLI arguments
-    case "${1:-}" in
+    case "${1:-help}" in
         install)
-            run_install_cli
+            run_install
             ;;
         update)
-            export PA_TARGET_USER="$TARGET_USER"
-            if [ -f "$INSTALL_DIR/scripts/update.sh" ]; then
-                bash "$INSTALL_DIR/scripts/update.sh"
-            else
-                print_error "Update script not found. Is Previous Admin installed?"
-                exit 1
-            fi
+            run_update
             ;;
         uninstall)
-            export PA_TARGET_USER="$TARGET_USER"
-            if [ -f "$INSTALL_DIR/scripts/uninstall.sh" ]; then
-                bash "$INSTALL_DIR/scripts/uninstall.sh"
-                rm -f /usr/local/bin/previous_admin
-            else
-                print_error "Uninstall script not found."
-                exit 1
-            fi
+            run_uninstall
             ;;
         status)
-            show_status_cli
+            show_status
+            ;;
+        help|--help|-h)
+            show_help
             ;;
         *)
-            # No argument - show TUI menu
-            show_main_menu
+            print_error "Unknown command: $1"
+            echo ""
+            show_help
+            exit 1
             ;;
     esac
 }
 
-# Run main function
 main "$@"

@@ -6,16 +6,10 @@ The fastest way to install Previous Admin on a **Linux system** (Ubuntu/Debian/F
 
 ```bash
 # Download and run the setup script
-curl -fsSL https://raw.githubusercontent.com/LAYEREDwork/previous-admin/main/setup.sh -o /tmp/pa-setup.sh
-sudo bash /tmp/pa-setup.sh
+curl -fsSL https://raw.githubusercontent.com/LAYEREDwork/previous-admin/main/setup.sh | sudo bash -s -- install
 ```
 
-This will launch an interactive TUI (Text User Interface) similar to `raspi-config` where you can:
-- Configure ports, user, and Avahi/mDNS settings
-- Install, update, or uninstall Previous Admin
-- View service status
-
-For direct installation without TUI:
+Or download first, then run:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/LAYEREDwork/previous-admin/main/setup.sh -o /tmp/pa-setup.sh
@@ -26,48 +20,34 @@ After installation, access the admin interface at:
 - [http://next.local:2342](http://next.local:2342) (via Bonjour/mDNS)
 - `http://<your-ip>:2342`
 
-## TUI Setup Menu
+## CLI Commands
 
-The setup script provides a menu-driven interface:
-
-```
-┌──────────────── Previous Admin Setup ─────────────────┐
-│                                                       │
-│  1. Install      - Complete installation              │
-│  2. Update       - Update to latest version           │
-│  3. Uninstall    - Remove Previous Admin              │
-│  4. Configure    - Change settings                    │
-│  5. Status       - Show service status                │
-│                                                       │
-└───────────────────────────────────────────────────────┘
-```
-
-### Configuration Options
-
-Under **Configure** you can adjust:
-
-| Option | Default | Description |
-|--------|---------|-------------|
-| Frontend Port | 2342 | HTTP port for the web interface |
-| Backend Port | 3001 | API port |
-| Target User | next | Linux user for the services |
-| Avahi Hostname | next.local | mDNS hostname for network discovery |
-
-## CLI Command
-
-After installation, you can access the setup menu anytime:
+After installation, you can use the `previous_admin` command:
 
 ```bash
-sudo previous_admin
-```
-
-Or use direct commands without TUI:
-
-```bash
-sudo previous_admin install    # Direct installation
+sudo previous_admin install    # Install Previous Admin
 sudo previous_admin update     # Update to latest version
 sudo previous_admin status     # Show service status
 sudo previous_admin uninstall  # Remove Previous Admin
+sudo previous_admin help       # Show help
+```
+
+## Configuration Options
+
+Configuration is done via environment variables:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| PA_TARGET_USER | next | Linux user for the services |
+| PA_FRONTEND_PORT | 2342 | HTTP port for the web interface |
+| PA_BACKEND_PORT | 3001 | API port |
+| PA_MDNS_HOSTNAME | next | mDNS hostname (without .local) |
+| PA_INSTALL_AVAHI | true | Install Avahi for network discovery |
+
+Example with custom settings:
+
+```bash
+PA_TARGET_USER=pi PA_FRONTEND_PORT=8080 sudo bash setup.sh install
 ```
 
 ## Local Installation
@@ -80,7 +60,7 @@ git clone https://github.com/LAYEREDwork/previous-admin.git
 cd previous-admin
 
 # Run the setup script (requires root)
-sudo ./setup.sh
+sudo ./setup.sh install
 ```
 
 The setup script will automatically:
@@ -93,8 +73,6 @@ The setup script will automatically:
 - Start all services and display access information
 
 ## Uninstallation
-
-Use the TUI menu or run directly:
 
 ```bash
 sudo previous_admin uninstall
