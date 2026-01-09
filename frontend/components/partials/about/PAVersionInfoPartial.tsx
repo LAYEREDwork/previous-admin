@@ -2,28 +2,30 @@ import ReactMarkdown from 'react-markdown';
 
 import { PAButton } from '@frontend/components/controls/PAButton';
 import { PACard } from '@frontend/components/controls/PACard';
-import { 
-  SFArrowTrianglehead2ClockwiseRotate90, 
-  SFCheckmarkSeal, 
-  SFDocumentOnDocumentFill, 
-  SFExclamationmarkBubbleFill, 
+import {
+  SFArrowTrianglehead2ClockwiseRotate90,
+  SFCheckmarkSeal,
+  SFDocumentOnDocumentFill,
+  SFExclamationmarkBubbleFill,
   SFInfoBubbleFill
 } from '@frontend/components/sf-symbols';
 import { useLanguage } from '@frontend/contexts/PALanguageContext';
 import { useResponsiveControlSize } from '@frontend/hooks/useResponsiveControlSize';
-import { type VersionInfo } from '@frontend/lib/version';
+import { type VersionInfo, type UpdateStatus } from '@frontend/lib/version';
 
 interface VersionInfoPartialProps {
   versionInfo: VersionInfo | null;
   checking: boolean;
   updating: boolean;
   error: boolean;
+  updateStatus: UpdateStatus | null;
   handleCheckForUpdates: () => void;
   handleUpdate: () => void;
 }
 
 /**
  * Partial component for displaying version information and update functionality.
+ * Update progress is shown in a separate modal (UpdateProgressModal).
  */
 export function VersionInfoPartial({
   versionInfo,
@@ -138,7 +140,7 @@ export function VersionInfoPartial({
                           className="flex items-center justify-center gap-2 cursor-pointer"
                         >
                           <SFArrowTrianglehead2ClockwiseRotate90 size={18} />
-                          {updating ? translation.system.updating : translation.system.updateNow}
+                          {translation.system.updateNow}
                         </PAButton>
                       </div>
                     ) : (
@@ -153,7 +155,7 @@ export function VersionInfoPartial({
                         className="flex items-center justify-center gap-2 cursor-pointer"
                       >
                         <SFArrowTrianglehead2ClockwiseRotate90 size={18} />
-                        {updating ? translation.system.updating : translation.system.updateNow}
+                        {translation.system.updateNow}
                       </PAButton>
                     )}
                   </>

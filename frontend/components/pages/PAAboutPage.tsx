@@ -7,11 +7,12 @@ import { usePageBase } from '@frontend/hooks/usePageBase';
 import { GeneralResourcesPartial } from '../partials/about/PAGeneralResourcesPartial';
 import { LayeredResourcesPartial } from '../partials/about/PALayeredResourcesPartial';
 import { PreviousResourcesPartial } from '../partials/about/PAPreviousResourcesPartial';
+import { UpdateProgressModal } from '../partials/about/PAUpdateProgressModal';
 import { VersionInfoPartial } from '../partials/about/PAVersionInfoPartial';
 
 export function PAAbout() {
    const { translation } = usePageBase();
-   const { versionInfo, checking, updating, error, handleCheckForUpdates, handleUpdate } = useAboutLogic();
+   const { versionInfo, checking, updating, error, updateStatus, handleCheckForUpdates, handleUpdate } = useAboutLogic();
 
    return (
       <PageWrapper>
@@ -30,6 +31,7 @@ export function PAAbout() {
                checking={checking}
                updating={updating}
                error={error}
+               updateStatus={updateStatus}
                handleCheckForUpdates={handleCheckForUpdates}
                handleUpdate={handleUpdate}
             />
@@ -37,6 +39,12 @@ export function PAAbout() {
             <LayeredResourcesPartial />
             <GeneralResourcesPartial />
          </div>
+
+         {/* Update Progress Modal */}
+         <UpdateProgressModal
+            open={updating}
+            updateStatus={updateStatus}
+         />
       </PageWrapper>
    );
 }

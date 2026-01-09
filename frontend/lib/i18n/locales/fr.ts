@@ -521,9 +521,11 @@ export const fr: Translations = {
     'currentVersion': 'Version actuelle',
     'checkingForUpdates': 'Recherche de mises à jour...',
     'updateAvailable': 'Mise à jour disponible',
+    'updateComplete': 'Mise à jour terminée ! Rechargement...',
     'upToDate': 'À jour',
     'updateNow': 'Mettre à jour maintenant',
     'updating': 'Mise à jour...',
+    'installingVersion': 'Installation de la version',
     'updateError': 'Erreur lors de la recherche de mises à jour',
     'checkForUpdates': 'Rechercher des mises à jour',
     'hostInfo': 'Informations sur l-hôte',
@@ -566,7 +568,7 @@ export const fr: Translations = {
     'resetWarning': 'Avertissement : Cela supprimera toutes les configurations et réinitialisera le système à la configuration initiale. Cette action est irréversible !',
     'resetting': 'Réinitialisation...',
     'updateFrequency': 'Fréquence de mise à jour',
-    'updateDisabledInDev': 'Environnement de développement: La mise à jour sera simulée (pas de changements réels)',
+    'updateDisabledInDev': 'Environnement de développement: La mise à jour sera simulée (pas de changements réels)'
   },
   'tabs': {
     'about': 'À propos',

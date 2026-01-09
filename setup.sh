@@ -383,6 +383,7 @@ RestartSec=10
 StandardOutput=journal
 StandardError=journal
 SyslogIdentifier=previous-admin-backend
+Environment=NODE_ENV=production
 Environment=XDG_RUNTIME_DIR=/run/user/$TARGET_UID
 
 [Install]

@@ -145,6 +145,63 @@ router.get(apiPaths.Update.version.relative, async (req: any, res: any) => {
 });
 
 /**
+ * GET /api/update/status
+ * Get current update status from status file
+ *
+ * @returns {Object}
+ *   - status {string}: "idle" | "running" | "completed" | "error"
+ *   - step {string}: Current update step
+ *   - progress {number}: Progress percentage (0-100)
+ *   - message {string}: Current status message
+ *   - version {string}: Version being installed
+ *   - error {string|null}: Error message if any
+ */
+router.get(apiPaths.Update.status.relative, async (req: any, res: any) => {
+  try {
+    const statusFile = path.join(process.env.HOME || '', '.previous-admin', 'update-status.json');
+
+    if (!fs.existsSync(statusFile)) {
+      return res.json({
+        status: 'idle',
+        step: '',
+        progress: 0,
+        message: '',
+        version: '',
+        error: null,
+      });
+    }
+
+    const statusData = JSON.parse(fs.readFileSync(statusFile, 'utf8'));
+
+    // Check if status is stale (older than 5 minutes)
+    const now = Math.floor(Date.now() / 1000);
+    if (statusData.timestamp && (now - statusData.timestamp) > 300) {
+      // Status is stale, likely from a previous run
+      return res.json({
+        status: 'idle',
+        step: '',
+        progress: 0,
+        message: '',
+        version: '',
+        error: null,
+      });
+    }
+
+    res.json(statusData);
+  } catch (error) {
+    console.error('Error reading update status:', error);
+    res.json({
+      status: 'idle',
+      step: '',
+      progress: 0,
+      message: '',
+      version: '',
+      error: null,
+    });
+  }
+});
+
+/**
  * Compare two semantic version strings
  * @returns 1 if v1 > v2, -1 if v1 < v2, 0 if equal
  */

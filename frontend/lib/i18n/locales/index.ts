@@ -252,10 +252,12 @@ export interface Translations {
     subtitle: string;
     title: string;
     updateAvailable: string;
+    updateComplete: string;
     updateError: string;
     updateNow: string;
     upToDate: string;
     updating: string;
+    installingVersion: string;
     uptime: string;
     used: string;
     free: string;

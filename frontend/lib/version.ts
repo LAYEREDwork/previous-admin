@@ -14,6 +14,15 @@ export interface VersionInfo {
   environment: string;
 }
 
+export interface UpdateStatus {
+  status: 'idle' | 'running' | 'completed' | 'error';
+  step: string;
+  progress: number;
+  message: string;
+  version: string;
+  error: string | null;
+}
+
 /**
  * Get current version from backend API
  */
@@ -74,12 +83,39 @@ export async function updateApplication(): Promise<void> {
     }
 
     await response.json();
-
-    setTimeout(() => {
-      window.location.reload();
-    }, 2000);
+    // Don't reload here - let the polling handle the completion
   } catch (error) {
     console.error('Error updating application:', error);
     throw error;
+  }
+}
+
+/**
+ * Get current update status from backend API
+ */
+export async function getUpdateStatus(): Promise<UpdateStatus> {
+  try {
+    const response = await fetch(`${apiBaseUrl}${apiPaths.Update.status.full}`, {
+      headers: {
+        'Accept': 'application/json',
+      },
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch update status');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching update status:', error);
+    return {
+      status: 'idle',
+      step: '',
+      progress: 0,
+      message: '',
+      version: '',
+      error: null,
+    };
   }
 }

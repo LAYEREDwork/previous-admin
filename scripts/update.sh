@@ -6,36 +6,81 @@
 
 set -e
 
-# Redirect all output to both console and log file
-exec > >(tee -a ../backend.log) 2>&1
-
 # Colors for output
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-# Check if we're in development environment
-# Development mode if NODE_ENV is set to development or if we're running from a git repository
-if [[ "$NODE_ENV" == "development" ]] || [[ -d ".git" ]]; then
-    DEV_MODE=true
-    echo -e "${YELLOW}Development environment detected - running in simulation mode${NC}"
-    echo -e "${YELLOW}No real files will be modified, no services will be stopped/started${NC}"
-else
-    DEV_MODE=false
-fi
-
 # Configuration (can be overridden via environment variables)
 TARGET_USER="${PA_TARGET_USER:-next}"
 REPO="LAYEREDwork/previous-admin"
-if [[ "$DEV_MODE" == "true" ]]; then
+DATA_DIR="/home/$TARGET_USER/.previous-admin"
+STATUS_FILE="$DATA_DIR/update-status.json"
+
+# Check if we're in development environment
+# Development mode only if NODE_ENV is explicitly set to development
+if [[ "$NODE_ENV" == "development" ]]; then
+    DEV_MODE=true
+    echo -e "${YELLOW}Development environment detected - running in simulation mode${NC}"
+    echo -e "${YELLOW}No real files will be modified, no services will be stopped/started${NC}"
     # In development, use current directory as project dir
     PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 else
+    DEV_MODE=false
     PROJECT_DIR="/home/$TARGET_USER/previous-admin"
 fi
-DATA_DIR="/home/$TARGET_USER/.previous-admin"
+
 BACKUP_DIR="$DATA_DIR/backup/previous-admin-backup-$(date +%Y-%m-%d-%H-%M-%S)"
+
+# Ensure data directory exists
+mkdir -p "$DATA_DIR"
+
+# Function to update status file for frontend polling
+update_status() {
+    local status="$1"
+    local step="$2"
+    local progress="$3"
+    local message="$4"
+    local version="${5:-}"
+    local error="${6:-null}"
+
+    # Escape message for JSON
+    message=$(echo "$message" | sed 's/"/\\"/g')
+
+    if [[ "$error" != "null" ]]; then
+        error="\"$error\""
+    fi
+
+    cat > "$STATUS_FILE" << EOF
+{
+  "status": "$status",
+  "step": "$step",
+  "progress": $progress,
+  "message": "$message",
+  "version": "$version",
+  "error": $error,
+  "timestamp": $(date +%s)
+}
+EOF
+
+    # Also log to console
+    echo -e "${GREEN}[$progress%] $message${NC}"
+}
+
+# Function to handle errors
+handle_error() {
+    local message="$1"
+    update_status "error" "failed" 0 "$message" "" "$message"
+    echo -e "${RED}Error: $message${NC}"
+    exit 1
+}
+
+# Trap errors
+trap 'handle_error "Update failed unexpectedly"' ERR
+
+# Initialize status
+update_status "running" "initializing" 0 "Starting update..." "" "null"
 
 # Ensure XDG_RUNTIME_DIR is set for user systemd
 if [ -z "$XDG_RUNTIME_DIR" ]; then
@@ -44,12 +89,13 @@ fi
 
 # Check if jq is installed
 if ! command -v jq &> /dev/null; then
-    echo -e "${YELLOW}jq not found, installing...${NC}"
+    update_status "running" "dependencies" 5 "Installing jq..."
     sudo apt update && sudo apt install -y jq
 fi
 
 # Fetch latest release info
-echo -e "${GREEN}Fetching latest release from GitHub...${NC}"
+update_status "running" "checking" 10 "Fetching latest release from GitHub..."
+
 # Use explicit headers to avoid GitHub API issues
 RELEASE_DATA=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "User-Agent: Previous-Admin-Updater" "https://api.github.com/repos/$REPO/releases/latest")
 
@@ -59,80 +105,71 @@ ASSET_URL=$(echo "$RELEASE_DATA" | jq -r '.assets[0].browser_download_url // emp
 if [ -z "$ASSET_URL" ] || [ "$ASSET_URL" = "null" ]; then
     # fallback to tarball_url or zipball_url
     ASSET_URL=$(echo "$RELEASE_DATA" | jq -r '.tarball_url // .zipball_url // empty')
-    ASSET_FALLBACK=true
-else
-    ASSET_FALLBACK=false
 fi
 
 if [ -z "$VERSION" ] || [ "$VERSION" = "null" ] || [ -z "$ASSET_URL" ] || [ "$ASSET_URL" = "null" ]; then
-    echo -e "${RED}Error: Could not fetch release data from GitHub${NC}"
-    exit 1
+    handle_error "Could not fetch release data from GitHub"
 fi
 
-echo -e "${GREEN}Updating to version: $VERSION${NC}"
-echo -e "${GREEN}Asset URL: $ASSET_URL${NC}"
-if [ "$ASSET_FALLBACK" = true ]; then
-    echo -e "${YELLOW}No uploaded assets found — using tarball/zipball fallback${NC}"
-fi
+update_status "running" "downloading" 15 "Downloading version $VERSION..." "$VERSION"
 
 # Download and extract
-echo -e "${GREEN}Downloading and extracting update...${NC}"
 TEMP_DIR="/tmp/previous-admin-update"
 rm -rf "$TEMP_DIR"
 mkdir -p "$TEMP_DIR"
 
 if [[ "$ASSET_URL" == *"/tarball/"* ]] || [[ "$ASSET_URL" == *.tar.gz ]]; then
-    curl -L -o "$TEMP_DIR/update.tar.gz" "$ASSET_URL"
+    curl -L -s -o "$TEMP_DIR/update.tar.gz" "$ASSET_URL"
+    update_status "running" "extracting" 25 "Extracting files..." "$VERSION"
     tar -xzf "$TEMP_DIR/update.tar.gz" -C "$TEMP_DIR"
     SOURCE_DIR=$(find "$TEMP_DIR" -mindepth 1 -maxdepth 1 -type d | head -1)
 elif [[ "$ASSET_URL" == *"/zipball/"* ]] || [[ "$ASSET_URL" == *.zip ]]; then
-    curl -L -o "$TEMP_DIR/update.zip" "$ASSET_URL"
+    curl -L -s -o "$TEMP_DIR/update.zip" "$ASSET_URL"
+    update_status "running" "extracting" 25 "Extracting files..." "$VERSION"
     unzip -q "$TEMP_DIR/update.zip" -d "$TEMP_DIR"
     SOURCE_DIR=$(find "$TEMP_DIR" -mindepth 1 -maxdepth 1 -type d | head -1)
 else
     # Last resort: try downloading tarball by tag
-    echo -e "${YELLOW}Unknown asset URL format — attempting tarball download for tag $VERSION${NC}"
-    curl -L -o "$TEMP_DIR/update.tar.gz" "https://api.github.com/repos/$REPO/tarball/$VERSION"
+    curl -L -s -o "$TEMP_DIR/update.tar.gz" "https://api.github.com/repos/$REPO/tarball/$VERSION"
+    update_status "running" "extracting" 25 "Extracting files..." "$VERSION"
     tar -xzf "$TEMP_DIR/update.tar.gz" -C "$TEMP_DIR"
     SOURCE_DIR=$(find "$TEMP_DIR" -mindepth 1 -maxdepth 1 -type d | head -1)
 fi
 
 # Create backup
 if [[ "$DEV_MODE" == "true" ]]; then
-    echo -e "${YELLOW}DEV MODE: Simulating backup creation...${NC}"
-    echo -e "${YELLOW}Would create backup in: $BACKUP_DIR${NC}"
+    update_status "running" "backup" 30 "DEV: Simulating backup creation..." "$VERSION"
+    sleep 1
 else
-    echo -e "${GREEN}Creating backup...${NC}"
+    update_status "running" "backup" 30 "Creating backup..." "$VERSION"
     mkdir -p "$BACKUP_DIR"
     cp -r "$PROJECT_DIR" "$BACKUP_DIR/"
 fi
 
-# Stop services (user-space services, no sudo required)
+# Stop services
 if [[ "$DEV_MODE" == "true" ]]; then
-    echo -e "${YELLOW}DEV MODE: Simulating service stop...${NC}"
-    echo -e "${YELLOW}Would stop services: previous-admin-backend previous-admin-frontend${NC}"
+    update_status "running" "stopping" 40 "DEV: Simulating service stop..." "$VERSION"
+    sleep 1
 else
-    echo -e "${GREEN}Stopping services...${NC}"
+    update_status "running" "stopping" 40 "Stopping services..." "$VERSION"
     systemctl --user stop previous-admin-backend previous-admin-frontend || true
 fi
 
-# Copy new files (exclude data and temp files)
+# Copy new files
 if [[ "$DEV_MODE" == "true" ]]; then
-    echo -e "${YELLOW}DEV MODE: Simulating file installation...${NC}"
-    echo -e "${YELLOW}Would copy files from $SOURCE_DIR to $PROJECT_DIR${NC}"
-    echo -e "${YELLOW}Would exclude: .git, node_modules, *.log, update.zip, update.tar.gz, $DATA_DIR${NC}"
+    update_status "running" "installing" 50 "DEV: Simulating file installation..." "$VERSION"
+    sleep 1
 else
-    echo -e "${GREEN}Installing update...${NC}"
-    rsync -av --exclude='.git' --exclude='node_modules' --exclude='*.log' --exclude='update.zip' --exclude='update.tar.gz' --exclude="$DATA_DIR" "$SOURCE_DIR/" "$PROJECT_DIR/"
+    update_status "running" "installing" 50 "Installing new files..." "$VERSION"
+    rsync -a --exclude='.git' --exclude='node_modules' --exclude='*.log' --exclude='update.zip' --exclude='update.tar.gz' --exclude="$DATA_DIR" "$SOURCE_DIR/" "$PROJECT_DIR/"
 fi
 
-# Update versions
+# Update version files
 if [[ "$DEV_MODE" == "true" ]]; then
-    echo -e "${YELLOW}DEV MODE: Simulating version update...${NC}"
-    echo -e "${YELLOW}Would update package.json version to: $VERSION${NC}"
-    echo -e "${YELLOW}Would update $DATA_DIR/version.json${NC}"
+    update_status "running" "versioning" 55 "DEV: Simulating version update..." "$VERSION"
+    sleep 1
 else
-    echo -e "${GREEN}Updating version files...${NC}"
+    update_status "running" "versioning" 55 "Updating version files..." "$VERSION"
     jq --arg v "$VERSION" '.version = $v' "$PROJECT_DIR/package.json" > /tmp/package.json.tmp
     mv /tmp/package.json.tmp "$PROJECT_DIR/package.json"
     echo "{\"version\": \"$VERSION\"}" > "$DATA_DIR/version.json"
@@ -140,39 +177,45 @@ fi
 
 # Install dependencies
 if [[ "$DEV_MODE" == "true" ]]; then
-    echo -e "${YELLOW}DEV MODE: Simulating dependency installation...${NC}"
-    echo -e "${YELLOW}Would run: npm install${NC}"
+    update_status "running" "dependencies" 60 "DEV: Simulating npm install..." "$VERSION"
+    sleep 2
 else
-    echo -e "${GREEN}Installing dependencies...${NC}"
+    update_status "running" "dependencies" 60 "Installing dependencies (this may take a while)..." "$VERSION"
     cd "$PROJECT_DIR"
-    npm install
+    npm install --prefer-offline 2>/dev/null || npm install
 fi
 
-# Start services (user-space services, no sudo required)
+# Build application
 if [[ "$DEV_MODE" == "true" ]]; then
-    echo -e "${YELLOW}DEV MODE: Simulating service start...${NC}"
-    echo -e "${YELLOW}Would start services: previous-admin-backend previous-admin-frontend${NC}"
+    update_status "running" "building" 75 "DEV: Simulating build..." "$VERSION"
+    sleep 2
 else
-    echo -e "${GREEN}Starting services...${NC}"
+    update_status "running" "building" 75 "Building application..." "$VERSION"
+    cd "$PROJECT_DIR"
+    npm run build 2>/dev/null
+fi
+
+# Start services
+if [[ "$DEV_MODE" == "true" ]]; then
+    update_status "running" "starting" 90 "DEV: Simulating service start..." "$VERSION"
+    sleep 1
+else
+    update_status "running" "starting" 90 "Starting services..." "$VERSION"
     systemctl --user start previous-admin-backend previous-admin-frontend
 fi
 
 # Cleanup
-echo -e "${GREEN}Cleaning up...${NC}"
+update_status "running" "cleanup" 95 "Cleaning up..." "$VERSION"
 rm -rf "$TEMP_DIR"
 
 # Keep only last 3 backups
-if [[ "$DEV_MODE" == "true" ]]; then
-    echo -e "${YELLOW}DEV MODE: Simulating backup cleanup...${NC}"
-    echo -e "${YELLOW}Would keep only last 3 backups in $DATA_DIR/backup/${NC}"
-else
-    echo -e "${GREEN}Cleaning old backups...${NC}"
-    ls -dt "$DATA_DIR/backup/"* | tail -n +4 | xargs rm -rf 2>/dev/null || true
+if [[ "$DEV_MODE" != "true" ]]; then
+    ls -dt "$DATA_DIR/backup/"* 2>/dev/null | tail -n +4 | xargs rm -rf 2>/dev/null || true
 fi
 
+# Complete
 if [[ "$DEV_MODE" == "true" ]]; then
-    echo -e "${GREEN}Development update simulation completed successfully!${NC}"
-    echo -e "${YELLOW}Note: No real files were modified. This was just a test run.${NC}"
+    update_status "completed" "done" 100 "DEV: Update simulation completed!" "$VERSION"
 else
-    echo -e "${GREEN}Update completed successfully to version $VERSION${NC}"
+    update_status "completed" "done" 100 "Update completed successfully!" "$VERSION"
 fi

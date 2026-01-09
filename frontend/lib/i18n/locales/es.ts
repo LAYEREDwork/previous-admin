@@ -521,9 +521,11 @@ export const es: Translations = {
     'currentVersion': 'Versión actual',
     'checkingForUpdates': 'Buscando actualizaciones...',
     'updateAvailable': 'Actualización disponible',
+    'updateComplete': '¡Actualización completada! Recargando...',
     'upToDate': 'Actualizado',
     'updateNow': 'Actualizar ahora',
     'updating': 'Actualizando...',
+    'installingVersion': 'Instalando versión',
     'updateError': 'Error al buscar actualizaciones',
     'checkForUpdates': 'Buscar actualizaciones',
     'hostInfo': 'Información del host',
@@ -566,7 +568,7 @@ export const es: Translations = {
     'resetWarning': 'Advertencia: ¡Esto eliminará todas las configuraciones y restablecerá el sistema a la configuración inicial. ¡Esta acción no se puede deshacer!',
     'resetting': 'Restableciendo...',
     'updateFrequency': 'Frecuencia de actualización',
-    'updateDisabledInDev': 'Entorno de desarrollo: La actualización será simulada (sin cambios reales)',
+    'updateDisabledInDev': 'Entorno de desarrollo: La actualización será simulada (sin cambios reales)'
   },
   'tabs': {
     'about': 'Acerca de',

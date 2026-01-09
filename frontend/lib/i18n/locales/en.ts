@@ -521,9 +521,11 @@ export const en: Translations = {
     'currentVersion': 'Current Version',
     'checkingForUpdates': 'Checking for updates...',
     'updateAvailable': 'Update available',
+    'updateComplete': 'Update completed! Reloading...',
     'upToDate': 'Up to date',
     'updateNow': 'Update Now',
     'updating': 'Updating...',
+    'installingVersion': 'Installing version',
     'updateError': 'Error checking for updates',
     'checkForUpdates': 'Check for Updates',
     'cores': 'cores',
@@ -566,7 +568,7 @@ export const en: Translations = {
     'releaseNotes': 'Release Notes',
     'hardwareInfo': 'Hardware Information',
     'updateFrequency': 'Update Frequency',
-    'updateDisabledInDev': 'Development environment: Update will be simulated (no real changes)',
+    'updateDisabledInDev': 'Development environment: Update will be simulated (no real changes)'
   },
   'tabs': {
     'about': 'About',
