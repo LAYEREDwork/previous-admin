@@ -262,6 +262,7 @@ export interface Translations {
     currentReleaseNotes: string;
     releaseNotes: string;
     updateFrequency: string;
+    updateDisabledInDev: string;
   };
   tabs: {
     about: string;

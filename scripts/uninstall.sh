@@ -56,39 +56,63 @@ check_root() {
 # Stop services
 stop_services() {
     print_info "Stopping services..."
-    
-    systemctl stop previous-admin-backend.service 2>/dev/null || true
-    systemctl stop previous-admin-frontend.service 2>/dev/null || true
-    systemctl stop avahi-alias-next.service 2>/dev/null || true
+
+    # Stop user-space services
+    TARGET_UID=$(id -u "$TARGET_USER" 2>/dev/null || echo "")
+    if [ -n "$TARGET_UID" ]; then
+        sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user stop previous-admin-backend.service 2>/dev/null || true
+        sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user stop previous-admin-frontend.service 2>/dev/null || true
+    fi
+
+    # Stop system-wide Avahi service
+    systemctl stop avahi-alias-previous-admin.service 2>/dev/null || true
     print_success "Services stopped"
-    
+
     echo ""
 }
 
 # Disable services
 disable_services() {
     print_info "Disabling services..."
-    
-    systemctl disable previous-admin-backend.service 2>/dev/null || true
-    systemctl disable previous-admin-frontend.service 2>/dev/null || true
-    systemctl disable avahi-alias-next.service 2>/dev/null || true
-    print_success "Services disabled"
-    
+
+    # Disable user-space services
+    TARGET_UID=$(id -u "$TARGET_USER" 2>/dev/null || echo "")
+    if [ -n "$TARGET_UID" ]; then
+        sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user disable previous-admin-backend.service 2>/dev/null || true
+        sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user disable previous-admin-frontend.service 2>/dev/null || true
+    fi
+
+    # Disable system-wide Avahi service
+    systemctl disable avahi-alias-previous-admin.service 2>/dev/null || true
+
+    # Disable lingering for user
+    loginctl disable-linger "$TARGET_USER" 2>/dev/null || true
+    print_success "Services and lingering disabled"
+
     echo ""
 }
 
 # Remove service files
 remove_service_files() {
     print_info "Removing service files..."
-    
-    rm -f /etc/systemd/system/previous-admin-*.service
-    rm -f /etc/systemd/system/avahi-alias-next.service
-    rm -f /usr/local/bin/avahi-alias-next.sh
+
+    # Remove user-space service files
+    rm -f "/home/$TARGET_USER/.config/systemd/user/previous-admin-"*.service
+
+    # Reload user systemd daemon
+    TARGET_UID=$(id -u "$TARGET_USER" 2>/dev/null || echo "")
+    if [ -n "$TARGET_UID" ]; then
+        sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user daemon-reload 2>/dev/null || true
+    fi
+
+    # Remove system-wide Avahi files
+    rm -f /etc/systemd/system/avahi-alias-previous-admin.service
+    rm -f /usr/local/bin/avahi-alias-previous-admin.sh
     rm -f /etc/avahi/services/previous-admin.service
-    
+
     systemctl daemon-reload
     print_success "Service files removed"
-    
+
     echo ""
 }
 

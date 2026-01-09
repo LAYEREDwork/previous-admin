@@ -218,20 +218,26 @@ setup_config() {
     echo ""
 }
 
-# Setup systemd services (dynamically generated)
+# Setup user-space systemd services (no sudo required for restart)
 setup_systemd() {
-    print_info "Setting up systemd services for user '$TARGET_USER'..."
-    
-    # Generate backend service file
-    cat > /etc/systemd/system/previous-admin-backend.service << EOF
+    print_info "Setting up user-space systemd services for '$TARGET_USER'..."
+
+    # Get user ID for XDG_RUNTIME_DIR
+    TARGET_UID=$(id -u "$TARGET_USER")
+
+    # Create user systemd directory
+    USER_SYSTEMD_DIR="/home/$TARGET_USER/.config/systemd/user"
+    sudo -u "$TARGET_USER" mkdir -p "$USER_SYSTEMD_DIR"
+
+    # Generate backend service file (User-Space)
+    sudo -u "$TARGET_USER" tee "$USER_SYSTEMD_DIR/previous-admin-backend.service" > /dev/null << EOF
 [Unit]
 Description=Previous Admin Backend API
-After=network.target
+After=network-online.target
 Wants=network-online.target
 
 [Service]
 Type=simple
-User=$TARGET_USER
 WorkingDirectory=$INSTALL_DIR
 ExecStart=/usr/bin/npm run backend
 Restart=always
@@ -239,22 +245,22 @@ RestartSec=10
 StandardOutput=journal
 StandardError=journal
 SyslogIdentifier=previous-admin-backend
+Environment=XDG_RUNTIME_DIR=/run/user/$TARGET_UID
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target
 EOF
-    print_success "Backend service file generated"
+    print_success "Backend user service file generated"
 
-    # Generate frontend service file
-    cat > /etc/systemd/system/previous-admin-frontend.service << EOF
+    # Generate frontend service file (User-Space)
+    sudo -u "$TARGET_USER" tee "$USER_SYSTEMD_DIR/previous-admin-frontend.service" > /dev/null << EOF
 [Unit]
 Description=Previous Admin Frontend
-After=network.target previous-admin-backend.service
+After=network-online.target previous-admin-backend.service
 Wants=network-online.target
 
 [Service]
 Type=simple
-User=$TARGET_USER
 WorkingDirectory=$INSTALL_DIR
 ExecStart=/usr/bin/npm run preview -- --host 0.0.0.0 --port $FRONTEND_PORT
 Restart=always
@@ -262,11 +268,22 @@ RestartSec=10
 StandardOutput=journal
 StandardError=journal
 SyslogIdentifier=previous-admin-frontend
+Environment=XDG_RUNTIME_DIR=/run/user/$TARGET_UID
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target
 EOF
-    print_success "Frontend service file generated"
+    print_success "Frontend user service file generated"
+
+    echo ""
+}
+
+# Enable lingering for user services at boot (services start without login)
+enable_lingering() {
+    print_info "Enabling lingering for user '$TARGET_USER'..."
+
+    loginctl enable-linger "$TARGET_USER"
+    print_success "Lingering enabled - services will start at boot without login"
 
     echo ""
 }
@@ -334,24 +351,31 @@ EOF
 # Enable and start services
 start_services() {
     print_info "Starting services..."
-    
-    # Reload systemd
+
+    # Get user ID for XDG_RUNTIME_DIR
+    TARGET_UID=$(id -u "$TARGET_USER")
+
+    # Reload user systemd daemon
+    sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user daemon-reload
+
+    # Enable user services
+    sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user enable previous-admin-backend.service
+    sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user enable previous-admin-frontend.service
+    print_success "User services enabled"
+
+    # Start user services
+    sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user start previous-admin-backend.service
+    sleep 2
+    sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user start previous-admin-frontend.service
+    print_success "User services started"
+
+    # System-wide services (Avahi requires root for mDNS)
     systemctl daemon-reload
-    
-    # Enable services
     systemctl enable avahi-daemon.service 2>/dev/null || true
     systemctl enable avahi-alias-previous-admin.service
-    systemctl enable previous-admin-backend.service
-    systemctl enable previous-admin-frontend.service
-    print_success "Services enabled"
-
-    # Start services
     systemctl restart avahi-daemon.service
     systemctl restart avahi-alias-previous-admin.service 2>/dev/null || systemctl start avahi-alias-previous-admin.service
-    systemctl restart previous-admin-backend.service 2>/dev/null || systemctl start previous-admin-backend.service
-    sleep 2
-    systemctl restart previous-admin-frontend.service 2>/dev/null || systemctl start previous-admin-frontend.service
-    print_success "Services started"
+    print_success "Avahi services started"
 
     echo ""
 }
@@ -362,50 +386,54 @@ show_status() {
     echo ""
     print_info "Service Status:"
     echo ""
-    systemctl status previous-admin-backend.service --no-pager | head -5
+
+    # Get user ID for XDG_RUNTIME_DIR
+    TARGET_UID=$(id -u "$TARGET_USER")
+
+    sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user status previous-admin-backend.service --no-pager | head -5
     echo ""
-    systemctl status previous-admin-frontend.service --no-pager | head -5
+    sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$TARGET_UID" systemctl --user status previous-admin-frontend.service --no-pager | head -5
     echo ""
 }
 
 # Show access information
 show_access_info() {
     print_header "Access Previous Admin"
-    
+
     # Get IP address
     IP_ADDR=$(hostname -I | awk '{print $1}')
-    
+
     echo ""
     print_info "Open in your browser:"
     echo ""
     echo "  • Local network:  http://$MDNS_HOSTNAME:$FRONTEND_PORT"
     echo "  • Direct IP:      http://$IP_ADDR:$FRONTEND_PORT"
     echo ""
-    
-    echo "Useful commands:"
+
+    echo "Useful commands (as user '$TARGET_USER', no sudo required):"
     echo ""
     echo "  View backend logs:"
-    echo "    sudo journalctl -u previous-admin-backend.service -f"
+    echo "    journalctl --user -u previous-admin-backend.service -f"
     echo ""
     echo "  View frontend logs:"
-    echo "    sudo journalctl -u previous-admin-frontend.service -f"
+    echo "    journalctl --user -u previous-admin-frontend.service -f"
     echo ""
     echo "  Restart backend:"
-    echo "    sudo systemctl restart previous-admin-backend.service"
+    echo "    systemctl --user restart previous-admin-backend.service"
     echo ""
     echo "  Restart frontend:"
-    echo "    sudo systemctl restart previous-admin-frontend.service"
+    echo "    systemctl --user restart previous-admin-frontend.service"
     echo ""
     echo "  Stop services:"
-    echo "    sudo systemctl stop previous-admin-backend.service"
-    echo "    sudo systemctl stop previous-admin-frontend.service"
+    echo "    systemctl --user stop previous-admin-backend.service"
+    echo "    systemctl --user stop previous-admin-frontend.service"
     echo ""
 }
 
 # Main installation flow
 main() {
     print_header "Previous Admin - Complete Installation"
-    
+
     check_root
     check_tools
     setup_user
@@ -416,6 +444,7 @@ main() {
     build_app
     setup_config
     setup_systemd
+    enable_lingering
     setup_avahi
     start_services
     show_status

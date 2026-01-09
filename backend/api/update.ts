@@ -42,8 +42,8 @@ router.post(apiPaths.Update.update.relative, async (req: any, res: any) => {
   try {
     const scriptPath = `${process.cwd()}/scripts/update.sh`;
 
-    // Run update script with sudo
-    await execAsync(`sudo bash ${scriptPath}`, { cwd: process.cwd() });
+    // Run update script (user-space services, no sudo required)
+    await execAsync(`bash ${scriptPath}`, { cwd: process.cwd() });
 
     res.json({ success: true, message: 'Update started successfully.' });
   } catch (error) {
@@ -93,6 +93,7 @@ router.get(apiPaths.Update.version.relative, async (req: any, res: any) => {
         releaseUrl: null,
         releaseNotes: null,
         currentReleaseNotes: null,
+        environment: process.env.NODE_ENV || 'development',
       });
     }
 
@@ -106,6 +107,7 @@ router.get(apiPaths.Update.version.relative, async (req: any, res: any) => {
         releaseUrl: null,
         releaseNotes: null,
         currentReleaseNotes: null,
+        environment: process.env.NODE_ENV || 'development',
       });
     }
 
@@ -131,10 +133,14 @@ router.get(apiPaths.Update.version.relative, async (req: any, res: any) => {
       releaseUrl: latestRelease.html_url,
       releaseNotes,
       currentReleaseNotes,
+      environment: process.env.NODE_ENV || 'development',
     });
   } catch (error) {
     console.error('Error checking for updates:', error);
-    res.status(500).json({ error: 'Failed to check for updates' });
+    res.status(500).json({
+      error: 'Failed to check for updates',
+      environment: process.env.NODE_ENV || 'development'
+    });
   }
 });
 

@@ -565,7 +565,8 @@ export const es: Translations = {
     'resetConfirm': 'Restablecer',
     'resetWarning': 'Advertencia: ¡Esto eliminará todas las configuraciones y restablecerá el sistema a la configuración inicial. ¡Esta acción no se puede deshacer!',
     'resetting': 'Restableciendo...',
-    'updateFrequency': 'Frecuencia de actualización'
+    'updateFrequency': 'Frecuencia de actualización',
+    'updateDisabledInDev': 'Entorno de desarrollo: La actualización será simulada (sin cambios reales)',
   },
   'tabs': {
     'about': 'Acerca de',

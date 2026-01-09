@@ -89,5 +89,5 @@
 - **`:ls`**: Output a list of all custom commands that start with ":" as Markdown sorted in alphabetical order.
 - **`:scan`**: Scan the project’s code and update your context. Do not change the code under any circumstances!
 - **`:undo`**: Undo the last changes in the code and return to the previous state.
-- **`:release`**: Create user-friendly release notes in simple English, without technical jargon. Use the GitHub API to retrieve the release notes from the body of the latest release (as implemented in the update API: `latestRelease.body`). Format these as clear Markdown with thematic grouping and a version heading. The notes should highlight the most important improvements for end users, not technical details.
+- **`:release`**: Create user-friendly release notes in simple English, without technical jargon. Use the GitHub API to retrieve the release notes from the body of the latest release (as implemented in the update API: `latestRelease.body`). Format these as clear Markdown with thematic grouping and a version heading. The notes should highlight the most important improvements for end users, not technical details, no developer information, just the user-facing changes.
 - **`:npm`**: Show all custom npm run scripts/commands for this project.

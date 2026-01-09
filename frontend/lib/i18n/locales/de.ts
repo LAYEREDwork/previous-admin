@@ -565,6 +565,7 @@ export const de: Translations = {
     'currentReleaseNotes': 'Aktuelle Release-Notes',
     'releaseNotes': 'Release-Notes',
     'hardwareInfo': 'Hardware-Informationen',
+    'updateDisabledInDev': 'Entwicklungsumgebung: Update wird simuliert (keine echten Änderungen)',
     'updateFrequency': 'Update-Frequenz'
   },
   'tabs': {

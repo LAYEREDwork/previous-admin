@@ -26,6 +26,7 @@ describe('useAboutLogic', () => {
       releaseUrl: 'https://example.com/release',
       releaseNotes: 'New features',
       currentReleaseNotes: 'Current notes',
+      environment: 'development',
     };
 
     mockCheckForUpdates.mockResolvedValue(mockVersionInfo);
@@ -61,6 +62,7 @@ describe('useAboutLogic', () => {
       releaseUrl: 'https://example.com/release',
       releaseNotes: 'New features',
       currentReleaseNotes: 'Current notes',
+      environment: 'development',
     });
     mockUpdateApplication.mockResolvedValue();
 
@@ -88,6 +90,7 @@ describe('useAboutLogic', () => {
       releaseUrl: null,
       releaseNotes: null,
       currentReleaseNotes: 'Current notes',
+      environment: 'development',
     };
 
     mockCheckForUpdates.mockResolvedValue(mockVersionInfo);

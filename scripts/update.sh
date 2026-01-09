@@ -6,16 +6,39 @@
 
 set -e
 
+# Redirect all output to both console and log file
+exec > >(tee -a ../backend.log) 2>&1
+
 # Colors for output
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
+# Check if we're in development environment
+# Development mode if NODE_ENV is set to development or if we're running from a git repository
+if [[ "$NODE_ENV" == "development" ]] || [[ -d ".git" ]]; then
+    DEV_MODE=true
+    echo -e "${YELLOW}Development environment detected - running in simulation mode${NC}"
+    echo -e "${YELLOW}No real files will be modified, no services will be stopped/started${NC}"
+else
+    DEV_MODE=false
+fi
+
 REPO="LAYEREDwork/previous-admin"
-PROJECT_DIR="$HOME/previous-admin"
+if [[ "$DEV_MODE" == "true" ]]; then
+    # In development, use current directory as project dir
+    PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+else
+    PROJECT_DIR="$HOME/previous-admin"
+fi
 DATA_DIR="$HOME/.previous-admin"
 BACKUP_DIR="$DATA_DIR/backup/previous-admin-backup-$(date +%Y-%m-%d-%H-%M-%S)"
+
+# Ensure XDG_RUNTIME_DIR is set for user systemd
+if [ -z "$XDG_RUNTIME_DIR" ]; then
+    export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+fi
 
 # Check if jq is installed
 if ! command -v jq &> /dev/null; then
@@ -73,39 +96,81 @@ else
 fi
 
 # Create backup
-echo -e "${GREEN}Creating backup...${NC}"
-mkdir -p "$BACKUP_DIR"
-cp -r "$PROJECT_DIR" "$BACKUP_DIR/"
+if [[ "$DEV_MODE" == "true" ]]; then
+    echo -e "${YELLOW}DEV MODE: Simulating backup creation...${NC}"
+    echo -e "${YELLOW}Would create backup in: $BACKUP_DIR${NC}"
+else
+    echo -e "${GREEN}Creating backup...${NC}"
+    mkdir -p "$BACKUP_DIR"
+    cp -r "$PROJECT_DIR" "$BACKUP_DIR/"
+fi
 
-# Stop services
-echo -e "${GREEN}Stopping services...${NC}"
-sudo systemctl stop previous-admin-backend previous-admin-frontend || true
+# Stop services (user-space services, no sudo required)
+if [[ "$DEV_MODE" == "true" ]]; then
+    echo -e "${YELLOW}DEV MODE: Simulating service stop...${NC}"
+    echo -e "${YELLOW}Would stop services: previous-admin-backend previous-admin-frontend${NC}"
+else
+    echo -e "${GREEN}Stopping services...${NC}"
+    systemctl --user stop previous-admin-backend previous-admin-frontend || true
+fi
 
 # Copy new files (exclude data and temp files)
-echo -e "${GREEN}Installing update...${NC}"
-rsync -av --exclude='.git' --exclude='node_modules' --exclude='*.log' --exclude='update.zip' --exclude='update.tar.gz' --exclude="$DATA_DIR" "$SOURCE_DIR/" "$PROJECT_DIR/"
+if [[ "$DEV_MODE" == "true" ]]; then
+    echo -e "${YELLOW}DEV MODE: Simulating file installation...${NC}"
+    echo -e "${YELLOW}Would copy files from $SOURCE_DIR to $PROJECT_DIR${NC}"
+    echo -e "${YELLOW}Would exclude: .git, node_modules, *.log, update.zip, update.tar.gz, $DATA_DIR${NC}"
+else
+    echo -e "${GREEN}Installing update...${NC}"
+    rsync -av --exclude='.git' --exclude='node_modules' --exclude='*.log' --exclude='update.zip' --exclude='update.tar.gz' --exclude="$DATA_DIR" "$SOURCE_DIR/" "$PROJECT_DIR/"
+fi
 
 # Update versions
-echo -e "${GREEN}Updating version files...${NC}"
-jq --arg v "$VERSION" '.version = $v' "$PROJECT_DIR/package.json" > /tmp/package.json.tmp
-mv /tmp/package.json.tmp "$PROJECT_DIR/package.json"
-echo "{\"version\": \"$VERSION\"}" > "$DATA_DIR/version.json"
+if [[ "$DEV_MODE" == "true" ]]; then
+    echo -e "${YELLOW}DEV MODE: Simulating version update...${NC}"
+    echo -e "${YELLOW}Would update package.json version to: $VERSION${NC}"
+    echo -e "${YELLOW}Would update $DATA_DIR/version.json${NC}"
+else
+    echo -e "${GREEN}Updating version files...${NC}"
+    jq --arg v "$VERSION" '.version = $v' "$PROJECT_DIR/package.json" > /tmp/package.json.tmp
+    mv /tmp/package.json.tmp "$PROJECT_DIR/package.json"
+    echo "{\"version\": \"$VERSION\"}" > "$DATA_DIR/version.json"
+fi
 
 # Install dependencies
-echo -e "${GREEN}Installing dependencies...${NC}"
-cd "$PROJECT_DIR"
-npm install
+if [[ "$DEV_MODE" == "true" ]]; then
+    echo -e "${YELLOW}DEV MODE: Simulating dependency installation...${NC}"
+    echo -e "${YELLOW}Would run: npm install${NC}"
+else
+    echo -e "${GREEN}Installing dependencies...${NC}"
+    cd "$PROJECT_DIR"
+    npm install
+fi
 
-# Start services
-echo -e "${GREEN}Starting services...${NC}"
-sudo systemctl start previous-admin-backend previous-admin-frontend
+# Start services (user-space services, no sudo required)
+if [[ "$DEV_MODE" == "true" ]]; then
+    echo -e "${YELLOW}DEV MODE: Simulating service start...${NC}"
+    echo -e "${YELLOW}Would start services: previous-admin-backend previous-admin-frontend${NC}"
+else
+    echo -e "${GREEN}Starting services...${NC}"
+    systemctl --user start previous-admin-backend previous-admin-frontend
+fi
 
 # Cleanup
 echo -e "${GREEN}Cleaning up...${NC}"
 rm -rf "$TEMP_DIR"
 
 # Keep only last 3 backups
-echo -e "${GREEN}Cleaning old backups...${NC}"
-ls -dt "$DATA_DIR/backup/"* | tail -n +4 | xargs rm -rf 2>/dev/null || true
+if [[ "$DEV_MODE" == "true" ]]; then
+    echo -e "${YELLOW}DEV MODE: Simulating backup cleanup...${NC}"
+    echo -e "${YELLOW}Would keep only last 3 backups in $DATA_DIR/backup/${NC}"
+else
+    echo -e "${GREEN}Cleaning old backups...${NC}"
+    ls -dt "$DATA_DIR/backup/"* | tail -n +4 | xargs rm -rf 2>/dev/null || true
+fi
 
-echo -e "${GREEN}Update completed successfully to version $VERSION${NC}"
+if [[ "$DEV_MODE" == "true" ]]; then
+    echo -e "${GREEN}Development update simulation completed successfully!${NC}"
+    echo -e "${YELLOW}Note: No real files were modified. This was just a test run.${NC}"
+else
+    echo -e "${GREEN}Update completed successfully to version $VERSION${NC}"
+fi

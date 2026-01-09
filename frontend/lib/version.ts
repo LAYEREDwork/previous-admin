@@ -11,6 +11,7 @@ export interface VersionInfo {
   releaseUrl: string | null;
   releaseNotes: string | null;
   currentReleaseNotes: string | null;
+  environment: string;
 }
 
 /**
@@ -52,6 +53,7 @@ export async function checkForUpdates(): Promise<VersionInfo> {
       releaseUrl: null,
       releaseNotes: null,
       currentReleaseNotes: null,
+      environment: 'development',
     };
   }
 }

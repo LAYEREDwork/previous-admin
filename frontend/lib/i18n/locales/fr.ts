@@ -565,7 +565,8 @@ export const fr: Translations = {
     'resetConfirm': 'Réinitialiser',
     'resetWarning': 'Avertissement : Cela supprimera toutes les configurations et réinitialisera le système à la configuration initiale. Cette action est irréversible !',
     'resetting': 'Réinitialisation...',
-    'updateFrequency': 'Fréquence de mise à jour'
+    'updateFrequency': 'Fréquence de mise à jour',
+    'updateDisabledInDev': 'Environnement de développement: La mise à jour sera simulée (pas de changements réels)',
   },
   'tabs': {
     'about': 'À propos',

@@ -79,7 +79,6 @@ export function useConfigActions(onRefreshList: () => Promise<void>) {
       // Create duplicate with potentially edited name and description
       await database.createConfiguration(config.name, config.description, config.config_data, false);
       await onRefreshList();
-      showSuccess(translation.configList.configurationDuplicatedSuccessfully);
     } catch (error) {
       console.error('Error duplicating config:', error);
       showError(translation.configList.errorDuplicatingConfiguration);

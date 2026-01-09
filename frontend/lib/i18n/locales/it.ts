@@ -565,7 +565,8 @@ export const it: Translations = {
     'resetConfirm': 'Resetta',
     'resetWarning': 'Attenzione: Questo eliminerà tutte le configurazioni e ripristinerà il sistema alla configurazione iniziale. Questa azione non può essere annullata!',
     'resetting': 'Reset in corso...',
-    'updateFrequency': 'Frequenza di aggiornamento'
+    'updateFrequency': 'Frequenza di aggiornamento',
+    'updateDisabledInDev': 'Ambiente di sviluppo: L\'aggiornamento sarà simulato (nessun cambiamento reale)',
   },
   'tabs': {
     'about': 'Informazioni',

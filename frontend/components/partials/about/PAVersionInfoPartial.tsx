@@ -121,19 +121,41 @@ export function VersionInfoPartial({
                       </PACard>
                     )}
 
-                    <PAButton
-                      onClick={handleUpdate}
-                      disabled={updating}
-                      loading={updating}
-                      appearance="primary"
-                      color="orange"
-                      size={controlSize}
-                      block
-                      className="flex items-center justify-center gap-2 cursor-pointer"
-                    >
-                      <SFArrowTrianglehead2ClockwiseRotate90 size={18} />
-                      {updating ? translation.system.updating : translation.system.updateNow}
-                    </PAButton>
+                    {versionInfo.environment === 'development' ? (
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-[var(--rs-text-secondary)] p-3 bg-[var(--rs-bg-card)] rounded border">
+                          <SFInfoBubbleFill size={20} />
+                          <span className="text-sm">{translation.system.updateDisabledInDev}</span>
+                        </div>
+                        <PAButton
+                          onClick={handleUpdate}
+                          disabled={updating}
+                          loading={updating}
+                          appearance="primary"
+                          color="orange"
+                          size={controlSize}
+                          block
+                          className="flex items-center justify-center gap-2 cursor-pointer"
+                        >
+                          <SFArrowTrianglehead2ClockwiseRotate90 size={18} />
+                          {updating ? translation.system.updating : translation.system.updateNow}
+                        </PAButton>
+                      </div>
+                    ) : (
+                      <PAButton
+                        onClick={handleUpdate}
+                        disabled={updating}
+                        loading={updating}
+                        appearance="primary"
+                        color="orange"
+                        size={controlSize}
+                        block
+                        className="flex items-center justify-center gap-2 cursor-pointer"
+                      >
+                        <SFArrowTrianglehead2ClockwiseRotate90 size={18} />
+                        {updating ? translation.system.updating : translation.system.updateNow}
+                      </PAButton>
+                    )}
                   </>
                 ) : (
                   <div className="flex items-center gap-2 text-[var(--rs-text-success)]">
@@ -146,6 +168,8 @@ export function VersionInfoPartial({
 
             <PAButton
               onClick={handleCheckForUpdates}
+              disabled={checking || updating}
+              loading={checking}
               appearance="default"
               size={controlSize}
               block
