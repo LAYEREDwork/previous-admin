@@ -5,8 +5,10 @@
 The fastest way to install Previous Admin on a **Linux system** (Ubuntu/Debian/Fedora/Raspberry Pi):
 
 ```bash
-# Download and run the setup script
+Download and run the setup script:
+```bash
 curl -fsSL https://raw.githubusercontent.com/LAYEREDwork/previous-admin/main/setup.sh | sudo bash -s -- install
+```
 ```
 
 Or download first, then run:
@@ -25,12 +27,18 @@ After installation, access the admin interface at:
 After installation, you can use the `padmin` command:
 
 ```bash
-sudo padmin install    # Install Previous Admin
-sudo padmin update     # Update to latest version
-sudo padmin status     # Show service status
-sudo padmin uninstall  # Remove Previous Admin
-sudo padmin help       # Show help
+sudo padmin install
+sudo padmin update
+sudo padmin status
+sudo padmin uninstall
+sudo padmin help
 ```
+
+- `sudo padmin install`: Install Previous Admin
+- `sudo padmin update`: Update to the latest version
+- `sudo padmin status`: Show service status
+- `sudo padmin uninstall`: Remove Previous Admin
+- `sudo padmin help`: Show help
 
 Note: The `install` command (and the bootstrap `setup.sh` when run via curl) performs a fully automated, non-interactive installation — it installs Node.js, system packages, builds the frontend and backend, installs a privileged updater wrapper at `/usr/local/bin/padmin-updater`, and configures passwordless sudo for the necessary updater commands. After the script completes there should be no further manual steps required to start using Previous Admin.
 
@@ -56,12 +64,14 @@ PA_TARGET_USER=pi PA_FRONTEND_PORT=8080 sudo bash setup.sh install
 
 Clone the repository and run the setup script:
 
+Clone the repository:
 ```bash
-# Clone the repository
 git clone https://github.com/LAYEREDwork/previous-admin.git
 cd previous-admin
+```
 
-# Run the setup script (requires root)
+Run the setup script (requires root):
+```bash
 sudo ./setup.sh install
 ```
 

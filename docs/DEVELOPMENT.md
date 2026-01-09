@@ -71,10 +71,14 @@ All 186 tests must pass before committing code to the main branch.
 Before submitting changes, ensure:
 
 ```bash
-npm run lint:fix    # Fix any style issues
-npm run typecheck   # Type checking must pass
-npm run test        # All tests must pass
+npm run lint:fix
+npm run typecheck
+npm run test
 ```
+
+- `npm run lint:fix`: Fix any style issues
+- `npm run typecheck`: Run TypeScript type checking (must pass)
+- `npm run test`: Run the full test suite (all tests must pass)
 
 ## Project Structure
 
