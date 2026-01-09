@@ -68,10 +68,22 @@ draw_progress_bar() {
     local filled=$((current * width / total))
     local empty=$((width - filled))
 
+    # [ in white
     printf "["
-    printf "${GREEN}%${filled}s${NC}" | tr ' ' '█'
-    printf "${DIM}%${empty}s${NC}" | tr ' ' '░'
-    printf "] ${CYAN}%3d%%${NC}" "$percentage"
+    # Arrow in green: ===>
+    if [ $filled -gt 0 ]; then
+        if [ $filled -eq 1 ]; then
+            printf "${GREEN}>${NC}"
+        else
+            printf "${GREEN}%$((filled-1))s>${NC}" | tr ' ' '='
+        fi
+    fi
+    # Remaining dashes in gray
+    if [ $empty -gt 0 ]; then
+        printf "${DIM}%${empty}s${NC}" | tr ' ' '-'
+    fi
+    # ] in white + percentage
+    printf "] %3d%%" "$percentage"
 }
 
 # Run installation step with progress update and spinner
@@ -93,12 +105,12 @@ run_step() {
         local len=${#SPINNER_CHARS}
         while true; do
             local char="${SPINNER_CHARS:$i:1}"
-            # Clear line and print: Spinner + description
+            # Line 1: Spinner + description
             printf "\r\033[K${CYAN}%s${NC} %s" "$char" "$description"
-            # Move to next line, clear it, print progress bar
+            # Line 2: Progress bar
             printf "\n\033[K"
             draw_progress_bar "$step_num" "$total_steps"
-            # Move cursor back up to first line
+            # Move cursor back to start of line 1
             printf "\r\033[A"
             i=$(( (i + 1) % len ))
             sleep 0.1
@@ -120,17 +132,16 @@ run_step() {
 
     # Print final result
     if [ $exit_code -eq 0 ]; then
-        # Clear and print final state
-        printf "\r\033[K${GREEN}✓${NC} %s" "$description"
-        printf "\n\033[K"
-        draw_progress_bar "$step_num" "$total_steps"
-        printf "\n\n"
+        # Line 1: Replace with checkmark
+        printf "\r\033[K${GREEN}✓${NC} %s\n" "$description"
+        # Line 2: Clear it (progress bar moves down for next step)
+        printf "\033[K"
         return 0
     else
-        printf "\r\033[K${RED}✗${NC} %s" "$description"
-        printf "\n\033[K"
-        draw_progress_bar "$step_num" "$total_steps"
-        printf "\n"
+        # Line 1: Replace with X
+        printf "\r\033[K${RED}✗${NC} %s\n" "$description"
+        # Line 2: Clear it
+        printf "\033[K"
         if [ -n "$output" ]; then
             echo -e "  ${DIM}${output}${NC}" | head -3
         fi
