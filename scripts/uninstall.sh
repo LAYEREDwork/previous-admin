@@ -162,21 +162,6 @@ remove_config() {
     echo ""
 }
 
-# Remove user account
-remove_user() {
-    read -p "Do you want to remove the '$TARGET_USER' user account? (y/N) " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        if id "$TARGET_USER" &>/dev/null; then
-            userdel -r "$TARGET_USER" 2>/dev/null || true
-            print_success "User '$TARGET_USER' removed"
-        fi
-    else
-        print_info "User '$TARGET_USER' kept"
-    fi
-    
-    echo ""
-}
 
 # Summary
 show_summary() {
@@ -190,8 +175,6 @@ show_summary() {
     echo "  • Installation directory ($INSTALL_DIR)"
     echo "  • Configuration directory ($CONFIG_DIR)"
     echo "  • Database directory ($DB_DIR)"
-    echo ""
-    echo "The user '$TARGET_USER' was $([ -d /home/$TARGET_USER ] && echo "kept" || echo "removed")"
     echo ""
 }
 
@@ -216,7 +199,6 @@ main() {
     remove_service_files
     remove_installation
     remove_config
-    remove_user
     show_summary
     return_to_home
 }
