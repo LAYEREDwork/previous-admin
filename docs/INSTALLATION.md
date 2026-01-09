@@ -4,11 +4,10 @@
 
 The fastest way to install Previous Admin on a **Linux system** (Ubuntu/Debian/Fedora/Raspberry Pi):
 
-```bash
 Download and run the setup script:
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/LAYEREDwork/previous-admin/main/setup.sh | sudo bash -s -- install
-```
 ```
 
 Or download first, then run:
@@ -65,12 +64,14 @@ PA_TARGET_USER=pi PA_FRONTEND_PORT=8080 sudo bash setup.sh install
 Clone the repository and run the setup script:
 
 Clone the repository:
+
 ```bash
 git clone https://github.com/LAYEREDwork/previous-admin.git
 cd previous-admin
 ```
 
 Run the setup script (requires root):
+
 ```bash
 sudo ./setup.sh install
 ```

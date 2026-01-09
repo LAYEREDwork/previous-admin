@@ -7,6 +7,7 @@ To set up your development environment, follow these steps:
 1. **Prerequisites**: Ensure you have Node.js 22+ and npm installed.
 
 2. **Clone and Install**:
+
    ```bash
    git clone https://github.com/LAYEREDwork/previous-admin.git
    cd previous-admin
@@ -18,12 +19,14 @@ To set up your development environment, follow these steps:
 Start the application in **two separate terminals**:
 
 ### Terminal 1 - Backend Server
+
 ```bash
 npm run backend
 ```
 Backend runs on `http://localhost:3001`
 
 ### Terminal 2 - Frontend Development Server
+
 ```bash
 npm run dev
 ```
