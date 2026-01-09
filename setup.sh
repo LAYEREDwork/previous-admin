@@ -22,7 +22,7 @@ trap cleanup INT TERM
 # ============================================================================
 
 REPO_URL="https://github.com/LAYEREDwork/previous-admin"
-TARGET_USER="${PA_TARGET_USER:-next}"
+TARGET_USER="${PA_TARGET_USER:-${SUDO_USER:-$USER}}"
 FRONTEND_PORT="${PA_FRONTEND_PORT:-2342}"
 BACKEND_PORT="${PA_BACKEND_PORT:-3001}"
 MDNS_HOSTNAME="${PA_MDNS_HOSTNAME:-next}"
@@ -257,8 +257,16 @@ do_check_tools() {
 }
 
 do_setup_user() {
-    if ! id "$TARGET_USER" &>/dev/null; then
-        useradd -m -s /bin/bash "$TARGET_USER" >/dev/null 2>&1
+    # Add user to sudo group if not already
+    if ! groups "$TARGET_USER" | grep -q '\bsudo\b'; then
+        usermod -aG sudo "$TARGET_USER" >/dev/null 2>&1
+    fi
+    # Allow passwordless sudo for necessary commands if not already set
+    if [ ! -f /etc/sudoers.d/previous-admin ]; then
+        cat > /etc/sudoers.d/previous-admin << EOF
+$TARGET_USER ALL=(ALL) NOPASSWD: /usr/bin/apt, /usr/bin/apt-get, /usr/bin/systemctl, /bin/bash /home/$TARGET_USER/previous-admin/scripts/update.sh
+EOF
+        chmod 440 /etc/sudoers.d/previous-admin >/dev/null 2>&1
     fi
 }
 
