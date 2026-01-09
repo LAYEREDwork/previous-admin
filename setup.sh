@@ -515,86 +515,86 @@ run_install_tui() {
 
     # Run installation with progress bar
     {
-        echo 5
         echo "XXX"
+        echo 5
         echo "Checking dependencies..."
         echo "XXX"
         do_check_tools
 
-        echo 10
         echo "XXX"
+        echo 10
         echo "Setting up user account..."
         echo "XXX"
         do_setup_user
 
-        echo 20
         echo "XXX"
+        echo 20
         echo "Cloning repository..."
         echo "XXX"
         do_setup_repository
 
-        echo 25
         echo "XXX"
+        echo 25
         echo "Syncing versions..."
         echo "XXX"
         do_sync_versions
 
-        echo 30
         echo "XXX"
+        echo 30
         echo "Installing system dependencies..."
         echo "XXX"
         do_install_dependencies
 
-        echo 40
         echo "XXX"
+        echo 40
         echo "Installing npm packages (this may take a while)..."
         echo "XXX"
         do_install_npm
 
-        echo 60
         echo "XXX"
+        echo 60
         echo "Building application..."
         echo "XXX"
         do_build_app
 
-        echo 70
         echo "XXX"
+        echo 70
         echo "Setting up configuration..."
         echo "XXX"
         do_setup_config
 
-        echo 75
         echo "XXX"
+        echo 75
         echo "Setting up systemd services..."
         echo "XXX"
         do_setup_systemd
 
-        echo 80
         echo "XXX"
+        echo 80
         echo "Enabling user lingering..."
         echo "XXX"
         do_enable_lingering
 
-        echo 85
         echo "XXX"
+        echo 85
         echo "Setting up Avahi/mDNS..."
         echo "XXX"
         do_setup_avahi
 
-        echo 90
         echo "XXX"
+        echo 90
         echo "Starting services..."
         echo "XXX"
         do_start_services
 
-        echo 95
         echo "XXX"
+        echo 95
         echo "Creating CLI command..."
         echo "XXX"
         do_create_cli_command
 
-        echo 100
         echo "XXX"
+        echo 100
         echo "Installation complete!"
         echo "XXX"
     } | whiptail --title "Installing Previous Admin" --gauge "Starting installation..." 8 $TUI_WIDTH 0
@@ -634,15 +634,15 @@ run_update_tui() {
     export PA_BACKEND_PORT="$BACKEND_PORT"
 
     {
-        echo 20
         echo "XXX"
+        echo 20
         echo "Running update script..."
         echo "XXX"
         if [ -f "$INSTALL_DIR/scripts/update.sh" ]; then
             bash "$INSTALL_DIR/scripts/update.sh" >/dev/null 2>&1 || true
         fi
-        echo 100
         echo "XXX"
+        echo 100
         echo "Update complete!"
         echo "XXX"
     } | whiptail --title "Updating Previous Admin" --gauge "Starting update..." 8 $TUI_WIDTH 0
@@ -678,22 +678,22 @@ run_uninstall_tui() {
     export PA_TARGET_USER="$TARGET_USER"
 
     {
-        echo 30
         echo "XXX"
+        echo 30
         echo "Running uninstall script..."
         echo "XXX"
         if [ -f "$INSTALL_DIR/scripts/uninstall.sh" ]; then
             bash "$INSTALL_DIR/scripts/uninstall.sh" >/dev/null 2>&1 || true
         fi
 
-        echo 80
         echo "XXX"
+        echo 80
         echo "Removing CLI command..."
         echo "XXX"
         rm -f /usr/local/bin/previous_admin
 
-        echo 100
         echo "XXX"
+        echo 100
         echo "Uninstall complete!"
         echo "XXX"
     } | whiptail --title "Uninstalling Previous Admin" --gauge "Starting uninstall..." 8 $TUI_WIDTH 0
