@@ -109,6 +109,10 @@ remove_service_files() {
     rm -f /etc/systemd/system/avahi-alias-previous-admin.service
     rm -f /usr/local/bin/avahi-alias-previous-admin.sh
     rm -f /etc/avahi/services/previous-admin.service
+    # Remove updater sudoers snippet if present
+    rm -f /etc/sudoers.d/padmin-updater 2>/dev/null || true
+    # Remove older aggregated sudoers file if present
+    rm -f /etc/sudoers.d/previous-admin 2>/dev/null || true
 
     systemctl daemon-reload
     print_success "Service files removed"
@@ -141,6 +145,11 @@ remove_installation() {
     else
         print_warning "Installation directory not found"
     fi
+    # Also remove copy in /opt if present
+    if [ -d "/opt/previous-admin" ]; then
+        rm -rf "/opt/previous-admin"
+        print_success "/opt/previous-admin removed"
+    fi
     
     echo ""
 }
@@ -166,9 +175,14 @@ remove_config() {
 remove_cli_command() {
     print_info "Removing CLI command..."
 
-    if [ -L "/usr/local/bin/previous_admin" ]; then
-        rm -f /usr/local/bin/previous_admin
-        print_success "CLI command 'previous_admin' removed"
+    if [ -L "/usr/local/bin/padmin" ] || [ -f "/usr/local/bin/padmin" ]; then
+        rm -f /usr/local/bin/padmin
+        print_success "CLI command 'padmin' removed"
+    fi
+
+    if [ -f "/usr/local/bin/padmin-updater" ]; then
+        rm -f /usr/local/bin/padmin-updater
+        print_success "Updater wrapper '/usr/local/bin/padmin-updater' removed"
     fi
 
     echo ""
@@ -184,10 +198,11 @@ show_summary() {
     echo "The following were removed:"
     echo "  • Systemd services"
     echo "  • Service files"
-    echo "  • Installation directory ($INSTALL_DIR)"
+    echo "  • Installation directory ($INSTALL_DIR) and /opt/previous-admin"
     echo "  • Configuration directory ($CONFIG_DIR)"
     echo "  • Database directory ($DB_DIR)"
-    echo "  • CLI command (/usr/local/bin/previous_admin)"
+    echo "  • CLI command (/usr/local/bin/padmin)"
+    echo "  • Updater wrapper (/usr/local/bin/padmin-updater) and sudoers snippet (/etc/sudoers.d/padmin-updater)"
     echo ""
 }
 

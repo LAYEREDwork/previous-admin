@@ -91,6 +91,14 @@ export function UpdateProgressModal({
             />
           </div>
 
+            {/* Warning: Do not reload the browser during update */}
+            {updateStatus && updateStatus.status !== 'completed' && updateStatus.status !== 'error' && (
+              <div className="flex items-start gap-2 text-[var(--rs-message-warning-border)] p-3 bg-[var(--rs-warning-50)] dark:bg-[var(--rs-warning-900)] rounded">
+                <SFExclamationmarkBubbleFill size={18} />
+                <span className="text-sm">{translation.system.updateDoNotReloadWarning}</span>
+              </div>
+            )}
+
           {/* Version being installed */}
           {updateStatus?.version && (
             <div className="flex items-center justify-between text-sm">

@@ -4,7 +4,7 @@
 # Usage:
 #   curl -fsSL https://raw.githubusercontent.com/LAYEREDwork/previous-admin/main/setup.sh | sudo bash -s -- install
 #   Or locally: sudo bash setup.sh install
-# After installation: sudo previous_admin status
+# After installation: sudo padmin status
 
 set -e
 
@@ -262,11 +262,27 @@ do_setup_user() {
         usermod -aG sudo "$TARGET_USER" >/dev/null 2>&1
     fi
     # Allow passwordless sudo for necessary commands if not already set
+    # Ensure main previous-admin sudoers file exists for general commands
     if [ ! -f /etc/sudoers.d/previous-admin ]; then
         cat > /etc/sudoers.d/previous-admin << EOF
 $TARGET_USER ALL=(ALL) NOPASSWD: /usr/bin/apt, /usr/bin/apt-get, /usr/bin/systemctl, /bin/bash /home/$TARGET_USER/previous-admin/scripts/update.sh
 EOF
         chmod 440 /etc/sudoers.d/previous-admin >/dev/null 2>&1
+    fi
+
+    # Create a dedicated sudoers snippet for the updater wrapper to keep privileges scoped
+    if [ ! -f /etc/sudoers.d/padmin-updater ]; then
+        cat > /etc/sudoers.d/padmin-updater << EOF
+# Allow the service/backend user to run the updater wrapper as root without password
+$TARGET_USER ALL=(ALL) NOPASSWD: /usr/local/bin/padmin-updater
+EOF
+        chmod 440 /etc/sudoers.d/padmin-updater >/dev/null 2>&1 || true
+    else
+        # ensure entry exists (idempotent)
+        if ! grep -q '/usr/local/bin/padmin-updater' /etc/sudoers.d/padmin-updater 2>/dev/null; then
+            echo "$TARGET_USER ALL=(ALL) NOPASSWD: /usr/local/bin/padmin-updater" >> /etc/sudoers.d/padmin-updater || true
+            chmod 440 /etc/sudoers.d/padmin-updater >/dev/null 2>&1 || true
+        fi
     fi
 }
 
@@ -314,6 +330,31 @@ do_install_npm() {
 do_build_app() {
     cd "$INSTALL_DIR"
     sudo -u "$TARGET_USER" npm run build >/dev/null 2>&1
+}
+
+do_compile_backend() {
+    cd "$INSTALL_DIR"
+    # Compile TypeScript backend (includes updater) to backend/dist
+    # Run as the target user so node_modules and devDependencies are available
+    sudo -u "$TARGET_USER" npx -y tsc -p backend/tsconfig.json >/dev/null 2>&1 || true
+}
+
+do_install_updater() {
+    # Ensure /opt location exists and sync project there for the wrapper to reference
+    mkdir -p /opt/previous-admin
+    rsync -a --delete --exclude node_modules "$INSTALL_DIR/" /opt/previous-admin/ >/dev/null 2>&1 || true
+    chown -R "$TARGET_USER:$TARGET_USER" /opt/previous-admin >/dev/null 2>&1 || true
+
+    # Install updater wrapper to /usr/local/bin
+    if [ -f "$INSTALL_DIR/scripts/padmin-updater" ]; then
+        install -m 0750 -o root -g root "$INSTALL_DIR/scripts/padmin-updater" /usr/local/bin/padmin-updater >/dev/null 2>&1 || true
+    fi
+
+    # Ensure compiled updater exists; if not, try a fallback copy of TS sources (best-effort)
+    if [ ! -f /opt/previous-admin/backend/updater/dist/index.js ]; then
+        # attempt to compile again as root if necessary
+        (cd "$INSTALL_DIR" && npx -y tsc -p backend/tsconfig.json) >/dev/null 2>&1 || true
+    fi
 }
 
 do_setup_config() {
@@ -445,7 +486,7 @@ do_start_services() {
 
 do_create_cli_command() {
     mkdir -p /usr/local/bin
-    ln -sf "$INSTALL_DIR/setup.sh" /usr/local/bin/previous_admin
+    ln -sf "$INSTALL_DIR/setup.sh" /usr/local/bin/padmin
     chmod +x "$INSTALL_DIR/setup.sh"
 }
 
@@ -468,7 +509,7 @@ run_install() {
     echo -e "${YELLOW}⚠ This installation will definitely take a few minutes. Please be patient...${NC}"
     echo ""
 
-    local TOTAL=12
+    local TOTAL=15
 
     run_step 1 $TOTAL "Checking dependencies" do_check_tools
     run_step 2 $TOTAL "Setting up user account" do_setup_user
@@ -477,13 +518,14 @@ run_install() {
     run_step 5 $TOTAL "Installing system dependencies" do_install_dependencies
     run_step 6 $TOTAL "Installing npm packages" do_install_npm
     run_step 7 $TOTAL "Building application" do_build_app
-    run_step 8 $TOTAL "Setting up configuration" do_setup_config
-    run_step 9 $TOTAL "Setting up systemd services" do_setup_systemd
-    run_step 10 $TOTAL "Enabling user lingering" do_enable_lingering
-    run_step 11 $TOTAL "Setting up Avahi/mDNS" do_setup_avahi
-    run_step 12 $TOTAL "Starting services" do_start_services
-
-    do_create_cli_command
+    run_step 8 $TOTAL "Compiling backend" do_compile_backend
+    run_step 9 $TOTAL "Installing updater wrapper" do_install_updater
+    run_step 10 $TOTAL "Setting up configuration" do_setup_config
+    run_step 11 $TOTAL "Setting up systemd services" do_setup_systemd
+    run_step 12 $TOTAL "Enabling user lingering" do_enable_lingering
+    run_step 13 $TOTAL "Setting up Avahi/mDNS" do_setup_avahi
+    run_step 14 $TOTAL "Starting services" do_start_services
+    run_step 15 $TOTAL "Finalizing CLI" do_create_cli_command
 
     # Show completion message
     IP_ADDR=$(hostname -I 2>/dev/null | awk '{print $1}' || echo "unknown")
@@ -498,7 +540,7 @@ run_install() {
     fi
     echo -e "  ${CYAN}http://${IP_ADDR}:${FRONTEND_PORT}${NC}"
     echo ""
-    echo -e "CLI Command: ${DIM}sudo previous_admin${NC}"
+    echo -e "CLI Command: ${DIM}sudo padmin${NC}"
     echo ""
 }
 
@@ -553,7 +595,7 @@ run_uninstall() {
 
     echo ""
     run_with_spinner "Stopping services" "bash '$INSTALL_DIR/scripts/uninstall.sh' 2>/dev/null || true"
-    run_with_spinner "Removing CLI command" "rm -f /usr/local/bin/previous_admin"
+    run_with_spinner "Removing CLI command" "rm -f /usr/local/bin/padmin"
 
     echo ""
     print_success "Previous Admin has been removed."

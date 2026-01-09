@@ -32,8 +32,8 @@
 - **Testing**: `npm run test` runs both frontend and backend tests with Vitest. Use `npm run test:frontend` or `npm run test:backend` to test separately.
 - **Code Quality**: `npm run lint` (ESLint), `npm run typecheck` (TypeScript check).
 - **Update Process**: Never use `git pull`; download and extract new versions from GitHub releases (see `scripts/update.ts`).
-- **Production Setup**: Use `sudo ./setup.sh` for TUI-based installation (raspi-config style) with systemd services and Avahi/Bonjour discovery. After installation, use `sudo previous_admin` CLI command for management.
-- **Uninstallation**: Use `sudo previous_admin uninstall` or `sudo scripts/uninstall.sh` for clean removal with optional database backup.
+- **Production Setup**: Use `sudo ./setup.sh` for TUI-based installation (raspi-config style) with systemd services and Avahi/Bonjour discovery. After installation, use `sudo padmin` CLI command for management.
+- **Uninstallation**: Use `sudo padmin uninstall` or `sudo scripts/uninstall.sh` for clean removal with optional database backup.
 
 ## Project-Specific Patterns
 - **Config Management**: Use `ConfigManager` class (`backend/config/index.ts`) for reading/writing Previous emulator config files. Platform-specific implementations in `linux-config-manager.ts`/`macos-config-manager.ts`.

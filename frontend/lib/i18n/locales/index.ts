@@ -255,6 +255,7 @@ export interface Translations {
     updateComplete: string;
     updateError: string;
     updateNow: string;
+    updateDoNotReloadWarning: string;
     upToDate: string;
     updating: string;
     installingVersion: string;

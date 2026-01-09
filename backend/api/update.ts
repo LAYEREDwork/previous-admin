@@ -12,6 +12,8 @@ import { apiPaths } from '@shared/api/constants';
 
 import packageJson from '../../package.json';
 
+import { Updater } from '../updater';
+
 import { execAsync } from './helpers';
 
 
@@ -40,16 +42,54 @@ const router = express.Router();
  */
 router.post(apiPaths.Update.update.relative, async (req: any, res: any) => {
   try {
-    const scriptPath = `${process.cwd()}/scripts/update.sh`;
+    const dev = req.query.dev === '1' || req.body?.dev === true || process.env.NODE_ENV === 'development';
 
-    // Run update script asynchronously (fire-and-forget)
-    // Do NOT await - the script runs in background while frontend polls for status
+    if (dev) {
+      // Use the internal TypeScript Updater in development mode
+      const updater = new Updater(process.cwd());
+
+      // write status file under user's home .previous-admin/update-status.json
+      const statusFile = path.join(process.env.HOME || '', '.previous-admin', 'update-status.json');
+      try {
+        fs.mkdirSync(path.dirname(statusFile), { recursive: true });
+      } catch {
+        // ignore
+      }
+
+      updater.on('status', (s: any) => {
+        try {
+          fs.writeFileSync(statusFile, JSON.stringify(s));
+        } catch (err) {
+          console.error('Failed writing status file:', err);
+        }
+      });
+
+      // Start update asynchronously
+      updater.startUpdate({ dev: true }).catch((err) => console.error('Updater error:', err));
+
+      return res.json({ success: true, message: 'Update (dev) started.' });
+    }
+
+    // Production: delegate to privileged wrapper. The wrapper should be a small root-owned
+    // executable that performs the privileged steps. Example path: /usr/local/bin/padmin-updater
+    const wrapperPath = '/usr/local/bin/padmin-updater';
+
+    if (fs.existsSync(wrapperPath)) {
+      // Use sudo to call the wrapper (sudoers should permit this for the backend user)
+      execAsync(`sudo ${wrapperPath} start`, { cwd: process.cwd() }).catch((error) => {
+        console.error('Update wrapper error:', error);
+      });
+
+      return res.json({ success: true, message: 'Update started via wrapper.' });
+    }
+
+    // Fallback: run the legacy shell script asynchronously
+    const scriptPath = `${process.cwd()}/scripts/update.sh`;
     execAsync(`bash ${scriptPath}`, { cwd: process.cwd() }).catch((error) => {
       console.error('Update script error:', error);
     });
 
-    // Response sent immediately, update runs in background
-    res.json({ success: true, message: 'Update started successfully.' });
+    res.json({ success: true, message: 'Update started (fallback).' });
   } catch (error) {
     console.error('Error starting update:', error);
     res.status(500).json({ error: (error as Error).message || 'Failed to start update' });

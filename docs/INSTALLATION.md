@@ -22,15 +22,17 @@ After installation, access the admin interface at:
 
 ## CLI Commands
 
-After installation, you can use the `previous_admin` command:
+After installation, you can use the `padmin` command:
 
 ```bash
-sudo previous_admin install    # Install Previous Admin
-sudo previous_admin update     # Update to latest version
-sudo previous_admin status     # Show service status
-sudo previous_admin uninstall  # Remove Previous Admin
-sudo previous_admin help       # Show help
+sudo padmin install    # Install Previous Admin
+sudo padmin update     # Update to latest version
+sudo padmin status     # Show service status
+sudo padmin uninstall  # Remove Previous Admin
+sudo padmin help       # Show help
 ```
+
+Note: The `install` command (and the bootstrap `setup.sh` when run via curl) performs a fully automated, non-interactive installation — it installs Node.js, system packages, builds the frontend and backend, installs a privileged updater wrapper at `/usr/local/bin/padmin-updater`, and configures passwordless sudo for the necessary updater commands. After the script completes there should be no further manual steps required to start using Previous Admin.
 
 ## Configuration Options
 
@@ -69,13 +71,13 @@ The setup script will automatically:
 - Build the application for production
 - Install and configure user-space systemd services
 - Set up Avahi/Bonjour for network discovery
-- Create the `previous_admin` CLI command
+ - Create the `padmin` CLI command
 - Start all services and display access information
 
 ## Uninstallation
 
 ```bash
-sudo previous_admin uninstall
+sudo padmin uninstall
 # or
 sudo scripts/uninstall.sh
 ```
@@ -85,8 +87,15 @@ The uninstall process will:
 - Optionally backup your database
 - Remove installation directory
 - Remove configuration and database files
-- Remove the `previous_admin` CLI command
+- Remove the `padmin` CLI command
 - Clean up all system integration (Avahi, systemd)
+
+Additionally, the uninstaller will remove the privileged updater wrapper and its sudoers snippet (if present):
+
+- `/usr/local/bin/padmin-updater`
+- `/etc/sudoers.d/padmin-updater`
+- `/etc/sudoers.d/previous-admin` (if created by an older installer)
+- `/opt/previous-admin` (copied runtime install used by the updater)
 
 ## Environment Variables
 

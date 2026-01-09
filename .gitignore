@@ -22,6 +22,8 @@ dist-ssr
 *.sln
 *.sw?
 .env
+# transient test temp dirs
+tmp-*
 
 PROJECT_ANALYSIS.md
 

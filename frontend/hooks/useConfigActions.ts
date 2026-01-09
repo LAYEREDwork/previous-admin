@@ -3,8 +3,8 @@ import { useLanguage } from '@frontend/contexts/PALanguageContext';
 import { useModal } from '@frontend/contexts/PAModalContext';
 import { defaultConfig } from '@frontend/lib/config';
 import { Configuration, database } from '@frontend/lib/database';
-import { downloadFile, generateConfigFilename } from '@frontend/lib/utils';
 import { PAModalButtonType } from '@frontend/lib/types/modal';
+import { downloadFile, generateConfigFilename } from '@frontend/lib/utils';
 
 /**
  * Hook to handle specialized actions for configurations like create, delete, duplicate, etc.

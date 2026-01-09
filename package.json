@@ -11,6 +11,7 @@
     "preview": "vite preview",
     "backend": "tsx --tsconfig backend/tsconfig.json backend/index.ts",
     "restart:backend": "pkill -f \"backend/index.ts\" || true && npm run backend &",
+    "update": "sudo bash scripts/update.sh",
     "start": "npm run preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "test": "npm run test:frontend && npm run test:backend",

@@ -559,6 +559,7 @@ export const de: Translations = {
     'updateComplete': 'Update abgeschlossen! Wird neu geladen...',
     'updateError': 'Fehler beim Prüfen auf Updates',
     'updateNow': 'Jetzt aktualisieren',
+    'updateDoNotReloadWarning': 'Wichtig: Bitte das aktuelle Browserfenster während des Updates nicht neu laden oder aktualisieren.',
     'updating': 'Aktualisiere...',
     'installingVersion': 'Installiere Version',
     'upToDate': 'Auf dem neuesten Stand',
