@@ -8,6 +8,26 @@
 set -e
 
 # ============================================================================
+# Handle piped execution (curl ... | bash)
+# When piped, stdin is not a terminal, so we need to re-execute with tty access
+# ============================================================================
+
+SCRIPT_URL="https://raw.githubusercontent.com/LAYEREDwork/previous-admin/main/setup.sh"
+
+if [ ! -t 0 ]; then
+    # stdin is not a terminal (script is being piped)
+    echo "Downloading setup script..."
+    TEMP_SCRIPT=$(mktemp)
+
+    # Read the piped content (this script) into temp file
+    cat > "$TEMP_SCRIPT"
+    chmod +x "$TEMP_SCRIPT"
+
+    # Re-execute with terminal access
+    exec bash "$TEMP_SCRIPT" "$@" < /dev/tty
+fi
+
+# ============================================================================
 # Configuration (can be overridden via environment variables)
 # ============================================================================
 
