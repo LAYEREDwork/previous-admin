@@ -1,17 +1,26 @@
 # Installation Guide
 
-## Quick Installation (One Command)
+## Quick Installation
 
 The fastest way to install Previous Admin on a **Linux system** (Ubuntu/Debian/Fedora/Raspberry Pi):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/LAYEREDwork/previous-admin/main/setup.sh | sudo bash
+# Download and run the setup script
+curl -fsSL https://raw.githubusercontent.com/LAYEREDwork/previous-admin/main/setup.sh -o /tmp/pa-setup.sh
+sudo bash /tmp/pa-setup.sh
 ```
 
 This will launch an interactive TUI (Text User Interface) similar to `raspi-config` where you can:
 - Configure ports, user, and Avahi/mDNS settings
 - Install, update, or uninstall Previous Admin
 - View service status
+
+For direct installation without TUI:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/LAYEREDwork/previous-admin/main/setup.sh -o /tmp/pa-setup.sh
+sudo bash /tmp/pa-setup.sh install
+```
 
 After installation, access the admin interface at:
 - [http://next.local:2342](http://next.local:2342) (via Bonjour/mDNS)

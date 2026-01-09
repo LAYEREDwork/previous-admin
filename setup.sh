@@ -1,7 +1,9 @@
 #!/bin/bash
 
 # Previous Admin - Setup Script with TUI
-# Usage: curl -fsSL https://raw.githubusercontent.com/LAYEREDwork/previous-admin/main/setup.sh | sudo bash
+# Usage:
+#   curl -fsSL https://raw.githubusercontent.com/LAYEREDwork/previous-admin/main/setup.sh -o /tmp/pa-setup.sh
+#   sudo bash /tmp/pa-setup.sh
 # Or locally: sudo bash setup.sh
 # After installation: sudo previous_admin
 
@@ -9,22 +11,29 @@ set -e
 
 # ============================================================================
 # Handle piped execution (curl ... | bash)
-# When piped, stdin is not a terminal, so we need to re-execute with tty access
+# whiptail requires direct terminal access, so we show instructions instead
 # ============================================================================
-
-SCRIPT_URL="https://raw.githubusercontent.com/LAYEREDwork/previous-admin/main/setup.sh"
 
 if [ ! -t 0 ]; then
     # stdin is not a terminal (script is being piped)
-    echo "Downloading setup script..."
-    TEMP_SCRIPT=$(mktemp)
-
-    # Read the piped content (this script) into temp file
-    cat > "$TEMP_SCRIPT"
-    chmod +x "$TEMP_SCRIPT"
-
-    # Re-execute with terminal access
-    exec bash "$TEMP_SCRIPT" "$@" < /dev/tty
+    # whiptail TUI cannot work without direct terminal access
+    echo ""
+    echo "=========================================="
+    echo "  Previous Admin Setup"
+    echo "=========================================="
+    echo ""
+    echo "The interactive TUI requires direct terminal access."
+    echo "Please run these commands instead:"
+    echo ""
+    echo "  curl -fsSL https://raw.githubusercontent.com/LAYEREDwork/previous-admin/main/setup.sh -o /tmp/pa-setup.sh"
+    echo "  sudo bash /tmp/pa-setup.sh"
+    echo ""
+    echo "Or for direct installation without TUI:"
+    echo ""
+    echo "  curl -fsSL https://raw.githubusercontent.com/LAYEREDwork/previous-admin/main/setup.sh -o /tmp/pa-setup.sh"
+    echo "  sudo bash /tmp/pa-setup.sh install"
+    echo ""
+    exit 0
 fi
 
 # ============================================================================
