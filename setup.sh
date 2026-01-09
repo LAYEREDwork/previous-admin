@@ -93,11 +93,13 @@ run_step() {
         local len=${#SPINNER_CHARS}
         while true; do
             local char="${SPINNER_CHARS:$i:1}"
-            # Line 1: Spinner + description
-            printf "\r${CYAN}%s${NC} %s\n" "$char" "$description"
-            # Line 2: Progress bar
+            # Clear line and print: Spinner + description
+            printf "\r\033[K${CYAN}%s${NC} %s" "$char" "$description"
+            # Move to next line, clear it, print progress bar
+            printf "\n\033[K"
             draw_progress_bar "$step_num" "$total_steps"
-            printf "\033[2A"  # Move cursor up 2 lines
+            # Move cursor back up to first line
+            printf "\r\033[A"
             i=$(( (i + 1) % len ))
             sleep 0.1
         done
@@ -118,16 +120,15 @@ run_step() {
 
     # Print final result
     if [ $exit_code -eq 0 ]; then
-        # Line 1: Green checkmark + description
-        printf "\r${GREEN}✓${NC} %s\n" "$description"
-        # Line 2: Progress bar
+        # Clear and print final state
+        printf "\r\033[K${GREEN}✓${NC} %s" "$description"
+        printf "\n\033[K"
         draw_progress_bar "$step_num" "$total_steps"
         printf "\n\n"
         return 0
     else
-        # Line 1: Red X + description
-        printf "\r${RED}✗${NC} %s\n" "$description"
-        # Line 2: Progress bar
+        printf "\r\033[K${RED}✗${NC} %s" "$description"
+        printf "\n\033[K"
         draw_progress_bar "$step_num" "$total_steps"
         printf "\n"
         if [ -n "$output" ]; then
