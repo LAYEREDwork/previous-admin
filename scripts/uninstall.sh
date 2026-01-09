@@ -13,8 +13,8 @@ YELLOW='\033[1;33m'
 ORANGE='\033[38;5;208m'
 NC='\033[0m' # No Color
 
-# Configuration
-TARGET_USER="next"
+# Configuration (can be overridden via environment variables)
+TARGET_USER="${PA_TARGET_USER:-next}"
 INSTALL_DIR="/home/$TARGET_USER/previous-admin"
 CONFIG_DIR="/home/$TARGET_USER/.config/previous"
 DB_DIR="/home/$TARGET_USER/.previous-admin"
@@ -148,17 +148,29 @@ remove_installation() {
 # Remove config directory
 remove_config() {
     print_info "Removing configuration directory..."
-    
+
     if [ -d "$CONFIG_DIR" ]; then
         rm -rf "$CONFIG_DIR"
         print_success "Configuration directory removed"
     fi
-    
+
     if [ -d "$DB_DIR" ]; then
         rm -rf "$DB_DIR"
         print_success "Database directory removed"
     fi
-    
+
+    echo ""
+}
+
+# Remove CLI command symlink
+remove_cli_command() {
+    print_info "Removing CLI command..."
+
+    if [ -L "/usr/local/bin/previous_admin" ]; then
+        rm -f /usr/local/bin/previous_admin
+        print_success "CLI command 'previous_admin' removed"
+    fi
+
     echo ""
 }
 
@@ -166,7 +178,7 @@ remove_config() {
 # Summary
 show_summary() {
     print_header "Uninstallation Complete"
-    
+
     echo "Previous Admin has been uninstalled."
     echo ""
     echo "The following were removed:"
@@ -175,6 +187,7 @@ show_summary() {
     echo "  • Installation directory ($INSTALL_DIR)"
     echo "  • Configuration directory ($CONFIG_DIR)"
     echo "  • Database directory ($DB_DIR)"
+    echo "  • CLI command (/usr/local/bin/previous_admin)"
     echo ""
 }
 
@@ -199,6 +212,7 @@ main() {
     remove_service_files
     remove_installation
     remove_config
+    remove_cli_command
     show_summary
     return_to_home
 }

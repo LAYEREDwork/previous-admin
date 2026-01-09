@@ -6,7 +6,8 @@
       "Bash(npm run lint)",
       "Bash(npm run build:*)",
       "Bash(npm install)",
-      "Bash(npm run generate:schema:*)"
+      "Bash(npm run generate:schema:*)",
+      "Bash(chmod:*)"
     ]
   }
 }

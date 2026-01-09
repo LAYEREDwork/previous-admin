@@ -25,14 +25,16 @@ else
     DEV_MODE=false
 fi
 
+# Configuration (can be overridden via environment variables)
+TARGET_USER="${PA_TARGET_USER:-next}"
 REPO="LAYEREDwork/previous-admin"
 if [[ "$DEV_MODE" == "true" ]]; then
     # In development, use current directory as project dir
     PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 else
-    PROJECT_DIR="$HOME/previous-admin"
+    PROJECT_DIR="/home/$TARGET_USER/previous-admin"
 fi
-DATA_DIR="$HOME/.previous-admin"
+DATA_DIR="/home/$TARGET_USER/.previous-admin"
 BACKUP_DIR="$DATA_DIR/backup/previous-admin-backup-$(date +%Y-%m-%d-%H-%M-%S)"
 
 # Ensure XDG_RUNTIME_DIR is set for user systemd
