@@ -5,7 +5,7 @@ import { apiPaths } from '@shared/api/constants';
 import type { SystemInfo } from '@shared/previous-config/types';
 
 import { useLanguage } from '@frontend/contexts/PALanguageContext';
-import { useModal } from '@frontend/contexts/PAModalContext';
+import { useModal } from '@frontend/hooks/useModal';
 import { apiBaseUrl } from '@frontend/lib/constants';
 
 // Utilities

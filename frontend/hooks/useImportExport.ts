@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import type { Configuration, PreviousConfig } from '@shared/previous-config/types';
 
 import { useLanguage } from '@frontend/contexts/PALanguageContext';
-import { useModal } from '@frontend/contexts/PAModalContext';
+import { useModal } from '@frontend/hooks/useModal';
 
 // Utilities
 import { database } from '@frontend/lib/database';

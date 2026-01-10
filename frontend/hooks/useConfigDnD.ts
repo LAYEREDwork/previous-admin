@@ -1,5 +1,5 @@
 import { useLanguage } from '@frontend/contexts/PALanguageContext';
-import { useModal } from '@frontend/contexts/PAModalContext';
+import { useModal } from '@frontend/hooks/useModal';
 import { database, Configuration } from '@frontend/lib/database';
 
 import { useDragState } from './useDragState';

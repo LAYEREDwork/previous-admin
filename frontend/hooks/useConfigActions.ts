@@ -1,6 +1,6 @@
 import { useConfig } from '@frontend/contexts/PAConfigContext';
 import { useLanguage } from '@frontend/contexts/PALanguageContext';
-import { useModal } from '@frontend/contexts/PAModalContext';
+import { useModal } from '@frontend/hooks/useModal';
 import { defaultConfig } from '@frontend/lib/config';
 import { Configuration, database } from '@frontend/lib/database';
 import { PAModalButtonType } from '@frontend/lib/types/modal';

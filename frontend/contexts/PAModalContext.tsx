@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useState, useCallback, ReactNode } from 'react';
 
 import { PAModal } from '@frontend/components/controls/PAModal';
 import { PAModalType, PAModalButton, PAModalButtonType } from '@frontend/lib/types/modal';
@@ -13,7 +14,7 @@ export interface ModalConfig {
   headerIcon?: ReactNode;
 }
 
-interface ModalContextType {
+export interface ModalContextType {
   showModal: (config: ModalConfig) => void;
   showSuccess: (message: string, title?: string) => void;
   showError: (message: string, title?: string) => void;
@@ -33,7 +34,7 @@ interface ModalContextType {
   closeModal: () => void;
 }
 
-const ModalContext = createContext<ModalContextType | undefined>(undefined);
+export const ModalContext = createContext<ModalContextType | undefined>(undefined);
 
 export function PAModalProvider({ children }: { children: ReactNode }) {
   const { translation } = useLanguage();
@@ -201,10 +202,6 @@ export function PAModalProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useModal() {
-  const context = useContext(ModalContext);
-  if (!context) {
-    throw new Error('useModal must be used within PAModalProvider');
-  }
-  return context;
-}
+// Note: `useModal` has been moved to `frontend/hooks/useModal.ts` to
+// avoid exporting non-component utilities from this module (improves Fast
+// Refresh behavior). Import `useModal` from '@frontend/hooks/useModal'.

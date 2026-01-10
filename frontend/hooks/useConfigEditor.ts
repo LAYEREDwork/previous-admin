@@ -5,7 +5,7 @@ import type { PreviousConfig } from '@shared/previous-config/types';
 
 import { useConfig } from '@frontend/contexts/PAConfigContext';
 import { useLanguage } from '@frontend/contexts/PALanguageContext';
-import { useModal } from '@frontend/contexts/PAModalContext';
+import { useModal } from '@frontend/hooks/useModal';
 import { convertToConfigFile } from '@frontend/lib/config';
 import { database } from '@frontend/lib/database';
 
