@@ -119,18 +119,6 @@ export function PAModalProvider({ children }: { children: ReactNode }) {
     [showModal, translation.common.info, translation.common.ok, closeModal]
   );
 
-  const showConfirm = useCallback(
-    (message: string, onConfirm: () => void, onCancel?: () => void, title?: string) => {
-      showConfirmAdvanced({
-        message,
-        onConfirm,
-        onCancel,
-        title,
-      });
-    },
-    [showConfirmAdvanced]
-  );
-
   const showConfirmAdvanced = useCallback(
     ({
       message,
@@ -176,6 +164,18 @@ export function PAModalProvider({ children }: { children: ReactNode }) {
       });
     },
     [showModal, translation.common.confirmation, translation.common.cancel, translation.common.confirm, closeModal]
+  );
+
+  const showConfirm = useCallback(
+    (message: string, onConfirm: () => void, onCancel?: () => void, title?: string) => {
+      showConfirmAdvanced({
+        message,
+        onConfirm,
+        onCancel,
+        title,
+      });
+    },
+    [showConfirmAdvanced]
   );
 
   return (
