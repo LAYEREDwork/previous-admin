@@ -236,7 +236,8 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add .github/assets/
           if ! git diff --staged --quiet; then
-            git commit -m "Update screenshots"
+            git add -A  # Add all changes, not just screenshots
+            git commit -m "Update screenshots and generated assets"
             git pull --rebase origin main
             git push
           fi
