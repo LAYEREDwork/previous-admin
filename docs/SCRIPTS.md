@@ -53,23 +53,23 @@ These are executable scripts in the `scripts/` directory, run directly or via np
 ### Shell Scripts
 
 - **[`setup.sh`](setup.sh)**: Main setup script for installation, update, uninstall, and status. Creates `padmin` CLI command after installation. Usage: `sudo bash setup.sh install|update|uninstall|status`
-- **[`generate-config-schema.sh`](scripts/generate-config-schema.sh)**: Bash script that processes config schema files. Called by `npm run generate:schema`.
-- **[`start-all.sh`](scripts/start-all.sh)**: Starts both frontend and backend servers. Useful for full development environment setup.
-- **[`uninstall.sh`](scripts/uninstall.sh)**: Uninstalls the application from the system. Supports dynamic user via `PA_TARGET_USER` environment variable.
-- **[`update.sh`](scripts/update.sh)**: Updates Previous Admin to the latest version. Supports dynamic user via `PA_TARGET_USER` environment variable.
-- **[`update_badges.sh`](scripts/update_badges.sh)**: Updates README badges (e.g., LOC, CI status). Called by CI pipeline.
+- **[`schema.sh`](scripts/build/schema.sh)**: Bash script that processes config schema files. Called by `npm run generate:schema`.
+- **[`start-all.sh`](scripts/dev/start-all.sh)**: Starts both frontend and backend servers. Useful for full development environment setup.
+- **[`uninstall.sh`](scripts/install/uninstall.sh)**: Uninstalls the application from the system. Supports dynamic user via `PA_TARGET_USER` environment variable.
+- **[`admin.sh`](scripts/update/admin.sh)**: Updates Previous Admin to the latest version. Supports dynamic user via `PA_TARGET_USER` environment variable.
+- **[`badges.sh`](scripts/update/badges.sh)**: Updates README badges (e.g., LOC, CI status). Called by CI pipeline.
 
 ### TypeScript/JavaScript Scripts
 
-- **[`generate-sfsymbols.ts`](scripts/generate-sfsymbols.ts)**: TypeScript script to generate SF Symbol components. Run via `npm run generate:sfsymbols`.
-- **[`generate-fontlist.ts`](scripts/generate-fontlist.ts)**: Generates font list from assets. Run via `npm run generate:fontlist`.
-- **[`generate-translation-keys.ts`](scripts/generate-translation-keys.ts)**: Processes translation files. Run via `npm run generate:translationkeys`.
-- **[`generate-screenshots.mjs`](scripts/generate-screenshots.mjs)**: Node.js script for screenshot generation. Run via `npm run generate:screenshots`.
-- **[`import-example-database.ts`](scripts/import-example-database.ts)**: Imports example data. Run via `npm run import:exampledb`.
+- **[`sfsymbols.ts`](scripts/build/sfsymbols.ts)**: TypeScript script to generate SF Symbol components. Run via `npm run generate:sfsymbols`.
+- **[`fontlist.ts`](scripts/build/fontlist.ts)**: Generates font list from assets. Run via `npm run generate:fontlist`.
+- **[`translations.ts`](scripts/build/translations.ts)**: Processes translation files. Run via `npm run generate:translationkeys`.
+- **[`screenshots.mjs`](scripts/build/screenshots.mjs)**: Node.js script for screenshot generation. Run via `npm run generate:screenshots`.
+- **[`import-db.ts`](scripts/dev/import-db.ts)**: Imports example data. Run via `npm run import:exampledb`.
 
 ### Python Scripts
 
-- **[`abstract-config-labels.py`](scripts/abstract-config-labels.py)**: Python script for processing config labels. May be used for schema generation or documentation.
+- **[`abstract-config-labels.py`](scripts/deprecated/abstract-config-labels.py)**: Python script for processing config labels (deprecated).
 
 ## Dependencies and Usage
 

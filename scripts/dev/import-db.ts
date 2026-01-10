@@ -15,7 +15,7 @@ import path from 'path';
 
 import Database from 'better-sqlite3';
 
-import type { DatabaseExport } from '../backend/database/maintenance';
+import type { DatabaseExport } from '../../backend/database/maintenance';
 
 /**
  * Get the database path

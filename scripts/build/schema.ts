@@ -7,9 +7,10 @@
 
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 
-import { parseCfgFile } from '../backend/config-schema/config-parser';
-import { extractSchema } from '../backend/config-schema/schema-extractor';
-import { reportValidationResults, validateSymbols } from '../backend/config-schema/validate-symbols';
+import { parseCfgFile } from '../../backend/config-schema/config-parser';
+import { extractSchema } from '../../backend/config-schema/schema-extractor';
+import { reportValidationResults, validateSymbols } from '../../backend/config-schema/validate-symbols';
+import type { SectionSchema } from '@shared/previous-config/schema-types';
 
 const configFile = process.env.CONFIG_FILE || './backend/config-schema/reference.cfg';
 const schemaFile = process.env.SCHEMA_FILE || './shared/previous-config/schema.json';
@@ -41,7 +42,7 @@ try {
 
     console.log(`✅ Schema generated: ${schemaFile}`);
     console.log(`   - Sections: ${Object.keys(schema.sections).length}`);
-    console.log(`   - Total parameters: ${Object.values(schema.sections).reduce((sum, section) => sum + section.parameters.length, 0)}`);
+    console.log(`   - Total parameters: ${(Object.values(schema.sections) as SectionSchema[]).reduce((sum, section) => sum + section.parameters.length, 0)}`);
 
 } catch (error) {
     console.error('❌ Schema generation failed:');

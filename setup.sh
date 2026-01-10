@@ -265,25 +265,12 @@ do_setup_user() {
     # Ensure main previous-admin sudoers file exists for general commands
     if [ ! -f /etc/sudoers.d/previous-admin ]; then
         cat > /etc/sudoers.d/previous-admin << EOF
-$TARGET_USER ALL=(ALL) NOPASSWD: /usr/bin/apt, /usr/bin/apt-get, /usr/bin/systemctl, /bin/bash /home/$TARGET_USER/previous-admin/scripts/update.sh
+$TARGET_USER ALL=(ALL) NOPASSWD: /usr/bin/apt, /usr/bin/apt-get, /usr/bin/systemctl, /bin/bash /home/$TARGET_USER/previous-admin/scripts/update/admin.sh
 EOF
         chmod 440 /etc/sudoers.d/previous-admin >/dev/null 2>&1
     fi
 
-    # Create a dedicated sudoers snippet for the updater wrapper to keep privileges scoped
-    if [ ! -f /etc/sudoers.d/padmin-updater ]; then
-        cat > /etc/sudoers.d/padmin-updater << EOF
-# Allow the service/backend user to run the updater wrapper as root without password
-$TARGET_USER ALL=(ALL) NOPASSWD: /usr/local/bin/padmin-updater
-EOF
-        chmod 440 /etc/sudoers.d/padmin-updater >/dev/null 2>&1 || true
-    else
-        # ensure entry exists (idempotent)
-        if ! grep -q '/usr/local/bin/padmin-updater' /etc/sudoers.d/padmin-updater 2>/dev/null; then
-            echo "$TARGET_USER ALL=(ALL) NOPASSWD: /usr/local/bin/padmin-updater" >> /etc/sudoers.d/padmin-updater || true
-            chmod 440 /etc/sudoers.d/padmin-updater >/dev/null 2>&1 || true
-        fi
-    fi
+    # No privileged updater wrapper required for bundled installs; installer will manage files under /opt
 }
 
 do_setup_repository() {
@@ -299,8 +286,8 @@ do_setup_repository() {
 
 do_sync_versions() {
     cd "$INSTALL_DIR"
-    if [ -f "scripts/install-version-sync.sh" ]; then
-        sudo -u "$TARGET_USER" bash scripts/install-version-sync.sh >/dev/null 2>&1 || true
+    if [ -f "scripts/install/version-sync.sh" ]; then
+        sudo -u "$TARGET_USER" bash scripts/install/version-sync.sh >/dev/null 2>&1 || true
     fi
 }
 
@@ -334,47 +321,22 @@ do_build_app() {
 
 do_compile_backend() {
     cd "$INSTALL_DIR"
-    # Compile TypeScript backend (includes updater) to backend/dist
-    # Run as the target user so node_modules and devDependencies are available
-    sudo -u "$TARGET_USER" npx -y tsc -p backend/tsconfig.json >/dev/null 2>&1 || true
-    # Ensure a top-level entrypoint exists at backend/dist/index.js that forwards to compiled files
+    # Build bundled backend using esbuild (produces backend/dist/bundle.js)
+    sudo -u "$TARGET_USER" npm run build:backend:bundle >/dev/null 2>&1 || true
     COMPILED_DIR="$INSTALL_DIR/backend/dist"
-    if [ -d "$COMPILED_DIR" ]; then
-        if [ ! -f "$COMPILED_DIR/index.js" ]; then
-            printf "import('./backend/index.js').catch(e => { console.error(e); process.exit(1); });\n" > "$COMPILED_DIR/index.js" || true
-            chmod 755 "$COMPILED_DIR/index.js" || true
-        fi
-    fi
-    # Replace TypeScript path aliases in compiled JS to relative paths as a pragmatic runtime fix
-    # - "@shared/..." -> "../shared/..." (files in dist/backend reference dist/shared)
-    # - "@backend/..." -> "./..." (backend alias points to backend root)
-    if [ -d "$COMPILED_DIR" ]; then
-        find "$COMPILED_DIR" -type f -name "*.js" -print0 | xargs -0 sed -i "s/from '@shared\//from '..\/shared\//g" || true
-        find "$COMPILED_DIR" -type f -name "*.js" -print0 | xargs -0 sed -i "s/from \"@shared\//from \"..\/shared\//g" || true
-        find "$COMPILED_DIR" -type f -name "*.js" -print0 | xargs -0 sed -i "s/from '@backend\//from '.\/\//g" || true
-        find "$COMPILED_DIR" -type f -name "*.js" -print0 | xargs -0 sed -i "s/from \"@backend\//from \".\//g" || true
-        # also handle dynamic import('...') patterns
-        find "$COMPILED_DIR" -type f -name "*.js" -print0 | xargs -0 sed -i "s/import('@shared\//import('..\/shared\//g" || true
-        find "$COMPILED_DIR" -type f -name "*.js" -print0 | xargs -0 sed -i "s/import(\"@shared\//import(\"..\/shared\//g" || true
+    if [ -f "$COMPILED_DIR/bundle.js" ]; then
+        chmod 755 "$COMPILED_DIR/bundle.js" || true
+    else
+        echo "Warning: backend bundle not found at $COMPILED_DIR/bundle.js" >&2
     fi
 }
 
 do_install_updater() {
     # Ensure /opt location exists and sync project there for the wrapper to reference
     mkdir -p /opt/previous-admin
-    rsync -a --delete --exclude node_modules "$INSTALL_DIR/" /opt/previous-admin/ >/dev/null 2>&1 || true
+    # Copy repository into /opt excluding node_modules; the bundle is expected at backend/dist/bundle.js
+    rsync -a --delete --exclude node_modules --exclude .git "$INSTALL_DIR/" /opt/previous-admin/ >/dev/null 2>&1 || true
     chown -R "$TARGET_USER:$TARGET_USER" /opt/previous-admin >/dev/null 2>&1 || true
-
-    # Install updater wrapper to /usr/local/bin
-    if [ -f "$INSTALL_DIR/scripts/padmin-updater" ]; then
-        install -m 0750 -o root -g root "$INSTALL_DIR/scripts/padmin-updater" /usr/local/bin/padmin-updater >/dev/null 2>&1 || true
-    fi
-
-    # Ensure compiled updater exists; if not, try a fallback copy of TS sources (best-effort)
-    if [ ! -f /opt/previous-admin/backend/updater/dist/index.js ]; then
-        # attempt to compile again as root if necessary
-        (cd "$INSTALL_DIR" && npx -y tsc -p backend/tsconfig.json) >/dev/null 2>&1 || true
-    fi
 }
 
 do_setup_config() {
@@ -396,8 +358,7 @@ Wants=network-online.target
 [Service]
 Type=simple
 WorkingDirectory=$INSTALL_DIR
-# Use tsconfig-paths to resolve TypeScript path aliases at runtime
-ExecStart=/usr/bin/node -r tsconfig-paths/register $INSTALL_DIR/backend/dist/index.js
+ExecStart=/usr/bin/node $INSTALL_DIR/backend/dist/bundle.js
 Restart=always
 RestartSec=10
 StandardOutput=journal
@@ -430,6 +391,43 @@ Environment=XDG_RUNTIME_DIR=/run/user/$TARGET_UID
 [Install]
 WantedBy=default.target
 EOF
+}
+
+# Detect architecture for prebuilt artifacts
+detect_arch() {
+    local arch
+    arch=$(uname -m)
+    case "$arch" in
+        x86_64) echo "amd64" ;;
+        aarch64|arm64) echo "arm64" ;;
+        armv7*|armv6l) echo "armv7" ;;
+        *) echo "$arch" ;;
+    esac
+}
+
+# Try to download a prebuilt release artifact for the current arch and install it atomically
+do_download_artifact() {
+    local arch
+    arch=$(detect_arch)
+    local release_url="https://github.com/LAYEREDwork/previous-admin/releases/latest/download/previous-admin-linux-${arch}.tar.gz"
+    local tmpfile
+    tmpfile=$(mktemp -p /tmp previous-admin-artifact-XXXXXX.tar.gz)
+    print_info "Attempting to download prebuilt artifact for arch: $arch"
+    if command -v curl >/dev/null 2>&1; then
+        if curl -fSL -o "$tmpfile" "$release_url"; then
+            print_success "Downloaded artifact $release_url"
+            bash scripts/install/release.sh "$tmpfile"
+            rm -f "$tmpfile" || true
+            return 0
+        else
+            rm -f "$tmpfile" || true
+            print_warning "No prebuilt artifact available for $arch; falling back to local build"
+            return 1
+        fi
+    else
+        print_warning "curl not available; cannot download artifacts"
+        return 2
+    fi
 }
 
 do_enable_lingering() {
@@ -529,6 +527,11 @@ run_install() {
     echo ""
     echo -e "${YELLOW}⚠ This installation will definitely take a few minutes. Please be patient...${NC}"
     echo ""
+    # Try installing from prebuilt release artifact first (atomic install)
+    if do_download_artifact; then
+        print_success "Installed from prebuilt release artifact."
+        return 0
+    fi
 
     local TOTAL=15
 
@@ -576,8 +579,8 @@ run_update() {
 
     export PA_TARGET_USER="$TARGET_USER"
 
-    if [ -f "$INSTALL_DIR/scripts/update.sh" ]; then
-        bash "$INSTALL_DIR/scripts/update.sh"
+    if [ -f "$INSTALL_DIR/scripts/update/admin.sh" ]; then
+        bash "$INSTALL_DIR/scripts/update/admin.sh"
     else
         print_error "Update script not found."
         exit 1
@@ -615,7 +618,7 @@ run_uninstall() {
     export PA_TARGET_USER="$TARGET_USER"
 
     echo ""
-    run_with_spinner "Stopping services" "bash '$INSTALL_DIR/scripts/uninstall.sh' 2>/dev/null || true"
+    run_with_spinner "Stopping services" "bash '$INSTALL_DIR/scripts/install/uninstall.sh' 2>/dev/null || true"
     run_with_spinner "Removing CLI command" "rm -f /usr/local/bin/padmin"
 
     echo ""

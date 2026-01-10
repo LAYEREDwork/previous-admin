@@ -70,26 +70,28 @@ router.post(apiPaths.Update.update.relative, async (req: any, res: any) => {
       return res.json({ success: true, message: 'Update (dev) started.' });
     }
 
-    // Production: delegate to privileged wrapper. The wrapper should be a small root-owned
-    // executable that performs the privileged steps. Example path: /usr/local/bin/padmin-updater
-    const wrapperPath = '/usr/local/bin/padmin-updater';
+    // Production: attempt to download a prebuilt release artifact and perform an atomic install
+    try {
+      const archMap: Record<string, string> = { arm: 'armv7', arm64: 'arm64', x64: 'amd64' };
+      const nodeArch = process.arch || 'x64';
+      const arch = archMap[nodeArch] || nodeArch;
+      const downloadUrl = `https://github.com/LAYEREDwork/previous-admin/releases/latest/download/previous-admin-linux-${arch}.tar.gz`;
+      const tmpFile = `/tmp/previous-admin-update-${Date.now()}.tar.gz`;
 
-    if (fs.existsSync(wrapperPath)) {
-      // Use sudo to call the wrapper (sudoers should permit this for the backend user)
-      execAsync(`sudo ${wrapperPath} start`, { cwd: process.cwd() }).catch((error) => {
-        console.error('Update wrapper error:', error);
+      // Use curl to download and then call the installer script with sudo
+      const cmd = `curl -fSL -o ${tmpFile} ${downloadUrl} && sudo bash scripts/install-release.sh ${tmpFile}`;
+      execAsync(cmd, { cwd: process.cwd() }).catch((error) => {
+        console.error('Update (artifact) error:', error);
       });
 
-      return res.json({ success: true, message: 'Update started via wrapper.' });
+      return res.json({ success: true, message: 'Update started: downloaded artifact and invoked installer.' });
+    } catch (error) {
+      console.error('Error starting artifact update:', error);
+      // Fallback: run the legacy shell script asynchronously
+      const scriptPath = `${process.cwd()}/scripts/update/admin.sh`;
+      execAsync(`bash ${scriptPath}`, { cwd: process.cwd() }).catch((err) => console.error('Update script error:', err));
+      return res.json({ success: true, message: 'Update started (fallback).' });
     }
-
-    // Fallback: run the legacy shell script asynchronously
-    const scriptPath = `${process.cwd()}/scripts/update.sh`;
-    execAsync(`bash ${scriptPath}`, { cwd: process.cwd() }).catch((error) => {
-      console.error('Update script error:', error);
-    });
-
-    res.json({ success: true, message: 'Update started (fallback).' });
   } catch (error) {
     console.error('Error starting update:', error);
     res.status(500).json({ error: (error as Error).message || 'Failed to start update' });

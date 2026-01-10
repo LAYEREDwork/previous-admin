@@ -187,7 +187,7 @@ export const de: Translations = {
 
 3. **Schema-Struktur**
    - Die Sektionen und Parameter kommen aus `schema.json`
-   - Diese wird von `scripts/generate-config-schema.sh` automatisch generiert
+   - Diese wird von `scripts/build/schema.sh` automatisch generiert
    - Die Schema wird aus `backend/config-schema/reference.cfg` generiert
    - Die `reference.cfg` ist die authoritative Quelle aller Konfigurationsoptionen
 
@@ -203,7 +203,7 @@ Es gibt eine wichtige Abhängigkeitskette, die verstanden werden sollte:
 └─────────────────────────────────────────────────────────────────┘
                             ↓
            npm run generate:schema
-           scripts/generate-config-schema.sh
+           scripts/build/schema.sh
                             ↓
 ┌─────────────────────────────────────────────────────────────────┐
 │ schema.json (Auto-generiert)                                   │

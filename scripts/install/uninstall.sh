@@ -109,9 +109,8 @@ remove_service_files() {
     rm -f /etc/systemd/system/avahi-alias-previous-admin.service
     rm -f /usr/local/bin/avahi-alias-previous-admin.sh
     rm -f /etc/avahi/services/previous-admin.service
-    # Remove updater sudoers snippet if present
+    # No privileged updater wrapper in bundled install mode; remove legacy sudoers if present
     rm -f /etc/sudoers.d/padmin-updater 2>/dev/null || true
-    # Remove older aggregated sudoers file if present
     rm -f /etc/sudoers.d/previous-admin 2>/dev/null || true
 
     systemctl daemon-reload
@@ -180,9 +179,10 @@ remove_cli_command() {
         print_success "CLI command 'padmin' removed"
     fi
 
+    # Legacy privileged wrapper not used for bundled installs; remove if present
     if [ -f "/usr/local/bin/padmin-updater" ]; then
         rm -f /usr/local/bin/padmin-updater
-        print_success "Updater wrapper '/usr/local/bin/padmin-updater' removed"
+        print_success "Legacy updater wrapper removed"
     fi
 
     echo ""
@@ -202,7 +202,7 @@ show_summary() {
     echo "  • Configuration directory ($CONFIG_DIR)"
     echo "  • Database directory ($DB_DIR)"
     echo "  • CLI command (/usr/local/bin/padmin)"
-    echo "  • Updater wrapper (/usr/local/bin/padmin-updater) and sudoers snippet (/etc/sudoers.d/padmin-updater)"
+    echo "  • (legacy) Updater wrapper and sudoers snippet removed if present"
     echo ""
 }
 

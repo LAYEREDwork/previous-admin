@@ -6,7 +6,7 @@
 
 set -e
 
-PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PROJECT_ROOT="$(pwd)"
 CONFIG_FILE="$PROJECT_ROOT/backend/config-schema/reference.cfg"
 SCHEMA_FILE="$PROJECT_ROOT/shared/previous-config/schema.json"
 SYMBOL_MAPPING="$PROJECT_ROOT/backend/config-schema/section-symbols.json"
@@ -22,4 +22,4 @@ echo "📝 Generating schema from $CONFIG_FILE..."
 # Generate schema using TypeScript
 cd "$PROJECT_ROOT"
 CONFIG_FILE="$CONFIG_FILE" SCHEMA_FILE="$SCHEMA_FILE" SYMBOL_MAPPING="$SYMBOL_MAPPING" \
-  npx tsx scripts/generate-config-schema.ts
+  npx tsx scripts/build/schema.ts

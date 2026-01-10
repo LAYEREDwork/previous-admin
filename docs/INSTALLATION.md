@@ -39,7 +39,7 @@ sudo padmin help
 - `sudo padmin uninstall`: Remove Previous Admin
 - `sudo padmin help`: Show help
 
-Note: The `install` command (and the bootstrap `setup.sh` when run via curl) performs a fully automated, non-interactive installation — it installs Node.js, system packages, builds the frontend and backend, installs a privileged updater wrapper at `/usr/local/bin/padmin-updater`, and configures passwordless sudo for the necessary updater commands. After the script completes there should be no further manual steps required to start using Previous Admin.
+Note: The `install` command (and the bootstrap `setup.sh` when run via curl) performs a fully automated, non-interactive installation — it installs Node.js, system packages, builds the frontend and backend (or downloads a prebuilt bundle), and configures user services. The installer no longer requires a privileged updater wrapper; updates are performed by replacing the bundled artifact atomically.
 
 ## Configuration Options
 
@@ -101,12 +101,12 @@ The uninstall process will:
 - Remove the `padmin` CLI command
 - Clean up all system integration (Avahi, systemd)
 
-Additionally, the uninstaller will remove the privileged updater wrapper and its sudoers snippet (if present):
+Additionally, the uninstaller will remove legacy privileged wrapper files and sudoers snippets if they exist (older installations):
 
-- `/usr/local/bin/padmin-updater`
-- `/etc/sudoers.d/padmin-updater`
-- `/etc/sudoers.d/previous-admin` (if created by an older installer)
-- `/opt/previous-admin` (copied runtime install used by the updater)
+- `/usr/local/bin/padmin-updater` (legacy)
+- `/etc/sudoers.d/padmin-updater` (legacy)
+- `/etc/sudoers.d/previous-admin` (legacy)
+- `/opt/previous-admin` (copied runtime install used by older updaters)
 
 ## Environment Variables
 

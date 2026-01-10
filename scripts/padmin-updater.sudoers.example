@@ -1,8 +1,0 @@
-```plaintext
-# Example sudoers snippet for Padmin Updater
-# Place in /etc/sudoers.d/padmin-updater (owned by root, mode 0440)
-# Replace 'backend-user' with the user running the backend service (e.g., 'phranck' or 'next')
-
-backend-user ALL=(root) NOPASSWD: /usr/local/bin/padmin-updater
-
-```

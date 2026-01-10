@@ -1,0 +1,32 @@
+name: Build Backend Artifact
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install
+      - name: Build backend bundle
+        run: npm run build:backend:bundle
+      - name: Prepare artifact
+        run: |
+          mkdir -p release
+          # Copy necessary runtime files: backend bundle and static frontend build
+          cp -r backend/dist release/backend-dist
+          cp package.json release/
+          tar -czf previous-admin-linux-${{ runner.os }}.tar.gz -C release .
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: previous-admin-backend-artifact
+          path: previous-admin-linux-*.tar.gz
