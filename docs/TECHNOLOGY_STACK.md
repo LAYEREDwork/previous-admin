@@ -115,13 +115,6 @@ Previous Admin is built with modern, production-ready technologies focusing on p
 - Automatic validation and error recovery
 - File watching for external modifications
 
-### Real-Time Metrics
-- CPU load monitoring
-- Memory usage tracking
-- Disk I/O statistics
-- Network traffic analysis
-- Fetched via REST API for live charts
-
 ### Internationalization
 - Translation keys auto-generated from configuration schema
 - Namespace-based organization

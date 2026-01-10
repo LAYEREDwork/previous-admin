@@ -68,8 +68,7 @@ These are executable scripts in the `scripts/` directory, run directly or via np
 - **[`import-db.ts`](scripts/dev/import-db.ts)**: Imports example data. Run via `npm run import:exampledb`.
 
 ### Python Scripts
-
-- **[`abstract-config-labels.py`](scripts/deprecated/abstract-config-labels.py)**: Python script for processing config labels (deprecated).
+ 
 
 ## Dependencies and Usage
 

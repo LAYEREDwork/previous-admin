@@ -43,7 +43,6 @@
 - **Custom Hooks**: Business logic extracted into hooks like `useConfigActions`, `useConfigList` for reusable frontend logic.
 - **Error Handling**: Use `PAErrorBoundary` component and notification context for user-facing errors.
 - **File Watching**: `backend/file-watcher.ts` monitors config file changes for auto-sync.
-- **Metrics Collection**: Real-time system metrics via `backend/metrics.ts`.
 - **Size Parameters**: ALWAYS use `PASize` enum constants (`PASize.xs`, `PASize.sm`, `PASize.md`, `PASize.lg`, `PASize.xl`) instead of magic string literals (`'xs'`, `'sm'`, `'md'`, etc.) in component `size` props and type definitions. The `PASize` enum is defined in `frontend/lib/types/sizes.ts`. Use type `PASize` for any size-related props and default values. This applies to all component size properties throughout the codebase.
 - **SF Symbol Architecture** (**SOURCE OF TRUTH**): 
   - **Source of Truth**: `frontend/components/sf-symbols/available-symbols.ts` - Enum generated from actual SVG filenames, guarantees all symbols exist

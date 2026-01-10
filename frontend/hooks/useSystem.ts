@@ -13,7 +13,7 @@ import { apiBaseUrl } from '@frontend/lib/constants';
 // Shared Types
 
 /**
- * Hook to manage system information and orchestration of metrics.
+ * Hook to manage system information.
  */
 export function useSystem() {
   const { translation } = useLanguage();
@@ -25,9 +25,6 @@ export function useSystem() {
   const [isSystemTabActive, setIsSystemTabActive] = useState(true);
   const [showResetModal, setShowResetModal] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
-
-  // Metrics removed per user request
-  const metrics = null;
 
   // Load static system info
   useEffect(() => {
@@ -51,7 +48,7 @@ export function useSystem() {
     loadSystemInfo();
   }, []);
 
-  // Monitor visibility for metrics throttling
+  // Monitor tab visibility
   useEffect(() => {
     const handleVisibilityChange = () => setIsSystemTabActive(!document.hidden);
     document.addEventListener('visibilitychange', handleVisibilityChange);
@@ -86,7 +83,6 @@ export function useSystem() {
     systemInfo,
     loadingSystemInfo,
     systemInfoError,
-    metrics,
     showResetModal,
     setShowResetModal,
     isResetting,

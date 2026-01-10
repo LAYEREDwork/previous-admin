@@ -103,7 +103,6 @@ import { PASize } from '@frontend/lib/types/sizes';
 Business Logic in Hooks extrahiert:
 - `useConfigActions` — Config CRUD
 - `useConfigList` — Konfigurations-Listen
-- `useSystemMetrics` — Echtzeit-Metriken
 
 ### Error Handling
 
@@ -119,7 +118,6 @@ Business Logic in Hooks extrahiert:
 | `shared/api/constants.ts` | **SSoT** für alle API Endpoint Pfade |
 | `shared/types.ts` | Geteilte TypeScript Interfaces |
 | `backend/platform/` | Platform Abstraction Layer |
-| `backend/metrics.ts` | System-Metriken Sammlung |
 | `frontend/lib/database.ts` | Frontend Database API Client |
 
 ## Versions-Handling

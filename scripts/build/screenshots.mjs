@@ -30,7 +30,9 @@ const __dirname = dirname(__filename);
 // Configuration
 const CONFIG = {
   baseUrl: 'http://localhost:2342',
-  screenshotDir: join(__dirname, '../.github/assets'),
+  // Store screenshots in repository root under .github/assets
+  // Note: __dirname is scripts/build, so '../../.github/assets' points to repo-root/.github/assets
+  screenshotDir: join(__dirname, '../../.github/assets'),
   viewport: {
     width: 1300,
     height: 1080 // Starting value, ignored for fullPage
@@ -391,8 +393,19 @@ async function generateScreenshots() {
           viewport: CONFIG.viewport
         });
         
+        // Ensure the frontend will call the backend on the correct port when
+        // running under `vite preview`. Use Playwright's init script so the
+        // value exists in `localStorage` before any application scripts run.
+        await context.addInitScript(() => {
+          try {
+            localStorage.setItem('apiBaseUrl', 'http://localhost:3001');
+          } catch (e) {
+            // ignore
+          }
+        });
+
         const page = await context.newPage();
-        
+
         // Navigate to home page and wait longer
         await page.goto(CONFIG.baseUrl, { waitUntil: 'networkidle', timeout: 60000 });
         

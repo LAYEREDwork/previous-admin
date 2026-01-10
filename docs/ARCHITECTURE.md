@@ -73,10 +73,8 @@ Contexts (Global State)
 Custom Hooks (Business Logic)
 ├── useConfigActions()
 │   └── Create, update, delete configurations
-├── useConfigList()
-│   └── Fetch and manage configuration list
-└── useSystemMetrics()
-    └── Fetch and store system metrics
+└── useConfigList()
+    └── Fetch and manage configuration list
 ```
 
 ### Communication Pattern
@@ -118,7 +116,6 @@ Express Router
         │
         ├─► Platform Operations
         │   ├─► System Info Collection
-        │   ├─► Metrics Collection
         │   └─► OS-Specific Commands
         │
         └─► Database Queries
@@ -168,32 +165,6 @@ ConfigManager (Abstract Interface)
 7. Returns success response to frontend
 ```
 
-### Data Flow: Real-Time Metrics
-
-```
-1. Frontend opens System page
-    │
-    └─► HTTP GET /api/system/metrics
-        │
-        ▼
-2. Backend metrics handler
-    │
-    ├─► Collects system metrics
-    │   ├─► CPU load (via /proc or `sysctl`)
-    │   ├─► Memory usage (via /proc or `vm_stat`)
-    │   ├─► Disk I/O stats
-    │   └─► Network traffic stats
-    │
-    └─► Returns JSON response
-        │
-        ▼
-3. Frontend receives metrics
-    │
-    ├─► Updates chart data
-    ├─► Re-renders charts (React)
-    └─► Displays visualization
-```
-
 ## Database Schema
 
 ### Configurations Table
@@ -226,7 +197,6 @@ CREATE TABLE configurations (
 // Single interface, multiple implementations
 interface IPlatformOperations {
   getSystemInfo(): Promise<SystemInfo>;
-  getMetrics(): Promise<Metrics>;
   executeCommand(cmd: string): Promise<string>;
 }
 
@@ -260,7 +230,7 @@ const operations = platform === 'darwin'
 ### Backend
 - Stateless HTTP handlers allow horizontal scaling
 - Database abstraction allows easy migration if needed
-- Platform-specific optimizations for system metrics collection
+- Platform-specific optimizations for system operations
 
 ### Performance Optimizations
 
@@ -271,7 +241,6 @@ const operations = platform === 'darwin'
 - Efficient chart updates (only changed data points)
 
 #### Backend
-- Metrics collected on background intervals
 - Configuration caching to reduce file I/O
 - Efficient database queries with proper indexing
 
@@ -284,13 +253,6 @@ const operations = platform === 'darwin'
 - **Error Messages**: Generic error messages to prevent information leakage
 
 ## Extension Points
-
-### Adding New Metrics
-
-1. Add collection logic to `backend/metrics.ts`
-2. Define new metric type in `shared/types.ts`
-3. Create new chart component in `frontend/components/charts/`
-4. Connect to metrics API endpoint in frontend
 
 ### Supporting New Platforms
 

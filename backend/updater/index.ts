@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 import { downloadWithCurl, extractArchive, createBackup, replaceProject, runCommand, restoreBackup } from './helpers';
 
@@ -8,7 +9,7 @@ import { downloadWithCurl, extractArchive, createBackup, replaceProject, runComm
  * Minimal Updater skeleton for Previous Admin backend.
  * - Emits structured status events
  * - Supports a DEV_MODE that simulates steps
- * - Intended to be invoked by a privileged wrapper script (see scripts/padmin-updater)
+ * - Intended to be invoked by a privileged wrapper script (legacy privileged wrapper supported via installer scripts)
  */
 
 export const enum UpdateStatus {
@@ -180,8 +181,9 @@ export class Updater extends EventEmitter {
   }
 }
 
-// If run directly, provide a minimal CLI
-if (require.main === module) {
+// If run directly, provide a minimal CLI (ESM-compatible entry detection)
+const mainFile = fileURLToPath(import.meta.url);
+if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(mainFile)) {
   (async () => {
     const argv = process.argv.slice(2);
     const devFlag = argv.includes('--dev') || argv.includes('--simulate');

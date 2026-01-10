@@ -38,7 +38,7 @@ previous-admin/
 ├── frontend/                          # React web application
 │   ├── __tests__/                     # Frontend test suite
 │   ├── components/                    # React UI components
-│   │   ├── charts/                    # Metrics visualization components
+│   │   ├── charts/                    # Data visualization components
 │   │   ├── controls/                  # Reusable UI controls and widgets
 │   │   ├── pages/                     # Main application pages
 │   │   ├── partials/                  # Reusable layout partials
@@ -98,7 +98,7 @@ The project is organized into three main layers:
 
 ## Key Organizational Principles
 
-- **Platform Abstraction** — Configuration and metrics collection handles macOS and Linux differences transparently
+- **Platform Abstraction** — Configuration management handles macOS and Linux differences transparently
 - **Modular Structure** — Each feature has dedicated directories with clear responsibilities
 - **Colocated Tests** — Test files sit alongside source code (`.test.ts` files in same directories)
 - **Automated Generation** — Schema extraction, icon mapping, translation keys, and types all auto-generated

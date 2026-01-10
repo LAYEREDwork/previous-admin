@@ -55,8 +55,9 @@ type Language = (typeof LANGUAGES)[number];
 
 // File paths
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const SCHEMA_PATH = path.join(__dirname, '../shared/previous-config/schema.json');
-const LOCALES_DIR = path.join(__dirname, '../frontend/lib/i18n/locales');
+// The script runs from scripts/build. The repository root is two levels up.
+const SCHEMA_PATH = path.join(__dirname, '../../shared/previous-config/schema.json');
+const LOCALES_DIR = path.join(__dirname, '../../frontend/lib/i18n/locales');
 
 /**
  * Load schema.json

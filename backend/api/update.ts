@@ -79,7 +79,7 @@ router.post(apiPaths.Update.update.relative, async (req: any, res: any) => {
       const tmpFile = `/tmp/previous-admin-update-${Date.now()}.tar.gz`;
 
       // Use curl to download and then call the installer script with sudo
-      const cmd = `curl -fSL -o ${tmpFile} ${downloadUrl} && sudo bash scripts/install-release.sh ${tmpFile}`;
+      const cmd = `curl -fSL -o ${tmpFile} ${downloadUrl} && sudo bash scripts/install/release.sh ${tmpFile}`;
       execAsync(cmd, { cwd: process.cwd() }).catch((error) => {
         console.error('Update (artifact) error:', error);
       });
