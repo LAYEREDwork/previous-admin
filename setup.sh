@@ -345,6 +345,18 @@ do_compile_backend() {
             chmod 755 "$COMPILED_DIR/index.js" || true
         fi
     fi
+    # Replace TypeScript path aliases in compiled JS to relative paths as a pragmatic runtime fix
+    # - "@shared/..." -> "../shared/..." (files in dist/backend reference dist/shared)
+    # - "@backend/..." -> "./..." (backend alias points to backend root)
+    if [ -d "$COMPILED_DIR" ]; then
+        find "$COMPILED_DIR" -type f -name "*.js" -print0 | xargs -0 sed -i "s/from '@shared\//from '..\/shared\//g" || true
+        find "$COMPILED_DIR" -type f -name "*.js" -print0 | xargs -0 sed -i "s/from \"@shared\//from \"..\/shared\//g" || true
+        find "$COMPILED_DIR" -type f -name "*.js" -print0 | xargs -0 sed -i "s/from '@backend\//from '.\/\//g" || true
+        find "$COMPILED_DIR" -type f -name "*.js" -print0 | xargs -0 sed -i "s/from \"@backend\//from \".\//g" || true
+        # also handle dynamic import('...') patterns
+        find "$COMPILED_DIR" -type f -name "*.js" -print0 | xargs -0 sed -i "s/import('@shared\//import('..\/shared\//g" || true
+        find "$COMPILED_DIR" -type f -name "*.js" -print0 | xargs -0 sed -i "s/import(\"@shared\//import(\"..\/shared\//g" || true
+    fi
 }
 
 do_install_updater() {
