@@ -34,7 +34,7 @@ rsync -a --delete --exclude node_modules --exclude .git --exclude .previous-admi
 
 echo "Installing production dependencies in $INSTALL_DIR"
 cd "$INSTALL_DIR"
-npm ci --omit=dev
+npm install --omit=dev
 
 echo "Installing wrapper to $WRAPPER_DST"
 cp "$WRAPPER_SRC" "$WRAPPER_DST"
