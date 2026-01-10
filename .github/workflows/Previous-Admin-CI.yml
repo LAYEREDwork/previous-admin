@@ -238,6 +238,6 @@ jobs:
           if ! git diff --staged --quiet; then
             git add -A  # Add all changes, not just screenshots
             git commit -m "Update screenshots and generated assets"
-            git pull --rebase origin main
+            git pull --rebase --strategy=ours origin main
             git push
           fi
