@@ -7,7 +7,14 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            arch: x86_64
+          - os: ubuntu-24.04-arm
+            arch: arm64
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node
@@ -24,9 +31,19 @@ jobs:
           # Copy necessary runtime files: backend bundle and static frontend build
           cp -r backend/dist release/backend-dist
           cp package.json release/
-          tar -czf previous-admin-linux-${{ runner.os }}.tar.gz -C release .
+          tar -czf previous-admin-linux-${{ matrix.arch }}.tar.gz -C release .
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: previous-admin-backend-artifact
-          path: previous-admin-linux-*.tar.gz
+          name: previous-admin-backend-${{ matrix.arch }}
+          path: previous-admin-linux-${{ matrix.arch }}.tar.gz
+
+      - name: Create Release
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: previous-admin-linux-${{ matrix.arch }}.tar.gz
+          tag_name: latest
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
