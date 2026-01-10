@@ -337,6 +337,14 @@ do_compile_backend() {
     # Compile TypeScript backend (includes updater) to backend/dist
     # Run as the target user so node_modules and devDependencies are available
     sudo -u "$TARGET_USER" npx -y tsc -p backend/tsconfig.json >/dev/null 2>&1 || true
+    # Ensure a top-level entrypoint exists at backend/dist/index.js that forwards to compiled files
+    COMPILED_DIR="$INSTALL_DIR/backend/dist"
+    if [ -d "$COMPILED_DIR" ]; then
+        if [ ! -f "$COMPILED_DIR/index.js" ]; then
+            printf "import('./backend/index.js').catch(e => { console.error(e); process.exit(1); });\n" > "$COMPILED_DIR/index.js" || true
+            chmod 755 "$COMPILED_DIR/index.js" || true
+        fi
+    fi
 }
 
 do_install_updater() {
@@ -376,7 +384,8 @@ Wants=network-online.target
 [Service]
 Type=simple
 WorkingDirectory=$INSTALL_DIR
-ExecStart=/usr/bin/npm run backend
+# Use tsconfig-paths to resolve TypeScript path aliases at runtime
+ExecStart=/usr/bin/node -r tsconfig-paths/register $INSTALL_DIR/backend/dist/index.js
 Restart=always
 RestartSec=10
 StandardOutput=journal

@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "build:prod": "npm run generate:prod && npm run build",
+    "build:backend": "npx -y tsc -p backend/tsconfig.json",
+    "start:backend": "node -r tsconfig-paths/register backend/dist/index.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "backend": "tsx --tsconfig backend/tsconfig.json backend/index.ts",
@@ -27,6 +29,7 @@
     "import:exampledb": "tsx scripts/import-example-database.ts"
   },
   "dependencies": {
+    "tsconfig-paths": "^4.2.0",
     "better-sqlite3": "^12.5.0",
     "cors": "^2.8.5",
     "express": "^5.2.1",
