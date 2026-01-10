@@ -128,7 +128,7 @@ export function PAModalProvider({ children }: { children: ReactNode }) {
         title,
       });
     },
-    [showModal, translation.common.confirmation, translation.common.cancel, translation.common.confirm, closeModal]
+    [showConfirmAdvanced]
   );
 
   const showConfirmAdvanced = useCallback(

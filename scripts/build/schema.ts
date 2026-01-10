@@ -7,10 +7,11 @@
 
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 
+import type { SectionSchema } from '@shared/previous-config/schema-types';
+
 import { parseCfgFile } from '../../backend/config-schema/config-parser';
 import { extractSchema } from '../../backend/config-schema/schema-extractor';
 import { reportValidationResults, validateSymbols } from '../../backend/config-schema/validate-symbols';
-import type { SectionSchema } from '@shared/previous-config/schema-types';
 
 const configFile = process.env.CONFIG_FILE || './backend/config-schema/reference.cfg';
 const schemaFile = process.env.SCHEMA_FILE || './shared/previous-config/schema.json';

@@ -19,10 +19,16 @@ echo ""
 
 # Start backend in background
 echo "Starting backend..."
-npm run backend > backend.log 2>&1 &
+if [ "$CI" = "true" ]; then
+  npm run backend &
+else
+  npm run backend > backend.log 2>&1 &
+fi
 BACKEND_PID=$!
 echo "✓ Backend started (PID: $BACKEND_PID)"
-echo "  Logs: backend.log"
+if [ "$CI" != "true" ]; then
+  echo "  Logs: backend.log"
+fi
 echo ""
 
 echo "Waiting 3 seconds..."

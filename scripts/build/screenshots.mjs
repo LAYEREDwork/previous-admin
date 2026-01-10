@@ -90,7 +90,7 @@ async function startApp() {
   console.log('  Starting services...');
   appProcess = spawn('./scripts/dev/start-all.sh', [], {
     cwd: join(__dirname, '..'),
-    stdio: 'ignore',
+    stdio: 'inherit',
     shell: true,
     detached: false
   });
