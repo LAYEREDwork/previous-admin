@@ -17,7 +17,7 @@ import { PANewConfigModalPartial } from '@frontend/components/partials/config-li
 import { 
   SFArrowTrianglehead2ClockwiseRotate90CircleFill, 
   SFLongTextPageAndPencilFill 
-} from '@frontend/components/sf-symbols';
+} from 'sf-symbols-lib';
 import { useConfigActions } from '@frontend/hooks/useConfigActions';
 import { useConfigEditor } from '@frontend/hooks/useConfigEditor';
 import { usePageBase } from '@frontend/hooks/usePageBase';

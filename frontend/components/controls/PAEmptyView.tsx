@@ -1,3 +1,4 @@
+import { ComponentType } from 'react';
 import { IconType } from 'react-icons';
 import { Button } from 'rsuite';
 
@@ -5,8 +6,8 @@ import { Button } from 'rsuite';
  * Props für die PAEmptyView-Komponente
  */
 interface PAEmptyViewProps {
-  /** Das anzuzeigende Icon */
-  icon: IconType;
+  /** Das anzuzeigende Icon - kann ein react-icons IconType oder eine React-Komponente sein */
+  icon: IconType | ComponentType<any>;
   /** Die Größe des Icons */
   iconSize?: number;
   /** Der Titel des Empty-States */
@@ -18,7 +19,7 @@ interface PAEmptyViewProps {
   /** Die Callback-Funktion für den Aktionsbutton */
   onAction: () => void;
   /** Optionales Icon für den Aktionsbutton */
-  actionIcon?: IconType;
+  actionIcon?: IconType | ComponentType<any>;
   /** Die Größe des Button-Icons */
   actionIconSize?: number;
   /** Zusätzliche CSS-Klassen für den Container */

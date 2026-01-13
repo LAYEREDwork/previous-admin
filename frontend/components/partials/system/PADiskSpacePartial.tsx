@@ -2,7 +2,7 @@ import { SystemInfo } from '@shared/previous-config/types';
 
 import { PACard } from '@frontend/components/controls/PACard';
 import { PADiskSpace } from '@frontend/components/controls/PADiskSpace';
-import { SFExternaldrive } from '@frontend/components/sf-symbols';
+import { SFExternaldrive } from 'sf-symbols-lib';
 import { Translations } from '@frontend/lib/translations';
 
 interface DiskSpacePartialProps {

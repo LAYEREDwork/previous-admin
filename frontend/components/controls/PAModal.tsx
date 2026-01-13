@@ -5,7 +5,7 @@ import {
     SFCheckmarkBubbleFill,
     SFExclamationmarkBubbleFill,
     SFInfoBubbleFill
-} from '@frontend/components/sf-symbols';
+} from 'sf-symbols-lib';
 import { MODAL_ICON_SIZE, MODAL_ICON_CLASS, getButtonAppearance, getButtonColor, getButtonClassName } from '@frontend/lib/modal-utils';
 import { PAModalType, PAModalButton } from '@frontend/lib/types/modal';
 

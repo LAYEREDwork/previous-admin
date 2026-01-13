@@ -1,4 +1,4 @@
-import { SFDesktopcomputer, SFMoonStars, SFSunMax } from '@frontend/components/sf-symbols';
+import { SFDesktopcomputer, SFMoonStars, SFSunMax } from 'sf-symbols-lib';
 
 import { useLanguage } from '@frontend/contexts/PALanguageContext';
 import { useTheme, ThemeMode } from '@frontend/contexts/PAThemeContext';

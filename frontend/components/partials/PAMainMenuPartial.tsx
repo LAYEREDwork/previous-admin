@@ -6,7 +6,7 @@ import {
     SFSquareAndArrowUpFill,
     SFDesktopcomputer,
     SFInfoBubbleFill
-} from '@frontend/components/sf-symbols';
+} from 'sf-symbols-lib';
 import { useLanguage } from '@frontend/contexts/PALanguageContext';
 
 interface MainMenuProps {

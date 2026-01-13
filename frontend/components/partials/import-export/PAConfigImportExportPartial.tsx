@@ -1,6 +1,6 @@
 import { PAButton } from '@frontend/components/controls/PAButton';
 import { PACard } from '@frontend/components/controls/PACard';
-import { SFTrayAndArrowDownFill, SFTrayAndArrowUpFill } from '@frontend/components/sf-symbols';
+import { SFTrayAndArrowDownFill, SFTrayAndArrowUpFill } from 'sf-symbols-lib';
 
 import { Configuration } from '@frontend/lib/database';
 import { Translations } from '@frontend/lib/translations';

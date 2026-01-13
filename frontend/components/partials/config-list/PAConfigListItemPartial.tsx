@@ -8,7 +8,7 @@ import {
   SFDocumentOnDocumentFill, 
   SFDocumentOnTrashFill, 
   SFLongTextPageAndPencilFill 
-} from '@frontend/components/sf-symbols';
+} from 'sf-symbols-lib';
 import { Configuration } from '@frontend/lib/database';
 import type { Translations } from '@frontend/lib/translations';
 

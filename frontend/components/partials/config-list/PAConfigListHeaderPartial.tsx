@@ -1,5 +1,5 @@
 import { PAButton } from '@frontend/components/controls/PAButton';
-import { SFDocumentBadgePlusFill } from '@frontend/components/sf-symbols';
+import { SFDocumentBadgePlusFill } from 'sf-symbols-lib';
 
 import { Translations } from '@frontend/lib/translations';
 import { PASize } from '@frontend/lib/types/sizes';

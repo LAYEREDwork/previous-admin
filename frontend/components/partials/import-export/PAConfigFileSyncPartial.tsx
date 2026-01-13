@@ -8,7 +8,7 @@ import {
   SFInfoCircleFill, 
   SFTrayAndArrowDownFill, 
   SFTrayAndArrowUpFill 
-} from '@frontend/components/sf-symbols';
+} from 'sf-symbols-lib';
 import { useLanguage } from '@frontend/contexts/PALanguageContext';
 import { useResponsiveControlSize } from '@frontend/hooks/useResponsiveControlSize';
 import { database, Configuration } from '@frontend/lib/database';

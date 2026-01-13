@@ -4,7 +4,7 @@ import {
   SFDocumentOnDocumentFill, 
   SFLongTextPageAndPencilFill, 
   SFTrash
-} from '@frontend/components/sf-symbols';
+} from 'sf-symbols-lib';
 import { Configuration } from '@frontend/lib/database';
 import { Translations } from '@frontend/lib/translations';
 import { PAButtonType } from '@frontend/lib/types/button';

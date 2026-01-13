@@ -1,6 +1,6 @@
 import { Dropdown, Button } from 'rsuite';
 
-import { SFScribbleVariable, SFCheckmarkCircle } from '@frontend/components/sf-symbols';
+import { SFScribbleVariable, SFCheckmarkCircle } from 'sf-symbols-lib';
 import { useFont, AVAILABLE_FONTS } from '@frontend/contexts/PAFontContext';
 import type { FontFamily } from '@frontend/contexts/PAFontContext';
 import { PASize, PASizeConfig } from '@frontend/lib/types/sizes';

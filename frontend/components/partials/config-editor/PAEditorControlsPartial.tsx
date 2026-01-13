@@ -5,7 +5,7 @@ import {
     SFLongTextPageAndPencilFill, 
     SFSquareAndArrowDownOnSquareFill, 
     SFTextRectangleFill 
-} from '@frontend/components/sf-symbols';
+} from 'sf-symbols-lib';
 import { Translations } from '@frontend/lib/translations';
 import { PASize } from '@frontend/lib/types/sizes';
 

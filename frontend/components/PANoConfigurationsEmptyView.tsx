@@ -3,7 +3,7 @@ import { useLanguage } from '@frontend/contexts/PALanguageContext';
 import { PASize } from '@frontend/lib/types/sizes';
 
 import { PAEmptyView } from './controls/PAEmptyView';
-import { SFDocumentBadgePlusFill } from './sf-symbols';
+import { SFDocumentBadgePlusFill } from 'sf-symbols-lib';
 
 /**
  * A reusable empty state component displayed when no configurations are available.

@@ -2,7 +2,7 @@ import { Input } from 'rsuite';
 
 import { PAButton } from '@frontend/components/controls/PAButton';
 import { PACard } from '@frontend/components/controls/PACard';
-import { SFLongTextPageAndPencilFill, SFSquareAndArrowDownFill } from '@frontend/components/sf-symbols';
+import { SFLongTextPageAndPencilFill, SFSquareAndArrowDownFill } from 'sf-symbols-lib';
 
 import { Translations } from '@frontend/lib/translations';
 import { PASize } from '@frontend/lib/types/sizes';

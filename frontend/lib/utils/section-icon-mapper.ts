@@ -9,12 +9,12 @@
 
 import type { ComponentType } from 'react';
 
-import * as SFSymbols from '@frontend/components/sf-symbols';
+import * as SFSymbols from 'sf-symbols-lib';
 
-import { sfIconMap } from '@frontend/components/sf-symbols/icons-map';
+import { sfIconMap } from 'sf-symbols-lib';
 
 interface IconMapperProps {
-  size?: number;
+  size?: number | string;
   className?: string;
   color?: string;
 }

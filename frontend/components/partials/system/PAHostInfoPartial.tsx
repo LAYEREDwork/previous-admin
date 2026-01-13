@@ -1,7 +1,7 @@
 import { SystemInfo } from '@shared/previous-config/types';
 
 import { PACard } from '@frontend/components/controls/PACard';
-import { SFInternaldrive, SFCpu, SFNetwork, SFDisplay } from '@frontend/components/sf-symbols';
+import { SFInternaldrive, SFCpu, SFNetwork, SFDisplay } from 'sf-symbols-lib';
 import { Translations } from '@frontend/lib/translations';
 import { formatUptime } from '@frontend/lib/utils';
 

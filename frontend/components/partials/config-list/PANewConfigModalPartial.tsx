@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Input } from 'rsuite';
 
 import { PAModal } from '@frontend/components/controls/PAModal';
-import { SFDocumentBadgePlusFill } from '@frontend/components/sf-symbols';
+import { SFDocumentBadgePlusFill } from 'sf-symbols-lib';
 import { Translations } from '@frontend/lib/translations';
 import { PAModalButton, PAModalButtonType } from '@frontend/lib/types/modal';
 import { PASize } from '@frontend/lib/types/sizes';

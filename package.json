@@ -23,9 +23,8 @@
     "test": "npm run test:frontend && npm run test:backend",
     "test:frontend": "vitest run --run frontend",
     "test:backend": "vitest run --run backend",
-    "generate": "npm run generate:sfsymbols && npm run generate:schema && npm run generate:translationkeys && npm run generate:fontlist && npm run generate:screenshots",
-    "generate:prod": "npm run generate:sfsymbols && npm run generate:schema && npm run generate:translationkeys && npm run generate:fontlist",
-    "generate:sfsymbols": "tsx scripts/build/sfsymbols.ts",
+    "generate": "npm run generate:schema && npm run generate:translationkeys && npm run generate:fontlist && npm run generate:screenshots",
+    "generate:prod": "npm run generate:schema && npm run generate:translationkeys && npm run generate:fontlist",
     "generate:schema": "bash scripts/build/schema.sh",
     "generate:fontlist": "tsx scripts/build/fontlist.ts",
     "generate:screenshots": "node scripts/build/screenshots.mjs",
@@ -44,6 +43,7 @@
     "recharts": "^3.5.1",
     "remark-gfm": "^4.0.1",
     "rsuite": "^6.1.0",
+    "sf-symbols-lib": "github:LAYEREDwork/sf-symbols-lib",
     "uuid": "^13.0.0"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-import { SFLinkIcloud } from "@frontend/components/sf-symbols";
+import { SFLinkIcloud } from "sf-symbols-lib";
 
 export interface PAResourceLinkProps {
   href: string;

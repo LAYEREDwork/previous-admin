@@ -1,6 +1,6 @@
 import { Dropdown, Button } from 'rsuite';
 
-import { SFCheckmarkCircle } from '@frontend/components/sf-symbols';
+import { SFCheckmarkCircle } from 'sf-symbols-lib';
 import { useLanguage } from '@frontend/contexts/PALanguageContext';
 import { Language } from '@frontend/lib/translations';
 import { PASize, PASizeConfig } from '@frontend/lib/types/sizes';

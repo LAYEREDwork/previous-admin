@@ -1,6 +1,6 @@
 import { IconButton } from 'rsuite';
 
-import { SFCheckmarkCircle, SFCircle } from '@frontend/components/sf-symbols';
+import { SFCheckmarkCircle, SFCircle } from 'sf-symbols-lib';
 
 import type { Translations } from '@frontend/lib/translations';
 import { PASize } from '@frontend/lib/types/sizes';

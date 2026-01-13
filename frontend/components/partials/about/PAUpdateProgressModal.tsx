@@ -5,7 +5,7 @@ import {
   SFArrowTrianglehead2ClockwiseRotate90,
   SFCheckmarkSeal,
   SFExclamationmarkBubbleFill
-} from '@frontend/components/sf-symbols';
+} from 'sf-symbols-lib';
 import { useLanguage } from '@frontend/contexts/PALanguageContext';
 import { type UpdateStatus } from '@frontend/lib/version';
 
